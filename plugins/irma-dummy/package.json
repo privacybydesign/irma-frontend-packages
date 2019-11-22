@@ -1,0 +1,8 @@
+{
+  "name": "irma-dummy",
+  "version": "1.0.0",
+  "description": "A dummy back-end for IRMA flows. Useful for testing without an actual server",
+  "main": "index.js",
+  "author": "Tim Franssen <tim.franssen@nuts.nl>",
+  "license": "MIT"
+}
