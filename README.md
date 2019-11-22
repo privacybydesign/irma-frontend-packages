@@ -1,3 +1,5 @@
+_Work in progress - See https://github.com/privacybydesign/irmajs for now_
+
 # IRMA Javascript packages
 
 Building web-based IRMA flows has never been as easy or as flexible!
