@@ -19,8 +19,8 @@ Choose and load the [plugins](https://github.com/privacybydesign/irma-js-package
 that you want, for example:
 
 ```javascript
-const IrmaWeb    = require('irma-web');
 const IrmaServer = require('irma-irmaserver');
+const IrmaWeb    = require('irma-web');
 
 irma.use(IrmaServer);
 irma.use(IrmaWeb);

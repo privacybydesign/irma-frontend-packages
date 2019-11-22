@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "description": "The state machine for implementing IRMA flows, that plugins can register on",
   "main": "index.js",
-  "author": "",
+  "author": "Tim Franssen <tim.franssen@nuts.nl>",
   "license": "MIT"
 }
