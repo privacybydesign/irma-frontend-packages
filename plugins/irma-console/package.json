@@ -9,5 +9,10 @@
   "dependencies": {
     "prompt-sync": "^4.1.7",
     "qrcode": "^1.4.2"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/privacybydesign/irma-js-packages",
+    "directory": "plugins/irma-console"
   }
 }

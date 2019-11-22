@@ -4,5 +4,10 @@
   "description": "The state machine for implementing IRMA flows, that plugins can register on",
   "main": "index.js",
   "author": "Tim Franssen <tim.franssen@nuts.nl>",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/privacybydesign/irma-js-packages",
+    "directory": "irma-core"
+  }
 }
