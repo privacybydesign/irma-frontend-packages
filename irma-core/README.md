@@ -5,7 +5,7 @@ register plugins with this state machine and then start the machine:
 
 ```javascript
 const IrmaCore = require('irma-core');
-const irma     = new IrmaCore();
+const irma     = new IrmaCore(/* options */);
 
 irma.use(/* Plugin A */);
 irma.use(/* Plugin B */);
