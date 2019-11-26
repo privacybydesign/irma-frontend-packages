@@ -1,0 +1,33 @@
+{
+  "name": "irma-browser-web-example",
+  "version": "1.0.0",
+  "description": "An example on how to use the irma-web package",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server",
+    "build": "webpack"
+  },
+  "author": "Tim Franssen <tim.franssen@nuts.nl>",
+  "license": "MIT",
+  "dependencies": {
+    "irma-core": "../../../irma-core",
+    "irma-web": "../../../plugins/irma-web",
+    "irma-dummy": "../../../plugins/irma-dummy"
+  },
+  "devDependencies": {
+    "css-loader": "^3.2.0",
+    "file-loader": "^5.0.2",
+    "node-sass": "^4.13.0",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.2",
+    "irma-web-frontend": "^0.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/privacybydesign/irma-js-packages",
+    "directory": "examples/browser/irma-web"
+  }
+}
