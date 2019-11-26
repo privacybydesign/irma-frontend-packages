@@ -62,7 +62,7 @@ irma.start(request)
 
 ## Additional documentation
 
-Want to know more about any of the packages? Each package has their own README
+Want to know more about any of the packages? Each package has its own README
 file with features, options and purpose of the package:
 
 * [`irma-core`](irma-core)

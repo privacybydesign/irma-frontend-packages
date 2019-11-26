@@ -10,7 +10,7 @@ const irma     = new IrmaCore(/* options */);
 irma.use(/* Plugin A */);
 irma.use(/* Plugin B */);
 
-irma.start();
+irma.start(/* parameters */);
 ```
 
 You can pass an options object to the constructor, which will be passed on to
