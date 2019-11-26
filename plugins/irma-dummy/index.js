@@ -2,7 +2,7 @@ module.exports = class IrmaDummy {
 
   constructor({stateMachine, options}) {
     this._stateMachine = stateMachine;
-    this._options      = options;
+    this._options      = this._sanitizeOptions(options);
   }
 
   stateChange({newState}) {
@@ -35,7 +35,7 @@ module.exports = class IrmaDummy {
         case 'connection error':
           return this._stateMachine.transition('error');
         default:
-          return this._stateMachine.transition('loaded', {'message': 'Just be patient ;)'});
+          return this._stateMachine.transition('loaded', this._options.qr_code_payload);
       }
     }, 400);
   }
@@ -57,9 +57,21 @@ module.exports = class IrmaDummy {
         case 'cancel':
           return this._stateMachine.transition('cancel');
         default:
-          return this._stateMachine.transition('succeed', {disclosed: 'Some attributes'});
+          return this._stateMachine.transition('succeed', this._options.success_payload);
       }
     }, 1000);
+  }
+
+  _sanitizeOptions(options) {
+    return Object.assign({
+      dummy: 'happy path',
+      qr_code_payload: {
+        message: 'Just be patient ;)'
+      },
+      success_payload: {
+        disclosed: 'Some attributes'
+      }
+    }, options);
   }
 
 }

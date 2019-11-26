@@ -24,6 +24,8 @@ irma.start(/* parameters */);
 
 ## Options
 
+### dummy
+
 The dummy option can take one of these values:
 
  * `happy path`          ⸺ Fake everything just working™️
@@ -32,5 +34,17 @@ The dummy option can take one of these values:
  * `connection error`    ⸺ Fake error connecting to the server on the initial session start
  * `browser unsupported` ⸺ Fake an unsupported browser detected
 
-This plugin also listens to the `debugging` option, and will render some basic
+### debugging
+
+This plugin listens to the `debugging` option, and will render some basic
 information when debugging is enabled.
+
+### qr_code_payload
+
+If you want to customize what is shown in the QR code, you can pass anything to
+the `qr_code_payload` option.
+
+### success_payload
+
+If you want to customize what the Promise resolves to, you can pass anything to
+the `success_payload` option.
