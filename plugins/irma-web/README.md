@@ -32,27 +32,28 @@ irma.start(/* parameters */);
 The `element` option should contain a selector that points to an element in
 which to render the IRMA form. This is a required option.
 
+### language
+
+You can set the interface language by setting the `language` option. Currently
+supported values: `en` and `nl`. Default is `nl`.
+
 ### translations
 
-You can override all the strings in the IRMA form. This can be useful for
-translations, but also when your use-case is not logging a user in. Make sure
-you are specific in these texts to avoid unnecessary confusion for your users.
+If you have more specific translation requirements, or if your use-case is not
+logging a user in, you can override any of the strings in the interface using
+the `translations` option. It is good practice to be specific in these texts to
+avoid unnecessary confusion for your users.
 
 ```javascript
 const irma = new IrmaCore({
   translations: {
-    header:  'Signing the agreement with <i class="irma-web-logo">IRMA</i>',
-    loading: 'Just one second please!',
-    ...
+    header:  'Sign the agreement with <i class="irma-web-logo">IRMA</i>',
+    loading: 'Finding your agreement...'
   }
 });
 ```
 
-You can find the default values [in the `irma-web` plugin](https://github.com/privacybydesign/irma-js-packages/tree/master/plugins/irma-web/index.js#L40).
-
-_Note: overwriting the translations is currently an all-or-nothing deal. You
-can't overwrite just one or two strings, so make sure you provide all texts.
-PRs and ideas welcome._
+You can find the default values [in the translation files](https://github.com/privacybydesign/irma-js-packages/tree/master/plugins/irma-web/translations).
 
 ### showHelper
 

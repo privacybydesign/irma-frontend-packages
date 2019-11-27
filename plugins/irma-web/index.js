@@ -1,5 +1,6 @@
 const QRCode           = require('qrcode');
 const DOMManipulations = require('./dom-manipulations');
+const merge            = require('deepmerge');
 
 module.exports = class IrmaWeb {
 
@@ -34,25 +35,13 @@ module.exports = class IrmaWeb {
   }
 
   _sanitizeOptions(options) {
-    return Object.assign({
-      element:     '#irma-web-form',
-      showHelper:  false,
-      translations: {
-        header:    'Inloggen met <i class="irma-web-logo">IRMA</i>',
-        helper:    'Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.',
-        loading:   'Eén moment alsjeblieft',
-        button:    'Open IRMA app',
-        qrCode:    'Toon QR code',
-        app:       'Volg de instructies in de IRMA app',
-        retry:     'Opnieuw proberen',
-        back:      'Ga terug',
-        cancelled: 'We hebben de attributen niet ontvangen. Het spijt ons, maar dan kunnen we je niet inloggen',
-        timeout:   'Sorry! We hebben te lang<br/>niks van je gehoord',
-        error:     'Sorry! Er is een fout opgetreden',
-        browser:   'Het spijt ons, maar je browser voldoet niet aan de minimale eisen',
-        success:   'Gelukt!'
-      }
-    }, options);
+    const defaults = {
+      element:      '#irma-web-form',
+      showHelper:   false,
+      translations: require(`./translations/${options.language || 'nl'}`)
+    };
+
+    return merge(defaults, options);
   }
 
 }

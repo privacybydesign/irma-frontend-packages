@@ -6,6 +6,7 @@
   "author": "Tim Franssen <tim.franssen@nuts.nl>",
   "license": "MIT",
   "dependencies": {
+    "deepmerge": "^4.2.2",
     "qrcode": "^1.4.2"
   },
   "repository": {
