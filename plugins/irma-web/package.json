@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "A front-end to IRMA flows for in the web browser",
   "main": "index.js",
-  "author": "Tim Franssen <tim.franssen@nuts.nl>",
   "license": "MIT",
   "dependencies": {
     "deepmerge": "^4.2.2",

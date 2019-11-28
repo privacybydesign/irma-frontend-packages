@@ -7,7 +7,6 @@
     "dev": "webpack-dev-server",
     "build": "webpack"
   },
-  "author": "Tim Franssen <tim.franssen@nuts.nl>",
   "license": "MIT",
   "dependencies": {
     "irma-core": "../../../irma-core",
