@@ -5,9 +5,12 @@
   "main": "index.js",
   "author": "Tim Franssen <tim.franssen@nuts.nl>",
   "license": "MIT",
+  "dependencies": {
+    "deepmerge": "^4.2.2"
+  },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/privacybydesign/irma-js-packages",
+    "type": "git",
+    "url": "https://github.com/privacybydesign/irma-js-packages",
     "directory": "plugins/irma-dummy"
   }
 }

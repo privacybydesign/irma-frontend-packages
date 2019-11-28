@@ -1,3 +1,5 @@
+const merge = require('deepmerge');
+
 module.exports = class IrmaDummy {
 
   constructor({stateMachine, options}) {
@@ -63,7 +65,7 @@ module.exports = class IrmaDummy {
   }
 
   _sanitizeOptions(options) {
-    return Object.assign({
+    const defaults = {
       dummy: 'happy path',
       qrPayload: {
         message: 'Just be patient ;)'
@@ -76,7 +78,9 @@ module.exports = class IrmaDummy {
         scan: 2000,
         app: 2000
       }
-    }, options);
+    };
+
+    return merge(defaults, options);
   }
 
 }
