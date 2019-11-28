@@ -35,9 +35,9 @@ module.exports = class IrmaDummy {
         case 'connection error':
           return this._stateMachine.transition('error');
         default:
-          return this._stateMachine.transition('loaded', this._options.qr_code_payload);
+          return this._stateMachine.transition('loaded', this._options.qrPayload);
       }
-    }, 400);
+    }, this._options.timing.start);
   }
 
   _waitForScanning() {
@@ -48,7 +48,7 @@ module.exports = class IrmaDummy {
         default:
           return this._stateMachine.transition('codeScanned');
       }
-    }, 1000);
+    }, this._options.timing.scan);
   }
 
   _waitForUserAction() {
@@ -57,19 +57,24 @@ module.exports = class IrmaDummy {
         case 'cancel':
           return this._stateMachine.transition('cancel');
         default:
-          return this._stateMachine.transition('succeed', this._options.success_payload);
+          return this._stateMachine.transition('succeed', this._options.successPayload);
       }
-    }, 1000);
+    }, this._options.timing.app);
   }
 
   _sanitizeOptions(options) {
     return Object.assign({
       dummy: 'happy path',
-      qr_code_payload: {
+      qrPayload: {
         message: 'Just be patient ;)'
       },
-      success_payload: {
+      successPayload: {
         disclosed: 'Some attributes'
+      },
+      timing: {
+        start: 1000,
+        scan: 2000,
+        app: 2000
       }
     }, options);
   }

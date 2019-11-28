@@ -39,12 +39,31 @@ The dummy option can take one of these values:
 This plugin listens to the `debugging` option, and will render some basic
 information when debugging is enabled.
 
-### qr_code_payload
+### qrPayload
 
 If you want to customize what is shown in the QR code, you can pass anything to
-the `qr_code_payload` option.
+the `qrPayload` option.
 
-### success_payload
+### successPayload
 
 If you want to customize what the Promise resolves to, you can pass anything to
-the `success_payload` option.
+the `successPayload` option.
+
+### timing
+
+Finally, you can customize the timings of the different stages. Maybe you want
+to use the dummy in automated tests, and you set the time for each step to zero
+milliseconds. Maybe you want to make a nice interactive demo of something, and
+have more realistic timings. It's up to you.
+
+These are the defaults:
+
+```javascript
+const irma = new IrmaCore({
+  timing: {
+    start: 1000,
+    scan: 2000,
+    app: 2000
+  }
+});
+```
