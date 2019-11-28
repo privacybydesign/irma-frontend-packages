@@ -1,0 +1,22 @@
+{
+  "name": "example-browser-popup",
+  "version": "1.0.0",
+  "description": "An example on how to use the irma-popup package",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server",
+    "build": "webpack"
+  },
+  "author": "Tim Franssen <tim.franssen@nuts.nl>",
+  "license": "MIT",
+  "dependencies": {
+    "irma-core": "../../../irma-core",
+    "irma-popup": "../../../plugins/irma-popup",
+    "irma-dummy": "../../../plugins/irma-dummy"
+  },
+  "devDependencies": {
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.2"
+  }
+}
