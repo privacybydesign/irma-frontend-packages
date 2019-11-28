@@ -66,8 +66,11 @@ Want to know more about any of the packages? Each package has its own README
 file with features, options and purpose of the package:
 
 * [`irma-core`](irma-core)
-* Plugins
+* Front-end plugins
   * [`irma-console`](plugins/irma-console)
+  * [`irma-popup`](plugins/irma-popup)
+  * [`irma-web`](plugins/irma-web)
+* Back-end plugins
   * [`irma-dummy`](plugins/irma-dummy)
 
 Also, we have several examples available that show how you can use specific
@@ -75,5 +78,7 @@ combinations of plugins to achieve different effects:
 
 * Web browser
   * [`irma-console`](examples/browser/irma-console)
+  * [`irma-popup`](examples/browser/irma-popup)
+  * [`irma-web`](examples/browser/irma-web)
 * nodejs
   * [`irma-console`](examples/node/irma-console)
