@@ -7,5 +7,5 @@ You can run this example by running these commands in this directory:
 
 ```bash
 npm install
-node ./dummy.js
+npm start
 ```

@@ -4,6 +4,9 @@
   "description": "An example on how to use the irma-console package",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "start": "node ./index.js"
+  },
   "dependencies": {
     "irma-console": "../../../plugins/irma-console",
     "irma-core": "../../../irma-core",
