@@ -11,8 +11,7 @@ module.exports = {
   startState:       'Uninitialized',
 
   Uninitialized: {
-    initialize:     'Loading',             // Start a new session
-    loaded:         'MediumContemplation', // Handle an existing session
+    initialize:     'Loading',
     browserError:   'BrowserNotSupported',
     fail:           'Error'
   },
@@ -24,7 +23,8 @@ module.exports = {
 
   MediumContemplation: {
     showQRCode:     'ShowingQRCode',
-    showIrmaButton: 'ShowingIrmaButton'
+    showIrmaButton: 'ShowingIrmaButton',
+    fail:           'Error'
   },
 
   ShowingQRCode: {
