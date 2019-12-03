@@ -20,10 +20,11 @@ module.exports = class StateMachine {
       console.debug(`🎰 State change: '${oldState}' → '${this._state}' (because of '${transition}')`);
 
     this._listeners.forEach(func => func({
-      newState:   this._state,
-      oldState:   oldState,
-      transition: transition,
-      payload:    payload
+      newState:      this._state,
+      oldState:      oldState,
+      transition:    transition,
+      payload:       payload,
+      universalLink: payload ? 'https://irma.app/-/session#' + encodeURIComponent(JSON.stringify(payload)) : null,
     }));
   }
 

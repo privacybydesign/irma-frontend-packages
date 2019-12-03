@@ -109,7 +109,9 @@ module.exports = class DOMManipulations {
   _stateShowingIrmaButton() {
     return `
       <!-- State: ShowingButton -->
-      <button class="irma-web-button" data-irma-glue-transition="openIrmaApp">${this._translations.button}</button>
+      <a id="irma-web-button-link" data-irma-glue-transition="openIrmaApp">
+        <button class="irma-web-button">${this._translations.button}</button>
+      </a>
       <p><a data-irma-glue-transition="chooseQR">${this._translations.qrCode}</a></p>
     `;
   }
