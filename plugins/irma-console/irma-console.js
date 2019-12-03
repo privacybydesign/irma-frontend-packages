@@ -17,6 +17,9 @@ module.exports = (askRetry) => {
           return this._askRetry('An error occured.');
         case 'ShowingQRCode':
           return this._renderQRcode(payload);
+        case 'ContinueOn2ndDevice':
+        case 'ContinueInIrmaApp':
+          return console.log('Please follow the instructions in the IRMA app.');
       }
     }
 
