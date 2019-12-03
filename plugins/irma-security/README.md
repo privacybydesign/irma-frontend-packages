@@ -1,7 +1,8 @@
 # IRMA security
 
 This plugin brings the JWT signing and token keys back to starting an IRMA
-session on the IRMA server. It is intended to be used with [`irma-server`](../irma-server).
+session on the IRMA server. It is intended to be used with the
+[`irma-server`](../irma-server) plugin.
 
 ## Usage
 
@@ -47,17 +48,19 @@ irma.start(/* parameters */);
 ## Options
 
 The first parameter to the method that `irma-security` exposes is an object that
-defines the `method` of security you with to use and a `key` and optional
+defines the `method` of security you wish to use and a `key` and optional
 `name`.
 
 The second parameter to the method is the object that you want to pass to the
 `session.start` option of `irma-server`. Only the `headers` and the `body`
 properties of this object will be touched by this method, the rest will be
-passed through. Note that `body` should be an object, not stringified JSON.
+passed through.
+
+Note that `body` should be an object, not stringified JSON.
 
 ### method
 
-Method has three valid values:
+The `method` property has three valid values:
 
 * `token` ⸺ use `key` as a security token in the headers of the request
 * `publickey` ⸺ sign the body of the request using RS256 and the supplied `key` and `name`
