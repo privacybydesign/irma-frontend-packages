@@ -1,0 +1,20 @@
+{
+  "name": "irma-backends-server-example",
+  "version": "1.0.0",
+  "description": "An example on how to use the irma-server plugin",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./index.js"
+  },
+  "dependencies": {
+    "irma-console": "../../../plugins/irma-console",
+    "irma-core": "../../../irma-core",
+    "irma-server": "../../../plugins/irma-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/privacybydesign/irma-js-packages",
+    "directory": "examples/backends/irma-server"
+  }
+}
