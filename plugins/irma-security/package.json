@@ -1,0 +1,15 @@
+{
+  "name": "irma-security",
+  "version": "1.0.0",
+  "description": "A simple tool to allow JWT signing and key tokens in starting IRMA sessions",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "jsonwebtoken": "^8.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/privacybydesign/irma-js-packages",
+    "directory": "plugins/irma-security"
+  }
+}
