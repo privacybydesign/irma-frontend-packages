@@ -64,15 +64,15 @@ session: {
   url: '',
 
   start: {
-    url:          (o) => `${o.url}/session`,
+    url:          o => `${o.url}/session`,
     body:         null,
     method:       'POST',
     headers:      { 'Content-Type': 'application/json' },
-    qrFromResult: (r) => r.sessionPtr
+    qrFromResult: r => r.sessionPtr
   },
 
   result: {
-    url:          (o) => `${o.url}/session/${o.session.token}/result`,
+    url:          o => `${o.url}/session/${o.session.token}/result`,
     body:         null,
     method:       'GET',
     headers:      { 'Content-Type': 'application/json' }
@@ -95,12 +95,12 @@ These are the accepted properties and their defaults on the `state` object:
 ```javascript
 state: {
   serverSentEvents: {
-    url:        (o) => `${o.url}/statusevents`,
+    url:        o => `${o.url}/statusevents`,
     timeout:    2000,
   },
 
   polling: {
-    url:        (o) => `${o.url}/status`,
+    url:        o => `${o.url}/status`,
     interval:   500,
     startState: 'INITIALIZED'
   }
