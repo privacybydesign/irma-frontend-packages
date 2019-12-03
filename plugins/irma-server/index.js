@@ -2,7 +2,7 @@ const ServerSession = require('./server-session');
 const ServerState   = require('./server-state');
 const merge         = require('deepmerge');
 
-module.exports = class IrmaJSBackend {
+module.exports = class IrmaServer {
 
   constructor({stateMachine, options}) {
     this._stateMachine = stateMachine;

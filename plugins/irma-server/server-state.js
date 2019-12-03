@@ -16,8 +16,7 @@ module.exports = class ServerState {
     if ( this._eventSource && this._options.serverSentEvents )
       return this._startSSE();
 
-    if ( this._options.polling )
-      return this._startPolling();
+    this._startPolling();
   }
 
   close() {
@@ -35,9 +34,12 @@ module.exports = class ServerState {
       console.log("🌎 Using EventSource for server events");
 
     this._source = new this._eventSource(this._options.serverSentEvents.url(this._options));
+
     const canceller = setTimeout(() => {
       if ( this._options.debugging )
-        console.error(`🌎 EventSource could not connect within ${this._options.eventSourceTimeout}ms`);
+        console.error(`🌎 EventSource could not connect within ${this._options.serverSentEvents.timeout}ms`);
+
+      // Fall back to polling instead
       setTimeout(() => this._source.close(), 0); // Never block on this
       this._startPolling();
     }, this._options.serverSentEvents.timeout);
@@ -45,19 +47,22 @@ module.exports = class ServerState {
     this._source.addEventListener('open', () => clearTimeout(canceller));
 
     this._source.addEventListener('message', evnt => {
+      clearTimeout(canceller);
       const state = JSON.parse(evnt.data);
 
       if ( this._options.debugging )
         console.log(`🌎 Server event: Remote state changed to '${state}'`);
 
-      clearTimeout(canceller);
       this._stateChangeCallback(state);
     });
 
     this._source.addEventListener('error', error => {
       clearTimeout(canceller);
+
       if ( this._options.debugging )
         console.error('🌎 EventSource threw an error: ', error);
+
+      // Fall back to polling instead
       setTimeout(() => this._source.close(), 0); // Never block on this
       this._startPolling();
     });
