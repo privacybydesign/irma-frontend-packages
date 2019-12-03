@@ -72,6 +72,7 @@ file with features, options and purpose of the package:
   * [`irma-web`](plugins/irma-web)
 * Back-end plugins
   * [`irma-dummy`](plugins/irma-dummy)
+  * [`irma-server`](plugins/irma-server)
 
 Also, we have several examples available that show how you can use specific
 combinations of plugins to achieve different effects:
@@ -80,5 +81,7 @@ combinations of plugins to achieve different effects:
   * [`irma-console`](examples/browser/irma-console)
   * [`irma-popup`](examples/browser/irma-popup)
   * [`irma-web`](examples/browser/irma-web)
-* nodejs
+* Nodejs
   * [`irma-console`](examples/node/irma-console)
+* Back-ends
+  * [`irma-server`](examples/backends/irma-server)
