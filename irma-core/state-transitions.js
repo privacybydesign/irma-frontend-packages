@@ -43,7 +43,7 @@ module.exports = {
 
   ShowingIrmaButton: {
     chooseQR:       'ShowingQRCodeInstead',
-    openIrmaApp:    'ContinueInIrmaApp',
+    codeScanned:    'ContinueInIrmaApp',
     fail:           'Error'
   },
 

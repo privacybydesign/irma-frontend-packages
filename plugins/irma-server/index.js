@@ -48,7 +48,7 @@ module.exports = class IrmaServer {
   }
 
   _serverStateChange(newState) {
-    if ( newState == 'CONNECTED' )
+    if ( newState === 'CONNECTED' )
       return this._stateMachine.transition('codeScanned');
 
     // All other states lead to a full session reload, so stop listening
