@@ -55,16 +55,15 @@ module.exports = class IrmaCore {
   _addVisibilityListener() {
     if ( typeof document !== 'undefined' && document.addEventListener )
       document.addEventListener('visibilitychange', () => {
-        if ( this._stateMachine.currentState() != 'TimedOut' ) return;
-        if ( document.hidden ) return;
-        console.log("🖥 Visibility changed to visible!");
+        if ( this._stateMachine.currentState() != 'TimedOut' || document.hidden ) return;
+        if ( this._options.debugging ) console.log('🖥 Restarting because document became visible');
         this._stateMachine.transition('restart');
       });
 
     if ( typeof window !== 'undefined' && window.addEventListener )
       window.addEventListener('focus', () => {
         if ( this._stateMachine.currentState() != 'TimedOut' ) return;
-        console.log("🖥 Window gained focus!");
+        if ( this._options.debugging ) console.log('🖥 Restarting because window regained focus');
         this._stateMachine.transition('restart');
       });
   }
