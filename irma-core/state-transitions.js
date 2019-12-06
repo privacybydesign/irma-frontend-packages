@@ -28,7 +28,7 @@ module.exports = {
   },
 
   ShowingQRCode: {
-    codeScanned:    'ContinueOn2ndDevice',
+    appConnected:   'ContinueOn2ndDevice',
     timeout:        'TimedOut',
     fail:           'Error'
   },
@@ -43,12 +43,12 @@ module.exports = {
 
   ShowingIrmaButton: {
     chooseQR:       'ShowingQRCodeInstead',
-    codeScanned:    'ContinueInIrmaApp',
+    appConnected:   'ContinueInIrmaApp',
     fail:           'Error'
   },
 
   ShowingQRCodeInstead: {
-    codeScanned:    'ContinueOn2ndDevice',
+    appConnected:   'ContinueOn2ndDevice',
     restart:        'Loading',
     timeout:        'TimedOut',
     fail:           'Error'

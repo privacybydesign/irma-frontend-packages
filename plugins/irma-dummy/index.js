@@ -48,7 +48,7 @@ module.exports = class IrmaDummy {
         case 'timeout':
           return this._stateMachine.transition('timeout');
         default:
-          return this._stateMachine.transition('codeScanned');
+          return this._stateMachine.transition('appConnected');
       }
     }, this._options.timing.scan);
   }
