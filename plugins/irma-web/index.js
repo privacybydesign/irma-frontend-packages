@@ -32,7 +32,7 @@ module.exports = class IrmaWeb {
       case 'ShowingIrmaButton':
         this._dom.renderState(newState);
         document.getElementById('irma-web-button-link')
-                .setAttribute('href', payload);
+                .setAttribute('href', `https://irma.app/-/session#${encodeURIComponent(JSON.stringify(payload))}`);
         break;
 
       default:

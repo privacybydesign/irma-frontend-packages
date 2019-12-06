@@ -43,7 +43,7 @@ module.exports = class IrmaCore {
         break;
       case 'MediumContemplation':
         if ( this._options.userAgent == 'Android' || this._options.userAgent == 'iOS' )
-          this._stateMachine.transition('showIrmaButton', `https://irma.app/-/session#${encodeURIComponent(JSON.stringify(payload))}`);
+          this._stateMachine.transition('showIrmaButton', payload);
         else
           this._stateMachine.transition('showQRCode', payload);
         break;
