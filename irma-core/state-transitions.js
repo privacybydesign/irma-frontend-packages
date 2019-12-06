@@ -44,7 +44,11 @@ module.exports = {
   ShowingIrmaButton: {
     chooseQR:       'ShowingQRCodeInstead',
     appConnected:   'ContinueInIrmaApp',
-    fail:           'Error'
+    fail:           'Error',
+
+    succeed:        'Success',     // Because we sometimes miss the appConnected
+    cancel:         'Cancelled',   // transition on iOS, but these's no need to
+    timeout:        'TimedOut'     // go to the Error state in those cases.
   },
 
   ShowingQRCodeInstead: {
