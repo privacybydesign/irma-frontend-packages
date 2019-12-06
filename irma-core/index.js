@@ -53,13 +53,20 @@ module.exports = class IrmaCore {
   }
 
   _addVisibilityListener() {
-    if ( typeof document === 'undefined' || !document.addEventListener ) return;
+    if ( typeof document !== 'undefined' && document.addEventListener )
+      document.addEventListener('visibilitychange', () => {
+        if ( this._stateMachine.currentState() != 'TimedOut' ) return;
+        if ( document.hidden ) return;
+        console.log("🖥 Visibility changed to visible!");
+        this._stateMachine.transition('restart');
+      });
 
-    document.addEventListener('visibilitychange', () => {
-      if ( this._stateMachine.currentState() != 'TimedOut' ) return;
-      if ( document.hidden ) return;
-      this._stateMachine.transition('restart');
-    });
+    if ( typeof window !== 'undefined' && window.addEventListener )
+      window.addEventListener('focus', () => {
+        if ( this._stateMachine.currentState() != 'TimedOut' ) return;
+        console.log("🖥 Window gained focus!");
+        this._stateMachine.transition('restart');
+      });
   }
 
 }
