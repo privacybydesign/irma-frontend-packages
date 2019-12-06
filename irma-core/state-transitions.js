@@ -28,7 +28,7 @@ module.exports = {
   },
 
   ShowingQRCode: {
-    codeScanned:    'ContinueOn2ndDevice',
+    appConnected:   'ContinueOn2ndDevice',
     timeout:        'TimedOut',
     fail:           'Error'
   },
@@ -43,12 +43,16 @@ module.exports = {
 
   ShowingIrmaButton: {
     chooseQR:       'ShowingQRCodeInstead',
-    openIrmaApp:    'ContinueInIrmaApp',
-    fail:           'Error'
+    appConnected:   'ContinueInIrmaApp',
+    fail:           'Error',
+
+    succeed:        'Success',   // We sometimes miss the appConnected transition
+    cancel:         'Cancelled', // on iOS, that's why these transitions are here
+    timeout:        'TimedOut'   // too. So we don't 'fail' to the Error state.
   },
 
   ShowingQRCodeInstead: {
-    codeScanned:    'ContinueOn2ndDevice',
+    appConnected:   'ContinueOn2ndDevice',
     restart:        'Loading',
     timeout:        'TimedOut',
     fail:           'Error'

@@ -41,31 +41,12 @@ module.exports = class IrmaCore {
       case 'BrowserNotSupported':
         if ( this._reject ) this._reject(payload);
         break;
-      case 'ContinueInIrmaApp':
-        if ( payload )
-          return this._openIrmaApp(payload);
-        if ( this._options.debugging )
-          console.error("Tried to go to IRMA app without a payload");
-        break;
       case 'MediumContemplation':
         if ( this._options.userAgent == 'Android' || this._options.userAgent == 'iOS' )
           this._stateMachine.transition('showIrmaButton', payload);
         else
           this._stateMachine.transition('showQRCode', payload);
         break;
-    }
-  }
-
-  _openIrmaApp(payload) {
-    const url = 'qr/json/' + encodeURIComponent(JSON.stringify(payload));
-
-    switch(this._options.userAgent) {
-      case 'Android':
-        if ( this._options.debugging ) console.log("📱 Opening IRMA app on Android");
-        return window.location.href = `intent://${url}#Intent;package=org.irmacard.cardemu;scheme=cardemu;l.timestamp=${Date.now()};S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.irmacard.cardemu;end`;
-      case 'iOS':
-        if ( this._options.debugging ) console.log("📱 Opening IRMA app on iOS");
-        return window.location.href = 'irma://' + url;
     }
   }
 
