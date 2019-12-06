@@ -46,9 +46,9 @@ module.exports = {
     appConnected:   'ContinueInIrmaApp',
     fail:           'Error',
 
-    succeed:        'Success',     // Because we sometimes miss the appConnected
-    cancel:         'Cancelled',   // transition on iOS, but these's no need to
-    timeout:        'TimedOut'     // go to the Error state in those cases.
+    succeed:        'Success',   // We sometimes miss the appConnected transition
+    cancel:         'Cancelled', // on iOS, that's why these transitions are here
+    timeout:        'TimedOut'   // too. So we don't 'fail' to the Error state.
   },
 
   ShowingQRCodeInstead: {
