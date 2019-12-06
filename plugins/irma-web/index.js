@@ -36,7 +36,7 @@ module.exports = class IrmaWeb {
         break;
 
       default:
-        this._dom.renderState(newState)
+        this._dom.renderState(newState);
     }
   }
 
