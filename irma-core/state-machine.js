@@ -8,6 +8,10 @@ module.exports = class StateMachine {
     this._listeners = [];
   }
 
+  currentState() {
+    return this._state;
+  }
+
   addStateChangeListener(func) {
     this._listeners.push(func);
   }
