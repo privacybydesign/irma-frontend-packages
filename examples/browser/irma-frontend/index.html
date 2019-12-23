@@ -1,0 +1,63 @@
+<!doctype html>
+
+<html>
+
+  <head>
+    <title>IRMA web frontend example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="//nuts-foundation.github.io/irma-web-frontend/application.css" />
+    <script type="text/javascript" src="//raw.githubusercontent.com/privacybydesign/irma-frontend-packages/master/irma-frontend/dist/irma.js"></script>
+
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body class="irma-web-center-child">
+    <section class="irma-web-form" id="irma-web-form"></section>
+  </body>
+
+  <script type="text/javascript">
+    irma.new({
+      // Developer options
+      debugging: true,
+
+      // Front-end options
+      element:   '#irma-web-form',
+      language:  'en',
+      translations: {
+        header:  'Sign the agreement with <i class="irma-web-logo">IRMA</i>',
+        loading: 'Just one second please!'
+      },
+
+      // Back-end options
+      session: {
+        // Point this to your IRMA server:
+        url: 'http://localhost:8088',
+
+        // Define your disclosure request:
+        start: {
+          body: JSON.stringify({
+            "@context": "https://irma.app/ld/request/disclosure/v2",
+            "disclose": [
+              [
+                [ "pbdf.pbdf.email.email" ]
+              ]
+            ]
+          })
+        }
+      }
+    });
+
+    irma.start()
+    .then(result => console.log("Successful disclosure! 🎉", result))
+    .catch(error => console.error("Couldn't do what you asked 😢", error));
+  </script>
+
+</html>
