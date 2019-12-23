@@ -5,7 +5,7 @@ intended use of this package is to provide an all-in-one Javascript file that
 developers can include in the HEAD section of an HTML file and get started:
 
 ```html
-<script type="text/javascript" src="//raw.githubusercontent.com/privacybydesign/irma-frontend-packages/master/irma-frontend/dist/irma.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/gh//privacybydesign/irma-frontend-packages/irma-frontend/dist/irma.js"></script>
 ```
 
 You may also want to add some styles:
