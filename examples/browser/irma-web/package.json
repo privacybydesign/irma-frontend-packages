@@ -14,15 +14,15 @@
     "irma-dummy": "../../../plugins/irma-dummy"
   },
   "devDependencies": {
-    "css-loader": "^3.2.0",
+    "css-loader": "^3.4.0",
     "file-loader": "^5.0.2",
+    "irma-web-frontend": "^0.2.1",
     "node-sass": "^4.13.0",
     "sass-loader": "^8.0.0",
-    "style-loader": "^1.0.0",
-    "webpack": "^4.41.0",
+    "style-loader": "^1.1.1",
+    "webpack": "^4.41.4",
     "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.2",
-    "irma-web-frontend": "^0.2.1"
+    "webpack-dev-server": "^3.10.1"
   },
   "repository": {
     "type": "git",
