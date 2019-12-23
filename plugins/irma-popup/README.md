@@ -4,11 +4,11 @@ This plugin contains a popup for IRMA flows in the web browser. The popup is
 based on the "legacy" popup of [`irmajs`](https://github.com/privacybydesign/irmajs).
 This plugin exists to ease the transition from `irmajs` to the new plugin
 structure, by allowing issuers and verifiers to switch to the new
-`irma-js-packages`, independent of switching to the new design of `irma-web`.
+`irma-frontend-packages`, independent of switching to the new design of `irma-web`.
 
 Please note that not all states are currently supported by this plugin, so the
 user will not be notified of an unsupported browser and will not be able to
-retry their flow from the interface. See the [`irma-popup` example](https://github.com/privacybydesign/irma-js-packages/tree/master/examples/browser/irma-popup)
+retry their flow from the interface. See the [`irma-popup` example](https://github.com/privacybydesign/irma-frontend-packages/tree/master/examples/browser/irma-popup)
 for an implementation.
 
 ## Usage
@@ -50,7 +50,7 @@ const irma = new IrmaCore({
 });
 ```
 
-You can find the default values [in the translation files](https://github.com/privacybydesign/irma-js-packages/tree/master/plugins/irma-popup/translations).
+You can find the default values [in the translation files](https://github.com/privacybydesign/irma-frontend-packages/tree/master/plugins/irma-popup/translations).
 
 ## Development of this plugin
 

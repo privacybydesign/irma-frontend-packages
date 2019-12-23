@@ -17,7 +17,7 @@ const irma     = new IrmaCore();
 
 __Step two__
 
-Choose and load the [plugins](https://github.com/privacybydesign/irma-js-packages/tree/master/plugins)
+Choose and load the [plugins](https://github.com/privacybydesign/irma-frontend-packages/tree/master/plugins)
 that you want, for example:
 
 ```javascript

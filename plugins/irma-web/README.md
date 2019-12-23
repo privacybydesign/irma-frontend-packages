@@ -8,7 +8,7 @@ of this package by design, so you are free to use other styling.
 
 If you *do* want to use `irma-web-frontend` (which is recommended), take a look
 at [the provided instructions](https://github.com/nuts-foundation/irma-web-frontend#embedding-in-your-application)
-or the [`irma-web` example](https://github.com/privacybydesign/irma-js-packages/tree/master/examples/browser/irma-web)
+or the [`irma-web` example](https://github.com/privacybydesign/irma-frontend-packages/tree/master/examples/browser/irma-web)
 in this repository.
 
 ## Usage
@@ -53,7 +53,7 @@ const irma = new IrmaCore({
 });
 ```
 
-You can find the default values [in the translation files](https://github.com/privacybydesign/irma-js-packages/tree/master/plugins/irma-web/translations).
+You can find the default values [in the translation files](https://github.com/privacybydesign/irma-frontend-packages/tree/master/plugins/irma-web/translations).
 
 ### showHelper
 
