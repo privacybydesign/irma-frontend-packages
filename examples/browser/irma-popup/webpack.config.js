@@ -15,5 +15,22 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, 'docs'),
     disableHostCheck: true
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
+      },
+      {
+        test: /\.ttf$/,
+        loader: 'file-loader'
+      }
+    ]
   }
 };

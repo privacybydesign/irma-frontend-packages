@@ -1,0 +1,36 @@
+#irma-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  z-index: 2000;
+  visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.irma-show #irma-modal {
+  visibility: visible !important;
+}
+
+#irma-overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  opacity: 0;
+  background: rgba(0,0,0,0.5);
+  transition: all 0.3s;
+}
+
+#irma-overlay.irma-show {
+  opacity: 1;
+  visibility: visible;
+}
+
+#irma-cancel-button {
+  margin-top: 10px;
+}

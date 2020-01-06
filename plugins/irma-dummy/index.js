@@ -16,6 +16,8 @@ module.exports = class IrmaDummy {
         return this._waitForScanning();
       case 'ContinueOn2ndDevice':
         return this._waitForUserAction();
+      case 'ShowingIrmaButton':
+        return this._chooseQR();
     }
   }
 
@@ -61,6 +63,12 @@ module.exports = class IrmaDummy {
         default:
           return this._stateMachine.transition('succeed', this._options.successPayload);
       }
+    }, this._options.timing.app);
+  }
+
+  _chooseQR() {
+    setTimeout(() => {
+      return this._stateMachine.transition('chooseQR', this._options.qrPayload);
     }, this._options.timing.app);
   }
 

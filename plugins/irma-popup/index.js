@@ -1,36 +1,88 @@
-const Popup        = require('./popup');
-const QRCode       = require('qrcode');
+require('./styles.scss');
+
+const IrmaWeb      = require('irma-web');
 const merge        = require('deepmerge');
 
-module.exports = class IrmaLegacyPopup {
+module.exports = class IrmaPopup {
 
   constructor({stateMachine, options}) {
     this._stateMachine = stateMachine;
     this._options = this._sanitizeOptions(options);
 
-    this._popup = new Popup(
-      this._options.translations,
-      () => this._stateMachine.transition('cancel')
-    );
+    this._ensurePopupInitialized();
+
+    this._irmaWeb = new IrmaWeb({
+      element:      '#irma-web-form',
+      stateMachine: this._stateMachine,
+      options:      this._options
+    });
+  }
+
+  _ensurePopupInitialized() {
+    this._overlayElement = window.document.getElementById('irma-overlay');
+
+    if (!this._overlayElement) {
+      // Element for irma-web plugin
+      const irmaWebElement = document.createElement('section');
+      irmaWebElement.setAttribute('class', 'irma-web-form');
+      irmaWebElement.setAttribute('id', 'irma-web-form');
+
+      const cancelButton = document.createElement('button');
+      cancelButton.setAttribute('id', 'irma-cancel-button');
+      cancelButton.setAttribute('class', 'irma-web-button');
+      cancelButton.addEventListener('click', this._hidePopup.bind(this));
+
+      // Element to embed irma-web element to be able to center it
+      const popupElement = document.createElement('div');
+      popupElement.setAttribute('id', 'irma-modal');
+      popupElement.appendChild(irmaWebElement);
+      popupElement.appendChild(cancelButton);
+
+      // Overlay element to grey out the rest of the page
+      this._overlayElement = document.createElement('div');
+      this._overlayElement.setAttribute('id', 'irma-overlay');
+      this._overlayElement.appendChild(popupElement);
+
+      document.body.appendChild(this._overlayElement);
+      this.translatePopupElement('irma-cancel-button', 'Common.Cancel');
+    }
+
+    this._showPopup();
+  }
+
+  translatePopupElement(el, id) {
+    window.document.getElementById(el).innerText = this.getTranslatedString(id);
+  }
+
+  getTranslatedString(id) {
+    const parts = id.split('.');
+    let res = this._options.translations;
+    for (const part in parts) {
+      if (res === undefined) break;
+      res = res[parts[part]];
+    }
+
+    if (res === undefined) return '';
+    else return res;
+  }
+
+  _showPopup() {
+    this._overlayElement.setAttribute('class', 'irma-show');
+  }
+
+  _hidePopup() {
+    this._overlayElement.removeAttribute('class')
   }
 
   stateChange({newState, payload}) {
+    this._irmaWeb.stateChange({newState, payload});
+
     switch(newState) {
-      case 'ShowingQRCode':
-      case 'ShowingQRCodeInstead':
-        this._popup.setupPopup(payload, this._options.language);
-        return QRCode.toCanvas(
-          document.getElementById('modal-irmaqr'),
-          JSON.stringify(payload),
-          {width: '230', margin: '1'}
-        );
-      case 'ContinueOn2ndDevice':
-        return this._popup.showConnected();
       case 'Success':
-      case 'Error':
       case 'Cancelled':
-      case 'TimedOut':
-        return this._popup.closePopup();
+      case 'BrowserNotSupported':
+        window.setTimeout(this._hidePopup.bind(this), 2000);
+        break;
     }
   }
 
