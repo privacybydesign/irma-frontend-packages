@@ -24,7 +24,7 @@ module.exports = class IrmaPopup {
     if (!this._overlayElement) {
       // Element for irma-web plugin
       const irmaWebElement = document.createElement('section');
-      irmaWebElement.setAttribute('class', 'irma-web-form');
+      irmaWebElement.setAttribute('class', 'irma-web-form irma-modal');
       irmaWebElement.setAttribute('id', 'irma-web-form');
 
       const cancelButton = document.createElement('button');
@@ -34,7 +34,7 @@ module.exports = class IrmaPopup {
 
       // Element to embed irma-web element to be able to center it
       const popupElement = document.createElement('div');
-      popupElement.setAttribute('id', 'irma-modal');
+      popupElement.setAttribute('id', 'irma-popup');
       popupElement.appendChild(irmaWebElement);
       popupElement.appendChild(cancelButton);
 
