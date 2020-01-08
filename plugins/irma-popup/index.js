@@ -23,27 +23,27 @@ module.exports = class IrmaPopup {
 
     if (!this._overlayElement) {
       // Element for irma-web plugin
-      const irmaWebElement = document.createElement('section');
+      const irmaWebElement = window.document.createElement('section');
       irmaWebElement.setAttribute('class', 'irma-web-form irma-modal');
       irmaWebElement.setAttribute('id', 'irma-web-form');
 
-      const cancelButton = document.createElement('button');
+      const cancelButton = window.document.createElement('button');
       cancelButton.setAttribute('id', 'irma-cancel-button');
       cancelButton.setAttribute('class', 'irma-web-button');
       cancelButton.addEventListener('click', this._hidePopup.bind(this));
 
       // Element to embed irma-web element to be able to center it
-      const popupElement = document.createElement('div');
+      const popupElement = window.document.createElement('div');
       popupElement.setAttribute('id', 'irma-popup');
       popupElement.appendChild(irmaWebElement);
       popupElement.appendChild(cancelButton);
 
       // Overlay element to grey out the rest of the page
-      this._overlayElement = document.createElement('div');
+      this._overlayElement = window.document.createElement('div');
       this._overlayElement.setAttribute('id', 'irma-overlay');
       this._overlayElement.appendChild(popupElement);
 
-      document.body.appendChild(this._overlayElement);
+      window.document.body.appendChild(this._overlayElement);
       this.translatePopupElement('irma-cancel-button', 'Cancel');
     }
 
