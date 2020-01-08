@@ -12,9 +12,11 @@ module.exports = class IrmaPopup {
     this._ensurePopupInitialized();
 
     this._irmaWeb = new IrmaWeb({
-      element:      '#irma-web-form',
       stateMachine: this._stateMachine,
-      options:      this._options
+      options: {
+        ...this._options,
+        element: '#irma-web-form'
+      }
     });
   }
 
