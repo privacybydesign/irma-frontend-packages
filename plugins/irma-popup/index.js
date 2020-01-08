@@ -21,9 +21,8 @@ module.exports = class IrmaPopup {
   _ensurePopupInitialized() {
     this._overlayElement = window.document.getElementById('irma-overlay');
 
-    if (this._overlayElement) {
+    if (this._overlayElement)
       return;
-    }
 
     // Element for irma-web plugin
     const irmaWebElement = window.document.createElement('section');
@@ -47,7 +46,7 @@ module.exports = class IrmaPopup {
     this._overlayElement.appendChild(popupElement);
 
     window.document.body.appendChild(this._overlayElement);
-    this.translatePopupElement('irma-cancel-button', 'Cancel');
+    this.translatePopupElement('irma-cancel-button', 'cancel');
   }
 
   translatePopupElement(el, id) {
@@ -71,7 +70,7 @@ module.exports = class IrmaPopup {
   }
 
   _hidePopup() {
-    this._overlayElement.removeAttribute('class')
+    this._overlayElement.removeAttribute('class');
   }
 
   stateChange({newState, payload}) {
