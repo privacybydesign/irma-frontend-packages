@@ -1,5 +1,3 @@
 module.exports = {
-  Common: {
-    Cancel: 'Cancel',
-  },
+  Cancel: 'Cancel',
 };

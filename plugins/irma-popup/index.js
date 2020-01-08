@@ -44,7 +44,7 @@ module.exports = class IrmaPopup {
       this._overlayElement.appendChild(popupElement);
 
       document.body.appendChild(this._overlayElement);
-      this.translatePopupElement('irma-cancel-button', 'Common.Cancel');
+      this.translatePopupElement('irma-cancel-button', 'Cancel');
     }
 
     this._showPopup();
