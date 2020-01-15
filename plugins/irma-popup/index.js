@@ -9,19 +9,21 @@ module.exports = class IrmaPopup {
     this._stateMachine = stateMachine;
     this._options = this._sanitizeOptions(options);
 
+    this._id = `${document.getElementsByClassName('irma-overlay').length}`;
+
     this._ensurePopupInitialized();
 
     this._irmaWeb = new IrmaWeb({
       stateMachine: this._stateMachine,
       options: {
         ...this._options,
-        element: '#irma-web-form'
+        element: `#irma-web-form-${this._id}`,
       }
     });
   }
 
   _ensurePopupInitialized() {
-    this._overlayElement = window.document.getElementById('irma-overlay');
+    this._overlayElement = window.document.getElementById(`irma-overlay-${this._id}`);
 
     if (this._overlayElement)
       return;
@@ -29,26 +31,27 @@ module.exports = class IrmaPopup {
     // Element for irma-web plugin
     const irmaWebElement = window.document.createElement('section');
     irmaWebElement.setAttribute('class', 'irma-web-form irma-modal');
-    irmaWebElement.setAttribute('id', 'irma-web-form');
+    irmaWebElement.setAttribute('id', `irma-web-form-${this._id}`);
 
     const cancelButton = window.document.createElement('button');
-    cancelButton.setAttribute('id', 'irma-cancel-button');
-    cancelButton.setAttribute('class', 'irma-web-button');
+    cancelButton.setAttribute('id', `irma-cancel-button-${this._id}`);
+    cancelButton.setAttribute('class', 'irma-cancel-button irma-web-button');
     cancelButton.addEventListener('click', this._hidePopup.bind(this));
 
     // Element to embed irma-web element to be able to center it
     const popupElement = window.document.createElement('div');
-    popupElement.setAttribute('id', 'irma-popup');
+    popupElement.setAttribute('class', 'irma-popup');
     popupElement.appendChild(irmaWebElement);
     popupElement.appendChild(cancelButton);
 
     // Overlay element to grey out the rest of the page
     this._overlayElement = window.document.createElement('div');
-    this._overlayElement.setAttribute('id', 'irma-overlay');
+    this._overlayElement.setAttribute('class', 'irma-overlay');
+    this._overlayElement.setAttribute('id', `irma-overlay-${this._id}`);
     this._overlayElement.appendChild(popupElement);
 
     window.document.body.appendChild(this._overlayElement);
-    this.translatePopupElement('irma-cancel-button', 'cancel');
+    this.translatePopupElement(`irma-cancel-button-${this._id}`, 'cancel');
   }
 
   translatePopupElement(el, id) {
@@ -68,11 +71,11 @@ module.exports = class IrmaPopup {
   }
 
   _showPopup() {
-    this._overlayElement.setAttribute('class', 'irma-show');
+    this._overlayElement.classList.add('irma-show');
   }
 
   _hidePopup() {
-    this._overlayElement.removeAttribute('class');
+    this._overlayElement.classList.remove('irma-show');
   }
 
   stateChange({newState, payload}) {

@@ -1,4 +1,4 @@
-#irma-popup {
+.irma-popup {
   display: flex;
   flex-direction: column;
   overflow: auto;
@@ -11,7 +11,7 @@
   margin-top: auto !important;
 }
 
-#irma-overlay {
+.irma-overlay {
   position: fixed;
   width: 100%;
   height: 100%;
@@ -24,12 +24,12 @@
   transition: all 0.3s;
 }
 
-#irma-overlay.irma-show {
+.irma-overlay.irma-show {
   opacity: 1;
   visibility: visible;
 }
 
-#irma-cancel-button {
+.irma-cancel-button {
   margin-top: 10px;
   margin-bottom: auto;
 }
