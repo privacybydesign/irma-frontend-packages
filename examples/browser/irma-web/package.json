@@ -11,14 +11,12 @@
   "dependencies": {
     "irma-core": "../../../irma-core",
     "irma-web": "../../../plugins/irma-web",
-    "irma-dummy": "../../../plugins/irma-dummy"
+    "irma-dummy": "../../../plugins/irma-dummy",
+    "irma-css": "../../../irma-css"
   },
   "devDependencies": {
     "css-loader": "^3.4.0",
     "file-loader": "^5.0.2",
-    "irma-web-frontend": "^0.2.1",
-    "node-sass": "^4.13.0",
-    "sass-loader": "^8.0.0",
     "style-loader": "^1.1.1",
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.9",
