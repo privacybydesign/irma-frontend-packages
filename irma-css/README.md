@@ -85,8 +85,6 @@ $ git add irma-css/src/
 $ git commit -m "Update button shadows to reflect new design"
 ```
 
-And feel free to make pull requests on this repository.
-
 ### Releasing
 
 After merging one or more PRs, a new version can be released. First, update

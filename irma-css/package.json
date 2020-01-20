@@ -1,8 +1,8 @@
 {
   "name": "irma-css",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Styling to standardize the IRMA login flow and make it look pretty",
-  "homepage": "https://github.com/privacybydesign/irma-frontend-packages/tree/master/css",
+  "homepage": "https://github.com/privacybydesign/irma-frontend-packages",
   "license": "MIT",
   "files": [
     "src/**/*",
