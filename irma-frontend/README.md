@@ -6,7 +6,7 @@ Javascript file that developers can include in the HEAD section of an HTML file
 and get started:
 
 ```html
-<script type="text/javascript" src="//cdn.jsdelivr.net/gh//privacybydesign/irma-frontend-packages/irma-frontend/dist/irma.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/gh/privacybydesign/irma-frontend-packages/irma-frontend/dist/irma.js"></script>
 ```
 
 And then you can instantiate `irma-core` like so:
