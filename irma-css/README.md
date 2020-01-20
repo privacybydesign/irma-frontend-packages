@@ -38,14 +38,20 @@ $ npm install irma-css
 ```
 
 You can then pull from the entire thing or just bits and pieces of it in your
-SCSS/SASS:
+SCSS/SASS files:
 
 ```scss
 # The entire thing:
-@import "~irma-css/src";
+@import "~irma-css";
 
 # Or just bits and pieces of it:
 @import "~irma-css/src/components/irma-form";
+```
+
+Or require the CSS in your javascript if you use a tool like Webpack:
+
+```javascript
+require('irma-css/dist/irma.css');
 ```
 
 ## Contributing

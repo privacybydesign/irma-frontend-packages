@@ -1,4 +1,4 @@
-require('./node_modules/irma-css/dist/irma.css');
+require('irma-css/dist/irma.css');
 
 const IrmaCore   = require('irma-core');
 const IrmaWeb    = require('irma-web');
