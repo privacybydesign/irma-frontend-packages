@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>IRMA css</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="generator" content="kss-node">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,300">
+    <link rel="stylesheet" href="kss-assets/vendor/prism.css">
+    <link rel="stylesheet" href="kss-assets/css/kss.css">
+    <link rel="stylesheet" href="irma.css">
+
+  </head>
+
+  <body class="kss-body">
+
+    <!-- header. -->
+    <header class="kss-header">
+      <section class="kss-header__inner">
+        <a class="kss-header__hamburger-trigger">
+          <div class="kss-header__hamburger"></div>
+        </a>
+        <h1 class="kss-header__title kss-title">IRMA css</h1>
+      </section>
+    </header>
+    <!-- /header. -->
+
+
+    <!-- navigation. -->
+    <section class="kss-navigation">
+      <h1 class="kss-navigation__title kss-title">IRMA css</h1>
+      <ul class="kss-nav">
+        <li class="kss-nav__item">
+          <a href="index.html">
+            <span class="kss-nav__ref">0</span>
+            <span class="kss-nav__name">Introduction</span>
+          </a>
+        </li>
+          <li class="kss-nav__item">
+            <a class="" href="section-examples.html">
+              <span class="kss-nav__ref">1</span>
+              <span class="kss-nav__name">Examples</span>
+            </a>
+          </li>
+          <li class="kss-nav__item">
+            <a class="" href="section-variables.html">
+              <span class="kss-nav__ref">2</span>
+              <span class="kss-nav__name">Variables</span>
+            </a>
+          </li>
+          <li class="kss-nav__item">
+            <a class="" href="section-mixins.html">
+              <span class="kss-nav__ref">3</span>
+              <span class="kss-nav__name">Mixins</span>
+            </a>
+          </li>
+          <li class="kss-nav__item">
+            <a class="" href="section-layouts.html">
+              <span class="kss-nav__ref">4</span>
+              <span class="kss-nav__name">Layouts</span>
+            </a>
+          </li>
+          <li class="kss-nav__item">
+            <a class="" href="section-components.html">
+              <span class="kss-nav__ref">5</span>
+              <span class="kss-nav__name">Components</span>
+            </a>
+          </li>
+          <li class="kss-nav__item">
+            <a class="" href="section-animations.html">
+              <span class="kss-nav__ref">6</span>
+              <span class="kss-nav__name">Animations</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+    <!-- /navigation. -->
+
+
+    <!-- documentation. -->
+    <section class="kss-documentation">
+        <article class="kss-markdown">
+          <h1>IRMA css</h1>
+<p>This is a package that contains all the necessary CSS to make IRMA flows look
+pretty and have a standardized look and feel. See
+<a href="https://privacybydesign.github.io/irma-frontend-packages/styleguide">the style guide</a>
+for visual examples and code snippets.</p>
+<p>This package has been designed and tested to work with the browsers Chrome,
+Firefox, Safari, Opera, Edge and IE11.</p>
+<h2>Embedding in your application</h2>
+<p>This package only contains CSS. So basically you just include the CSS file(s)
+and find the right HTML snippets <a href="https://privacybydesign.github.io/irma-frontend-packages/styleguide/section-examples.html">in the styleguide</a>.</p>
+<h3>The old fashioned way</h3>
+<p>There is a <a href="https://github.com/privacybydesign/irma-frontend-packages/tree/master/dist">normal version and a minified version</a>
+of the styles that you can include in your project. If you don't want to host
+the CSS files yourself you can link from your project to the latest version
+online like so:</p>
+<pre class="hljs"><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"//privacybydesign.github.io/irma-frontend-packages/styleguide/irma.css"</span> /&gt;</span>
+</code></pre>
+<p>Please be aware though that we can make breaking changes at any time.</p>
+<h3>The way the cool kids do it</h3>
+<p>Alternatively, you can install it as an npm package. This can be useful if you
+want to use (parts of) the SCSS behind it and override some variables, if you
+need to package it in some complicated way and if you want more control over
+updates.</p>
+<pre class="hljs"><code class="language-bash">$ npm install irma-css
+</code></pre>
+<p>You can then pull from the entire thing or just bits and pieces of it in your
+SCSS/SASS:</p>
+<pre class="hljs"><code class="language-scss"># The entire thing:
+@import <span class="hljs-string">"~irma-css/src"</span>;
+
+# Or just bits and pieces of it:
+@import <span class="hljs-string">"~irma-css/src/components/irma-form"</span>;
+</code></pre>
+<h2>Contributing</h2>
+<h3>Compiling locally</h3>
+<p>Requires a working <code>git</code> and <code>npm</code> on your machine.</p>
+<pre class="hljs"><code class="language-bash"><span class="hljs-comment"># Install dependencies</span>
+$ <span class="hljs-built_in">cd</span> irma-css
+$ npm install
+
+<span class="hljs-comment"># Run the compiler &amp; dev server</span>
+$ npm run dev
+</code></pre>
+<p>You should now have the style guide running on
+<a href="http://localhost:8080">http://localhost:8080</a>.</p>
+<p>Any change you make to the stylesheets will trigger a rebuild of the style guide
+and will be shown after a browser refresh.</p>
+<h3>Making PRs</h3>
+<p>Please only commit your changes to the SCSS files, not any of the generated
+files:</p>
+<pre class="hljs"><code class="language-bash">$ git add irma-css/src/
+$ git commit -m <span class="hljs-string">"Update button shadows to reflect new design"</span>
+</code></pre>
+<p>And feel free to make pull requests on this repository.</p>
+<h3>Releasing</h3>
+<p>After merging one or more PRs, a new version can be released. First, update
+<code>package.json</code> to reflect the new version number. Then:</p>
+<pre class="hljs"><code class="language-bash">$ <span class="hljs-built_in">cd</span> irma-css
+$ git add package.json
+
+$ npm run clean <span class="hljs-comment"># Build a clean style guide</span>
+$ git add ../docs/styleguide/
+
+$ npm run release <span class="hljs-comment"># Build a clean new version in dist</span>
+$ git add dist/
+
+$ git commit -m <span class="hljs-string">"Releasing version xxx"</span>
+</code></pre>
+
+        </article>
+    </section>
+    <!-- /documentation. -->
+
+
+
+  <!-- scripts. -->
+  <script src="kss-assets/vendor/jquery.js"></script>
+  <script src="kss-assets/vendor/prism.js"></script>
+  <script src="kss-assets/js/kss.js"></script>
+  
+  <!-- /scripts. -->
+
+  </body>
+</html>

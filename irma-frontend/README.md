@@ -1,17 +1,12 @@
 # IRMA frontend
 
-This is a thin wrapper around `irma-core`, `irma-web` and `irma-server`. The
-intended use of this package is to provide an all-in-one Javascript file that
-developers can include in the HEAD section of an HTML file and get started:
+This is a thin wrapper around `irma-core`, `irma-web`, `irma-server` and
+`irma-css`. The intended use of this package is to provide an all-in-one
+Javascript file that developers can include in the HEAD section of an HTML file
+and get started:
 
 ```html
 <script type="text/javascript" src="//cdn.jsdelivr.net/gh//privacybydesign/irma-frontend-packages/irma-frontend/dist/irma.js"></script>
-```
-
-You may also want to add some styles:
-
-```html
-<link rel="stylesheet" href="//nuts-foundation.github.io/irma-web-frontend/application.css" />
 ```
 
 And then you can instantiate `irma-core` like so:

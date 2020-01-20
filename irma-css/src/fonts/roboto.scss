@@ -1,0 +1,25 @@
+// This is the font path as perceived by an external package depending on this package.
+// It gets overwritten in stylesheets/styleguide.scss so we have a valid path for the styleguide.
+$font-path: '~irma-css/dist/fonts/' !default;
+
+@mixin font-face($font-family, $font-file-name, $font-weight, $font-style: normal) {
+  @font-face {
+    font-family: $font-family;
+    src: url(#{$font-path}#{$font-file-name}.ttf) format('truetype');
+    font-weight: $font-weight;
+    font-style: $font-style;
+  }
+}
+
+@include font-face('Roboto', 'roboto/Roboto-Black',        900);
+@include font-face('Roboto', 'roboto/Roboto-BlackItalic',  900, $font-style: italic);
+@include font-face('Roboto', 'roboto/Roboto-Bold',         700);
+@include font-face('Roboto', 'roboto/Roboto-BoldItalic',   700, $font-style: italic);
+@include font-face('Roboto', 'roboto/Roboto-Italic',       400, $font-style: italic);
+@include font-face('Roboto', 'roboto/Roboto-Light',        300);
+@include font-face('Roboto', 'roboto/Roboto-LightItalic',  300, $font-style: italic);
+@include font-face('Roboto', 'roboto/Roboto-Medium',       500);
+@include font-face('Roboto', 'roboto/Roboto-MediumItalic', 500, $font-style: italic);
+@include font-face('Roboto', 'roboto/Roboto-Regular',      400);
+@include font-face('Roboto', 'roboto/Roboto-Thin',         100);
+@include font-face('Roboto', 'roboto/Roboto-ThinItalic',   100, $font-style: italic);

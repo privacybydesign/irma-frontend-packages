@@ -1,0 +1,60 @@
+// Colours
+//
+// Styleguide Variables.colours
+
+// Colours from the IRMA app
+//
+// $irma-blue        - #004C92; New IRMA blue
+// $irma-green       - #2bc194; IRMA green
+// $irma-light-blue  - #00b1e6; (Old) IRMA blue
+// $irma-red         - #d44454; IRMA red
+// $irma-yellow      - #ffbb58; IRMA yellow
+//
+// Weight: 1
+//
+// Styleguide Variables.colours.app
+
+$irma-blue:        #004C92;
+$irma-green:       #2bc194;
+$irma-light-blue:  #00b1e6;
+$irma-red:         #d44454;
+$irma-yellow:      #ffbb58;
+
+// Colours for interface elements
+//
+// $border-color     - #ffffff; For a border around the whole element
+// $background-color - #004C92; For the background
+// $helper-color     - #47679e; For the helper background
+// $content-bg-color - #ffffff; For background of the actual content
+// $button-color     - #2bc194; For the background of the buttons
+//
+// Weight: 1
+//
+// Styleguide Variables.colours.app
+
+// From out to in:
+$border-color:     white;
+$background-color: $irma-blue;
+$helper-color:     #47679e;
+$content-bg-color: white;
+$button-color:     $irma-green;
+
+// Text colours
+//
+// For the fonts
+//
+// $header-text-color        - #ffffff; For the header text
+// $content-text-color       - #7f7f7f; For the content text
+// $content-link-color       - #7f7f7f; For links in the content
+// $content-link-color-hover - #004C92; For the hover state on links in the content
+// $button-text-color        - #ffffff; For the button foreground text
+//
+// Weight: 2
+//
+// Styleguide Variables.colours.text
+
+$header-text-color:        white;
+$content-text-color:       #7f7f7f;
+$content-link-color:       $content-text-color;
+$content-link-color-hover: $irma-blue;
+$button-text-color:        white;

@@ -1,0 +1,185 @@
+// IRMA 'login form'
+//
+// A place to nicely show the different states of the IRMA disclosure flow.
+//
+// <script type="text/javascript">
+//   // Poor man's forEach that works in IE11 too ;)
+//   function eachDo(l, f) { for(var i=0; i < l.length; i++) { f(l[i]); } }
+// </script>
+//
+// Trigger helper:
+// <ul>
+//   <li><a href="javascript:eachDo(document.querySelectorAll('.header'), function(h) {h.classList.add('show-helper')})">Show helpers</a></li>
+//   <li><a href="javascript:eachDo(document.querySelectorAll('.header'), function(h) {h.classList.remove('show-helper')})">Hide helpers</a></li>
+// </ul>
+//
+// Markup:
+// <section class="irma-web-form">
+//   <header class="header">
+//     <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+//     <section class="helper">
+//       <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
+//     </section>
+//   </header>
+//   <section class="content">
+//     <section class="centered">
+//       <button>Some action here</button>
+//       <p>With some text <a href="#">and stuff</a></p>
+//     </section>
+//   </section>
+// </section>
+//
+// Styleguide Components.IRMA login
+
+@import '../mixins/reset',
+        '../mixins/fonts',
+        '../mixins/responsiveness',
+        '../mixins/center',
+        '../mixins/animation',
+        '../variables/colours',
+        '../variables/sizes';
+
+.irma-web-form {
+  @include reset;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  min-width: $qr-code-size + 6px;
+  max-width: 400px;
+  height: $qr-code-size + 224px; // Acts as min-height, but IE11 needs a fixed
+                                 // parent height for the vertical centering...
+
+  @include on-small-screen {
+    min-height: $qr-code-size + 184px;
+  }
+
+  background-color: $background-color;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+
+  .header {
+    @include reset;
+    position: relative;
+    flex: 0 0 auto;
+    padding: 2rem;
+    margin: 0 1rem;
+    overflow: hidden;
+
+    text-align: center;
+    border-top-left-radius: $border-radius - 1;
+    border-top-right-radius: $border-radius - 1;
+
+    @include on-small-screen {
+      padding: 1em;
+    }
+
+    p {
+      @include reset;
+      @include font($size: 20px, $weight: 300, $color: $header-text-color);
+
+      @include on-small-screen {
+        @include font($size: 16px, $color: $header-text-color);
+      }
+
+      i.irma-web-logo {
+        width: 70px;
+        height: 55px;
+      }
+    }
+
+    .helper {
+      @include reset;
+      @include center;
+      position: absolute;
+      bottom: 1rem;
+      left: 0;
+      right: 0;
+      height: calc(100% - 2rem);
+
+      background-color: $helper-color;
+      border-top-left-radius: $border-radius * 0.6;
+      border-top-right-radius: $border-radius * 0.6;
+      border-bottom-left-radius: 1px;
+      border-bottom-right-radius: 1px;
+
+      p, a {
+        @include font($color: white, $size: 13px);
+      }
+      p {
+        margin: 1em;
+        text-align: center;
+      }
+    }
+
+    // Swap out the header content for the helper in a nice animation
+    & > *:not(.helper) {
+      transform: translateX(0%);
+      @include transition(transform 0.4s ease);
+    }
+    .helper {
+      transform: translateX(120%);
+      @include transition(transform 0.4s ease);
+    }
+    &.show-helper {
+      & > *:not(.helper) {
+        transform: translateX(-120%);
+      }
+      .helper {
+        transform: translateX(0%);
+      }
+    }
+
+  }
+
+  .content {
+    @include reset;
+    @include center;
+    flex: 1 1 auto;
+    margin: 0 1rem 1rem 1rem;
+
+    background-color: $content-bg-color;
+    border-bottom-right-radius: $border-radius * 0.6;
+    border-bottom-left-radius: $border-radius * 0.6;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+
+    .centered {
+      @include reset;
+      height: auto;
+      text-align: center;
+
+      img, canvas {
+        cursor: none;
+      }
+    }
+
+    p {
+      @include reset;
+      @include font($size: 15px);
+      margin: 1em 4em;
+
+      @include on-small-screen {
+        margin: 1em 2em;
+      }
+
+      &:first-child {
+        margin-top: 0;
+      }
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    a {
+      @include reset;
+      @include font($color: $content-link-color, $size: 15px);
+      text-decoration: underline;
+      cursor: pointer;
+
+      &:hover {
+        color: $content-link-color-hover;
+      }
+    }
+  }
+
+}
