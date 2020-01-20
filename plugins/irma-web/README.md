@@ -2,14 +2,15 @@
 
 This plugin contains a front-end for IRMA flows in the web browser.
 
-It is based on [`irma-web-frontend`](https://github.com/nuts-foundation/irma-web-frontend),
-but can be used with different styling. `irma-web-frontend` is not a dependency
-of this package by design, so you are free to use other styling.
+It is designed to be used with [`irma-css`](https://github.com/privacybydesign/irma-frontend-packages/tree/master/irma-css),
+but can be used with different styling. `irma-css` is not a dependency of this
+package by design, so you are free to use other styling.
 
-If you *do* want to use `irma-web-frontend` (which is recommended), take a look
-at [the provided instructions](https://github.com/nuts-foundation/irma-web-frontend#embedding-in-your-application)
-or the [`irma-web` example](https://github.com/privacybydesign/irma-frontend-packages/tree/master/examples/browser/irma-web)
-in this repository.
+If you *do* want to use `irma-css` (which is recommended), you may want to use
+[the `irma-frontend` package](https://github.com/privacybydesign/irma-frontend-packages/tree/master/irma-frontend)
+instead for ease of use, or take a look at
+[`irma-web`](https://github.com/privacybydesign/irma-frontend-packages/tree/master/examples/browser/irma-web)
+for a more hands-on implementation example.
 
 ## Usage
 
@@ -57,7 +58,8 @@ You can find the default values [in the translation files](https://github.com/pr
 
 ### showHelper
 
-The option `showHelper` is a boolean that determines if the [`irma-web-frontend` helper](https://nuts-foundation.github.io/irma-web-frontend/section-examples.html#kssref-examples-helpers)
+The option `showHelper` is a boolean that determines if the
+[`irma-css` helper](https://privacybydesign.github.io/irma-frontend-packages/styleguide/section-examples.html#kssref-examples-helpers)
 should be shown or not. Default is false.
 
 _Note: the helper is supposed to be able to get triggered during the IRMA flow.
