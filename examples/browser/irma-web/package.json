@@ -10,9 +10,9 @@
   "license": "MIT",
   "dependencies": {
     "irma-core": "../../../irma-core",
-    "irma-web": "../../../plugins/irma-web",
+    "irma-css": "../../../irma-css",
     "irma-dummy": "../../../plugins/irma-dummy",
-    "irma-css": "../../../irma-css"
+    "irma-web": "../../../plugins/irma-web"
   },
   "devDependencies": {
     "css-loader": "^3.4.0",
