@@ -3,14 +3,18 @@ _Work in progress - See https://github.com/privacybydesign/irmajs for now_
 # IRMA frontend packages
 
 Welcome to this repository! IRMA frontend packages is a collection of related
-packages, that together form a Javascript "client" to the IRMA server.
+packages, that together form a Javascript "client" to the IRMA server. The
+primary purpose of these packages is to have a very flexible IRMA client in the
+web browser, but you can also use them to build a NodeJS client.
 
-The primary purpose of these packages is to have a very flexible IRMA client in
-the web browser, but you can also use them to build a NodeJS client.
+The browser version, by default, will look like this:
 
-Because everyone's (security) needs are different, you can pick and choose the
-right plugins to create the IRMA flow that your application needs. Or you can
-use a wrapper package to keep things simple. It's up to you.
+![IRMA flow in the browser](docs/images/example.gif)
+
+The client is designed in such a way that you can combine the plugins you need
+and configure them in many useful ways. So the above design can easily be
+removed (for your NodeJS application) or swapped out for a popup version that is
+under way.
 
 ## Supported IRMA flows
 
@@ -29,7 +33,7 @@ The first (and most highly recommended) supported flow that combats these issues
 is one where the Javascript client talks to the IRMA server through your own
 application back-end, that functions as a proxy.
 
-![Starting a session through a proxy](docs/diagrams/flows/flows.001.png)
+![Starting a session through a proxy](docs/images/flows/flows.001.png)
 _Starting a session through a proxy_
 
 In this flow the IRMA Javascript client requests the back-end for a new session
@@ -37,7 +41,7 @@ to be started, and it is the back-end that actually starts the session. In this
 flow the web browser can't manipulate the session that gets started or see the
 contents of the resulting disclosure:
 
-![Getting the session result through a proxy](docs/diagrams/flows/flows.005.png)
+![Getting the session result through a proxy](docs/images/flows/flows.005.png)
 _Getting the session result through a proxy_
 
 <details>
@@ -145,7 +149,7 @@ irma.start()
 The second supported flow is one where the Javascript client talks to the IRMA
 server directly, and is itself responsible for starting the session there.
 
-![Starting a session directly, with signed request](docs/diagrams/flows/flows.002.png)
+![Starting a session directly, with signed request](docs/images/flows/flows.002.png)
 _Starting a session directly, with signed request_
 
 The payload that gets sent to the IRMA server to start the session is signed by
@@ -156,7 +160,7 @@ However, the web browser will be able to see the resulting disclosure or signed
 contract, because the web browser will be the one receiving the result token
 from the IRMA server. This may be an issue for some scenario's.
 
-![Getting the session result directly](docs/diagrams/flows/flows.004.png)
+![Getting the session result directly](docs/images/flows/flows.004.png)
 _Getting the session result directly_
 
 <details>
