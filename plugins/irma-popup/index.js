@@ -75,7 +75,7 @@ module.exports = class IrmaPopup {
   }
 
   _hidePopup() {
-    this._overlayElement.classList.remove('irma-show');
+    this._overlayElement.parentElement.removeChild(this._overlayElement);
   }
 
   stateChange({newState, payload}) {
