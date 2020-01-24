@@ -131,8 +131,8 @@ irma.start()
   actions on your `irma-endpoint` controller.
 
   `start` should make a call to the IRMA server and start the IRMA session
-  there. Then, strip the result token from the response JSON and send that back
-  in the response to the client.
+  there. Then, strip the result token from the response JSON and send the rest
+  back in the response to the client.
 
   `results` can fetch the result from the IRMA server using the result token
   that we stripped off the response earlier. Whatever you return to the client
