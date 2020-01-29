@@ -13,8 +13,14 @@ And then you can instantiate `irma-core` like so:
 
 ```javascript
 irma.new({
-  // All your irma-core, irma-web and irma-server options go here
-  debugging: true,
+  debugging: false,            // Enable to get helpful output in the browser console
+  element:   '#irma-web-form', // Which DOM element to render to
+
+  // Back-end options
+  session: {
+    // Configure your flow here, see code examples in root README file
+  },
+
   ...
 });
 ```
