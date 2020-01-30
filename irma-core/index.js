@@ -10,6 +10,8 @@ module.exports = class IrmaCore {
 
     this._stateMachine = new StateMachine(this._options.debugging);
     this._stateMachine.addStateChangeListener((s) => this._stateChangeListener(s));
+
+    this._addVisibilityListener();
   }
 
   use(mod) {
@@ -48,6 +50,22 @@ module.exports = class IrmaCore {
           this._stateMachine.transition('showQRCode', payload);
         break;
     }
+  }
+
+  _addVisibilityListener() {
+    if ( typeof document !== 'undefined' && document.addEventListener )
+      document.addEventListener('visibilitychange', () => {
+        if ( this._stateMachine.currentState() != 'TimedOut' || document.hidden ) return;
+        if ( this._options.debugging ) console.log('🖥 Restarting because document became visible');
+        this._stateMachine.transition('restart');
+      });
+
+    if ( typeof window !== 'undefined' && window.addEventListener )
+      window.addEventListener('focus', () => {
+        if ( this._stateMachine.currentState() != 'TimedOut' ) return;
+        if ( this._options.debugging ) console.log('🖥 Restarting because window regained focus');
+        this._stateMachine.transition('restart');
+      });
   }
 
 }

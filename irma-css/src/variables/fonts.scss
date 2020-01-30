@@ -1,0 +1,10 @@
+// Fonts
+//
+// We use Roboto as default font, with Tahoma and Arial as fall-back options.
+//
+// Styleguide Variables.fonts
+
+@import '../fonts/roboto';
+
+$default-font: 'Roboto', Tahoma, Arial, sans-serif;
+$default-font-size: 14px;
