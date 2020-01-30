@@ -1,4 +1,4 @@
-require('./styles.scss');
+require('irma-css/dist/irma.css');
 
 const IrmaCore = require('irma-core');
 const Popup    = require('irma-popup');

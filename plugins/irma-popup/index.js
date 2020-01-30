@@ -1,4 +1,4 @@
-require('./styles.scss');
+require('./styles.css');
 
 const IrmaWeb      = require('irma-web');
 const merge        = require('deepmerge');

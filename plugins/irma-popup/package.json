@@ -10,14 +10,11 @@
   "license": "MIT",
   "dependencies": {
     "deepmerge": "^4.2.2",
-    "irma-web-frontend": "^0.2.1",
     "irma-web": "../irma-web"
   },
   "devDependencies": {
     "css-loader": "^3.4.0",
     "file-loader": "^5.0.2",
-    "node-sass": "^4.13.0",
-    "sass-loader": "^8.0.0",
     "style-loader": "^1.1.1",
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.9"
