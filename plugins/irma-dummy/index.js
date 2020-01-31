@@ -5,11 +5,13 @@ module.exports = class IrmaDummy {
   constructor({stateMachine, options}) {
     this._stateMachine = stateMachine;
     this._options      = this._sanitizeOptions(options);
+    this._active       = false;
   }
 
   stateChange({newState}) {
     switch(newState) {
       case 'Loading':
+        this._active = true;
         return this._startNewSession();
       case 'ShowingQRCode':
       case 'ShowingQRCodeInstead':
@@ -18,6 +20,12 @@ module.exports = class IrmaDummy {
         return this._waitForUserAction();
       case 'ShowingIrmaButton':
         return this._chooseQR();
+      case 'Success':
+      case 'Cancelled':
+      case 'Error':
+      case 'TimedOut':
+        this._active = false;
+        break;
     }
   }
 
@@ -35,40 +43,47 @@ module.exports = class IrmaDummy {
 
   _startNewSession() {
     setTimeout(() => {
-      switch(this._options.dummy) {
-        case 'connection error':
-          return this._stateMachine.transition('error');
-        default:
-          return this._stateMachine.transition('loaded', this._options.qrPayload);
+      if (this._active) {
+        switch (this._options.dummy) {
+          case 'connection error':
+            return this._stateMachine.transition('error');
+          default:
+            return this._stateMachine.transition('loaded', this._options.qrPayload);
+        }
       }
     }, this._options.timing.start);
   }
 
   _waitForScanning() {
     setTimeout(() => {
-      switch(this._options.dummy) {
-        case 'timeout':
-          return this._stateMachine.transition('timeout');
-        default:
-          return this._stateMachine.transition('appConnected');
+      if (this._active) {
+        switch (this._options.dummy) {
+          case 'timeout':
+            return this._stateMachine.transition('timeout');
+          default:
+            return this._stateMachine.transition('appConnected');
+        }
       }
     }, this._options.timing.scan);
   }
 
   _waitForUserAction() {
     setTimeout(() => {
-      switch(this._options.dummy) {
-        case 'cancel':
-          return this._stateMachine.transition('cancel');
-        default:
-          return this._stateMachine.transition('succeed', this._options.successPayload);
+      if (this._active) {
+        switch (this._options.dummy) {
+          case 'cancel':
+            return this._stateMachine.transition('cancel');
+          default:
+            return this._stateMachine.transition('succeed', this._options.successPayload);
+        }
       }
     }, this._options.timing.app);
   }
 
   _chooseQR() {
     setTimeout(() => {
-      return this._stateMachine.transition('chooseQR', this._options.qrPayload);
+      if (this._active)
+        return this._stateMachine.transition('chooseQR', this._options.qrPayload);
     }, this._options.timing.app);
   }
 

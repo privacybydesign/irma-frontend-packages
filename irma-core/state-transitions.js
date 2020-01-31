@@ -18,17 +18,20 @@ module.exports = {
 
   Loading: {
     loaded:         'MediumContemplation',
+    cancel:         'Cancelled', // To allow plugins to cancel this state
     fail:           'Error'
   },
 
   MediumContemplation: {
     showQRCode:     'ShowingQRCode',
     showIrmaButton: 'ShowingIrmaButton',
+    cancel:         'Cancelled', // To allow plugins to cancel this state
     fail:           'Error'
   },
 
   ShowingQRCode: {
     appConnected:   'ContinueOn2ndDevice',
+    cancel:         'Cancelled', // To allow plugins to cancel this state
     timeout:        'TimedOut',
     fail:           'Error'
   },
@@ -53,6 +56,7 @@ module.exports = {
 
   ShowingQRCodeInstead: {
     appConnected:   'ContinueOn2ndDevice',
+    cancel:         'Cancelled', // To allow plugins to cancel this state
     restart:        'Loading',
     timeout:        'TimedOut',
     fail:           'Error'
@@ -71,10 +75,12 @@ module.exports = {
   },
 
   TimedOut: {
+    cancel:         'Cancelled', // To allow plugins to cancel this state
     restart:        'Loading'
   },
 
   Error: {
+    cancel:         'Cancelled', // To allow plugins to cancel this state
     restart:        'Loading'
   },
 

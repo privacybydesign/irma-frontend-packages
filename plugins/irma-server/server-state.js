@@ -26,7 +26,10 @@ module.exports = class ServerState {
         console.log("🌎 Closed EventSource");
     }
 
+    this._source = null;
     this._running = false;
+    // Reset callback function to make sure that pending events are not processed anymore
+    this._stateChangeCallback = () => {};
   }
 
   _startSSE() {
