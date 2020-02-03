@@ -10,8 +10,9 @@ module.exports = class ServerState {
     this._options.url = url;
   }
 
-  observe(stateChangeCallback) {
+  observe(stateChangeCallback, errorCallback) {
     this._stateChangeCallback = stateChangeCallback;
+    this._errorCallback = errorCallback;
 
     if ( this._eventSource && this._options.serverSentEvents )
       return this._startSSE();
@@ -106,7 +107,7 @@ module.exports = class ServerState {
     } catch(error) {
       if ( this._options.debugging )
         console.error("🌎 Error thrown while polling: ", error);
-      throw(error);
+      this._errorCallback(error);
     }
 
     if ( this._options.debugging )

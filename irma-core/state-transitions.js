@@ -18,21 +18,21 @@ module.exports = {
 
   Loading: {
     loaded:         'MediumContemplation',
-    cancel:         'Cancelled', // To allow plugins to cancel this state
+    abort:          'Aborted',
     fail:           'Error'
   },
 
   MediumContemplation: {
     showQRCode:     'ShowingQRCode',
     showIrmaButton: 'ShowingIrmaButton',
-    cancel:         'Cancelled', // To allow plugins to cancel this state
+    abort:          'Aborted',
     fail:           'Error'
   },
 
   ShowingQRCode: {
     appConnected:   'ContinueOn2ndDevice',
-    cancel:         'Cancelled', // To allow plugins to cancel this state
     timeout:        'TimedOut',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
@@ -41,12 +41,14 @@ module.exports = {
     cancel:         'Cancelled',
     restart:        'Loading',
     timeout:        'TimedOut',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
   ShowingIrmaButton: {
     chooseQR:       'ShowingQRCodeInstead',
     appConnected:   'ContinueInIrmaApp',
+    abort:          'Aborted',
     fail:           'Error',
 
     succeed:        'Success',   // We sometimes miss the appConnected transition
@@ -56,9 +58,9 @@ module.exports = {
 
   ShowingQRCodeInstead: {
     appConnected:   'ContinueOn2ndDevice',
-    cancel:         'Cancelled', // To allow plugins to cancel this state
     restart:        'Loading',
     timeout:        'TimedOut',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
@@ -67,25 +69,28 @@ module.exports = {
     cancel:         'Cancelled',
     restart:        'Loading',
     timeout:        'TimedOut',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
   Cancelled: {
+    abort:          'Aborted',
     restart:        'Loading'
   },
 
   TimedOut: {
-    cancel:         'Cancelled', // To allow plugins to cancel this state
+    abort:          'Aborted',
     restart:        'Loading'
   },
 
   Error: {
-    cancel:         'Cancelled', // To allow plugins to cancel this state
+    abort:          'Aborted',
     restart:        'Loading'
   },
 
   // End states
   BrowserNotSupported: {},
-  Success: {}
+  Success: {},
+  Aborted: {}
 
 }

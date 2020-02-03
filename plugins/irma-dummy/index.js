@@ -24,6 +24,7 @@ module.exports = class IrmaDummy {
       case 'Cancelled':
       case 'Error':
       case 'TimedOut':
+      case 'Aborted':
         this._active = false;
         break;
     }
@@ -46,7 +47,7 @@ module.exports = class IrmaDummy {
       if (this._active) {
         switch (this._options.dummy) {
           case 'connection error':
-            return this._stateMachine.transition('error');
+            return this._stateMachine.transition('fail');
           default:
             return this._stateMachine.transition('loaded', this._options.qrPayload);
         }

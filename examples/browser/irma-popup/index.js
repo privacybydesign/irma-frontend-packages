@@ -11,7 +11,7 @@ document.getElementById('start-button').addEventListener('click', () => {
     dummy:     'happy path',
     language:  'en',
     translations: {
-        cancel: 'Never mind!'
+      cancel: 'Never mind!'
     }
   });
 

@@ -12,7 +12,6 @@ module.exports = class IrmaPopup {
     this._id = `${document.getElementsByClassName('irma-overlay').length}`;
 
     this._ensurePopupInitialized();
-    this._active = true;
 
     this._irmaWeb = new IrmaWeb({
       stateMachine: this._stateMachine,
@@ -37,7 +36,7 @@ module.exports = class IrmaPopup {
     const cancelButton = window.document.createElement('button');
     cancelButton.setAttribute('id', `irma-cancel-button-${this._id}`);
     cancelButton.setAttribute('class', 'irma-cancel-button irma-web-button');
-    cancelButton.addEventListener('click', this._cancel.bind(this));
+    cancelButton.addEventListener('click', this._close.bind(this));
 
     // Element to embed irma-web element to be able to center it
     const popupElement = window.document.createElement('div');
@@ -71,9 +70,10 @@ module.exports = class IrmaPopup {
     else return res;
   }
 
-  _cancel() {
+  _close() {
+    if (!this._stateMachine.isEndState())
+      return this._stateMachine.transition('abort', 'Popup closed');
     this._hidePopup();
-    this._stateMachine.transition('cancel');
   }
 
   _showPopup() {
@@ -81,10 +81,8 @@ module.exports = class IrmaPopup {
   }
 
   _hidePopup() {
-    if (this._active) {
+    if (this._overlayElement.parentElement)
       this._overlayElement.parentElement.removeChild(this._overlayElement);
-      this._active = false;
-    }
   }
 
   stateChange({newState, payload}) {
@@ -92,13 +90,13 @@ module.exports = class IrmaPopup {
 
     switch(newState) {
       case 'Loading':
-        this._showPopup();
-        break;
+        return this._showPopup();
+      case 'Aborted':
+        return this._hidePopup();
       case 'Success':
       case 'BrowserNotSupported':
-        // Auto-close pop-up when being in a final state
-        window.setTimeout(this._hidePopup.bind(this), 2000);
-        break;
+        // Delay auto-closure pop-up such that the user can see the animation
+        return window.setTimeout(this._hidePopup.bind(this), 2000);
     }
   }
 

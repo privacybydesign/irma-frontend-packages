@@ -7,6 +7,7 @@ module.exports = class IrmaCore {
     this._modules = [];
     this._options = options || {};
     this._options.userAgent = userAgent();
+    this._options.verboseReject = options.verboseReject || false;
 
     this._stateMachine = new StateMachine(this._options.debugging);
     this._stateMachine.addStateChangeListener((s) => this._stateChangeListener(s));
@@ -41,7 +42,8 @@ module.exports = class IrmaCore {
         if ( this._resolve ) this._resolve(payload);
         break;
       case 'BrowserNotSupported':
-        if ( this._reject ) this._reject(payload);
+      case 'Aborted':
+        if ( this._reject ) this._reject(this._options.verboseReject ? state : payload);
         break;
       case 'MediumContemplation':
         if ( this._options.userAgent == 'Android' || this._options.userAgent == 'iOS' )

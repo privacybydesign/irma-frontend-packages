@@ -54,6 +54,7 @@ module.exports = class DOMManipulations {
       Cancelled:            this._stateCancelled,
       TimedOut:             this._stateTimedOut,
       Error:                this._stateError,
+      Aborted:              this._stateAborted,
       BrowserNotSupported:  this._stateBrowserNotSupported,
       Success:              this._stateSuccess
     };
@@ -157,6 +158,14 @@ module.exports = class DOMManipulations {
       <div class="irma-web-forbidden-animation"></div>
       <p>${this._translations.error}</p>
       <p><a data-irma-glue-transition="restart">${this._translations.retry}</a></p>
+    `;
+  }
+
+  _stateAborted() {
+    return `
+      <!-- State: Error -->
+      <div class="irma-web-forbidden-animation"></div>
+      <p>${this._translations.error}</p>
     `;
   }
 

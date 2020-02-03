@@ -20,6 +20,7 @@ module.exports = class IrmaServer {
       case 'Error':
       case 'Timeout':
       case 'Cancelled':
+      case 'Aborted':
         // Close state observer when being in an idle state
         if (this._serverState)
           this._serverState.close();
@@ -38,7 +39,7 @@ module.exports = class IrmaServer {
       if ( this._options.debugging )
         console.error("Error starting a new session on the server:", error);
 
-      this._stateMachine.transition('error');
+      this._stateMachine.transition('fail');
     })
   }
 
@@ -46,13 +47,20 @@ module.exports = class IrmaServer {
     this._serverState = new ServerState(payload.u, this._options.state);
 
     try {
-      this._serverState.observe(s => this._serverStateChange(s));
+      this._serverState.observe(s => this._serverStateChange(s), e => this._serverHandleError(e));
     } catch (error) {
       if ( this._options.debugging )
-        console.error("Error while observing server state: ", error);
+        console.error("Error while starting observe server state: ", error);
 
-      this._stateMachine.transition('error');
+      this._stateMachine.transition('fail');
     }
+  }
+
+  _serverHandleError(error) {
+    if ( this._options.debugging )
+      console.error("Error while observing server state: ", error);
+
+    this._stateMachine.transition('fail');
   }
 
   _serverStateChange(newState) {
@@ -86,7 +94,7 @@ module.exports = class IrmaServer {
       if ( this._options.debugging )
         console.error("Error fetching session result from the server:", error);
 
-      this._stateMachine.transition('error');
+      this._stateMachine.transition('fail');
     });
   }
 
@@ -101,6 +109,7 @@ module.exports = class IrmaServer {
           headers:      { 'Content-Type': 'application/json' },
           qrFromResult: r => r.sessionPtr
         },
+        disableRestart: false,
         result: {
           url:          o => `${o.url}/session/${o.session.token}/result`,
           body:         null,
