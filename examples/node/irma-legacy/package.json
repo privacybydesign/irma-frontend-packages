@@ -1,0 +1,18 @@
+{
+  "name": "irma-node-console-example",
+  "version": "1.0.0",
+  "description": "An example on how to use the irma-console package",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./index.js"
+  },
+  "dependencies": {
+    "irma-legacy": "../../../irma-legacy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/privacybydesign/irma-frontend-packages",
+    "directory": "examples/node/irma-legacy"
+  }
+}

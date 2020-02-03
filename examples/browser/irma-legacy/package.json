@@ -1,0 +1,19 @@
+{
+  "name": "example-browser-legacy",
+  "version": "1.0.0",
+  "description": "An example on how to use the irma-legacy package using the legacy irmajs api",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server",
+    "build": "webpack"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "irma-legacy": "../../../irma-legacy"
+  },
+  "devDependencies": {
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.10.1"
+  }
+}
