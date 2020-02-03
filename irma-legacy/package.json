@@ -1,0 +1,33 @@
+{
+  "name": "irma-legacy",
+  "version": "1.0.0",
+  "description": "irma-popup wrapper package using legacy irmajs api",
+  "main": "dist/irma.node.js",
+  "browser": "dist/irma.js",
+  "scripts": {
+    "dev": "webpack-dev-server",
+    "build": "webpack --mode production"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "qrcode": "^1.4.4",
+    "jsonwebtoken": "^8.4.0",
+    "irma-css": "../irma-css",
+    "irma-core": "../irma-core",
+    "irma-popup": "../plugins/irma-popup",
+    "irma-server": "../plugins/irma-server",
+    "irma-console": "../plugins/irma-console",
+    "css-loader": "^3.4.0",
+    "url-loader": "^3.0.0",
+    "style-loader": "^1.1.1",
+    "null-loader": "^3.0.0",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.9",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/privacybydesign/irma-frontend-packages",
+    "directory": "irma-legacy"
+  }
+}
