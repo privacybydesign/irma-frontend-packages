@@ -5,6 +5,7 @@ module.exports = class DOMManipulations {
     this._translations  = translations;
     this._showHelper    = false;
     this._clickCallback = clickCallback;
+    this._previous      = 'Uninitialized';
 
     this._renderInitialState();
     this._attachClickHandler();
@@ -14,6 +15,7 @@ module.exports = class DOMManipulations {
     let newPartial = this._stateToPartialMapping()[state];
     if (!newPartial) throw new Error(`I don't know how to render '${state}'`);
     this._renderPartial(newPartial);
+    this._previous = state;
   }
 
   _renderInitialState() {
@@ -162,11 +164,26 @@ module.exports = class DOMManipulations {
   }
 
   _stateAborted() {
-    return `
-      <!-- State: Error -->
-      <div class="irma-web-forbidden-animation"></div>
-      <p>${this._translations.error}</p>
-    `;
+    switch (this._previous) {
+      case 'Cancelled':
+        return `
+          <!-- State: Cancelled -->
+          <div class="irma-web-forbidden-animation"></div>
+          <p>${this._translations.cancelled}</p>
+        `;
+      case 'TimedOut':
+        return `
+          <!-- State: TimedOut -->
+          <div class="irma-web-clock-animation"></div>
+          <p>${this._translations.timeout}</p>
+        `;
+      default:
+        return `
+          <!-- State: Error -->
+          <div class="irma-web-forbidden-animation"></div>
+          <p>${this._translations.error}</p>
+        `;
+    }
   }
 
   _stateBrowserNotSupported() {

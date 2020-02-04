@@ -73,10 +73,19 @@ module.exports = class IrmaServer {
         return this._successStateReached();
       case 'CANCELLED':
         // This is a conscious choice by a user.
-        return this._stateMachine.transition('cancel');
+        this._stateMachine.transition('cancel');
+        // If session cannot be restarted, abort the flow
+        if (this._options.session.disableRestart)
+          this._stateMachine.transition('abort', 'Session cancelled and no restart possible');
+        break;
+
       case 'TIMEOUT':
         // This is a known and understood error. We can be explicit to the user.
-        return this._stateMachine.transition('timeout');
+        this._stateMachine.transition('timeout');
+        // If session cannot be restarted, abort the flow
+        if (this._options.session.disableRestart)
+          this._stateMachine.transition('abort', 'Session timed out and no restart possible');
+        break;
       default:
         // Catch unknown errors and give generic error message. We never really
         // want to get here.
