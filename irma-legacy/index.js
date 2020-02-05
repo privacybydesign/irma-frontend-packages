@@ -70,7 +70,7 @@ function handleSession(qr, options = {}) {
           disableRestart: startedSession === undefined,
         },
         debugging: false,
-        verboseReject: true,
+        detailedErrors: true,
         language:  options.language || optionsDefaults.language,
       };
 
