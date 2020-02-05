@@ -1,4 +1,4 @@
-# Nodejs IRMA console example
+# Nodejs IRMA legacy example
 
 This package is an example for how to use the `irma-legacy` module in the
 terminal with `nodejs`. See the source of `index.js` for how we use the plugin.
