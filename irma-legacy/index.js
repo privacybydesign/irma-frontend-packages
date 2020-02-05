@@ -67,7 +67,7 @@ function handleSession(qr, options = {}) {
       let irmaCoreOptions = {
         session: {
           handle: qr,
-          disableRestart: startedSession === undefined,
+          enableRestart: startedSession !== undefined,
         },
         debugging: false,
         detailedErrors: true,

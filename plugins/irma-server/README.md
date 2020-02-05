@@ -52,6 +52,16 @@ If you need more fine grained control over how the session is started and how
 the result from the session is fetched on the server, you can override (parts
 of) the `start` and/or `result` properties.
 
+With the option `handle` you can specify a particular session pointer that is
+started. This can be used to handle an already existing session.
+When this option is used, sessions cannot be restarted by the user when
+something goes wrong. Therefore we do not recommend using this option.
+
+When you want to specify the `handle` option and the `start` option both, 
+you have to explicitly indicate this by setting `enableRestart` to true.
+In this case, first the session from `handle` will be used and in case of an
+error a new session will be retrieved using the options specified at `start`.
+
 **It is recommended to not start sessions or fetch results on the IRMA server
 from a web browser**, but have a service in between that starts the session and
 checks the result for you. So in the browser the `url` property of `session`
@@ -70,6 +80,10 @@ session: {
     headers:      { 'Content-Type': 'application/json' },
     qrFromResult: r => r.sessionPtr
   },
+
+  handle: undefined,
+
+  enableRestart: options.session.handle === undefined,
 
   result: {
     url:          o => `${o.url}/session/${o.session.token}/result`,

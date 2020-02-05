@@ -20,6 +20,7 @@ use or ignore.
 ```javascript
 const irma = new IrmaCore({
   debugging: true,            // Used by state machine and multiple plugins
+  detailedErrors: false,      // Used by irma-core what error should be returned when the promise rejects
   element:   '#irma-web-form' // Used by `irma-web` plugin
 });
 ```
@@ -35,8 +36,26 @@ irma.start(/* parameters */)
 ```
 
 This Promise only resolves when the state machine reaches the `Success` state
-and only rejects when the machine reaches the `BrowserNotSupported` state. In
-the latter case, plugins may already inform the user of this issue, so please
+and only rejects when the machine reaches the `BrowserNotSupported`
+or the `Aborted` state. In the reject case, 
+plugins may already inform the user of this issue, so please
 test if you need to catch this state yourself. You may wish to fall back to
 another authentication method automatically by catching the rejection and
 redirecting the user.
+
+By default, the error you receive by the reject case of the promise is a message
+string describing the error it encountered. In some situations you might want to
+do some error handling based on the exact error situation irma-core encountered.
+Therefore we offer you the `detailedErrors` option. When being set to true, 
+you receive the exact state irma-core was in when the error occurred. For example,
+below you see the error you get when using the plugin `irma-popup` and the user closed
+the popup.
+
+```javascript
+{
+      newState:   'Aborted',
+      oldState:   'Cancelled',
+      transition: 'abort',
+      payload:    'Popup closed'
+}
+```

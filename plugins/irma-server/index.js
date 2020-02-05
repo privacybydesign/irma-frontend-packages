@@ -75,7 +75,7 @@ module.exports = class IrmaServer {
         // This is a conscious choice by a user.
         this._stateMachine.transition('cancel');
         // If session cannot be restarted, abort the flow
-        if (this._options.session.disableRestart)
+        if (this._options.session.enableRestart)
           this._stateMachine.transition('abort', 'Session cancelled and no restart possible');
         break;
 
@@ -83,7 +83,7 @@ module.exports = class IrmaServer {
         // This is a known and understood error. We can be explicit to the user.
         this._stateMachine.transition('timeout');
         // If session cannot be restarted, abort the flow
-        if (this._options.session.disableRestart)
+        if (this._options.session.enableRestart)
           this._stateMachine.transition('abort', 'Session timed out and no restart possible');
         break;
       default:
@@ -118,9 +118,10 @@ module.exports = class IrmaServer {
           headers:      { 'Content-Type': 'application/json' },
           qrFromResult: r => r.sessionPtr
         },
+        handle: undefined,
         // Disable restart by default if a session pointer is already given to handle, but no method is specified
         // to start a new session.
-        disableRestart: options.session.start === undefined && options.session.handle !== undefined,
+        enableRestart: options.session.handle === undefined,
         result: {
           url:          o => `${o.url}/session/${o.session.token}/result`,
           body:         null,

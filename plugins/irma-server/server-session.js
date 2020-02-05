@@ -15,7 +15,7 @@ module.exports = class ServerSession {
     }
 
     // When there is an earlier session known and retrying is not allowed, try the previous session again
-    if ( this._options.disableRestart && this._options.session ) {
+    if ( !this._options.enableRestart && this._options.session ) {
         return Promise.resolve(this._options.session.handle);
     }
 

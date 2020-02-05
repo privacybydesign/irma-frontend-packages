@@ -3,15 +3,16 @@
 This plugin contains a popup for IRMA flows in the web browser. It is a pop-up
 variant of the irma-web plugin.
 
-Because this plugin is based on irma-web, it is also based on 
-[`irma-web-frontend`](https://github.com/nuts-foundation/irma-web-frontend).
+Because this plugin is based on irma-web, it is also designed to be used with 
+[`irma-css`](https://github.com/privacybydesign/irma-frontend-packages/tree/master/irma-css).
 It can be used with different styling. `irma-web-frontend` is not a dependency
 of this package by design, so you are free to use other styling.
 
-If you *do* want to use `irma-web-frontend` (which is recommended), take a look
-at [the provided instructions](https://github.com/nuts-foundation/irma-web-frontend#embedding-in-your-application)
-or the [`irma-plugin` example](https://github.com/privacybydesign/irma-frontend-packages/tree/master/examples/browser/irma-plugin)
-in this repository.
+If you *do* want to use `irma-css` (which is recommended), you can check the
+[the `irma-popup` example](https://github.com/privacybydesign/irma-frontend-packages/tree/master/examples/browser/irma-popup)
+on how to use it. Otherwise you can take a look at
+[the `irma-web` plugin](https://github.com/privacybydesign/irma-frontend-packages/tree/master/examples/browser/irma-web)
+for more information about how to specify your own CSS.
 
 ## Usage
 
