@@ -118,7 +118,9 @@ module.exports = class IrmaServer {
           headers:      { 'Content-Type': 'application/json' },
           qrFromResult: r => r.sessionPtr
         },
-        disableRestart: false,
+        // Disable restart by default if a session pointer is already given to handle, but no method is specified
+        // to start a new session.
+        disableRestart: options.session.start === undefined && options.session.handle !== undefined,
         result: {
           url:          o => `${o.url}/session/${o.session.token}/result`,
           body:         null,

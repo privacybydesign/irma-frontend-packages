@@ -72,7 +72,7 @@ module.exports = class IrmaPopup {
 
   _close() {
     if (!this._stateMachine.isEndState())
-      return this._stateMachine.transition('abort', 'Popup closed');
+      this._stateMachine.transition('abort', 'Popup closed');
     this._hidePopup();
   }
 
@@ -92,7 +92,6 @@ module.exports = class IrmaPopup {
       case 'Loading':
         return this._showPopup();
       case 'Aborted':
-        return this._hidePopup();
       case 'Success':
       case 'BrowserNotSupported':
         // Delay auto-closure pop-up such that the user can see the animation
