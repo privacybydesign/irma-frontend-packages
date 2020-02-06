@@ -1,0 +1,53 @@
+// Popup
+//
+// Overlay content over the page
+//
+// Markup:
+// <section class="irma-web-popup">
+//   <section style="width: 300px; height: 300px; background-color: blue">
+//    <button onclick="document.querySelector('.irma-web-popup').classList.remove('active')">Close popup</button>
+//   </section>
+// </section>
+// <button onclick="document.querySelector('.irma-web-popup').classList.add('active')">Open popup</button>
+//
+// Styleguide Layouts.Popup
+
+@import '../mixins/reset',
+        '../mixins/center',
+        '../mixins/animation';
+
+.irma-web-popup {
+  @include reset;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2000;
+
+  background-color: rgba(0,0,0,0.5);
+  opacity: 0;
+  visibility: hidden;
+
+  @include center;
+  @include transition('opacity 0.2s ease, visibility 0s ease 0.2s');
+
+  // Direct decendant gets animation
+  & > * {
+    transform: scale(0.7);
+    @include transition('transform 0.2s ease-in');
+  }
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+    @include transition('opacity 0.2s ease, visibility 0s ease');
+
+    & > * {
+      transform: scale(1);
+      @include transition('transform 0.2s ease-out');
+    }
+  }
+
+}
