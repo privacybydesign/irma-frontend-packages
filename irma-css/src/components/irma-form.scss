@@ -28,6 +28,21 @@
 //     </section>
 //   </section>
 // </section>
+// <section class="irma-web-form">
+//   <header class="header">
+//     <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+//     <section class="helper">
+//       <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
+//     </section>
+//     <button class="close"></button>
+//   </header>
+//   <section class="content">
+//     <section class="centered">
+//       <button>Some action here</button>
+//       <p>With some text <a href="#">and stuff</a></p>
+//     </section>
+//   </section>
+// </section>
 //
 // Styleguide Components.IRMA login
 
@@ -112,7 +127,7 @@
     }
 
     // Swap out the header content for the helper in a nice animation
-    & > *:not(.helper) {
+    & > *:not(.helper):not(.close) {
       transform: translateX(0%);
       @include transition(transform 0.4s ease);
     }
@@ -121,11 +136,41 @@
       @include transition(transform 0.4s ease);
     }
     &.show-helper {
-      & > *:not(.helper) {
+      & > *:not(.helper):not(.close) {
         transform: translateX(-120%);
       }
       .helper {
         transform: translateX(0%);
+      }
+    }
+
+    .close {
+      $size: 26px;
+      position: absolute;
+      top: 1rem;
+      right: 0;
+      width: $size;
+      height: $size;
+
+      background-color: white;
+      border-radius: 50%;
+      border: 0;
+      cursor: pointer;
+
+      &:before, &:after {
+        content: ' ';
+        display: block;
+        position: absolute;
+        top: $size * 0.2;
+        left: $size * 0.42;
+        width: $size * 0.16;
+        height: $size * 0.6;
+        background-color: $background-color;
+        transform: rotateZ(45deg);
+        transform-origin: center;
+      }
+      &:after {
+        transform: rotateZ(-45deg);
       }
     }
 
