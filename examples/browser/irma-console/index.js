@@ -10,6 +10,6 @@ const irma = new IrmaCore({
 irma.use(Console);
 irma.use(Dummy);
 
-irma.start('server_url', { request: 'content' })
+irma.start()
 .then(result => console.log("Successful disclosure! 🎉", result))
 .catch(error => console.error("Couldn't do what you asked 😢", error));
