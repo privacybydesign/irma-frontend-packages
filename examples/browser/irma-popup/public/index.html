@@ -3,7 +3,7 @@
 <html>
 
   <head>
-    <title>IRMA browser popup example</title>
+    <title>IRMA popup plugin example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="irma.js" type="text/javascript" defer></script>
 
@@ -16,14 +16,6 @@
       }
 
       button#start-button {
-        position: absolute;
-        top: 50vh;
-        left: 50vw;
-        width: 300px;
-        height: 50px;
-        margin-left: -150px;
-        margin-top: -25px;
-
         font-size: 1.5em;
         color: white;
         background-color: blue;
@@ -33,7 +25,7 @@
     </style>
   </head>
 
-  <body>
+  <body class="irma-web-center-child">
     <button id="start-button">Start IRMA flow</button>
   </body>
 
