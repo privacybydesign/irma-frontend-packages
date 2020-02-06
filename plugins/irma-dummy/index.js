@@ -19,9 +19,9 @@ module.exports = class IrmaDummy {
     }
   }
 
-  start(server, request) {
+  start() {
     if ( this._options.debugging )
-      console.log(`🧙🏼‍♂️ Fake-requesting server '${server}' for request:\n`, request);
+      console.log(`🧙🏼‍♂️ Initializing fake IRMA flow`);
 
     switch(this._options.dummy) {
       case 'browser unsupported':
