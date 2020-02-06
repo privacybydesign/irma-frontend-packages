@@ -1,3 +1,5 @@
+require('irma-css/dist/irma.css');
+
 const IrmaCore = require('irma-core');
 const Popup    = require('irma-popup');
 const Dummy    = require('irma-dummy');
@@ -9,13 +11,8 @@ document.getElementById('start-button').addEventListener('click', () => {
     dummy:     'happy path',
     language:  'en',
     translations: {
-      Common: {
-        Cancel: 'Never mind!'
-      },
-      Verify: {
-        Title: 'Sign in with IRMA',
-        Body: 'Please provide your attributes to sign in. Scan the QR code with your IRMA app.'
-      }
+      header:  'Sign the agreement with <i class="irma-web-logo">IRMA</i>',
+      loading: 'Just one second please!'
     }
   });
 

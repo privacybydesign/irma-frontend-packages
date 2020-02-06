@@ -1,5 +1,5 @@
 {
-  "name": "example-browser-popup",
+  "name": "irma-browser-popup-example",
   "version": "1.0.0",
   "description": "An example on how to use the irma-popup package",
   "main": "index.js",
@@ -10,12 +10,21 @@
   "license": "MIT",
   "dependencies": {
     "irma-core": "../../../irma-core",
-    "irma-popup": "../../../plugins/irma-popup",
-    "irma-dummy": "../../../plugins/irma-dummy"
+    "irma-css": "../../../irma-css",
+    "irma-dummy": "../../../plugins/irma-dummy",
+    "irma-popup": "../../../plugins/irma-popup"
   },
   "devDependencies": {
-    "webpack": "^4.41.5",
+    "css-loader": "^3.4.0",
+    "file-loader": "^5.0.2",
+    "style-loader": "^1.1.1",
+    "webpack": "^4.41.4",
     "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.10.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/privacybydesign/irma-frontend-packages",
+    "directory": "examples/browser/irma-popup"
   }
 }
