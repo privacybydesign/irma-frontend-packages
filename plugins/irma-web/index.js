@@ -11,7 +11,7 @@ module.exports = class IrmaWeb {
 
     this._dom = new DOMManipulations(
       document.querySelector(this._options.element),
-      this._options.translations,
+      this._options,
       (t) => this._stateMachine.transition(t, this._lastPayload)
     );
   }
