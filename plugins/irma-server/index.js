@@ -75,7 +75,7 @@ module.exports = class IrmaServer {
         // This is a conscious choice by a user.
         this._stateMachine.transition('cancel');
         // If session cannot be restarted, abort the flow
-        if (this._options.session.enableRestart)
+        if ( !this._options.session.enableRestart )
           this._stateMachine.transition('abort', 'Session cancelled and no restart possible');
         break;
 
@@ -83,7 +83,7 @@ module.exports = class IrmaServer {
         // This is a known and understood error. We can be explicit to the user.
         this._stateMachine.transition('timeout');
         // If session cannot be restarted, abort the flow
-        if (this._options.session.enableRestart)
+        if ( !this._options.session.enableRestart )
           this._stateMachine.transition('abort', 'Session timed out and no restart possible');
         break;
       default:
