@@ -1,10 +1,11 @@
 module.exports = class DOMManipulations {
 
-  constructor(element, translations, clickCallback) {
-    this._element       = element;
-    this._translations  = translations;
-    this._showHelper    = false;
-    this._clickCallback = clickCallback;
+  constructor(element, options, clickCallback) {
+    this._element         = element;
+    this._translations    = options.translations;
+    this._showHelper      = options.showHelper;
+    this._showCloseButton = options.showCloseButton;
+    this._clickCallback   = clickCallback;
 
     this._renderInitialState();
     this._attachClickHandler();
@@ -68,6 +69,9 @@ module.exports = class DOMManipulations {
         <section class="helper">
           <p>${this._translations.helper}</p>
         </section>
+        ${this._showCloseButton ? `
+          <button class="close"></button>
+        ` : ''}
       </header>
       <section class="content">
         <section class="centered">
