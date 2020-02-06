@@ -23,7 +23,7 @@ const irma = new IrmaCore({
 });
 
 irma.use(Web);
-irma.start(/* parameters */);
+irma.start();
 ```
 
 ## Options

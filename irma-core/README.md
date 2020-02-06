@@ -10,7 +10,7 @@ const irma     = new IrmaCore(/* options */);
 irma.use(/* Plugin A */);
 irma.use(/* Plugin B */);
 
-irma.start(/* parameters */);
+irma.start();
 ```
 
 You can pass an options object to the constructor, which will be passed on to
@@ -25,11 +25,11 @@ const irma = new IrmaCore({
 ```
 
 The `start` method starts the state machine and returns a Promise. Whatever
-parameters you pass to the `start` method get passed to the `start` method of the
-plugins too.
+parameters you pass to the `start` method get passed to the `start` method of
+the plugins too, but no plugins currently make use of that.
 
 ```javascript
-irma.start(/* parameters */)
+irma.start()
     .then(result => console.log("Successful disclosure! 🎉", result))
     .catch(error => console.error("Couldn't do what you asked 😢", error));
 ```

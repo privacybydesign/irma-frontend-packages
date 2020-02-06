@@ -19,7 +19,7 @@ const irma = new IrmaCore({
 });
 
 irma.use(Dummy);
-irma.start(/* parameters */);
+irma.start();
 ```
 
 ## Options
