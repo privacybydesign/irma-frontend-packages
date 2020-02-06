@@ -14,5 +14,5 @@ const Console  = require('irma-console');
 
 const irma = new IrmaCore(/* options */);
 irma.use(Console);
-irma.start(/* parameters */);
+irma.start();
 ```

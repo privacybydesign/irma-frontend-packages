@@ -19,7 +19,7 @@ const Popup    = require('irma-popup');
 
 const irma = new IrmaCore(/* options */);
 irma.use(Popup);
-irma.start(/* parameters */);
+irma.start();
 ```
 
 ## Options

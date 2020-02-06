@@ -33,7 +33,7 @@ const irma = new IrmaCore({
 });
 
 irma.use(Server);
-irma.start(/* parameters */);
+irma.start();
 ```
 
 ## Options
