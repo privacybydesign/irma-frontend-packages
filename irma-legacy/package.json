@@ -5,7 +5,7 @@
   "main": "dist/irma.node.js",
   "browser": "dist/irma.js",
   "scripts": {
-    "dev": "webpack-dev-server",
+    "dev": "webpack --mode development",
     "build": "webpack --mode production"
   },
   "license": "MIT",
