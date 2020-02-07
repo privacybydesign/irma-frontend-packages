@@ -3,7 +3,13 @@
 This package is an example for how to use `irma-legacy` in the
 web browser. See the source of `index.js` and `public/index.html` for how we use it.
 
-You can run this example by running these commands in this directory:
+This example uses the `irma-legacy` module from this repository. `irma-legacy` requires
+its own installation and building steps. These steps have to be executed first before 
+you can start this example. For an explanation how to do this you can check the README
+of `irma-legacy`.
+
+After having built `irma-legacy`, you can run this example by running
+these commands in this directory:
 
 ```bash
 npm install
