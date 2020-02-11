@@ -43,13 +43,20 @@ module.exports = class IrmaServer {
     this._serverState = new ServerState(payload.u, this._options.state);
 
     try {
-      this._serverState.observe(s => this._serverStateChange(s));
+      this._serverState.observe(s => this._serverStateChange(s), e => this._serverHandleError(e));
     } catch (error) {
       if ( this._options.debugging )
-        console.error("Error while observing server state: ", error);
+        console.error("Observing server state could not be started: ", error);
 
       this._stateMachine.transition('fail');
     }
+  }
+
+  _serverHandleError(error) {
+    if ( this._options.debugging )
+      console.error("Error while observing server state: ", error);
+
+    this._stateMachine.transition('fail');
   }
 
   _serverStateChange(newState) {
