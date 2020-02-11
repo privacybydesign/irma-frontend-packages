@@ -41,6 +41,7 @@ module.exports = class IrmaCore {
         if ( this._resolve ) this._resolve(payload);
         break;
       case 'BrowserNotSupported':
+      case 'Aborted':
         if ( this._reject ) this._reject(payload);
         break;
       case 'MediumContemplation':
