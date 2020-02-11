@@ -35,7 +35,7 @@ module.exports = class IrmaDummy {
     setTimeout(() => {
       switch(this._options.dummy) {
         case 'connection error':
-          return this._stateMachine.transition('error');
+          return this._stateMachine.transition('fail');
         default:
           return this._stateMachine.transition('loaded', this._options.qrPayload);
       }
