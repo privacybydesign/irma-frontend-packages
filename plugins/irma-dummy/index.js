@@ -33,6 +33,10 @@ module.exports = class IrmaDummy {
 
   _startNewSession() {
     setTimeout(() => {
+      // Stop when already being in end state
+      if (this._stateMachine.isEndState())
+        return;
+
       switch(this._options.dummy) {
         case 'connection error':
           return this._stateMachine.transition('fail');
@@ -44,6 +48,10 @@ module.exports = class IrmaDummy {
 
   _waitForScanning() {
     setTimeout(() => {
+      // Stop when already being in end state
+      if (this._stateMachine.isEndState())
+        return;
+
       switch(this._options.dummy) {
         case 'timeout':
           return this._stateMachine.transition('timeout');
@@ -55,6 +63,10 @@ module.exports = class IrmaDummy {
 
   _waitForUserAction() {
     setTimeout(() => {
+      // Stop when already being in end state
+      if (this._stateMachine.isEndState())
+        return;
+
       switch(this._options.dummy) {
         case 'cancel':
           return this._stateMachine.transition('cancel');

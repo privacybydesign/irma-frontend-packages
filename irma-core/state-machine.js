@@ -12,6 +12,10 @@ module.exports = class StateMachine {
     return this._state;
   }
 
+  isEndState() {
+    return Object.keys(transitions[this._state]).length === 0;
+  }
+
   addStateChangeListener(func) {
     this._listeners.push(func);
   }

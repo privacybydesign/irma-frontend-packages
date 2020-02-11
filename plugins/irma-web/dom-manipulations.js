@@ -56,6 +56,7 @@ module.exports = class DOMManipulations {
       TimedOut:             this._stateTimedOut,
       Error:                this._stateError,
       BrowserNotSupported:  this._stateBrowserNotSupported,
+      Aborted:              this._stateAborted,
       Success:              this._stateSuccess
     };
   }
@@ -169,6 +170,14 @@ module.exports = class DOMManipulations {
       <!-- State: BrowserNotSupported -->
       <div class="irma-web-forbidden-animation"></div>
       <p>${this._translations.browser}</p>
+    `;
+  }
+
+  _stateAborted() {
+    return `
+      <!-- State: Error -->
+      <div class="irma-web-forbidden-animation"></div>
+      <p>${this._translations.error}</p>
     `;
   }
 

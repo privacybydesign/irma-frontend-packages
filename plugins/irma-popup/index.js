@@ -7,7 +7,8 @@ module.exports = class IrmaPopup {
     this._stateMachine = stateMachine;
 
     this._dom = new DOMManipulations(options.element, () => {
-      stateMachine.transition('cancel');
+      if (!stateMachine.isEndState())
+        stateMachine.transition('abort', 'Popup closed');
     });
 
     this._irmaWeb = new IrmaWeb({
@@ -26,6 +27,8 @@ module.exports = class IrmaPopup {
     switch(newState) {
       case 'Loading':
         return this._dom.openPopup();
+      case 'Aborted':
+        return this._dom.closePopup();
       case 'Success':
       case 'BrowserNotSupported':
         // Delay closing pop-up so that the user can see the animation

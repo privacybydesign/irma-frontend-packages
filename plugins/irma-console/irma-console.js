@@ -26,6 +26,7 @@ module.exports = (askRetry) => {
     _askRetry(message) {
       if ( askRetry(message) )
         this._stateMachine.transition('restart');
+      this._stateMachine.transition('abort', 'Aborted by user');
     }
 
     _renderQRcode(payload) {

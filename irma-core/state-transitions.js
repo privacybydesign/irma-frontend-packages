@@ -18,18 +18,21 @@ module.exports = {
 
   Loading: {
     loaded:         'MediumContemplation',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
   MediumContemplation: {
     showQRCode:     'ShowingQRCode',
     showIrmaButton: 'ShowingIrmaButton',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
   ShowingQRCode: {
     appConnected:   'ContinueOn2ndDevice',
     timeout:        'TimedOut',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
@@ -38,12 +41,14 @@ module.exports = {
     cancel:         'Cancelled',
     restart:        'Loading',
     timeout:        'TimedOut',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
   ShowingIrmaButton: {
     chooseQR:       'ShowingQRCodeInstead',
     appConnected:   'ContinueInIrmaApp',
+    abort:          'Aborted',
     fail:           'Error',
 
     succeed:        'Success',   // We sometimes miss the appConnected transition
@@ -55,6 +60,7 @@ module.exports = {
     appConnected:   'ContinueOn2ndDevice',
     restart:        'Loading',
     timeout:        'TimedOut',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
@@ -63,23 +69,28 @@ module.exports = {
     cancel:         'Cancelled',
     restart:        'Loading',
     timeout:        'TimedOut',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
   Cancelled: {
+    abort:          'Aborted',
     restart:        'Loading'
   },
 
   TimedOut: {
+    abort:          'Aborted',
     restart:        'Loading'
   },
 
   Error: {
+    abort:          'Aborted',
     restart:        'Loading'
   },
 
   // End states
   BrowserNotSupported: {},
-  Success: {}
+  Success: {},
+  Aborted: {}
 
 }
