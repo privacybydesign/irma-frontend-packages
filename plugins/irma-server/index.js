@@ -16,6 +16,11 @@ module.exports = class IrmaServer {
         return this._startNewSession();
       case 'MediumContemplation':
         return this._startWatchingServerState(payload);
+      case 'Success':
+      case 'Cancelled':
+      case 'TimedOut':
+      case 'Error':
+        return this._serverState.close();
     }
   }
 
@@ -50,9 +55,6 @@ module.exports = class IrmaServer {
   _serverStateChange(newState) {
     if ( newState == 'CONNECTED' )
       return this._stateMachine.transition('appConnected');
-
-    // All other states lead to a full session reload, so stop listening
-    this._serverState.close();
 
     switch(newState) {
       case 'DONE':
