@@ -35,7 +35,7 @@ module.exports = class IrmaServer {
       if ( this._options.debugging )
         console.error("Error starting a new session on the server:", error);
 
-      this._stateMachine.transition('error');
+      this._stateMachine.transition('fail');
     })
   }
 
@@ -48,7 +48,7 @@ module.exports = class IrmaServer {
       if ( this._options.debugging )
         console.error("Error while observing server state: ", error);
 
-      this._stateMachine.transition('error');
+      this._stateMachine.transition('fail');
     }
   }
 
@@ -83,7 +83,7 @@ module.exports = class IrmaServer {
       if ( this._options.debugging )
         console.error("Error fetching session result from the server:", error);
 
-      this._stateMachine.transition('error');
+      this._stateMachine.transition('fail');
     });
   }
 
