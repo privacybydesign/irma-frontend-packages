@@ -16,10 +16,14 @@ module.exports = class IrmaServer {
         return this._startNewSession();
       case 'MediumContemplation':
         return this._startWatchingServerState(payload);
-      case 'Success':
       case 'Cancelled':
       case 'TimedOut':
       case 'Error':
+        // If session cannot be restarted, the error state is permanent. Therefore abort the flow.
+        if ( !this._options.session.start )
+          this._stateMachine.transition('abort', 'No restart possible');
+        // Fall through
+      case 'Success':
       case 'Ended':
         return this._serverState.close();
     }
@@ -106,6 +110,7 @@ module.exports = class IrmaServer {
           headers:      { 'Content-Type': 'application/json' },
           qrFromResult: r => r.sessionPtr
         },
+        handle: false,
         result: {
           url:          o => `${o.url}/session/${o.session.token}/result`,
           body:         null,

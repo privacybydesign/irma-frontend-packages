@@ -37,10 +37,10 @@ module.exports = class DOMManipulations {
     });
   }
 
-  _renderPartial(newPartial) {
+  _renderPartial(newPartial, state) {
     this._element
         .querySelector('.content .centered')
-        .innerHTML = newPartial.call(this);
+        .innerHTML = newPartial.call(this, state);
   }
 
   _stateToPartialMapping() {

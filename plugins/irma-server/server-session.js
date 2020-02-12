@@ -8,6 +8,17 @@ module.exports = class ServerSession {
   }
 
   start() {
+    // Start explicit session if one is given, except if we know it has been started before.
+    if ( this._options.handle && !this._options.session ) {
+      this._options.session = {sessionPtr: this._options.handle};
+      return Promise.resolve(this._options.handle);
+    }
+
+    // Check whether options are present to start a new session
+    if (!this._options.start)
+      throw('No options specified for starting new sessions');
+
+    // start options are specified, so start a new session
     return fetch(this._options.start.url(this._options), this._options.start)
     .then(r => {
       if ( r.status != 200 )
