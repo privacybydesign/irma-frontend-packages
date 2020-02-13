@@ -30,11 +30,14 @@
   opacity: 0;
   visibility: hidden;
 
+  overflow: auto;
+
   @include center;
   @include transition('opacity 0.2s ease, visibility 0s ease 0.2s');
 
-  // Direct decendant gets animation
+  // Direct descendant gets animation and auto margins to enable scrolling on small screens
   & > * {
+    margin: auto !important;
     transform: scale(0.7);
     @include transition('transform 0.2s ease-in');
   }
