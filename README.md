@@ -400,6 +400,19 @@ file with features, options and purpose of the package:
   * [`irma-dummy`](plugins/irma-dummy)
   * [`irma-server`](plugins/irma-server)
 
+### Building
+Some of the modules needs building steps before you can use them. If you are building
+this library from source, you have to perform those steps yourself. We provide you
+the bash script `build.sh` that builds every library automatically. You have to run
+this in the root directory of this repository.
+
+```
+./build.sh
+```
+
+If you need to build one specific package and the general script is not suitable to you,
+then you can look at the README of the particular package for package specific instructions.
+
 ### Examples
 
 Also, we have several examples available that show how you can use specific
