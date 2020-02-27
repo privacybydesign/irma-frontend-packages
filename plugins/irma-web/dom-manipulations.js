@@ -12,7 +12,13 @@ module.exports = class DOMManipulations {
   }
 
   renderState(state) {
-    if ( state == 'Ended' ) return;
+    if ( state == 'Ended' ) {
+      // Make sure all restart buttons are hidden when being in a final state
+      this._element.querySelectorAll('.irma-web-restart-button')
+        .forEach(e => e.style.display = 'none');
+      return;
+    }
+
     let newPartial = this._stateToPartialMapping()[state];
     if (!newPartial) throw new Error(`I don't know how to render '${state}'`);
     this._renderPartial(newPartial);
@@ -37,10 +43,10 @@ module.exports = class DOMManipulations {
     });
   }
 
-  _renderPartial(newPartial, state) {
+  _renderPartial(newPartial) {
     this._element
         .querySelector('.content .centered')
-        .innerHTML = newPartial.call(this, state);
+        .innerHTML = newPartial.call(this);
   }
 
   _stateToPartialMapping() {
@@ -125,7 +131,7 @@ module.exports = class DOMManipulations {
     return `
       <!-- State: ShowingQRCode -->
       <canvas id="irma-web-qr-canvas"></canvas>
-      <p><a data-irma-glue-transition="restart">${this._translations.back}</a></p>
+      <p class="irma-web-restart-button"><a data-irma-glue-transition="restart">${this._translations.back}</a></p>
     `;
   }
 
@@ -134,7 +140,7 @@ module.exports = class DOMManipulations {
       <!-- State: WaitingForUser -->
       <div class="irma-web-waiting-for-user-animation"></div>
       <p>${this._translations.app}</p>
-      <p><a data-irma-glue-transition="restart">${this._translations.retry}</a></p>
+      <p class="irma-web-restart-button"><a data-irma-glue-transition="restart">${this._translations.retry}</a></p>
     `;
   }
 
@@ -143,7 +149,7 @@ module.exports = class DOMManipulations {
       <!-- State: Cancelled -->
       <div class="irma-web-forbidden-animation"></div>
       <p>${this._translations.cancelled}</p>
-      <p><a data-irma-glue-transition="restart">${this._translations.retry}</a></p>
+      <p class="irma-web-restart-button"><a data-irma-glue-transition="restart">${this._translations.retry}</a></p>
     `;
   }
 
@@ -152,7 +158,7 @@ module.exports = class DOMManipulations {
       <!-- State: TimedOut -->
       <div class="irma-web-clock-animation"></div>
       <p>${this._translations.timeout}</p>
-      <p><a data-irma-glue-transition="restart">${this._translations.retry}</a></p>
+      <p class="irma-web-restart-button"><a data-irma-glue-transition="restart">${this._translations.retry}</a></p>
     `;
   }
 
@@ -161,7 +167,7 @@ module.exports = class DOMManipulations {
       <!-- State: Error -->
       <div class="irma-web-forbidden-animation"></div>
       <p>${this._translations.error}</p>
-      <p><a data-irma-glue-transition="restart">${this._translations.retry}</a></p>
+      <p class="irma-web-restart-button"><a data-irma-glue-transition="restart">${this._translations.retry}</a></p>
     `;
   }
 
