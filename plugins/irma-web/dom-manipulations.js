@@ -12,7 +12,7 @@ module.exports = class DOMManipulations {
   }
 
   renderState(state) {
-    if ( state == 'Aborted' ) return;
+    if ( state == 'Ended' ) return;
     let newPartial = this._stateToPartialMapping()[state];
     if (!newPartial) throw new Error(`I don't know how to render '${state}'`);
     this._renderPartial(newPartial);

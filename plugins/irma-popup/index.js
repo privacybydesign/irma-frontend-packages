@@ -27,7 +27,7 @@ module.exports = class IrmaPopup {
     switch(newState) {
       case 'Loading':
         return this._dom.openPopup();
-      case 'Aborted':
+      case 'Ended':
         return this._dom.closePopup();
       case 'Success':
       case 'BrowserNotSupported':
