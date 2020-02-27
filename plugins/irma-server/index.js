@@ -20,7 +20,7 @@ module.exports = class IrmaServer {
       case 'Cancelled':
       case 'TimedOut':
       case 'Error':
-      case 'Aborted':
+      case 'Ended':
         return this._serverState.close();
     }
   }
