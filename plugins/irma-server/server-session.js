@@ -9,9 +9,9 @@ module.exports = class ServerSession {
 
   start() {
     // Start explicit session if one is given, except if we know it has been started before.
-    if ( this._options.handle && !this._options.session ) {
-      this._options.session = {sessionPtr: this._options.handle};
-      return Promise.resolve(this._options.handle);
+    if ( this._options.sessionPtr && !this._options.session ) {
+      this._options.session = this._options;
+      return Promise.resolve(this._options.sessionPtr);
     }
 
     // Check whether options are present to start a new session

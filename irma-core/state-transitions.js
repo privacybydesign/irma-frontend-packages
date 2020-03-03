@@ -75,16 +75,19 @@ module.exports = {
 
   Cancelled: {
     abort:          'Ended',
+    end:            'Ended',
     restart:        'Loading'
   },
 
   TimedOut: {
     abort:          'Ended',
+    end:            'Ended',
     restart:        'Loading'
   },
 
   Error: {
     abort:          'Ended',
+    end:            'Ended',
     restart:        'Loading'
   },
 

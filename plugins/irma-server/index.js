@@ -21,11 +21,13 @@ module.exports = class IrmaServer {
       case 'Error':
         // If session cannot be restarted, the error state is permanent. Therefore abort the flow.
         if ( !this._options.session.start )
-          this._stateMachine.transition('abort', 'No restart possible');
+          this._stateMachine.transition('end', 'No restart possible');
         // Fall through
       case 'Success':
       case 'Ended':
-        return this._serverState.close();
+        if (this._serverState)
+          this._serverState.close();
+        break;
     }
   }
 
@@ -100,23 +102,35 @@ module.exports = class IrmaServer {
   }
 
   _sanitizeOptions(options) {
+    if (!options.session)
+      throw new Error('Invalid options for IrmaServer plugin: no session defined');
+
+    // Default start and result options if present
+    const startOptions = {
+      url:          o => `${o.url}/session`,
+      body:         null,
+      method:       'POST',
+      headers:      { 'Content-Type': 'application/json' },
+      qrFromResult: r => r.sessionPtr
+    };
+    const resultOptions = {
+      url:          o => `${o.url}/session/${o.session.token}/result`,
+      body:         null,
+      method:       'GET',
+      headers:      { 'Content-Type': 'application/json' }
+    };
+
     const defaults = {
       session: {
         url: '',
-        start: {
-          url:          o => `${o.url}/session`,
-          body:         null,
-          method:       'POST',
-          headers:      { 'Content-Type': 'application/json' },
-          qrFromResult: r => r.sessionPtr
-        },
-        handle: false,
-        result: {
-          url:          o => `${o.url}/session/${o.session.token}/result`,
-          body:         null,
-          method:       'GET',
-          headers:      { 'Content-Type': 'application/json' }
-        }
+
+        // Options for remote session start and result fetching
+        start: options.session.start ? startOptions : false,
+        result: options.session.result ? resultOptions : false,
+
+        // Options for direct session handling
+        sessionPtr: false,
+        token: false,
       },
       state: {
         debugging:  options.debugging,
