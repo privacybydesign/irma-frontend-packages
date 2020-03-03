@@ -9,7 +9,7 @@ const irma = new IrmaCore({
   element:   '#irma-web-form',
   language:  'en',
   translations: {
-    header:  'Sign the agreement with <i class="irma-web-logo">IRMA</i>',
+    header:  'Continue with <i class="irma-web-logo">IRMA</i>',
     loading: 'Just one second please!'
   }
 });

@@ -90,10 +90,10 @@
 
     p {
       @include reset;
-      @include font($size: 20px, $weight: 300, $color: $header-text-color);
+      @include font($size: 20px, $weight: 500, $color: $header-text-color);
 
       @include on-small-screen {
-        @include font($size: 16px, $color: $header-text-color);
+        @include font($size: 16px, $weight: 500, $color: $header-text-color);
       }
 
       i.irma-web-logo {
