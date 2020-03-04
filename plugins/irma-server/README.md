@@ -52,11 +52,37 @@ If you need more fine grained control over how the session is started and how
 the result from the session is fetched on the server, you can override (parts
 of) the `start` and/or `result` properties.
 
-With the option `handle` you can specify a particular session pointer.
-This can be used to handle an already existing session. This option does
-not override the default `start` properties. This means that in case of
-an error a session might still be restarted using the properties from `start`.
-If you do not want any restart to be possible, you can set `start` to false.
+If you don't need your Javascript to fetch the session result, you can set
+`result` to `false`. The Promise will then just resolve when the session is done.
+
+With the options `qrFromStarted` and `tokenFromStarted` you can specify 
+how respectively the session pointer and the session token can be derived
+from the start session response. The response received using the options of
+`start` is first parsed `parseResponse`. After that, the parsed version is
+supplied to the functions `qrFromStarted` and `tokenFromStarted`.
+The default settings correspond to the default response of the `/session`
+endpoint of the [`irma server`](https://irma.app/docs/irma-server/).
+
+In case you obtain a session pointer (qr) and/or a session token in a
+custom way, you can skip fetching a session by setting `start: false`.
+You can then override `qrFromStarted` and `tokenFromStarted` to manually
+specify your session pointer and/or session token by supplying
+handler functions. For example, when you somewhere collected
+ a session pointer in a variable, say `customQr`, 
+ you can start this session by doing:
+ 
+```javascript
+session: {
+  start: false.
+  qrFromStarted: () => customQr,
+  result: false
+}
+```
+
+Be aware that when you set `start` to false, a user can only handle a session
+once. When the user cancels a session or runs into some error, no restart
+can be done by the user. As a developer you are then responsible yourself to take
+into account alternative flows for these case.
 
 **It is recommended to not start sessions or fetch results on the IRMA server
 from a web browser**, but have a service in between that starts the session and
@@ -74,10 +100,11 @@ session: {
     body:         null,
     method:       'POST',
     headers:      { 'Content-Type': 'application/json' },
-    qrFromResult: r => r.sessionPtr
+    parseResponse: r => r.json()
   },
 
-  handle: false,
+  qrFromStarted: r => r.sessionPtr,
+  tokenFromStarted: r => r.token,
 
   result: {
     url:          o => `${o.url}/session/${o.session.token}/result`,
@@ -87,9 +114,6 @@ session: {
   }
 }
 ```
-
-If you don't need your Javascript to fetch the session result, you can set
-`result` to `false`. The Promise will then just resolve when the session is done.
 
 ### state
 
