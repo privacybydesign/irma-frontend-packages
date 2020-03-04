@@ -8,27 +8,30 @@ module.exports = class ServerSession {
   }
 
   start() {
-    // Start explicit session if one is given, except if we know it has been started before.
-    if ( this._options.sessionPtr && !this._options.session ) {
-      this._options.session = this._options;
-      return Promise.resolve(this._options.sessionPtr);
+    // Handle case where start is disabled and qr and token are supplied directly
+    if (!this._options.start) {
+      this._sessionPtr = this._options.qrFromStarted();
+
+      if (this._options.result)
+        this._sessionToken = this._options.tokenFromStarted();
+
+      return Promise.resolve(this._sessionPtr);
     }
 
-    // Check whether options are present to start a new session
-    if (!this._options.start)
-      throw('No options specified for starting new sessions');
-
-    // start options are specified, so start a new session
+    // Start options are specified, so start a new session
     return fetch(this._options.start.url(this._options), this._options.start)
     .then(r => {
       if ( r.status != 200 )
         throw(`Error in fetch: endpoint returned status other than 200 OK. Status: ${r.status} ${r.statusText}`);
       return r;
     })
-    .then(r => r.json())
+    .then(r => this._options.start.parseResponse(r))
     .then(r => {
-      this._options.session = r;
-      return this._options.start.qrFromResult(r);
+      this._sessionPtr = this._options.qrFromStarted(r);
+      if (this._options.result)
+        this._sessionToken = this._options.tokenFromStarted(r);
+
+      return this._sessionPtr;
     });
   }
 
@@ -36,7 +39,7 @@ module.exports = class ServerSession {
     if ( !this._options.result )
       return Promise.resolve();
 
-    return fetch(this._options.result.url(this._options), this._options)
+    return fetch(this._options.result.url(this._options, this._sessionToken), this._options)
     .then(r => {
       if ( r.status != 200 )
         throw(`Error in fetch: endpoint returned status other than 200 OK. Status: ${r.status} ${r.statusText}`);
