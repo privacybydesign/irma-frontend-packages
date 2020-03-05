@@ -16,12 +16,13 @@ module.exports = class IrmaWeb {
     );
   }
 
-  stateChange({newState, payload}) {
+  stateChange(state) {
+    const {newState, payload} = state;
     this._lastPayload = payload;
     switch(newState) {
       case 'ShowingQRCode':
       case 'ShowingQRCodeInstead':
-        this._dom.renderState(newState);
+        this._dom.renderState(state);
         QRCode.toCanvas(
           document.getElementById('irma-web-qr-canvas'),
           JSON.stringify(payload),
@@ -30,13 +31,13 @@ module.exports = class IrmaWeb {
         break;
 
       case 'ShowingIrmaButton':
-        this._dom.renderState(newState);
+        this._dom.renderState(state);
         document.getElementById('irma-web-button-link')
                 .setAttribute('href', `https://irma.app/-/session#${encodeURIComponent(JSON.stringify(payload))}`);
         break;
 
       default:
-        this._dom.renderState(newState);
+        this._dom.renderState(state);
     }
   }
 

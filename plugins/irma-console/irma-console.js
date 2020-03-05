@@ -7,14 +7,15 @@ module.exports = (askRetry) => {
       this._stateMachine = stateMachine;
     }
 
-    stateChange({newState, payload}) {
+    stateChange({newState, payload, isFinal}) {
+      if (isFinal) return;
       switch(newState) {
         case 'Cancelled':
           return this._askRetry('Transaction cancelled.');
         case 'TimedOut':
           return this._askRetry('Transaction timed out.');
         case 'Error':
-          return this._askRetry('An error occured.');
+          return this._askRetry('An error occurred.');
         case 'ShowingQRCode':
           return this._renderQRcode(payload);
         case 'ContinueOn2ndDevice':
