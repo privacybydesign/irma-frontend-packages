@@ -34,14 +34,14 @@ module.exports = class IrmaCore {
     this._modules.filter(m => m.stateChange)
                  .forEach(m => m.stateChange(state));
 
-    const {newState, payload} = state;
+    const {newState, payload, isFinal} = state;
 
     switch(newState) {
       case 'Success':
         if ( this._resolve ) this._resolve(payload);
         break;
       case 'BrowserNotSupported':
-      case 'Aborted':
+      case 'Ended':
         if ( this._reject ) this._reject(payload);
         break;
       case 'MediumContemplation':
@@ -50,14 +50,17 @@ module.exports = class IrmaCore {
         else
           this._stateMachine.transition('showQRCode', payload);
         break;
+      default:
+        if ( isFinal && this._reject ) this._reject(newState);
+        break;
     }
   }
 
   _addVisibilityListener() {
     if ( typeof document !== 'undefined' && document.addEventListener )
       document.addEventListener('visibilitychange', () => {
-        if ( this._stateMachine.currentState() != 'TimedOut' || document.hidden ) return;
-        if ( this._options.debugging ) console.log('🖥 Restarting because document became visible');
+        if (this._stateMachine.currentState() != 'TimedOut' || document.hidden) return;
+        if (this._options.debugging) console.log('🖥 Restarting because document became visible');
         this._stateMachine.transition('restart');
       });
 

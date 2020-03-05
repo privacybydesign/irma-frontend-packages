@@ -12,15 +12,15 @@ module.exports = class DOMManipulations {
   }
 
   renderState(state) {
-    if ( state == 'Ended' ) {
+    if ( state.isFinal ) {
       // Make sure all restart buttons are hidden when being in a final state
       this._element.querySelectorAll('.irma-web-restart-button')
         .forEach(e => e.style.display = 'none');
-      return;
     }
+    if (state.newState == 'Ended') return;
 
-    let newPartial = this._stateToPartialMapping()[state];
-    if (!newPartial) throw new Error(`I don't know how to render '${state}'`);
+    let newPartial = this._stateToPartialMapping()[state.newState];
+    if (!newPartial) throw new Error(`I don't know how to render '${state.newState}'`);
     this._renderPartial(newPartial);
   }
 

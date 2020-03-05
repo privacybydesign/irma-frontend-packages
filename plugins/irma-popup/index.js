@@ -29,11 +29,11 @@ module.exports = class IrmaPopup {
         return this._dom.openPopup();
       case 'Ended':
         return this._dom.closePopup();
-      case 'Success':
-      case 'BrowserNotSupported':
-        // Delay closing pop-up so that the user can see the animation
-        return window.setTimeout(() => this._dom.closePopup(), 3000);
     }
+
+    // When being in a end state, delay closing pop-up so that the user can see the animation
+    if (this._stateMachine.isEndState())
+      return window.setTimeout(() => this._dom.closePopup(), 3000);
   }
 
 };

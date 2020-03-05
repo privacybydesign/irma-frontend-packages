@@ -19,10 +19,6 @@ module.exports = class IrmaServer {
       case 'Cancelled':
       case 'TimedOut':
       case 'Error':
-        // If session cannot be restarted, the error state is permanent. Therefore abort the flow.
-        if ( !this._options.session.start )
-          this._stateMachine.transition('end', 'No restart possible');
-        // Fall through
       case 'Success':
       case 'Ended':
         if (this._serverState)
@@ -42,7 +38,7 @@ module.exports = class IrmaServer {
       if ( this._options.debugging )
         console.error("Error starting a new session on the server:", error);
 
-      this._stateMachine.transition('fail');
+      this._handleNoSuccess('fail');
     })
   }
 
@@ -55,7 +51,7 @@ module.exports = class IrmaServer {
       if ( this._options.debugging )
         console.error("Observing server state could not be started: ", error);
 
-      this._stateMachine.transition('fail');
+      this._handleNoSuccess('fail');
     }
   }
 
@@ -63,7 +59,7 @@ module.exports = class IrmaServer {
     if ( this._options.debugging )
       console.error("Error while observing server state: ", error);
 
-    this._stateMachine.transition('fail');
+    this._handleNoSuccess('fail');
   }
 
   _serverStateChange(newState) {
@@ -76,17 +72,17 @@ module.exports = class IrmaServer {
         return this._successStateReached();
       case 'CANCELLED':
         // This is a conscious choice by a user.
-        return this._stateMachine.transition('cancel');
+        return this._handleNoSuccess('cancel');
       case 'TIMEOUT':
         // This is a known and understood error. We can be explicit to the user.
-        return this._stateMachine.transition('timeout');
+        return this._handleNoSuccess('timeout');
       default:
         // Catch unknown errors and give generic error message. We never really
         // want to get here.
         if ( this._options.debugging )
           console.error(`Unknown state received from server: '${newState}'. Payload:`, payload);
 
-        return this._stateMachine.transition('fail');
+        return this._handleNoSuccess('fail');
     }
   }
 
@@ -97,8 +93,14 @@ module.exports = class IrmaServer {
       if ( this._options.debugging )
         console.error("Error fetching session result from the server:", error);
 
-      this._stateMachine.transition('fail');
+      this._handleNoSuccess('fail');
     });
+  }
+
+  _handleNoSuccess(transition) {
+    if (this._options.session.start)
+      return this._stateMachine.transition(transition);
+    this._stateMachine.finalTransition(transition);
   }
 
   _sanitizeOptions(options) {

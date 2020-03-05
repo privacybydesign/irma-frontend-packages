@@ -9,6 +9,7 @@
 module.exports = {
 
   startState:       'Uninitialized',
+  endStates:        ['BrowserNotSupported', 'Success', 'Ended', 'Cancelled', 'TimedOut', 'Error'],
 
   Uninitialized: {
     initialize:     'Loading',
@@ -73,25 +74,22 @@ module.exports = {
     fail:           'Error'
   },
 
+  // Possible end states
   Cancelled: {
     abort:          'Ended',
-    end:            'Ended',
     restart:        'Loading'
   },
 
   TimedOut: {
     abort:          'Ended',
-    end:            'Ended',
     restart:        'Loading'
   },
 
   Error: {
     abort:          'Ended',
-    end:            'Ended',
     restart:        'Loading'
   },
 
-  // End states
   BrowserNotSupported: {},
   Success: {},
   Ended: {}
