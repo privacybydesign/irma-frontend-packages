@@ -81,7 +81,7 @@ you can start this session by doing:
 
 ```javascript
 session: {
-  start: false.
+  start: false,
   mapping: {
     sessionPtr: () => customQr
   },
