@@ -1,6 +1,6 @@
 {
   "name": "irma-popup",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A frond-end plugin to show the IRMA form in a popup",
   "main": "index.js",
   "license": "MIT",

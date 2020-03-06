@@ -1,6 +1,6 @@
 {
   "name": "irma-browser-popup-example",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "An example on how to use the irma-popup package",
   "main": "index.js",
   "scripts": {
