@@ -10,10 +10,10 @@ module.exports = class ServerSession {
   start() {
     // Handle case where start is disabled and qr and token are supplied directly
     if (!this._options.start) {
-      this._sessionPtr = this._options.qrFromStarted();
+      this._sessionPtr = this._options.mapping.sessionPtr();
 
       if (this._options.result)
-        this._sessionToken = this._options.tokenFromStarted();
+        this._sessionToken = this._options.mapping.sessionToken();
 
       return Promise.resolve(this._sessionPtr);
     }
@@ -27,9 +27,9 @@ module.exports = class ServerSession {
     })
     .then(r => this._options.start.parseResponse(r))
     .then(r => {
-      this._sessionPtr = this._options.qrFromStarted(r);
+      this._sessionPtr = this._options.mapping.sessionPtr(r);
       if (this._options.result)
-        this._sessionToken = this._options.tokenFromStarted(r);
+        this._sessionToken = this._options.mapping.sessionToken(r);
 
       return this._sessionPtr;
     });

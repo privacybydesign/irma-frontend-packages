@@ -114,8 +114,10 @@ module.exports = class IrmaServer {
           headers:       { 'Content-Type': 'application/json' },
           parseResponse: r => r.json()
         },
-        qrFromStarted: r => r.sessionPtr,
-        tokenFromStarted: r => r.token,
+        mapping: {
+          sessionPtr:    r => r.sessionPtr,
+          sessionToken:  r => r.token
+        },
         result: {
           url:          (o, token) => `${o.url}/session/${token}/result`,
           body:         null,
