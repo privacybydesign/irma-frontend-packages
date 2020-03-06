@@ -11,14 +11,14 @@
   "license": "MIT",
   "devDependencies": {
     "css-loader": "^3.4.0",
-    "file-loader": "^5.0.2",
+    "file-loader": "^5.1.0",
     "irma-core": "../irma-core",
     "irma-css": "../irma-css",
     "irma-server": "../plugins/irma-server",
     "irma-web": "../plugins/irma-web",
     "style-loader": "^1.1.1",
-    "webpack": "^4.41.0",
-    "webpack-cli": "^3.3.9",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
   },
   "repository": {
