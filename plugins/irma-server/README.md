@@ -45,46 +45,57 @@ information when debugging is enabled.
 
 ### session
 
-The `session` option is the only required one. It needs at least a `url`
-property to point to a service where it can start a new session.
+The `session` option is the only required one. The `session` options contains
+three property structs corresponding to the three phases session handling has:
+ - `start` dealing with fetching session information from a remote server;
+ - `mapping` dealing with parsing the needed information out of the fetched
+   session information;
+ - `result` dealing with fetching the result from a remote server.
 
+The only separate option the `session` option contains is the `url` option
+specifying the url of your remote server. This option is required when you
+use the `start` and/or the `result` option.
+
+All property structs have default values set matching the flow when directly using the
+[`irma server`](https://irma.app/docs/irma-server/) for handling sessions.
 If you need more fine grained control over how the session is started and how
 the result from the session is fetched on the server, you can override (parts
-of) the `start` and/or `result` properties.
+of) `start` and/or `result`.
 
 If you don't need your Javascript to fetch the session result, you can set
 `result` to `false`. The Promise will then just resolve when the session is done.
 
-With the options `qrFromStarted` and `tokenFromStarted` you can specify 
+With the `mapping` properties you can specify
 how respectively the session pointer and the session token can be derived
 from the start session response. The response received using the options of
-`start` is first parsed `parseResponse`. After that, the parsed version is
-supplied to the functions `qrFromStarted` and `tokenFromStarted`.
-The default settings correspond to the default response of the `/session`
-endpoint of the [`irma server`](https://irma.app/docs/irma-server/).
+`start` is first parsed `parseResponse`. The mapping function then specify
+how to map the `start` response on the particular variable.
 
-In case you obtain a session pointer (qr) and/or a session token in a
+In case you obtain a session pointer and/or a session token in a
 custom way, you can skip fetching a session by setting `start: false`.
-You can then override `qrFromStarted` and `tokenFromStarted` to manually
-specify your session pointer and/or session token by supplying
-handler functions. For example, when you somewhere collected
- a session pointer in a variable, say `customQr`, 
- you can start this session by doing:
- 
+You can then override the mapping functions to manually
+specify your session pointer and/or session token.
+For example, when you somewhere collected
+a session pointer in a variable, say `customQr`,
+you can start this session by doing:
+
 ```javascript
 session: {
   start: false.
-  qrFromStarted: () => customQr,
+  mapping: {
+    sessionPtr: () => customQr
+  },
   result: false
 }
 ```
 
 Be aware that when you set `start` to false, a user can only handle a session
 once. When the user cancels a session or runs into some error, no restart
-can be done by the user. As a developer you are then responsible yourself to take
-into account alternative flows for these case.
+can be done by the user. **As a developer you are responsible yourself to take
+into account alternative flows for these cases. We therefore do not recommend
+disabling `start`.**
 
-**It is recommended to not start sessions or fetch results on the IRMA server
+**It is also recommended to not start sessions or fetch results on the IRMA server
 from a web browser**, but have a service in between that starts the session and
 checks the result for you. So in the browser the `url` property of `session`
 should point to a server that you control, which isn't your IRMA server.
@@ -96,21 +107,23 @@ session: {
   url: '',
 
   start: {
-    url:          o => `${o.url}/session`,
-    body:         null,
-    method:       'POST',
-    headers:      { 'Content-Type': 'application/json' },
+    url:           o => `${o.url}/session`,
+    body:          null,
+    method:        'POST',
+    headers:       { 'Content-Type': 'application/json' },
     parseResponse: r => r.json()
   },
 
-  qrFromStarted: r => r.sessionPtr,
-  tokenFromStarted: r => r.token,
+  mapping: {
+    sessionPtr:      r => r.sessionPtr,
+    sessionToken:    r => r.token
+  },
 
   result: {
-    url:          o => `${o.url}/session/${o.session.token}/result`,
-    body:         null,
-    method:       'GET',
-    headers:      { 'Content-Type': 'application/json' }
+    url:           (o, token) => `${o.url}/session/${token}/result`,
+    body:          null,
+    method:        'GET',
+    headers:       { 'Content-Type': 'application/json' }
   }
 }
 ```
