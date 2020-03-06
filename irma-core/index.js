@@ -39,10 +39,12 @@ module.exports = class IrmaCore {
     switch(newState) {
       case 'Success':
         if ( this._resolve ) this._resolve(payload);
+        this._removeVisibilityListener();
         break;
       case 'BrowserNotSupported':
       case 'Ended':
         if ( this._reject ) this._reject(payload);
+        this._removeVisibilityListener();
         break;
       case 'MediumContemplation':
         if ( this._options.userAgent == 'Android' || this._options.userAgent == 'iOS' )
@@ -51,25 +53,36 @@ module.exports = class IrmaCore {
           this._stateMachine.transition('showQRCode', payload);
         break;
       default:
-        if ( isFinal && this._reject ) this._reject(newState);
+        if ( isFinal ) {
+          if ( this._reject ) this._reject(newState);
+          this._removeVisibilityListener();
+        }
         break;
     }
   }
 
   _addVisibilityListener() {
+    const onVisibilityChange = () => {
+      if (this._stateMachine.currentState() != 'TimedOut' || document.hidden) return;
+      if (this._options.debugging) console.log('🖥 Restarting because document became visible');
+      this._stateMachine.transition('restart');
+    };
+    const onFocusChange = () => {
+      if ( this._stateMachine.currentState() != 'TimedOut' ) return;
+      if ( this._options.debugging ) console.log('🖥 Restarting because window regained focus');
+      this._stateMachine.transition('restart');
+    };
+
     if ( typeof document !== 'undefined' && document.addEventListener )
-      document.addEventListener('visibilitychange', () => {
-        if (this._stateMachine.currentState() != 'TimedOut' || document.hidden) return;
-        if (this._options.debugging) console.log('🖥 Restarting because document became visible');
-        this._stateMachine.transition('restart');
-      });
+      document.addEventListener('visibilitychange', onVisibilityChange);
 
     if ( typeof window !== 'undefined' && window.addEventListener )
-      window.addEventListener('focus', () => {
-        if ( this._stateMachine.currentState() != 'TimedOut' ) return;
-        if ( this._options.debugging ) console.log('🖥 Restarting because window regained focus');
-        this._stateMachine.transition('restart');
-      });
+      window.addEventListener('focus', onFocusChange);
+
+    this._removeVisibilityListener = () => {
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('focus', onFocusChange);
+    };
   }
 
 }

@@ -45,7 +45,7 @@ module.exports = class StateMachine {
       newState:   this._state,
       oldState:   oldState,
       transition: transition,
-      isFinal:    isFinal,
+      isFinal:    this._inEndState,
       payload:    payload
     }));
   }
