@@ -123,7 +123,8 @@ session: {
     url:           (o, token) => `${o.url}/session/${token}/result`,
     body:          null,
     method:        'GET',
-    headers:       { 'Content-Type': 'application/json' }
+    headers:       { 'Content-Type': 'application/json' },
+    parseResponse: r => r.json()
   }
 }
 ```

@@ -1,13 +1,19 @@
 {
-  "name": "irma-legacy",
-  "version": "1.0.0",
-  "description": "irma-popup wrapper package using legacy irmajs api",
+  "name": "irmajs",
+  "version": "0.2.0",
+  "description": "",
   "main": "dist/irma.node.js",
   "browser": "dist/irma.js",
   "scripts": {
-    "dev": "webpack --mode development",
+    "dev": "webpack --mode development --watch",
     "build": "webpack --mode production"
   },
+  "keywords": [],
+  "contributors": [
+    "Sietse Ringers",
+    "Ivar Derksen",
+    "Privacy by Design Foundation"
+  ],
   "license": "MIT",
   "devDependencies": {
     "qrcode": "^1.4.4",
