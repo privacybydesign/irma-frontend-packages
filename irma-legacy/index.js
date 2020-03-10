@@ -28,20 +28,16 @@ const optionsDefaults = {
 };
 /* eslint-enable no-console */
 
-// Stores all sessions started by startSession such that we can improve the functionality of handleSession
-const startedSessions = {};
-
 function parseError(e) {
-  if (e.newState !== 'Aborted')
-    return e;
-
-  switch (e.oldState) {
-    case 'Error':
-      return SessionStatus.Error;
+  switch (e) {
     case 'TimedOut':
-      return SessionStatus.Timeout;
+      throw SessionStatus.Timeout;
+    case 'Cancelled':
+    case 'Aborted by user':
+    case 'Popup closed':
+      throw SessionStatus.Cancelled;
     default:
-      return SessionStatus.Cancelled;
+      throw SessionStatus.Error;
   }
 }
 
@@ -56,69 +52,66 @@ function parseError(e) {
  * @param {Object} options
  */
 function handleSession(qr, options = {}) {
-  return new Promise(
-    (resolve, reject) => {
-      const startedSession = startedSessions[qr];
+  return Promise.resolve().then(() => {
+    // Option url does not involve any session management, so return immediately
+    if (options.method === 'url')
+      return QRCode.toDataURL(JSON.stringify(qr));
 
-      // Option url does not involve any session management, so return immediately
-      if (options.method === 'url')
-        return resolve(QRCode.toDataURL(JSON.stringify(qr)));
+    let irmaCoreOptions = {
+      session: {
+        start: false,
+        mapping: {
+          sessionPtr: () => qr,
+          sessionToken: () => options.token
+        }
+      },
+      debugging: false,
+      language:  options.language || optionsDefaults.language
+    };
 
-      let irmaCoreOptions = {
-        session: {
-          handle: qr,
-          disableRestart: startedSession === undefined,
-        },
-        debugging: false,
-        verboseReject: true,
-        language:  options.language || optionsDefaults.language,
+    if (options.server) {
+      const jwtType = options.legacyResultJwt ? 'getproof' : 'result-jwt';
+      const endpoint = options.resultJwt || options.legacyResultJwt ? jwtType : 'result';
+      irmaCoreOptions.session.url = options.server;
+      irmaCoreOptions.session.result = {
+        url: (o, token) => `${o.url}/session/${token}/${endpoint}`,
+        body: null,
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'},
+        parseResponse: endpoint === 'result' ? r => r.json() : r => r.text()
       };
-
-      if (startedSession) {
-        irmaCoreOptions.session.start = {
-          ...startedSession.start,
-          url: startedSession.start.url.bind(null, startedSession),
-        };
-      }
-
-      if (options.server) {
-        const jwtType = options.legacyResultJwt ? 'getproof' : 'result-jwt';
-        const endpoint = options.resultJwt || options.legacyResultJwt ? jwtType : 'result';
-        irmaCoreOptions.session.result = {
-          url: () => `${options.server}/session/${options.token}/${endpoint}`,
-          body: null,
-          method: 'GET',
-          headers: {'Content-Type': 'application/json'},
-        };
-      }
-
-      const irmaCore = new IrmaCore(irmaCoreOptions);
-      irmaCore.use(Server);
-
-      switch (options.method) {
-        case 'canvas':
-          return reject(new Error('Method canvas is not supported anymore, please switch to popup mode or use irma-js-packages.'));
-        case 'console':
-          irmaCore.use(Console);
-          break;
-        case 'mobile':
-          console.info('irmajs: the method mobile has been fully integrated in the option popup');
-          // Fall through
-        case 'popup':
-        case undefined:
-          if (!browser)
-            return reject(new Error('Method popup is only available in browser environments'));
-          irmaCore.use(Popup);
-          break;
-        default:
-          return reject(new Error(`Specified method ${options.method} unknown`));
-      }
-
-      irmaCore.start()
-        .then(resolve)
-        .catch(e => reject(parseError(e)));
     }
-  )
+
+    const irmaCore = new IrmaCore(irmaCoreOptions);
+    irmaCore.use(Server);
+
+    switch (options.method) {
+      case 'canvas':
+        throw new Error('Method canvas is not supported anymore, please switch to popup mode or use irma-js-packages.');
+      case 'console':
+        irmaCore.use(Console);
+        break;
+      case 'mobile':
+        console.info('Method mobile has been fully integrated in the option popup');
+        // Fall through
+      case 'popup':
+      case undefined:
+        if (!browser)
+          throw new Error('Method popup is only available in browser environments');
+        irmaCore.use(Popup);
+        break;
+      default:
+        throw new Error(`Specified method ${options.method} unknown`);
+    }
+
+    return irmaCore.start()
+    .then(result => {
+      if (result)
+        return result;
+      return SessionStatus.Done;
+    })
+    .catch(parseError);
+  })
 }
 
 /**
@@ -132,6 +125,11 @@ function handleSession(qr, options = {}) {
 function startSession(server, request, method, key, name) {
   let options = {
     url: server,
+    debugging: false,
+    mapping: {
+      sessionPtr: r => r,
+      sessionToken: () => undefined,
+    }
   };
 
   let jwt;
@@ -144,6 +142,7 @@ function startSession(server, request, method, key, name) {
       body: jwt || request,
       method: 'POST',
       headers: {'Content-Type': 'text/plain'},
+      parseResponse: r => r.text()
     };
   } else {
     options.start = {
@@ -151,26 +150,17 @@ function startSession(server, request, method, key, name) {
       body: JSON.stringify(request),
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
+      parseResponse: r => r.json()
     };
-    if (method === "token") {
+    if (method === 'token') {
       options.start.headers['Authorization'] = key;
     } else if (method !== undefined && method !== 'none') {
       throw new Error(`Method ${method} is not supported right now`);
     }
   }
 
-  const serverSession = new ServerSession({
-    ...options,
-    start: {
-      ...options.start,
-      qrFromResult: r => r,
-    }
-  });
-  return serverSession.start()
-    .then(r => {
-      startedSessions[r.sessionPtr] = options;
-      return r;
-    });
+  const serverSession = new ServerSession(options);
+  return serverSession.start();
 }
 
 /**

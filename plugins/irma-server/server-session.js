@@ -45,7 +45,7 @@ module.exports = class ServerSession {
         throw(`Error in fetch: endpoint returned status other than 200 OK. Status: ${r.status} ${r.statusText}`);
       return r;
     })
-    .then(r => r.json());
+    .then(r => this._options.result.parseResponse(r));
   }
 
 }

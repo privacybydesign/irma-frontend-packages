@@ -1,7 +1,7 @@
 {
   "name": "example-browser-legacy",
   "version": "1.0.0",
-  "description": "An example on how to use the irma-legacy package using the legacy irmajs api",
+  "description": "An example on how to use the irma-legacy (irmajs) package",
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server",

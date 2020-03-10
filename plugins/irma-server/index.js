@@ -119,10 +119,11 @@ module.exports = class IrmaServer {
           sessionToken:  r => r.token
         },
         result: {
-          url:          (o, token) => `${o.url}/session/${token}/result`,
-          body:         null,
-          method:       'GET',
-          headers:      { 'Content-Type': 'application/json' }
+          url:           (o, token) => `${o.url}/session/${token}/result`,
+          body:          null,
+          method:        'GET',
+          headers:       { 'Content-Type': 'application/json' },
+          parseResponse: r => r.json()
         }
       },
       state: {
