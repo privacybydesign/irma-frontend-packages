@@ -20,6 +20,13 @@ module.exports = class ServerState {
     this._startPolling();
   }
 
+  cancel() {
+    this.close();
+    if (!this._options.cancel)
+      return Promise.resolve();
+    return fetch(this._options.cancel.url(this._options), {method: 'DELETE'});
+  }
+
   close() {
     if ( this._source ) {
       this._source.close();

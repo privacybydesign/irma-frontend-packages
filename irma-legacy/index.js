@@ -17,7 +17,6 @@ const SessionStatus = {
   Cancelled:   'CANCELLED',   // The session is cancelled, possibly due to an error
   Done:        'DONE',        // The session has completed successfully
   Timeout:     'TIMEOUT',     // Session timed out
-  Error:       'ERROR',       // Session resulted in an error
 };
 
 /* eslint-disable no-console */
@@ -37,7 +36,7 @@ function parseError(e) {
     case 'Popup closed':
       throw SessionStatus.Cancelled;
     default:
-      throw SessionStatus.Error;
+      throw e;
   }
 }
 
