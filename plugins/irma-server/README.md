@@ -136,6 +136,10 @@ server. By default the plugin tries to use Server Sent Events, and if that fails
 it will fall back to basic polling. You can disable either feature by setting
 them to `false` instead of an object.
 
+Finally we have the cancel endpoint that is being used to communicate a cancellation
+initiated by the user via this library itself. Automatic cancellation can also be
+disabled by setting it to `false`.
+
 These are the accepted properties and their defaults on the `state` object:
 
 ```javascript
@@ -149,6 +153,10 @@ state: {
     url:        o => `${o.url}/status`,
     interval:   500,
     startState: 'INITIALIZED'
+  },
+  
+  cancel: {
+    url:        o => o.url
   }
 }
 ```

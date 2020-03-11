@@ -20,9 +20,17 @@ module.exports = class IrmaServer {
       case 'TimedOut':
       case 'Error':
       case 'Success':
-      case 'Ended':
         if (this._serverState)
           this._serverState.close();
+        break;
+      case 'Ended':
+        if (this._serverState) {
+          this._serverState.cancel()
+          .catch(error => {
+            if (this._options.debugging)
+              console.error("Session could not be cancelled:", error);
+          });
+        }
         break;
     }
   }
@@ -138,6 +146,10 @@ module.exports = class IrmaServer {
           url:        o => `${o.url}/status`,
           interval:   500,
           startState: 'INITIALIZED'
+        },
+
+        cancel: {
+          url:        o => o.url
         }
       }
     };
