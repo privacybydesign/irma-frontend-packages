@@ -392,6 +392,7 @@ file with features, options and purpose of the package:
 * [`irma-core`](irma-core)
 * [`irma-css`](irma-css)
 * [`irma-frontend`](irma-frontend)
+* [`irma-legacy`](irma-legacy)
 * Front-end plugins
   * [`irma-console`](plugins/irma-console)
   * [`irma-popup`](plugins/irma-popup)
@@ -423,7 +424,9 @@ combinations of plugins to achieve different effects:
   * [`irma-frontend`](examples/browser/irma-frontend)
   * [`irma-popup`](examples/browser/irma-popup)
   * [`irma-web`](examples/browser/irma-web)
+  * [`irma-legacy`](examples/browser/irma-legacy)
 * Nodejs
   * [`irma-console`](examples/node/irma-console)
+  * [`irma-legacy`](examples/node/irma-legacy)
 * Back-ends
   * [`irma-server`](examples/backends/irma-server)
