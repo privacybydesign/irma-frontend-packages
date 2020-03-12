@@ -5,21 +5,11 @@ $font-path: '~irma-css/dist/fonts/' !default;
 @mixin font-face($font-family, $font-file-name, $font-weight, $font-style: normal) {
   @font-face {
     font-family: $font-family;
-    src: url(#{$font-path}#{$font-file-name}.ttf) format('truetype');
+    src: url(#{$font-path}#{$font-file-name}.woff2) format('woff2');
     font-weight: $font-weight;
     font-style: $font-style;
   }
 }
 
-@include font-face('Roboto', 'roboto/Roboto-Black',        900);
-@include font-face('Roboto', 'roboto/Roboto-BlackItalic',  900, $font-style: italic);
-@include font-face('Roboto', 'roboto/Roboto-Bold',         700);
-@include font-face('Roboto', 'roboto/Roboto-BoldItalic',   700, $font-style: italic);
-@include font-face('Roboto', 'roboto/Roboto-Italic',       400, $font-style: italic);
-@include font-face('Roboto', 'roboto/Roboto-Light',        300);
-@include font-face('Roboto', 'roboto/Roboto-LightItalic',  300, $font-style: italic);
-@include font-face('Roboto', 'roboto/Roboto-Medium',       500);
-@include font-face('Roboto', 'roboto/Roboto-MediumItalic', 500, $font-style: italic);
-@include font-face('Roboto', 'roboto/Roboto-Regular',      400);
-@include font-face('Roboto', 'roboto/Roboto-Thin',         100);
-@include font-face('Roboto', 'roboto/Roboto-ThinItalic',   100, $font-style: italic);
+@include font-face('Roboto', 'roboto/Roboto-Light',  300);
+@include font-face('Roboto', 'roboto/Roboto-Medium', 500);

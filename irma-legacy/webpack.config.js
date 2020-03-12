@@ -30,7 +30,7 @@ const clientRules = {
                 ]
             },
             {
-                test: /\.ttf$/,
+                test: /\.(ttf|woff2)$/,
                 loader: 'url-loader'
             }
         ]
