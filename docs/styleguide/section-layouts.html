@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,300">
     <link rel="stylesheet" href="kss-assets/vendor/prism.css">
     <link rel="stylesheet" href="kss-assets/css/kss.css">
-    <link rel="stylesheet" href="irma.css">
+    <link rel="stylesheet" href="irma.css"/>
 
   </head>
 
@@ -68,6 +68,12 @@
                         <span class="kss-nav__name">Center</span>
                       </a>
                     </li>
+                    <li class="kss-nav__item ">
+                      <a href="section-layouts.html#kssref-layouts-popup">
+                        <span class="kss-nav__ref">4.2</span>
+                        <span class="kss-nav__name">Popup</span>
+                      </a>
+                    </li>
                 </ul>
           </li>
           <li class="kss-nav__item">
@@ -98,7 +104,7 @@
             <header class="kss-section kss-section--depth-1" id="kssref-layouts">
 
             <article class="kss-section__content">
-                <p class="kss-section__source">Source: <span>layouts/index.scss</span>, line <span>1</span></p>
+                <p class="kss-section__source">Source: <span>src/layouts/index.scss</span>, line <span>1</span></p>
 
               <a class="kss-section__permalink" href="#kssref-layouts">
                 <h1 class="kss-section__item kss-section__item--depth-1">
@@ -115,7 +121,7 @@
             <section class="kss-section kss-section--depth-2" id="kssref-layouts-center">
 
             <article class="kss-section__content">
-                <p class="kss-section__source">Source: <span>layouts/center.scss</span>, line <span>1</span></p>
+                <p class="kss-section__source">Source: <span>src/layouts/center.scss</span>, line <span>1</span></p>
 
               <a class="kss-section__permalink" href="#kssref-layouts-center">
                 <h2 class="kss-section__item kss-section__item--depth-2">
@@ -143,6 +149,46 @@
                   <pre><code class="language-markup">&lt;section class&#x3D;&quot;irma-web-center-child&quot; style&#x3D;&quot;/** Parent styles **/ width: 100%; height: 500px; border: 2px solid red;&quot;&gt;
   &lt;section style&#x3D;&quot;width: 300px; height: 300px; background-color: blue&quot;&gt;&lt;/section&gt;
 &lt;/section&gt;</code></pre>
+                </article>
+
+            </section>
+            <section class="kss-section kss-section--depth-2" id="kssref-layouts-popup">
+
+            <article class="kss-section__content">
+                <p class="kss-section__source">Source: <span>src/layouts/popup.scss</span>, line <span>1</span></p>
+
+              <a class="kss-section__permalink" href="#kssref-layouts-popup">
+                <h2 class="kss-section__item kss-section__item--depth-2">
+                  <span class="kss-section__ref">4.2</span>
+                  <span class="kss-section__name">Popup</span>
+                </h2>
+              </a>
+
+                <div class="kss-section__description"><p>Overlay content over the page</p>
+</div>
+
+            </article>
+
+              <article class="kss-section__modifiers">
+                <h1 class="kss-modifiers__heading">Example</h1>
+
+
+                <div class="kss-modifiers__example"><section class="irma-web-popup">
+  <section style="width: 300px; height: 300px; background-color: blue">
+   <button onclick="document.querySelector('.irma-web-popup').classList.remove('active')">Close popup</button>
+  </section>
+</section>
+<button onclick="document.querySelector('.irma-web-popup').classList.add('active')">Open popup</button></div>
+
+              </article>
+
+                <article class="kss-section__markup">
+                  <pre><code class="language-markup">&lt;section class&#x3D;&quot;irma-web-popup&quot;&gt;
+  &lt;section style&#x3D;&quot;width: 300px; height: 300px; background-color: blue&quot;&gt;
+   &lt;button onclick&#x3D;&quot;document.querySelector(&#x27;.irma-web-popup&#x27;).classList.remove(&#x27;active&#x27;)&quot;&gt;Close popup&lt;/button&gt;
+  &lt;/section&gt;
+&lt;/section&gt;
+&lt;button onclick&#x3D;&quot;document.querySelector(&#x27;.irma-web-popup&#x27;).classList.add(&#x27;active&#x27;)&quot;&gt;Open popup&lt;/button&gt;</code></pre>
                 </article>
 
             </section>

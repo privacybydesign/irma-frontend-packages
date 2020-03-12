@@ -9,6 +9,48 @@
   justify-content: center;
 }
 
+.irma-web-popup {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2000;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-transition: -webkit-opacity 0.2s ease, visibility 0s ease 0.2s;
+  -webkit-transition: "opacity 0.2s ease, visibility 0s ease 0.2s";
+  transition: "opacity 0.2s ease, visibility 0s ease 0.2s";
+}
+.irma-web-popup > * {
+  margin: auto !important;
+  transform: scale(0.7);
+  -webkit-transition: -webkit-transform 0.2s ease-in;
+  -webkit-transition: "transform 0.2s ease-in";
+  transition: "transform 0.2s ease-in";
+}
+.irma-web-popup.active {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transition: -webkit-opacity 0.2s ease, visibility 0s ease;
+  -webkit-transition: "opacity 0.2s ease, visibility 0s ease";
+  transition: "opacity 0.2s ease, visibility 0s ease";
+}
+.irma-web-popup.active > * {
+  transform: scale(1);
+  -webkit-transition: -webkit-transform 0.2s ease-out;
+  -webkit-transition: "transform 0.2s ease-out";
+  transition: "transform 0.2s ease-out";
+}
+
 @font-face {
   font-family: "Roboto";
   src: url(fonts/roboto/Roboto-Black.ttf) format("truetype");
@@ -130,7 +172,7 @@
 @media screen and (max-width: 768px) {
   .irma-web-form .header p {
     font-family: "Roboto", Tahoma, Arial, sans-serif;
-    font-weight: 300;
+    font-weight: 500;
     font-size: 16px;
     color: white;
   }
@@ -167,7 +209,7 @@
   margin: 1em;
   text-align: center;
 }
-.irma-web-form .header > *:not(.helper) {
+.irma-web-form .header > *:not(.helper):not(.close) {
   transform: translateX(0%);
   -webkit-transition: -webkit-transform 0.4s ease;
   -webkit-transition: transform 0.4s ease;
@@ -179,11 +221,37 @@
   -webkit-transition: transform 0.4s ease;
   transition: transform 0.4s ease;
 }
-.irma-web-form .header.show-helper > *:not(.helper) {
+.irma-web-form .header.show-helper > *:not(.helper):not(.close) {
   transform: translateX(-120%);
 }
 .irma-web-form .header.show-helper .helper {
   transform: translateX(0%);
+}
+.irma-web-form .header .close {
+  position: absolute;
+  top: 1rem;
+  right: 0;
+  width: 26px;
+  height: 26px;
+  background-color: white;
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+}
+.irma-web-form .header .close:before, .irma-web-form .header .close:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 5.2px;
+  left: 10.92px;
+  width: 4.16px;
+  height: 15.6px;
+  background-color: #004C92;
+  transform: rotateZ(45deg);
+  transform-origin: center;
+}
+.irma-web-form .header .close:after {
+  transform: rotateZ(-45deg);
 }
 .irma-web-form .content {
   box-sizing: border-box;
@@ -328,12 +396,13 @@
   color: #7f7f7f;
   display: inline-block;
   padding: 1.5em 4em;
-  background-color: #2bc194;
-  border: 1px solid #229774;
+  background-color: #004C92;
+  border: 1px solid #00315f;
   border-radius: 10px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   text-decoration: none;
   color: white;
+  font-weight: 500;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
