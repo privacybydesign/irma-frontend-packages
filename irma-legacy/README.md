@@ -11,12 +11,10 @@ It allows you to use the `irma server` to:
  * Issue IRMA attributes.
  * Create IMRA attribute-based signatures: signature on a string to which
    IRMA attributes are verifiably attached.
-
-** 
-Only use this module when you need backwards compatibility with the legacy `irmajs` function calls.
+ 
+**Only use this module when you need backwards compatibility with the legacy `irmajs` function calls.
 If you are new to `irma-frontend-packages`, please use the `irma-frontend` module or make your own
-composition of plugins and use `irma-core` as main module.
-**
+composition of plugins and use `irma-core` as main module.**
 
 ## Differences with irmajs
 Due to technical changes in IRMA, we were not able to realize full backwards compatibility with `irmajs`.
