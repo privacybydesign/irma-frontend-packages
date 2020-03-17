@@ -1,5 +1,5 @@
 {
-  "name": "irma-dummy",
+  "name": "@privacybydesign/irma-dummy",
   "version": "0.1.0",
   "description": "A dummy back-end for IRMA flows. Useful for testing without an actual server",
   "main": "index.js",

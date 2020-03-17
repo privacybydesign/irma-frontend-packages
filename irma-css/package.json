@@ -1,5 +1,5 @@
 {
-  "name": "irma-css",
+  "name": "@privacybydesign/irma-css",
   "version": "0.3.1",
   "description": "Styling to standardize the IRMA login flow and make it look pretty",
   "homepage": "https://github.com/privacybydesign/irma-frontend-packages",

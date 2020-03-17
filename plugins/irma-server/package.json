@@ -1,5 +1,5 @@
 {
-  "name": "irma-server",
+  "name": "@privacybydesign/irma-server",
   "version": "0.1.0",
   "description": "A plugin to allow your IRMA flows to communicate with a server",
   "main": "index.js",

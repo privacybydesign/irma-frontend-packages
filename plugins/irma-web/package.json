@@ -1,5 +1,5 @@
 {
-  "name": "irma-web",
+  "name": "@privacybydesign/irma-web",
   "version": "0.1.0",
   "description": "A front-end to IRMA flows for in the web browser",
   "main": "index.js",
