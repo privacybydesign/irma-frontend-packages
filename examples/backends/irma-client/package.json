@@ -1,7 +1,7 @@
 {
-  "name": "irma-backends-server-example",
+  "name": "irma-backends-client-example",
   "version": "0.1.0",
-  "description": "An example on how to use the irma-server plugin",
+  "description": "An example on how to use the irma-client plugin",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -10,11 +10,11 @@
   "dependencies": {
     "irma-console": "../../../plugins/irma-console",
     "irma-core": "../../../irma-core",
-    "irma-server": "../../../plugins/irma-server"
+    "irma-client": "../../../plugins/irma-client"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/privacybydesign/irma-frontend-packages",
-    "directory": "examples/backends/irma-server"
+    "directory": "examples/backends/irma-client"
   }
 }

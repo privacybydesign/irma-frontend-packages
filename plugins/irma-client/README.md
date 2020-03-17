@@ -1,4 +1,4 @@
-# IRMA server
+# IRMA client
 
 This plugin allows your IRMA flow to communicate with a back-end. It is highly
 configurable for use in many different setups.
@@ -11,7 +11,7 @@ snippet:
 
 ```javascript
 const IrmaCore = require('irma-core');
-const Server   = require('irma-server');
+const Client   = require('irma-client');
 
 const irma = new IrmaCore({
   session: {
@@ -32,7 +32,7 @@ const irma = new IrmaCore({
   }
 });
 
-irma.use(Server);
+irma.use(Client);
 irma.start();
 ```
 

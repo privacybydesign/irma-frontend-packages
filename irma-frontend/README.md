@@ -1,6 +1,6 @@
 # IRMA frontend
 
-This is a thin wrapper around `irma-core`, `irma-web`, `irma-server` and
+This is a thin wrapper around `irma-core`, `irma-web`, `irma-client` and
 `irma-css`. The intended use of this package is to provide an all-in-one
 Javascript file that developers can include in the HEAD section of an HTML file
 and get started<sup>[1](#fonts)</sup>:

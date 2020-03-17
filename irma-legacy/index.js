@@ -1,9 +1,9 @@
 require('irma-css/dist/irma.css');
 
 const IrmaCore      = require('irma-core');
-const Server        = require('irma-server');
-const ServerSession = require('irma-server/server-session');
-const ServerState   = require('irma-server/server-state');
+const Client        = require('irma-client');
+const ServerSession = require('irma-client/server-session');
+const ServerState   = require('irma-client/server-state');
 const Console       = require('irma-console');
 const Popup         = require('irma-popup');
 const QRCode        = require('qrcode');
@@ -82,7 +82,7 @@ function handleSession(qr, options = {}) {
     }
 
     const irmaCore = new IrmaCore(irmaCoreOptions);
-    irmaCore.use(Server);
+    irmaCore.use(Client);
 
     switch (options.method) {
       case 'canvas':

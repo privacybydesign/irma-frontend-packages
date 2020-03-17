@@ -87,7 +87,7 @@ _Getting the session result through a proxy_
   ##### Combining your own packages
 
   ```bash
-$ npm install --save-dev irma-css irma-core irma-web irma-server
+$ npm install --save-dev irma-css irma-core irma-web irma-client
   ```
 
   ```javascript
@@ -95,7 +95,7 @@ require('irma-css/dist/irma.css');
 
 const IrmaCore = require('irma-core');
 const Web      = require('irma-web');
-const Server   = require('irma-server');
+const Client   = require('irma-client');
 
 const irma = new IrmaCore({
   debugging: false,            // Enable to get helpful output in the browser console
@@ -118,7 +118,7 @@ const irma = new IrmaCore({
 });
 
 irma.use(Web);
-irma.use(Server);
+irma.use(Client);
 
 irma.start()
 .then(result => console.log("Successful disclosure! 🎉", result))
@@ -141,7 +141,7 @@ irma.start()
   As you saw in the snippets above, you can change the request types and URLs of
   both actions. But you can also change the request body, headers and how to get
   the QR code from the server's response. See the
-  [`irma-server`](plugins/irma-server) documentation for details.
+  [`irma-client`](plugins/irma-client) documentation for details.
 </details>
 
 ### Talking to IRMA server directly, with signed request
@@ -203,7 +203,7 @@ _Getting the session result directly_
   ##### Combining your own packages
 
   ```bash
-$ npm install --save-dev irma-css irma-core irma-web irma-server
+$ npm install --save-dev irma-css irma-core irma-web irma-client
   ```
 
   ```javascript
@@ -211,7 +211,7 @@ require('irma-css/dist/irma.css');
 
 const IrmaCore = require('irma-core');
 const Web      = require('irma-web');
-const Server   = require('irma-server');
+const Client   = require('irma-client');
 
 const irmaRequest = document.getElementById('irma-request').value;
 
@@ -231,7 +231,7 @@ const irma = new IrmaCore({
 });
 
 irma.use(Web);
-irma.use(Server);
+irma.use(Client);
 
 irma.start()
 .then(result => console.log("Successful disclosure! 🎉", result))
@@ -305,7 +305,7 @@ session there. The back-end does not need to be involved at all.
   ##### Combining your own packages
 
   ```bash
-$ npm install --save-dev irma-css irma-core irma-web irma-server
+$ npm install --save-dev irma-css irma-core irma-web irma-client
   ```
 
   ```javascript
@@ -313,7 +313,7 @@ require('irma-css/dist/irma.css');
 
 const IrmaCore = require('irma-core');
 const Web      = require('irma-web');
-const Server   = require('irma-server');
+const Client   = require('irma-client');
 
 const irma = new IrmaCore({
   debugging: false,            // Enable to get helpful output in the browser console
@@ -339,7 +339,7 @@ const irma = new IrmaCore({
 });
 
 irma.use(Web);
-irma.use(Server);
+irma.use(Client);
 
 irma.start()
 .then(result => console.log("Successful disclosure! 🎉", result))
@@ -399,7 +399,7 @@ file with features, options and purpose of the package:
   * [`irma-web`](plugins/irma-web)
 * Back-end plugins
   * [`irma-dummy`](plugins/irma-dummy)
-  * [`irma-server`](plugins/irma-server)
+  * [`irma-client`](plugins/irma-client)
 
 ### Building
 Some of the modules needs building steps before you can use them. If you are building
@@ -429,4 +429,4 @@ combinations of plugins to achieve different effects:
   * [`irma-console`](examples/node/irma-console)
   * [`irma-legacy`](examples/node/irma-legacy)
 * Back-ends
-  * [`irma-server`](examples/backends/irma-server)
+  * [`irma-client`](examples/backends/irma-client)

@@ -1,6 +1,6 @@
 const IrmaCore = require('irma-core');
 const Console  = require('irma-console');
-const Server   = require('irma-server');
+const Client   = require('irma-client');
 
 const irma = new IrmaCore({
   debugging: true,
@@ -24,7 +24,7 @@ const irma = new IrmaCore({
 });
 
 irma.use(Console);
-irma.use(Server);
+irma.use(Client);
 
 irma.start()
 .then(result => console.log("Successful disclosure! 🎉", result))

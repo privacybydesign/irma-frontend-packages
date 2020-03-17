@@ -2,7 +2,7 @@ require('irma-css/dist/irma.css');
 
 const IrmaCore   = require('irma-core');
 const IrmaWeb    = require('irma-web');
-const Server     = require('irma-server');
+const IrmaClient = require('irma-client');
 
 window.irma = {
   core: null,
@@ -10,7 +10,7 @@ window.irma = {
   new: options => {
     window.irma.core = new IrmaCore(options);
     window.irma.core.use(IrmaWeb);
-    window.irma.core.use(Server);
+    window.irma.core.use(IrmaClient);
   },
 
   start: (...input) =>

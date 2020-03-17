@@ -22,7 +22,7 @@
     "irma-css": "../irma-css",
     "irma-core": "../irma-core",
     "irma-popup": "../plugins/irma-popup",
-    "irma-server": "../plugins/irma-server",
+    "irma-client": "../plugins/irma-client",
     "irma-console": "../plugins/irma-console",
     "css-loader": "^3.4.0",
     "url-loader": "^3.0.0",
