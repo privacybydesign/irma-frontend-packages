@@ -1,0 +1,45 @@
+image: privacybydesign/node_yarn:latest
+
+stages:
+  - build
+
+before_script:
+  - set -euxo pipefail
+
+irma-client:
+  stage: build
+  artifacts:
+    paths:
+      - plugins/irma-client
+  script:
+    - cd plugins/irma-client
+    - npm install
+
+irma-console:
+  stage: build
+  artifacts:
+    paths:
+      - plugins/irma-console
+  script:
+    - cd plugins/irma-console
+    - npm install
+
+irma-dummy:
+  stage: build
+  artifacts:
+    paths:
+      - plugins/irma-dummy
+  script:
+    - cd plugins/irma-dummy
+    - npm install
+
+irma-web:
+  stage: build
+  artifacts:
+    paths:
+      - plugins/irma-web
+  script:
+    - cd plugins/irma-web
+    - npm install
+
+# Other artifacts can yet be added when first packages are in npm
