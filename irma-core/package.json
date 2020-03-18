@@ -1,5 +1,5 @@
 {
-  "name": "irma-core",
+  "name": "@privacybydesign/irma-core",
   "version": "0.1.0",
   "description": "The state machine for implementing IRMA flows, that plugins can register on",
   "main": "index.js",

@@ -6,6 +6,15 @@ stages:
 before_script:
   - set -euxo pipefail
 
+irma-core:
+  stage: build
+  artifacts:
+    paths:
+      - irma-core
+  script:
+    - cd irma-core
+    - npm install
+
 irma-client:
   stage: build
   artifacts:
@@ -41,5 +50,15 @@ irma-web:
   script:
     - cd plugins/irma-web
     - npm install
+
+irma-css:
+  stage: build
+  artifacts:
+    paths:
+      - irma-css
+  script:
+    - cd irma-css
+    - npm install
+    - npm run release
 
 # Other artifacts can yet be added when first packages are in npm
