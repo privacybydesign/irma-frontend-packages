@@ -35,8 +35,10 @@ irma.start()
 ```
 
 This Promise only resolves when the state machine reaches the `Success` state
-and only rejects when the machine reaches the `BrowserNotSupported` state. In
-the latter case, plugins may already inform the user of this issue, so please
-test if you need to catch this state yourself. You may wish to fall back to
+and only rejects when the machine reaches a state with a final transaction.
+The end states `BrowserNotSupported` and `Ended` always lead to a reject.
+The other possible end states are `Cancelled`, `Timeout` and `Error`.
+In the reject case, plugins may already inform the user of this issue, so please
+test if you need to catch the state yourself. You may wish to fall back to
 another authentication method automatically by catching the rejection and
 redirecting the user.

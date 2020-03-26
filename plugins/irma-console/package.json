@@ -1,6 +1,6 @@
 {
   "name": "@privacybydesign/irma-console",
-  "version": "0.1.0",
+  "version": "0.1.1-rc.0",
   "description": "A console based front-end for IRMA flows. Useful for testing or use in nodejs",
   "main": "node.js",
   "browser": "web.js",
