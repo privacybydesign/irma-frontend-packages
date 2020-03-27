@@ -80,8 +80,10 @@ module.exports = class IrmaCore {
       window.addEventListener('focus', onFocusChange);
 
     this._removeVisibilityListener = () => {
-      document.removeEventListener('visibilitychange', onVisibilityChange);
-      window.removeEventListener('focus', onFocusChange);
+      if ( typeof document !== 'undefined' && document.removeEventListener )
+        document.removeEventListener('visibilitychange', onVisibilityChange);
+      if ( typeof window !== 'undefined' && window.removeEventListener )
+        window.removeEventListener('focus', onFocusChange);
     };
   }
 
