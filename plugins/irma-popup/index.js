@@ -1,4 +1,4 @@
-const IrmaWeb          = require('irma-web');
+const IrmaWeb          = require('@privacybydesign/irma-web');
 const DOMManipulations = require('./dom-manipulations');
 
 module.exports = class IrmaPopup {

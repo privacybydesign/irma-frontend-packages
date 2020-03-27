@@ -1,8 +1,8 @@
-require('irma-css/dist/irma.css');
+require('@privacybydesign/irma-css/dist/irma.css');
 
-const IrmaCore   = require('irma-core');
-const IrmaWeb    = require('irma-web');
-const IrmaClient = require('irma-client');
+const IrmaCore   = require('@privacybydesign/irma-core');
+const IrmaWeb    = require('@privacybydesign/irma-web');
+const IrmaClient = require('@privacybydesign/irma-client');
 
 window.irma = {
   core: null,

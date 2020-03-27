@@ -1,8 +1,8 @@
 {
-  "name": "irma-frontend",
-  "version": "0.1.0",
-  "description": "A simplified package to get started easily",
-  "main": "index.js",
+  "name": "@privacybydesign/irma-frontend",
+  "version": "0.1.1-rc.0",
+  "description": "A simplified package of irma-frontend modules to get started easily",
+  "main": "dist/irma.js",
   "scripts": {
     "dev": "webpack-dev-server",
     "build": "webpack --mode production",
@@ -10,14 +10,14 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@privacybydesign/irma-client": "^0.1.1-rc.0",
+    "@privacybydesign/irma-core": "^0.1.1-rc.0",
+    "@privacybydesign/irma-css": "^0.3.1-rc.0",
+    "@privacybydesign/irma-web": "^0.1.1-rc.0",
     "css-loader": "^3.4.0",
-    "irma-core": "../irma-core",
-    "irma-css": "../irma-css",
-    "irma-client": "../plugins/irma-client",
-    "irma-web": "../plugins/irma-web",
     "style-loader": "^1.1.1",
     "url-loader": "^3.0.0",
-    "webpack": "^4.42.0",
+    "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
   },
