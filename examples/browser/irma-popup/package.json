@@ -9,10 +9,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "irma-core": "../../../irma-core",
-    "irma-css": "../../../irma-css",
-    "irma-dummy": "../../../plugins/irma-dummy",
-    "irma-popup": "../../../plugins/irma-popup"
+    "@privacybydesign/irma-core": "^0.1.1-rc.1",
+    "@privacybydesign/irma-css": "^0.3.1-rc.0",
+    "@privacybydesign/irma-dummy": "^0.1.1-rc.0",
+    "@privacybydesign/irma-popup": "^0.1.1-rc.0"
   },
   "devDependencies": {
     "css-loader": "^3.4.0",

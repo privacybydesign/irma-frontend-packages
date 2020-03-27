@@ -8,5 +8,6 @@
     "type": "git",
     "url": "https://github.com/privacybydesign/irma-frontend-packages",
     "directory": "irma-core"
-  }
+  },
+  "dependencies": {}
 }

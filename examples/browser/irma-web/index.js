@@ -1,8 +1,8 @@
-require('irma-css/dist/irma.css');
+require('@privacybydesign/irma-css/dist/irma.css');
 
-const IrmaCore = require('irma-core');
-const IrmaWeb  = require('irma-web');
-const Dummy    = require('irma-dummy');
+const IrmaCore = require('@privacybydesign/irma-core');
+const IrmaWeb  = require('@privacybydesign/irma-web');
+const Dummy    = require('@privacybydesign/irma-dummy');
 
 const irma = new IrmaCore({
   debugging: true,

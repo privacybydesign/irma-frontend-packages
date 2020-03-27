@@ -12,6 +12,7 @@
     "directory": "examples/browser/irma-frontend"
   },
   "devDependencies": {
+    "@privacybydesign/irma-frontend": "^0.1.1-rc.0",
     "http-server": "^0.12.0"
   }
 }

@@ -1,6 +1,6 @@
-const IrmaCore = require('irma-core');
-const Console  = require('irma-console');
-const Dummy    = require('irma-dummy');
+const IrmaCore = require('@privacybydesign/irma-core');
+const Console  = require('@privacybydesign/irma-console');
+const Dummy    = require('@privacybydesign/irma-dummy');
 
 const irma = new IrmaCore({
   debugging: true,

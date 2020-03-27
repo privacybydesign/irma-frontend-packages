@@ -1,8 +1,8 @@
-require('irma-css/dist/irma.css');
+require('@privacybydesign/irma-css/dist/irma.css');
 
-const IrmaCore = require('irma-core');
-const Popup    = require('irma-popup');
-const Dummy    = require('irma-dummy');
+const IrmaCore = require('@privacybydesign/irma-core');
+const Popup    = require('@privacybydesign/irma-popup');
+const Dummy    = require('@privacybydesign/irma-dummy');
 
 document.getElementById('start-button').addEventListener('click', () => {
 

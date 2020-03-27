@@ -27,7 +27,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.ttf$/,
+        test: /\.woff2$/,
         loader: 'file-loader'
       }
     ]
