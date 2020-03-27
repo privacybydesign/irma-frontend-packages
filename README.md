@@ -430,3 +430,26 @@ combinations of plugins to achieve different effects:
   * [`irma-legacy`](examples/node/irma-legacy)
 * Back-ends
   * [`irma-client`](examples/backends/irma-client)
+
+### Development
+When developing a certain module, you might want to test the module using one of the examples.
+By default the examples load their dependencies via npm, so if you want to run an example
+with your own code you have to use `npm link`.
+
+For example, when you are developing the `irma-client` plugin and you want to run the
+`backends/irma-client` example, the modules can be linked in the following way:
+
+```
+cd plugins/irma-client
+npm link
+cd ../../
+
+cd examples/backends/irma-client
+npm install
+npm link @privacybydesign/irma-client
+```
+
+Don't forget unlinking the repositories again when you are done. Unlinking repositories works the same as linking
+repositories, but then in reverse order. You use `npm unlink` instead of `npm link`.
+
+**Depending on your setup it might be needed to run `npm link` using `sudo`.**
