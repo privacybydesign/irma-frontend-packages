@@ -1,11 +1,11 @@
-require('irma-css/dist/irma.css');
+require('@privacybydesign/irma-css/dist/irma.css');
 
-const IrmaCore      = require('irma-core');
-const Client        = require('irma-client');
-const ServerSession = require('irma-client/server-session');
-const ServerState   = require('irma-client/server-state');
-const Console       = require('irma-console');
-const Popup         = require('irma-popup');
+const IrmaCore      = require('@privacybydesign/irma-core');
+const Client        = require('@privacybydesign/irma-client');
+const ServerSession = require('@privacybydesign/irma-client/server-session');
+const ServerState   = require('@privacybydesign/irma-client/server-state');
+const Console       = require('@privacybydesign/irma-console');
+const Popup         = require('@privacybydesign/irma-popup');
 const QRCode        = require('qrcode');
 const JWT           = require('jsonwebtoken');
 
