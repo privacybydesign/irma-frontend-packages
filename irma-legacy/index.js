@@ -7,7 +7,6 @@ const ServerState   = require('@privacybydesign/irma-client/server-state');
 const Console       = require('@privacybydesign/irma-console');
 const Popup         = require('@privacybydesign/irma-popup');
 const QRCode        = require('qrcode');
-const JWT           = require('jsonwebtoken');
 
 const browser = typeof(window) !== 'undefined';
 
@@ -170,32 +169,39 @@ function startSession(server, request, method, key, name) {
  * @param {string} name name of the requestor, only for hmac and publickey mode
  */
 function signSessionRequest(request, method, key, name) {
-  let rrequest;
-  if (request.type || request['@context']) {
-    rrequest = { request };
-  } else if (request.request) {
-    rrequest = request;
-  }
+  return import(/* webpackChunkName: "jwt" */ 'jsonwebtoken').then(JWT => {
+    let rrequest;
+    if (request.type || request['@context']) {
+      rrequest = { request };
+    } else if (request.request) {
+      rrequest = request;
+    }
 
-  const subjects = { disclosing: 'verification_request', issuing: 'issue_request', signing: 'signature_request' };
-  const subjectsContext = {
-    'https://irma.app/ld/request/disclosure/v2': 'verification_request',
-    'https://irma.app/ld/request/signature/v2' : 'signature_request',
-    'https://irma.app/ld/request/issuance/v2'  : 'issue_request',
-  };
+    const subjects = { disclosing: 'verification_request', issuing: 'issue_request', signing: 'signature_request' };
+    const subjectsContext = {
+      'https://irma.app/ld/request/disclosure/v2': 'verification_request',
+      'https://irma.app/ld/request/signature/v2' : 'signature_request',
+      'https://irma.app/ld/request/issuance/v2'  : 'issue_request',
+    };
 
-  if (!subjects[rrequest.request.type] && !subjectsContext[rrequest.request['@context']])
-    throw new Error('Not an IRMA session request');
-  if (method !== 'publickey' && method !== 'hmac')
-    throw new Error('Unsupported signing method');
+    if (!subjects[rrequest.request.type] && !subjectsContext[rrequest.request['@context']])
+      throw new Error('Not an IRMA session request');
+    if (method !== 'publickey' && method !== 'hmac')
+      throw new Error('Unsupported signing method');
 
-  const fields = { 'verification_request': 'sprequest', 'issue_request': 'iprequest', 'signature_request': 'absrequest' };
-  const algorithm = method === 'publickey' ? 'RS256' : 'HS256';
-  const jwtOptions = { algorithm, issuer: name,
-    subject: subjects[rrequest.request.type] || subjectsContext[rrequest.request['@context']]
-  };
+    const fields = {
+      'verification_request': 'sprequest',
+      'issue_request'       : 'iprequest',
+      'signature_request'   : 'absrequest',
+    };
+    const algorithm = method === 'publickey' ? 'RS256' : 'HS256';
+    const jwtOptions = {
+      algorithm, issuer: name,
+      subject: subjects[rrequest.request.type] || subjectsContext[rrequest.request['@context']]
+    };
 
-  return JWT.sign({[ fields[jwtOptions.subject] ] : rrequest}, key, jwtOptions);
+    return JWT.sign({[fields[jwtOptions.subject]]: rrequest}, key, jwtOptions);
+  });
 }
 
 /**
