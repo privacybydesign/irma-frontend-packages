@@ -60,5 +60,32 @@ irma-css:
     - cd irma-css
     - npm install
     - npm run release
-
-# Other artifacts can yet be added when first packages are in npm
+    
+irma-popup:
+  stage: build
+  artifacts:
+    paths:
+      - plugins/irma-popup
+  script:
+    - cd plugins/irma-popup
+    - npm install
+    
+irma-frontend:
+  stage: build
+  artifacts:
+    paths:
+      - irma-frontend
+  script:
+    - cd irma-frontend
+    - npm install
+    - npm run release
+    
+irma-legacy:
+  stage: build
+  artifacts:
+    paths:
+      - irma-legacy
+  script:
+    - cd irma-legacy
+    - npm install
+    - npm run release
