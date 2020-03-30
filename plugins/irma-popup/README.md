@@ -14,8 +14,8 @@ If you *do* want to use `irma-css` (which is recommended), you can check the
 ## Usage
 
 ```javascript
-const IrmaCore = require('irma-core');
-const Popup    = require('irma-popup');
+const IrmaCore = require('@privacybydesign/irma-core');
+const Popup    = require('@privacybydesign/irma-popup');
 
 const irma = new IrmaCore(/* options */);
 irma.use(Popup);

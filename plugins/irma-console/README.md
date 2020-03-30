@@ -9,8 +9,8 @@ render a QR code to either the local `nodejs` terminal or the browser console.
 ## Usage
 
 ```javascript
-const IrmaCore = require('irma-core');
-const Console  = require('irma-console');
+const IrmaCore = require('@privacybydesign/irma-core');
+const Console  = require('@privacybydesign/irma-console');
 
 const irma = new IrmaCore(/* options */);
 irma.use(Console);

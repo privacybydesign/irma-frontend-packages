@@ -51,7 +51,7 @@ SCSS/SASS files:
 Or require the CSS in your javascript if you use a tool like Webpack:
 
 ```javascript
-require('irma-css/dist/irma.css');
+require('@privacybydesign/irma-css/dist/irma.css');
 ```
 
 ## Contributing

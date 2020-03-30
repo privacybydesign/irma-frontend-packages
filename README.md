@@ -91,11 +91,11 @@ $ npm install --save-dev irma-css irma-core irma-web irma-client
   ```
 
   ```javascript
-require('irma-css/dist/irma.css');
+require('@privacybydesign/irma-css/dist/irma.css');
 
-const IrmaCore = require('irma-core');
-const Web      = require('irma-web');
-const Client   = require('irma-client');
+const IrmaCore = require('@privacybydesign/irma-core');
+const Web      = require('@privacybydesign/irma-web');
+const Client   = require('@privacybydesign/irma-client');
 
 const irma = new IrmaCore({
   debugging: false,            // Enable to get helpful output in the browser console
@@ -207,11 +207,11 @@ $ npm install --save-dev irma-css irma-core irma-web irma-client
   ```
 
   ```javascript
-require('irma-css/dist/irma.css');
+require('@privacybydesign/irma-css/dist/irma.css');
 
-const IrmaCore = require('irma-core');
-const Web      = require('irma-web');
-const Client   = require('irma-client');
+const IrmaCore = require('@privacybydesign/irma-core');
+const Web      = require('@privacybydesign/irma-web');
+const Client   = require('@privacybydesign/irma-client');
 
 const irmaRequest = document.getElementById('irma-request').value;
 
@@ -309,11 +309,11 @@ $ npm install --save-dev irma-css irma-core irma-web irma-client
   ```
 
   ```javascript
-require('irma-css/dist/irma.css');
+require('@privacybydesign/irma-css/dist/irma.css');
 
-const IrmaCore = require('irma-core');
-const Web      = require('irma-web');
-const Client   = require('irma-client');
+const IrmaCore = require('@privacybydesign/irma-core');
+const Web      = require('@privacybydesign/irma-web');
+const Client   = require('@privacybydesign/irma-client');
 
 const irma = new IrmaCore({
   debugging: false,            // Enable to get helpful output in the browser console
@@ -361,11 +361,11 @@ $ npm install --save-dev irma-css irma-core irma-web irma-dummy
   ```
 
   ```javascript
-require('irma-css/dist/irma.css');
+require('@privacybydesign/irma-css/dist/irma.css');
 
-const IrmaCore = require('irma-core');
-const Web      = require('irma-web');
-const Dummy    = require('irma-dummy');
+const IrmaCore = require('@privacybydesign/irma-core');
+const Web      = require('@privacybydesign/irma-web');
+const Dummy    = require('@privacybydesign/irma-dummy');
 
 const irma = new IrmaCore({
   debugging: false,            // Enable to get helpful output in the browser console

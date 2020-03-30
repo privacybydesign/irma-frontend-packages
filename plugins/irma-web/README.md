@@ -15,8 +15,8 @@ for a more hands-on implementation example.
 ## Usage
 
 ```javascript
-const IrmaCore = require('irma-core');
-const Web      = require('irma-web');
+const IrmaCore = require('@privacybydesign/irma-core');
+const Web      = require('@privacybydesign/irma-web');
 
 const irma = new IrmaCore({
   element: '#irma-web-form'

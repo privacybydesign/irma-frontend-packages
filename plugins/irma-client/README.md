@@ -10,8 +10,8 @@ For a simple demo where you directly start an IRMA session at an IRMA server
 snippet:
 
 ```javascript
-const IrmaCore = require('irma-core');
-const Client   = require('irma-client');
+const IrmaCore = require('@privacybydesign/irma-core');
+const Client   = require('@privacybydesign/irma-client');
 
 const irma = new IrmaCore({
   session: {

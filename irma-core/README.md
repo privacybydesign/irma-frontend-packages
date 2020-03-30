@@ -4,7 +4,7 @@ This package contains the state machine for implementing IRMA flows. You can
 register plugins with this state machine and then start the machine:
 
 ```javascript
-const IrmaCore = require('irma-core');
+const IrmaCore = require('@privacybydesign/irma-core');
 const irma     = new IrmaCore(/* options */);
 
 irma.use(/* Plugin A */);
