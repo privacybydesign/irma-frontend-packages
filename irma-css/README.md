@@ -15,16 +15,13 @@ and find the right HTML snippets [in the styleguide](https://privacybydesign.git
 
 ### The old fashioned way
 
-There is a [normal version and a minified version](https://github.com/privacybydesign/irma-frontend-packages/tree/master/dist)
-of the styles that you can include in your project. If you don't want to host
-the CSS files yourself you can link from your project to the latest version
-online like so:
+There is a [normal version and a minified version](https://gitlab.science.ru.nl/irma/github-mirrors/irma-frontend-packages/-/jobs/artifacts/master/browse/irma-css/dist?job=irma-css)
+of the styles that you can include in your project. The CSS can be linked into
+your website the regular way. You have to host the CSS file yourself.
 
 ```html
-<link rel="stylesheet" href="//privacybydesign.github.io/irma-frontend-packages/styleguide/irma.css" />
+<link rel="stylesheet" href="assets/irma.css" />
 ```
-
-Please be aware though that we can make breaking changes at any time.
 
 ### The way the cool kids do it
 
