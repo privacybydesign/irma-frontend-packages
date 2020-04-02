@@ -13,7 +13,7 @@ irma-core:
       - irma-core
   script:
     - cd irma-core
-    - npm install
+    - npm install --only=prod
 
 irma-client:
   stage: build
@@ -22,7 +22,7 @@ irma-client:
       - plugins/irma-client
   script:
     - cd plugins/irma-client
-    - npm install
+    - npm install --only=prod
 
 irma-console:
   stage: build
@@ -31,7 +31,7 @@ irma-console:
       - plugins/irma-console
   script:
     - cd plugins/irma-console
-    - npm install
+    - npm install --only=prod
 
 irma-dummy:
   stage: build
@@ -40,7 +40,7 @@ irma-dummy:
       - plugins/irma-dummy
   script:
     - cd plugins/irma-dummy
-    - npm install
+    - npm install --only=prod
 
 irma-web:
   stage: build
@@ -49,7 +49,7 @@ irma-web:
       - plugins/irma-web
   script:
     - cd plugins/irma-web
-    - npm install
+    - npm install --only=prod
 
 irma-css:
   stage: build
@@ -60,7 +60,8 @@ irma-css:
     - cd irma-css
     - npm install
     - npm run release
-    
+    - rm -rf node_modules
+
 irma-popup:
   stage: build
   artifacts:
@@ -68,8 +69,8 @@ irma-popup:
       - plugins/irma-popup
   script:
     - cd plugins/irma-popup
-    - npm install
-    
+    - npm install --only=prod
+
 irma-frontend:
   stage: build
   artifacts:
@@ -79,7 +80,8 @@ irma-frontend:
     - cd irma-frontend
     - npm install
     - npm run release
-    
+    - rm -rf node_modules
+
 irma-legacy:
   stage: build
   artifacts:
@@ -89,3 +91,4 @@ irma-legacy:
     - cd irma-legacy
     - npm install
     - npm run release
+    - rm -rf node_modules
