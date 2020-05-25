@@ -10,17 +10,17 @@
   "license": "MIT",
   "dependencies": {
     "@privacybydesign/irma-core": "^0.1.1-rc.1",
-    "@privacybydesign/irma-css": "^0.3.1-rc.0",
+    "@privacybydesign/irma-css": "^0.3.1-rc.2",
     "@privacybydesign/irma-dummy": "^0.1.1-rc.0",
     "@privacybydesign/irma-popup": "^0.1.1-rc.0"
   },
   "devDependencies": {
-    "css-loader": "^3.4.0",
+    "css-loader": "^3.5.3",
     "file-loader": "^5.0.2",
-    "style-loader": "^1.1.1",
-    "webpack": "^4.41.4",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.43.0",
     "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.10.1"
+    "webpack-dev-server": "^3.11.0"
   },
   "repository": {
     "type": "git",

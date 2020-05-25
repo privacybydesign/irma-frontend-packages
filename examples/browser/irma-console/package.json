@@ -14,9 +14,9 @@
     "@privacybydesign/irma-dummy": "^0.1.1-rc.0"
   },
   "devDependencies": {
-    "webpack": "^4.42.1",
+    "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.11.0"
   },
   "repository": {
     "type": "git",
