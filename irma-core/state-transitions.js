@@ -33,6 +33,7 @@ module.exports = {
   ShowingQRCode: {
     appConnected:   'ContinueOn2ndDevice',
     timeout:        'TimedOut',
+    switchFlow:     'ShowingIrmaButton',
     abort:          'Ended',
     fail:           'Error'
   },
@@ -48,6 +49,7 @@ module.exports = {
 
   ShowingIrmaButton: {
     chooseQR:       'ShowingQRCodeInstead',
+    switchFlow:     'ShowingQRCode',
     appConnected:   'ContinueInIrmaApp',
     abort:          'Ended',
     fail:           'Error',
@@ -59,6 +61,7 @@ module.exports = {
 
   ShowingQRCodeInstead: {
     appConnected:   'ContinueOn2ndDevice',
+    switchFlow:     'ShowingQRCode',
     restart:        'Loading',
     timeout:        'TimedOut',
     abort:          'Ended',
