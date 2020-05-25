@@ -17,6 +17,10 @@ module.exports = class StateMachine {
     return this._inEndState;
   }
 
+  isValidTransition(transition) {
+    return transitions[this._state][transition] != undefined;
+  }
+
   addStateChangeListener(func) {
     this._listeners.push(func);
   }

@@ -12,7 +12,11 @@ module.exports = class IrmaWeb {
     this._dom = new DOMManipulations(
       document.querySelector(this._options.element),
       this._options,
-      (t) => this._stateMachine.transition(t, this._lastPayload)
+      (t) => {
+        // Check for validity of function to prevent errors when multiple events are cached.
+        if (this._stateMachine.isValidTransition(t))
+          this._stateMachine.transition(t, this._lastPayload);
+      }
     );
   }
 
