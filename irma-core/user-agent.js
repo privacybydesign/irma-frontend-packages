@@ -14,6 +14,10 @@ module.exports = () => {
   if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream)
     return 'iOS';
 
+  // https://stackoverflow.com/questions/57776001/how-to-detect-ipad-pro-as-ipad-using-javascript
+  if (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints && navigator.maxTouchPoints > 2)
+    return 'iOS';
+
   // Neither Android nor iOS, assuming desktop
   return 'Desktop';
 }
