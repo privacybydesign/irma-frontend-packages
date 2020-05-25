@@ -66,6 +66,7 @@ module.exports = class ServerState {
 
     this._source.addEventListener('error', error => {
       clearTimeout(canceller);
+      this._source.close();
 
       if ( this._options.debugging )
         console.error('🌎 EventSource threw an error: ', error);
