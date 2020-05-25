@@ -127,7 +127,7 @@ module.exports = class IrmaClient {
           sessionToken:  r => r.token
         },
         result: {
-          url:           (o, token) => `${o.url}/session/${token}/result`,
+          url:           (o, {sessionToken}) => `${o.url}/session/${sessionToken}/result`,
           body:          null,
           method:        'GET',
           headers:       { 'Content-Type': 'application/json' },

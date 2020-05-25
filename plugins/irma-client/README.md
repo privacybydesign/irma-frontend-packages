@@ -120,7 +120,7 @@ session: {
   },
 
   result: {
-    url:           (o, token) => `${o.url}/session/${token}/result`,
+    url:           (o, {sessionPtr, sessionToken}) => `${o.url}/session/${sessionToken}/result`,
     body:          null,
     method:        'GET',
     headers:       { 'Content-Type': 'application/json' },
