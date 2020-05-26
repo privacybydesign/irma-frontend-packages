@@ -72,7 +72,7 @@ function handleSession(qr, options = {}) {
       const endpoint = options.resultJwt || options.legacyResultJwt ? jwtType : 'result';
       irmaCoreOptions.session.url = options.server;
       irmaCoreOptions.session.result = {
-        url: (o, token) => `${o.url}/session/${token}/${endpoint}`,
+        url: (o, {sessionToken}) => `${o.url}/session/${sessionToken}/${endpoint}`,
         body: null,
         method: 'GET',
         headers: {'Content-Type': 'application/json'},
