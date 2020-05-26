@@ -5,6 +5,7 @@ module.exports = class ServerSession {
 
   constructor(options) {
     this._options = options;
+    this._mappings = {};
   }
 
   start() {
