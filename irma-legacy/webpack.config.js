@@ -11,7 +11,7 @@ const clientRules = {
     output: {
         path: path.join(__dirname, 'dist'),
         filename: '[name].js',
-        library: 'irma-legacy',
+        library: 'irma',
         libraryTarget: 'umd',
     },
 
@@ -48,7 +48,7 @@ const serverRules = {
     output: {
         path: path.join(__dirname, 'dist'),
         filename: '[name].js',
-        library: 'irma-legacy',
+        library: 'irma',
         libraryTarget: 'umd'
     },
 
