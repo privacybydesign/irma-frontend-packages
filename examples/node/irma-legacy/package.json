@@ -1,5 +1,5 @@
 {
-  "name": "irma-node-console-example",
+  "name": "irma-node-legacy-example",
   "version": "1.0.0",
   "description": "An example on how to use the irma-console package",
   "main": "index.js",
@@ -7,8 +7,8 @@
   "scripts": {
     "start": "node ./index.js"
   },
-  "dependencies": {
-    "irma-legacy": "../../../irma-legacy"
+  "devDependencies": {
+    "@privacybydesign/irmajs": "^0.2.0-rc.2"
   },
   "repository": {
     "type": "git",

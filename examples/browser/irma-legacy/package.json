@@ -8,10 +8,8 @@
     "build": "webpack"
   },
   "license": "MIT",
-  "dependencies": {
-    "irma-legacy": "../../../irma-legacy"
-  },
   "devDependencies": {
+    "@privacybydesign/irmajs": "^0.2.0-rc.2",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.11.0"

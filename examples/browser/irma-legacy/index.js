@@ -1,4 +1,4 @@
-const irma = require('irma-legacy');
+const irma = require('@privacybydesign/irmajs');
 
 document.getElementById('start-button').addEventListener('click', () => {
 
