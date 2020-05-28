@@ -110,3 +110,4 @@ irma-legacy:
     - npm install
     - npm run release
     - rm -rf node_modules
+    - npm install --only=prod
