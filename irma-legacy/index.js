@@ -221,7 +221,7 @@ function waitStatus(url, startingState, waitForStates) {
 }
 
 module.exports = {
-  ServerStatus,
+  SessionStatus,
   handleSession,
   startSession,
   signSessionRequest,
