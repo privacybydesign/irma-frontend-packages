@@ -7,8 +7,12 @@ module.exports = () => {
   if (!!window.MSInputMethodContext && !!document.documentMode)
     return 'Desktop';
 
-  if (/Android/i.test(window.navigator.userAgent))
+  if (/Android/i.test(window.navigator.userAgent)) {
+    if (/Firefox/i.test(window.navigator.userAgent)) {
+      return 'Android-Firefox';
+    }
     return 'Android';
+  }
 
   // https://stackoverflow.com/questions/9038625/detect-if-device-is-ios
   if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream)

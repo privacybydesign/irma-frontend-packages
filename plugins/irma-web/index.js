@@ -29,7 +29,7 @@ module.exports = class IrmaWeb {
         this._dom.renderState(state);
         QRCode.toCanvas(
           document.getElementById('irma-web-qr-canvas'),
-          JSON.stringify(payload),
+          payload.qr,
           {width: '230', margin: '1'}
         );
         break;
@@ -37,7 +37,7 @@ module.exports = class IrmaWeb {
       case 'ShowingIrmaButton':
         this._dom.renderState(state);
         document.getElementById('irma-web-button-link')
-                .setAttribute('href', `https://irma.app/-/session#${encodeURIComponent(JSON.stringify(payload))}`);
+                .setAttribute('href', payload.mobile);
         break;
 
       default:

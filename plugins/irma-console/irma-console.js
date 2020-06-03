@@ -31,7 +31,7 @@ module.exports = (askRetry) => {
     }
 
     _renderQRcode(payload) {
-      qrcode.generate(JSON.stringify(payload));
+      qrcode.generate(payload.qr);
     }
 
   }

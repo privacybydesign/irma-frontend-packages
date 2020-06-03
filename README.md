@@ -450,6 +450,6 @@ npm link @privacybydesign/irma-client
 ```
 
 Don't forget unlinking the repositories again when you are done. Unlinking repositories works the same as linking
-repositories, but then in reverse order. You use `npm unlink` instead of `npm link`.
+repositories, but then in reverse order. You use `npm unlink --no-save` instead of `npm link`.
 
 **Depending on your setup it might be needed to run `npm link` using `sudo`.**
