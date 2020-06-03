@@ -8,8 +8,8 @@
     "start": "node ./index.js"
   },
   "dependencies": {
-    "@privacybydesign/irma-console": "^0.1.1-rc.0",
-    "@privacybydesign/irma-core": "^0.1.1-rc.2",
+    "@privacybydesign/irma-console": "^0.1.1-rc.1",
+    "@privacybydesign/irma-core": "^0.1.1-rc.3",
     "@privacybydesign/irma-dummy": "^0.1.1-rc.0"
   },
   "repository": {

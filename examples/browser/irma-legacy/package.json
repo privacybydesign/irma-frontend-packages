@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@privacybydesign/irmajs": "^0.2.0-rc.4",
+    "@privacybydesign/irmajs": "^0.2.0-rc.5",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.11.0"
