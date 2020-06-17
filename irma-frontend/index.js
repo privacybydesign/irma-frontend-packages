@@ -2,19 +2,21 @@ require('@privacybydesign/irma-css/dist/irma.css');
 
 const IrmaCore   = require('@privacybydesign/irma-core');
 const IrmaWeb    = require('@privacybydesign/irma-web');
+const IrmaPopup  = require('@privacybydesign/irma-popup');
 const IrmaClient = require('@privacybydesign/irma-client');
 
-window.irma = {
-  core: null,
-
-  new: options => {
-    window.irma.core = new IrmaCore(options);
-    window.irma.core.use(IrmaWeb);
-    window.irma.core.use(IrmaClient);
+module.exports = {
+  newWeb: options => {
+    let core = new IrmaCore(options);
+    core.use(IrmaWeb);
+    core.use(IrmaClient);
+    return core;
   },
 
-  start: (...input) =>
-    window.irma.core ?
-      window.irma.core.start(...input) :
-      console.error('You need to instantiate IrmaCore first')
+  newPopup: options => {
+    let core = new IrmaCore(options);
+    core.use(IrmaPopup);
+    core.use(IrmaClient);
+    return core;
+  },
 }

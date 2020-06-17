@@ -22,7 +22,7 @@
   </body>
 
   <script type="text/javascript">
-    irma.new({
+    irma.newWeb({
       // Developer options
       debugging: true,
 
@@ -51,9 +51,8 @@
           })
         }
       }
-    });
-
-    irma.start()
+    })
+    .start()
     .then(result => console.log("Successful disclosure! 🎉", result))
     .catch(error => console.error("Couldn't do what you asked 😢", error));
   </script>
