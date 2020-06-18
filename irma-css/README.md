@@ -66,8 +66,15 @@ $ npm install
 $ npm run dev
 ```
 
-You should now have the style guide running on
-[http://localhost:8080](http://localhost:8080).
+The style guide has been updated in the `docs/styleguide` directory in
+the root of this project. To show the styleguide, the docs
+directory can simply be hosted using an HTTP
+server to run the example. You can for example use `serve` for this:
+
+```bash
+npm install serve
+`npm bin`/serve ../docs/styleguide
+```
 
 Any change you make to the stylesheets will trigger a rebuild of the style guide
 and will be shown after a browser refresh.

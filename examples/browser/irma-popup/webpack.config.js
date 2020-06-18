@@ -12,11 +12,6 @@ module.exports = {
 		filename: '[name].js'
 	},
 
-	devServer: {
-		contentBase: path.join(__dirname, 'public'),
-		disableHostCheck: true
-	},
-
   module: {
     rules: [
       {

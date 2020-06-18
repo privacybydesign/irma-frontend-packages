@@ -8,12 +8,7 @@ module.exports = {
   },
 
   output: {
-    path: path.join(__dirname, 'docs'),
+    path: path.join(__dirname, 'public'),
     filename: '[name].js'
-  },
-
-  devServer: {
-    contentBase: path.join(__dirname, 'docs'),
-    disableHostCheck: true
-  },
+  }
 };

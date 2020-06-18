@@ -12,7 +12,15 @@ You can run this example by running these commands in this directory:
 
 ```bash
 npm install
-npm run dev
+npm run build
+```
+
+Then the public directory of this example can simply be hosted using an HTTP
+server to run the example. You can for example use `serve` for this:
+
+```bash
+npm install serve
+`npm bin`/serve ./public
 ```
 
 The demo application will then run on the URL mentioned in the terminal output

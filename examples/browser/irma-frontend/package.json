@@ -2,9 +2,6 @@
   "name": "irma-browser-frontend-example",
   "version": "0.1.0",
   "description": "An example on how to use the irma-frontend package",
-  "scripts": {
-    "dev": "serve ."
-  },
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -12,7 +9,6 @@
     "directory": "examples/browser/irma-frontend"
   },
   "devDependencies": {
-    "@privacybydesign/irma-frontend": "^0.1.1-rc.6",
-    "serve": "^11.3.1"
+    "@privacybydesign/irma-frontend": "^0.1.1-rc.6"
   }
 }

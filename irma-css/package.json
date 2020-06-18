@@ -20,7 +20,6 @@
     "url": "https://github.com/privacybydesign/irma-frontend-packages/issues"
   },
   "scripts": {
-    "serve": "serve ../docs/styleguide",
     "clean": "npm run clear && npm run fonts && npm run rebuild",
     "clear": "rm -rf ../docs/styleguide/*",
     "watch-stylesheets": "onchange 'src/**/*.*' -- npm run rebuild",
@@ -31,7 +30,7 @@
     "fonts": "mkdir ../docs/styleguide/fonts && cp -r assets/fonts/roboto ../docs/styleguide/fonts",
     "watch-images": "onchange 'assets/images/*.*' -- npm run svg-images",
     "svg-images": "echo \"// This file is auto-generated from the assets/images directory, so don't bother manually changing it.\" > src/variables/svg-images.scss; for file in assets/images/*; do [ -e \"$file\" ] || continue; svgo=`svgo \"$file\" -o -`; name=`basename \"$file\" .svg`; echo \"\\$svg-image-$name: '$svgo';\" >> src/variables/svg-images.scss; done",
-    "dev": "npm run clean && concurrently --kill-others \"npm run watch-stylesheets\" \"npm run watch-fonts\" \"npm run watch-images\" \"npm run serve\"",
+    "dev": "npm run clean && concurrently --kill-others \"npm run watch-stylesheets\" \"npm run watch-fonts\" \"npm run watch-images\"",
     "release": "sass src/dist.scss dist/irma.css && uglifycss --output dist/irma.min.css dist/irma.css && cp -r assets/fonts dist/"
   },
   "devDependencies": {
@@ -39,8 +38,7 @@
     "kss": "^3.0.1",
     "michelangelo": "^0.8.0",
     "onchange": "^5.2.0",
-    "sass": "^1.26.7",
-    "serve": "^11.3.1",
+    "sass": "^1.26.8",
     "svgo": "^1.3.2",
     "uglifycss": "0.0.29"
   }

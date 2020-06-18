@@ -4,7 +4,6 @@
   "description": "An example on how to use the irma-popup package",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server",
     "build": "webpack"
   },
   "license": "MIT",
@@ -15,12 +14,11 @@
     "@privacybydesign/irma-popup": "^0.1.1-rc.2"
   },
   "devDependencies": {
-    "css-loader": "^3.5.3",
+    "css-loader": "^3.6.0",
     "file-loader": "^5.0.2",
     "style-loader": "^1.2.1",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-cli": "^3.3.12"
   },
   "repository": {
     "type": "git",
