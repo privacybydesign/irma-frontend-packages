@@ -15,11 +15,6 @@ const clientRules = {
         libraryTarget: 'umd',
     },
 
-    devServer: {
-        contentBase: path.join(__dirname, 'dist'),
-        disableHostCheck: true
-    },
-
     module: {
         rules: [
             {
@@ -50,11 +45,6 @@ const serverRules = {
         filename: '[name].js',
         library: 'irma',
         libraryTarget: 'umd'
-    },
-
-    devServer: {
-        contentBase: path.join(__dirname, 'dist'),
-        disableHostCheck: true
     },
 
     module: {
