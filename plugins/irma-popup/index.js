@@ -15,7 +15,7 @@ module.exports = class IrmaPopup {
       stateMachine,
       options: {
         ...options,
-        element: `#irma-web-form`,
+        element: `#irma-popup-web-form`,
         showCloseButton: true
       }
     });

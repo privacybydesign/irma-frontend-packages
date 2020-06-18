@@ -1,4 +1,3 @@
-const QRCode           = require('qrcode');
 const DOMManipulations = require('./dom-manipulations');
 const merge            = require('deepmerge');
 
@@ -23,25 +22,17 @@ module.exports = class IrmaWeb {
   stateChange(state) {
     const {newState, payload} = state;
     this._lastPayload = payload;
+
+    this._dom.renderState(state);
     switch(newState) {
       case 'ShowingQRCode':
       case 'ShowingQRCodeInstead':
-        this._dom.renderState(state);
-        QRCode.toCanvas(
-          document.getElementById('irma-web-qr-canvas'),
-          payload.qr,
-          {width: '230', margin: '1'}
-        );
+        this._dom.setQRCode(payload.qr);
         break;
 
       case 'ShowingIrmaButton':
-        this._dom.renderState(state);
-        document.getElementById('irma-web-button-link')
-                .setAttribute('href', payload.mobile);
+        this._dom.setButtonLink(payload.mobile);
         break;
-
-      default:
-        this._dom.renderState(state);
     }
   }
 

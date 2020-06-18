@@ -5,9 +5,17 @@ module.exports = class DOMManipulations {
     this._element = this._findElement(element);
 
     this._element.classList.add('irma-web-popup');
-    this._element.innerHTML = `<section class='irma-web-form' id='irma-web-form'></section>`;
-    this._element.addEventListener('click', e => this._clickHandler(e));
-    document.addEventListener('keyup', e => this._keyHandler(e));
+    this._element.innerHTML = `<section class='irma-web-form' id='irma-popup-web-form'></section>`;
+
+    let clickEventListener = e => this._clickHandler(e);
+    let keyUpEventListener = e => this._keyHandler(e);
+    this._element.addEventListener('click', clickEventListener);
+    document.addEventListener('keyup', keyUpEventListener);
+    this._removeEventListeners = () => {
+      this._element.removeEventListener('click', clickEventListener);
+      document.removeEventListener('keyup', keyUpEventListener);
+    }
+
     this.closePopup();
   }
 
@@ -43,7 +51,7 @@ module.exports = class DOMManipulations {
   }
 
   _cancel() {
-    // TODO: clean up event handlers
+    this._removeEventListeners();
     this.closePopup();
     this._closeCallback();
   }

@@ -1,3 +1,5 @@
+const QRCode = require('qrcode');
+
 module.exports = class DOMManipulations {
 
   constructor(element, options, clickCallback) {
@@ -22,6 +24,19 @@ module.exports = class DOMManipulations {
     let newPartial = this._stateToPartialMapping()[state.newState];
     if (!newPartial) throw new Error(`I don't know how to render '${state.newState}'`);
     this._renderPartial(newPartial);
+  }
+
+  setQRCode(qr) {
+    QRCode.toCanvas(
+      this._element.querySelector('.irma-web-qr-canvas'),
+      qr,
+      {width: '230', margin: '1'}
+    );
+  }
+
+  setButtonLink(link) {
+    this._element.querySelector('.irma-web-button-link')
+      .setAttribute('href', link);
   }
 
   _renderInitialState() {
@@ -113,14 +128,14 @@ module.exports = class DOMManipulations {
   _stateShowingQRCode() {
     return `
       <!-- State: ShowingQRCode -->
-      <canvas id="irma-web-qr-canvas"></canvas>
+      <canvas class="irma-web-qr-canvas"></canvas>
     `;
   }
 
   _stateShowingIrmaButton() {
     return `
       <!-- State: ShowingButton -->
-      <a id="irma-web-button-link">
+      <a class="irma-web-button-link">
         <button class="irma-web-button">${this._translations.button}</button>
       </a>
       <p><a data-irma-glue-transition="chooseQR">${this._translations.qrCode}</a></p>
@@ -130,7 +145,7 @@ module.exports = class DOMManipulations {
   _stateShowingQRCodeInstead() {
     return `
       <!-- State: ShowingQRCode -->
-      <canvas id="irma-web-qr-canvas"></canvas>
+      <canvas class="irma-web-qr-canvas"></canvas>
       <p class="irma-web-restart-button"><a data-irma-glue-transition="restart">${this._translations.back}</a></p>
     `;
   }
