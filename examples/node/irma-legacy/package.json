@@ -8,7 +8,7 @@
     "start": "node ./index.js"
   },
   "devDependencies": {
-    "@privacybydesign/irmajs": "^0.2.0-rc.5"
+    "@privacybydesign/irmajs": "^0.2.0-rc.6"
   },
   "repository": {
     "type": "git",
