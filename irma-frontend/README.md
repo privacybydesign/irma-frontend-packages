@@ -14,10 +14,10 @@ const irma = require('@privacybydesign/irma-frontend');
 ```
 
 When you want to use an embedded web element,
-then you can instantiate `irma-core` like so:
+then you can instantiate `irma-frontend` like so:
 
 ```javascript
-const irmaCore = irma.newWeb({
+const example = irma.newWeb({
   debugging: false,            // Enable to get helpful output in the browser console
   element:   '#irma-web-form', // Which DOM element to render to
 
@@ -30,11 +30,11 @@ const irmaCore = irma.newWeb({
 });
 ```
 
-When you want to use a popup overlay that renders on top the content of
-your website, then you can instantiate `irma-core` like so:
+When you want to use a popup overlay that renders on top of the content of
+your website, then you can instantiate `irma-frontend` like so:
 
 ```javascript
-const irmaCore = irma.newPopup({
+const example = irma.newPopup({
   debugging: false,            // Enable to get helpful output in the browser console
 
   // Back-end options
@@ -49,7 +49,7 @@ const irmaCore = irma.newPopup({
 Finally, you can start your IRMA flow:
 
 ```javascript
-irmaCore.start()
+example.start()
 .then(result => console.log("Successful disclosure! 🎉", result))
 .catch(error => console.error("Couldn't do what you asked 😢", error));
 ```
