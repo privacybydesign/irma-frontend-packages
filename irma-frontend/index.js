@@ -10,13 +10,17 @@ module.exports = {
     let core = new IrmaCore(options);
     core.use(IrmaWeb);
     core.use(IrmaClient);
-    return core;
+    return {
+      start: core.start,
+    };
   },
 
   newPopup: options => {
     let core = new IrmaCore(options);
     core.use(IrmaPopup);
     core.use(IrmaClient);
-    return core;
+    return {
+      start: core.start,
+    };
   },
 }
