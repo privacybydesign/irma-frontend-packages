@@ -11,7 +11,7 @@ module.exports = {
     core.use(IrmaWeb);
     core.use(IrmaClient);
     return {
-      start: core.start,
+      start: core.start.bind(core),
     };
   },
 
@@ -20,7 +20,7 @@ module.exports = {
     core.use(IrmaPopup);
     core.use(IrmaClient);
     return {
-      start: core.start,
+      start: core.start.bind(core),
     };
   },
 }
