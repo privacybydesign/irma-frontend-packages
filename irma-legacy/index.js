@@ -61,10 +61,11 @@ function handleSession(qr, options = {}) {
         mapping: {
           sessionPtr: () => qr,
           sessionToken: () => options.token
-        }
+        },
+        result: false,
       },
       debugging: false,
-      language:  options.language || optionsDefaults.language
+      language:  options.language || optionsDefaults.language,
     };
 
     if (options.server) {
