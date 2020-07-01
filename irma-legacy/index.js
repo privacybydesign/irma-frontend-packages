@@ -143,6 +143,7 @@ function startSession(server, request, method, key, name) {
     body: request,
     method: 'POST',
     headers: {},
+    parseResponse: r => r.json(),
   };
 
   switch(method) {
