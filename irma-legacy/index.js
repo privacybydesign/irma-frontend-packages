@@ -125,36 +125,40 @@ function startSession(server, request, method, key, name) {
     url: server,
     debugging: false,
     mapping: {
-      sessionPtr: r => r,
+      sessionPtr: r => r, // In this way also the sessionToken is included in the return value.
       sessionToken: () => undefined,
     }
   };
 
-  let jwt;
-  if (method === 'publickey' || method === 'hmac')
-    jwt = signSessionRequest(request, method, key, name);
-
-  if (jwt || typeof request === 'string') {
-    options.start = {
-      url: o => `${o.url}/session`,
-      body: jwt || request,
-      method: 'POST',
-      headers: {'Content-Type': 'text/plain'},
-      parseResponse: r => r.text()
-    };
-  } else {
-    options.start = {
-      url: o => `${o.url}/session`,
-      body: JSON.stringify(request),
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      parseResponse: r => r.json()
-    };
-    if (method === 'token') {
-      options.start.headers['Authorization'] = key;
-    } else if (method !== undefined && method !== 'none') {
-      throw new Error(`Method ${method} is not supported right now`);
+  if (typeof(request) === 'object') {
+    if (['publickey', 'hmac'].includes(method)) {
+      request = signSessionRequest(request, method, key, name);
+    } else {
+      request = JSON.stringify(request);
     }
+  }
+
+  options.start = {
+    url: o => `${o.url}/session`,
+    body: request,
+    method: 'POST',
+    headers: {},
+  };
+
+  switch(method) {
+    case 'token':
+      options.start.headers['Authorization'] = key;
+      // Fallthrough
+    case undefined:
+    case 'none':
+      options.start.headers['Content-Type'] = 'application/json';
+      break;
+    case 'publickey':
+    case 'hmac':
+      options.start.headers['Content-Type'] = 'text/plain';
+      break;
+    default:
+      throw new Error(`Method ${method} is not supported right now`);
   }
 
   const serverSession = new ServerSession(options);
