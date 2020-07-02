@@ -1,6 +1,6 @@
 {
   "name": "@privacybydesign/irmajs",
-  "version": "0.2.0-rc.7",
+  "version": "0.2.0-rc.8",
   "description": "",
   "main": "dist/irma.node.js",
   "browser": "dist/irma.js",
@@ -24,8 +24,8 @@
     "qrcode": "^1.4.4"
   },
   "devDependencies": {
-    "@privacybydesign/irma-css": "^0.3.1-rc.3",
-    "@privacybydesign/irma-popup": "^0.1.1-rc.3",
+    "@privacybydesign/irma-css": "^0.3.1-rc.4",
+    "@privacybydesign/irma-popup": "^0.1.1-rc.4",
     "css-loader": "^3.6.0",
     "null-loader": "^3.0.0",
     "style-loader": "^1.2.1",
