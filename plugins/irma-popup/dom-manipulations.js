@@ -40,7 +40,7 @@ module.exports = class DOMManipulations {
 
   _clickHandler(e) {
     // Is this a click on the close button or the background overlay?
-    if ( e.target === this._element || e.target.matches('button.irma-web-close') )
+    if ( e.target.matches('button.irma-web-close') )
       this._cancel();
   }
 
