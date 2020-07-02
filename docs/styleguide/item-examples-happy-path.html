@@ -106,7 +106,7 @@
 
   window.addEventListener('load', function() {
     eachDo(document.querySelectorAll('[data-animate]'), function(section) {
-      let panels = section.querySelectorAll('.centered');
+      let panels = section.querySelectorAll('.irma-web-centered');
       eachDo(panels, function(panel) { panel.style.display = 'none'; });
       function showPanel(panels, index) {
         panels[index].style.display = 'block';

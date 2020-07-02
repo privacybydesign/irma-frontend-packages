@@ -1,4 +1,5 @@
 .irma-web-center-child {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -10,6 +11,7 @@
 }
 
 .irma-web-popup {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -37,33 +39,22 @@
   -webkit-transition: "transform 0.2s ease-in";
   transition: "transform 0.2s ease-in";
 }
-.irma-web-popup.active {
+.irma-web-popup.irma-web-popup-active {
   opacity: 1;
   visibility: visible;
   -webkit-transition: -webkit-opacity 0.2s ease, visibility 0s ease;
   -webkit-transition: "opacity 0.2s ease, visibility 0s ease";
   transition: "opacity 0.2s ease, visibility 0s ease";
 }
-.irma-web-popup.active > * {
+.irma-web-popup.irma-web-popup-active > * {
   transform: scale(1);
   -webkit-transition: -webkit-transform 0.2s ease-out;
   -webkit-transition: "transform 0.2s ease-out";
   transition: "transform 0.2s ease-out";
 }
 
-@font-face {
-  font-family: "Roboto";
-  src: url(fonts/roboto/Roboto-Light.woff2) format("woff2");
-  font-weight: 300;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Roboto";
-  src: url(fonts/roboto/Roboto-Medium.woff2) format("woff2");
-  font-weight: 500;
-  font-style: normal;
-}
 .irma-web-form {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -82,7 +73,8 @@
     min-height: 440px;
   }
 }
-.irma-web-form .header {
+.irma-web-form .irma-web-header {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -96,11 +88,12 @@
   border-top-right-radius: 9px;
 }
 @media screen and (max-width: 768px) {
-  .irma-web-form .header {
+  .irma-web-form .irma-web-header {
     padding: 1em;
   }
 }
-.irma-web-form .header p {
+.irma-web-form .irma-web-header p {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -110,18 +103,19 @@
   color: white;
 }
 @media screen and (max-width: 768px) {
-  .irma-web-form .header p {
+  .irma-web-form .irma-web-header p {
     font-family: "Roboto", Tahoma, Arial, sans-serif;
     font-weight: 500;
     font-size: 16px;
     color: white;
   }
 }
-.irma-web-form .header p i.irma-web-logo {
+.irma-web-form .irma-web-header p i.irma-web-logo {
   width: 70px;
   height: 55px;
 }
-.irma-web-form .header .helper {
+.irma-web-form .irma-web-header .irma-web-helper {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -139,35 +133,35 @@
   border-bottom-left-radius: 1px;
   border-bottom-right-radius: 1px;
 }
-.irma-web-form .header .helper p, .irma-web-form .header .helper a {
+.irma-web-form .irma-web-header .irma-web-helper p, .irma-web-form .irma-web-header .irma-web-helper a {
   font-family: "Roboto", Tahoma, Arial, sans-serif;
   font-weight: 300;
   font-size: 13px;
   color: white;
 }
-.irma-web-form .header .helper p {
+.irma-web-form .irma-web-header .irma-web-helper p {
   margin: 1em;
   text-align: center;
 }
-.irma-web-form .header > *:not(.helper):not(.close) {
+.irma-web-form .irma-web-header > *:not(.irma-web-helper):not(.irma-web-close) {
   transform: translateX(0%);
   -webkit-transition: -webkit-transform 0.4s ease;
   -webkit-transition: transform 0.4s ease;
   transition: transform 0.4s ease;
 }
-.irma-web-form .header .helper {
+.irma-web-form .irma-web-header .irma-web-helper {
   transform: translateX(120%);
   -webkit-transition: -webkit-transform 0.4s ease;
   -webkit-transition: transform 0.4s ease;
   transition: transform 0.4s ease;
 }
-.irma-web-form .header.show-helper > *:not(.helper):not(.close) {
+.irma-web-form .irma-web-header.irma-web-show-helper > *:not(.irma-web-helper):not(.irma-web-close) {
   transform: translateX(-120%);
 }
-.irma-web-form .header.show-helper .helper {
+.irma-web-form .irma-web-header.irma-web-show-helper .irma-web-helper {
   transform: translateX(0%);
 }
-.irma-web-form .header .close {
+.irma-web-form .irma-web-header .irma-web-close {
   position: absolute;
   top: 1rem;
   right: 0;
@@ -178,7 +172,7 @@
   border: 0;
   cursor: pointer;
 }
-.irma-web-form .header .close:before, .irma-web-form .header .close:after {
+.irma-web-form .irma-web-header .irma-web-close:before, .irma-web-form .irma-web-header .irma-web-close:after {
   content: " ";
   display: block;
   position: absolute;
@@ -190,10 +184,11 @@
   transform: rotateZ(45deg);
   transform-origin: center;
 }
-.irma-web-form .header .close:after {
+.irma-web-form .irma-web-header .irma-web-close:after {
   transform: rotateZ(-45deg);
 }
-.irma-web-form .content {
+.irma-web-form .irma-web-content {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -208,17 +203,19 @@
   border-top-left-radius: 1px;
   border-top-right-radius: 1px;
 }
-.irma-web-form .content .centered {
+.irma-web-form .irma-web-content .irma-web-centered {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
   height: auto;
   text-align: center;
 }
-.irma-web-form .content .centered img, .irma-web-form .content .centered canvas {
+.irma-web-form .irma-web-content .irma-web-centered img, .irma-web-form .irma-web-content .irma-web-centered canvas {
   cursor: none;
 }
-.irma-web-form .content p {
+.irma-web-form .irma-web-content p {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -229,17 +226,18 @@
   margin: 1em 4em;
 }
 @media screen and (max-width: 768px) {
-  .irma-web-form .content p {
+  .irma-web-form .irma-web-content p {
     margin: 1em 2em;
   }
 }
-.irma-web-form .content p:first-child {
+.irma-web-form .irma-web-content p:first-child {
   margin-top: 0;
 }
-.irma-web-form .content p:last-child {
+.irma-web-form .irma-web-content p:last-child {
   margin-bottom: 0;
 }
-.irma-web-form .content a {
+.irma-web-form .irma-web-content a {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -250,23 +248,12 @@
   text-decoration: underline;
   cursor: pointer;
 }
-.irma-web-form .content a:hover {
+.irma-web-form .irma-web-content a:hover {
   color: #004C92;
 }
 
-@font-face {
-  font-family: "Roboto";
-  src: url(fonts/roboto/Roboto-Light.woff2) format("woff2");
-  font-weight: 300;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Roboto";
-  src: url(fonts/roboto/Roboto-Medium.woff2) format("woff2");
-  font-weight: 500;
-  font-style: normal;
-}
 .irma-web-button {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -308,6 +295,7 @@
 }
 
 .irma-web-logo {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -322,6 +310,7 @@
 }
 
 .irma-web-qr-code {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -333,6 +322,7 @@
 }
 
 .irma-web-loading-animation {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -341,11 +331,13 @@
   height: 39px;
 }
 .irma-web-loading-animation * {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
 }
 .irma-web-loading-animation * {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -435,6 +427,7 @@
 }
 
 .irma-web-waiting-for-user-animation {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -501,6 +494,7 @@
 }
 
 .irma-web-checkmark-animation {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -576,6 +570,7 @@
 }
 
 .irma-web-forbidden-animation {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -798,6 +793,7 @@
 }
 
 .irma-web-clock-animation {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
