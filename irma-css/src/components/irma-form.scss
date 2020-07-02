@@ -9,35 +9,35 @@
 //
 // Trigger helper:
 // <ul>
-//   <li><a href="javascript:eachDo(document.querySelectorAll('.header'), function(h) {h.classList.add('show-helper')})">Show helpers</a></li>
-//   <li><a href="javascript:eachDo(document.querySelectorAll('.header'), function(h) {h.classList.remove('show-helper')})">Hide helpers</a></li>
+//   <li><a href="javascript:eachDo(document.querySelectorAll('.header'), function(h) {h.classList.add('irma-web-show-helper')})">Show helpers</a></li>
+//   <li><a href="javascript:eachDo(document.querySelectorAll('.header'), function(h) {h.classList.remove('irma-web-show-helper')})">Hide helpers</a></li>
 // </ul>
 //
 // Markup:
 // <section class="irma-web-form">
-//   <header class="header">
+//   <header class="irma-web-header">
 //     <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
-//     <section class="helper">
+//     <section class="irma-web-helper">
 //       <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
 //     </section>
 //   </header>
-//   <section class="content">
-//     <section class="centered">
+//   <section class="irma-web-content">
+//     <section class="irma-web-centered">
 //       <button>Some action here</button>
 //       <p>With some text <a href="#">and stuff</a></p>
 //     </section>
 //   </section>
 // </section>
 // <section class="irma-web-form">
-//   <header class="header">
+//   <header class="irma-web-header">
 //     <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
-//     <section class="helper">
+//     <section class="irma-web-helper">
 //       <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
 //     </section>
-//     <button class="close"></button>
+//     <button class="irma-web-close"></button>
 //   </header>
-//   <section class="content">
-//     <section class="centered">
+//   <section class="irma-web-content">
+//     <section class="irma-web-centered">
 //       <button>Some action here</button>
 //       <p>With some text <a href="#">and stuff</a></p>
 //     </section>
@@ -72,7 +72,7 @@
   border: 1px solid $border-color;
   border-radius: $border-radius;
 
-  .header {
+  .irma-web-header {
     @include reset;
     position: relative;
     flex: 0 0 auto;
@@ -102,7 +102,7 @@
       }
     }
 
-    .helper {
+    .irma-web-helper {
       @include reset;
       @include center;
       position: absolute;
@@ -127,24 +127,24 @@
     }
 
     // Swap out the header content for the helper in a nice animation
-    & > *:not(.helper):not(.close) {
+    & > *:not(.irma-web-helper):not(.irma-web-close) {
       transform: translateX(0%);
       @include transition(transform 0.4s ease);
     }
-    .helper {
+    .irma-web-helper {
       transform: translateX(120%);
       @include transition(transform 0.4s ease);
     }
-    &.show-helper {
-      & > *:not(.helper):not(.close) {
+    &.irma-web-show-helper {
+      & > *:not(.irma-web-helper):not(.irma-web-close) {
         transform: translateX(-120%);
       }
-      .helper {
+      .irma-web-helper {
         transform: translateX(0%);
       }
     }
 
-    .close {
+    .irma-web-close {
       $size: 26px;
       position: absolute;
       top: 1rem;
@@ -176,7 +176,7 @@
 
   }
 
-  .content {
+  .irma-web-content {
     @include reset;
     @include center;
     flex: 1 1 auto;
@@ -188,7 +188,7 @@
     border-top-left-radius: 1px;
     border-top-right-radius: 1px;
 
-    .centered {
+    .irma-web-centered {
       @include reset;
       height: auto;
       text-align: center;
