@@ -1,6 +1,6 @@
 // reset($children-too: false)
 //
-// A mixin that resets margin, padding and box-sizing to reliable defaults on the given element (and optionally all its children).
+// A mixin that resets margin, background color, padding and box-sizing to reliable defaults on the given element (and optionally all its children).
 //
 // ```css
 // .complicated-element {
@@ -13,6 +13,7 @@
 // Styleguide Mixins.reset
 
 @mixin _reset {
+  background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;

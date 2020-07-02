@@ -102,7 +102,6 @@ $ npm run clean # Build a clean style guide
 $ git add ../docs/styleguide/
 
 $ npm run release # Build a clean new version in dist
-$ git add dist/
 
 $ git commit -m "Releasing version xxx"
 ```

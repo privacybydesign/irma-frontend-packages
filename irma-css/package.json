@@ -20,18 +20,16 @@
     "url": "https://github.com/privacybydesign/irma-frontend-packages/issues"
   },
   "scripts": {
-    "clean": "npm run clear && npm run fonts && npm run rebuild",
+    "clean": "npm run clear && npm run rebuild",
     "clear": "rm -rf ../docs/styleguide/*",
     "watch-stylesheets": "onchange 'src/**/*.*' -- npm run rebuild",
     "rebuild": "concurrently \"npm run sass\" \"npm run kss\"",
     "sass": "sass src/styleguide.scss ../docs/styleguide/irma.css",
     "kss": "kss --config kss-config.json",
-    "watch-fonts": "onchange 'assets/fonts/**/*.*' --no-exclude -- npm run fonts",
-    "fonts": "mkdir ../docs/styleguide/fonts && cp -r assets/fonts/roboto ../docs/styleguide/fonts",
     "watch-images": "onchange 'assets/images/*.*' -- npm run svg-images",
     "svg-images": "echo \"// This file is auto-generated from the assets/images directory, so don't bother manually changing it.\" > src/variables/svg-images.scss; for file in assets/images/*; do [ -e \"$file\" ] || continue; svgo=`svgo \"$file\" -o -`; name=`basename \"$file\" .svg`; echo \"\\$svg-image-$name: '$svgo';\" >> src/variables/svg-images.scss; done",
-    "dev": "npm run clean && concurrently --kill-others \"npm run watch-stylesheets\" \"npm run watch-fonts\" \"npm run watch-images\"",
-    "release": "sass src/dist.scss dist/irma.css && uglifycss --output dist/irma.min.css dist/irma.css && cp -r assets/fonts dist/"
+    "dev": "npm run clean && concurrently --kill-others \"npm run watch-stylesheets\" \"npm run watch-images\"",
+    "release": "sass src/dist.scss dist/irma.css && uglifycss --output dist/irma.min.css dist/irma.css"
   },
   "devDependencies": {
     "concurrently": "^4.1.2",
