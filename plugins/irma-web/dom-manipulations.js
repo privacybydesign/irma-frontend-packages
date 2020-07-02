@@ -60,7 +60,7 @@ module.exports = class DOMManipulations {
 
   _renderPartial(newPartial) {
     this._element
-        .querySelector('.content .centered')
+        .querySelector('.irma-web-content .irma-web-centered')
         .innerHTML = newPartial.call(this);
   }
 
@@ -86,17 +86,17 @@ module.exports = class DOMManipulations {
 
   _irmaWebForm(content) {
     return `
-      <header class="header ${this._showHelper ? 'show-helper' : ''}">
+      <header class="irma-web-header ${this._showHelper ? 'irma-web-show-helper' : ''}">
         <p>${this._translations.header}</p>
-        <section class="helper">
+        <section class="irma-web-helper">
           <p>${this._translations.helper}</p>
         </section>
         ${this._showCloseButton ? `
-          <button class="close"></button>
+          <button class="irma-web-close"></button>
         ` : ''}
       </header>
-      <section class="content">
-        <section class="centered">
+      <section class="irma-web-content">
+        <section class="irma-web-centered">
           ${content}
         </section>
       </section>

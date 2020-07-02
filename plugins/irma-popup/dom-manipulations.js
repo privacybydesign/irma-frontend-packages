@@ -20,11 +20,11 @@ module.exports = class DOMManipulations {
   }
 
   openPopup() {
-    this._element.classList.add('active');
+    this._element.classList.add('irma-web-popup-active');
   }
 
   closePopup() {
-    this._element.classList.remove('active');
+    this._element.classList.remove('irma-web-popup-active');
   }
 
   _findElement(element) {
@@ -40,7 +40,7 @@ module.exports = class DOMManipulations {
 
   _clickHandler(e) {
     // Is this a click on the close button or the background overlay?
-    if ( e.target === this._element || e.target.matches('button.close') )
+    if ( e.target === this._element || e.target.matches('button.irma-web-close') )
       this._cancel();
   }
 

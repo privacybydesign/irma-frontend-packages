@@ -33,7 +33,7 @@ module.exports = class IrmaPopup {
 
     // When being in a end state, delay closing pop-up so that the user can see the animation
     if (this._stateMachine.isEndState())
-      return window.setTimeout(() => this._dom.closePopup(), 3000);
+      return window.setTimeout(() => this._dom.closePopup(), 2000);
   }
 
 };
