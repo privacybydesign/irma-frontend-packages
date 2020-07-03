@@ -77,46 +77,65 @@ module.exports = class ServerState {
     });
   }
 
-  async _startPolling() {
+  _startPolling() {
     if ( !this._options.polling || this._running )
       return;
 
     if ( this._options.debugging )
       console.log("🌎 Using polling for server events");
 
-    let previousStatus = this._options.polling.startState;
+    this._currentStatus = this._options.polling.startState;
     this._running = true;
 
-    try {
-      while( this._running ) {
-        const status = await fetch(this._options.polling.url(this._options))
-                             .then(r => {
-                               if ( r.status != 200 )
-                                 throw(`Error in fetch: endpoint returned status other than 200 OK. Status: ${r.status} ${r.statusText}`);
-                               return r;
-                             })
-                             .then(r => r.json());
-
-        if ( !this._running ) break;
-
-        if ( status != previousStatus ) {
-          if ( this._options.debugging )
-            console.log(`🌎 Server event: Remote state changed to '${status}'`);
-
-          previousStatus = status;
-          this._stateChangeCallback(status);
-        }
-
-        await new Promise(resolve => setTimeout(resolve, this._options.polling.interval));
-      }
-    } catch(error) {
+    this._polling()
+    .then(() => {
+      if ( this._options.debugging )
+        console.log("🌎 Stopped polling");
+    })
+    .catch((error) => {
       if ( this._options.debugging )
         console.error("🌎 Error thrown while polling: ", error);
       this._errorCallback(error);
-    }
+    });
+  }
 
-    if ( this._options.debugging )
-      console.log("🌎 Stopped polling");
+  _polling() {
+    return new Promise((resolve, reject) => {
+      if ( !this._running ) {
+        resolve();
+        return;
+      }
+
+      fetch(this._options.polling.url(this._options))
+      .then(r => {
+        if ( r.status != 200 )
+          throw(`Error in fetch: endpoint returned status other than 200 OK. Status: ${r.status} ${r.statusText}`);
+        return r;
+      })
+      .then(r => r.json())
+      .then(newStatus => {
+        // Re-check running because variable might have been changed during fetch.
+        if ( !this._running ) {
+          resolve();
+          return;
+        }
+
+        if ( newStatus != this._currentStatus ) {
+          if ( this._options.debugging )
+            console.log(`🌎 Server event: Remote state changed to '${newStatus}'`);
+
+          this._currentStatus = newStatus;
+          this._stateChangeCallback(newStatus);
+        }
+
+        setTimeout(() => {
+          this._polling()
+          .then(resolve)
+          .catch(reject);
+        }, this._options.polling.interval);
+      })
+      .catch(reject);
+    });
   }
 
   _eventSource() {
