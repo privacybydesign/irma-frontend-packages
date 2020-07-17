@@ -8,7 +8,7 @@ module.exports = class IrmaPopup {
 
     this._dom = new DOMManipulations(options.element, () => {
       if (!stateMachine.isEndState())
-        stateMachine.transition('abort', 'Popup closed');
+        stateMachine.transition('abort', 'ClosedByUser');
     });
 
     this._irmaWeb = new IrmaWeb({

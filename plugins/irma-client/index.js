@@ -24,13 +24,7 @@ module.exports = class IrmaClient {
           this._serverState.close();
         break;
       case 'Ended':
-        if (this._serverState) {
-          this._serverState.cancel()
-          .catch(error => {
-            if (this._options.debugging)
-              console.error("Session could not be cancelled:", error);
-          });
-        }
+        this._serverCancelSession();
         break;
     }
   }
@@ -41,7 +35,15 @@ module.exports = class IrmaClient {
 
   _startNewSession() {
     this._session.start()
-    .then(qr => this._stateMachine.transition('loaded', qr))
+    .then(qr => {
+      if (this._stateMachine.currentState() == 'Loading') {
+        this._stateMachine.transition('loaded', qr);
+      } else {
+        // State was changed while loading, so cancel again.
+        this._serverState = new ServerState(qr.u, this._options.state);
+        this._serverCancelSession();
+      }
+    })
     .catch(error => {
       if ( this._options.debugging )
         console.error("Error starting a new session on the server:", error);
@@ -60,6 +62,16 @@ module.exports = class IrmaClient {
         console.error("Observing server state could not be started: ", error);
 
       this._handleNoSuccess('fail');
+    }
+  }
+
+  _serverCancelSession() {
+    if (this._serverState) {
+      this._serverState.cancel()
+        .catch(error => {
+          if (this._options.debugging)
+            console.error("Session could not be cancelled:", error);
+        });
     }
   }
 

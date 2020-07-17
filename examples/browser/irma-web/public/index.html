@@ -14,11 +14,21 @@
         width: 100%;
         height: 100%;
       }
+
+      .column {
+        display: flex;
+        flex-direction: column;
+      }
+
+      #abort-button {
+        margin: 20px;
+      }
     </style>
   </head>
 
-  <body class="irma-web-center-child">
+  <body class="irma-web-center-child column">
     <section class="irma-web-form" id="irma-web-form"></section>
+    <button id="abort-button">Abort</button>
   </body>
 
 </html>

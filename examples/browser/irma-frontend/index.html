@@ -24,12 +24,14 @@
 
       body > * {
         padding: 10px;
+        margin: 10px;
       }
     </style>
   </head>
 
   <body>
     <section class="irma-web-form" id="irma-web-form"></section>
+    <button id="abort-web">Abort web element</button>
     <div>Or</div>
     <button id="start-popup">Start as popup</button>
   </body>
@@ -65,13 +67,22 @@
       }
     };
 
-    irma.newWeb({
+    const irmaWeb = irma.newWeb({
       ...options,
       element: '#irma-web-form',
-    })
-    .start()
+    });
+
+    irmaWeb.start()
     .then(result => console.log("Successful disclosure! 🎉", result))
-    .catch(error => console.error("Couldn't do what you asked 😢", error));
+    .catch(error => {
+      if (error === 'ManualAbort') {
+        console.log('We called abort ourselves, so no problem 😅');
+        return;
+      }
+      console.error("Couldn't do what you asked 😢", error);
+    });
+
+    document.getElementById('abort-web').onclick = () => irmaWeb.abort();
 
     let irmaPopup = irma.newPopup(options);
     document.getElementById('start-popup').onclick = () => {

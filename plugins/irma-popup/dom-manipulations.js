@@ -8,12 +8,14 @@ module.exports = class DOMManipulations {
     this._element.innerHTML = `<section class='irma-web-form' id='irma-popup-web-form'></section>`;
 
     let clickEventListener = e => this._clickHandler(e);
-    let keyUpEventListener = e => this._keyHandler(e);
+    let keyEventListener = e => this._keyHandler(e);
     this._element.addEventListener('click', clickEventListener);
-    document.addEventListener('keyup', keyUpEventListener);
+    document.addEventListener('keyup', keyEventListener);
+    document.addEventListener('keydown', keyEventListener);
     this._removeEventListeners = () => {
       this._element.removeEventListener('click', clickEventListener);
-      document.removeEventListener('keyup', keyUpEventListener);
+      document.removeEventListener('keyup', keyEventListener);
+      document.removeEventListener('keydown', keyEventListener);
     }
 
     this.closePopup();
@@ -45,8 +47,13 @@ module.exports = class DOMManipulations {
   }
 
   _keyHandler(e) {
+    // Prevent Enter from restarting the popup by hitting some button
+    // below the popup.
+    if ( e.key == 'Enter' )
+      e.preventDefault();
+
     // Did we press the Escape key?
-    if ( e.key == 'Escape' )
+    if (e.type == 'keyup' && e.key == 'Escape')
       this._cancel();
   }
 

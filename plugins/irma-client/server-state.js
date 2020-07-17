@@ -5,7 +5,8 @@ module.exports = class ServerState {
 
   constructor(url, options) {
     this._eventSource = this._eventSource();
-    this._running = false;
+    this._isRunning = false;
+    this._isPolling = false;
     this._options = options;
     this._options.url = url;
   }
@@ -13,6 +14,7 @@ module.exports = class ServerState {
   observe(stateChangeCallback, errorCallback) {
     this._stateChangeCallback = stateChangeCallback;
     this._errorCallback = errorCallback;
+    this._isRunning = true;
 
     if ( this._eventSource && this._options.serverSentEvents )
       return this._startSSE();
@@ -34,7 +36,7 @@ module.exports = class ServerState {
         console.log("🌎 Closed EventSource");
     }
 
-    this._running = false;
+    this._isRunning = false;
   }
 
   _startSSE() {
@@ -78,14 +80,14 @@ module.exports = class ServerState {
   }
 
   _startPolling() {
-    if ( !this._options.polling || this._running )
+    if ( !this._options.polling || this._isPolling )
       return;
 
     if ( this._options.debugging )
       console.log("🌎 Using polling for server events");
 
     this._currentStatus = this._options.polling.startState;
-    this._running = true;
+    this._isPolling = true;
 
     this._polling()
     .then(() => {
@@ -101,7 +103,8 @@ module.exports = class ServerState {
 
   _polling() {
     return new Promise((resolve, reject) => {
-      if ( !this._running ) {
+      if ( !this._isRunning ) {
+        this._isPolling = false;
         resolve();
         return;
       }
@@ -115,7 +118,8 @@ module.exports = class ServerState {
       .then(r => r.json())
       .then(newStatus => {
         // Re-check running because variable might have been changed during fetch.
-        if ( !this._running ) {
+        if ( !this._isRunning ) {
+          this._isPolling = false;
           resolve();
           return;
         }

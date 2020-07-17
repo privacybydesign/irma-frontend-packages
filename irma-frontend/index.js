@@ -12,6 +12,7 @@ module.exports = {
     core.use(IrmaClient);
     return {
       start: core.start.bind(core),
+      abort: core.abort.bind(core),
     };
   },
 
@@ -21,6 +22,7 @@ module.exports = {
     core.use(IrmaClient);
     return {
       start: core.start.bind(core),
+      abort: core.abort.bind(core),
     };
   },
 }

@@ -31,8 +31,8 @@ function parseError(e) {
     case 'TimedOut':
       throw SessionStatus.Timeout;
     case 'Cancelled':
-    case 'Aborted by user':
-    case 'Popup closed':
+    case 'ManualAbort':
+    case 'ClosedByUser':
       throw SessionStatus.Cancelled;
     default:
       throw e;

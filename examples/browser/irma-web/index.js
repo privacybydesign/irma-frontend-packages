@@ -19,4 +19,14 @@ irma.use(Dummy);
 
 irma.start()
 .then(result => console.log("Successful disclosure! 🎉", result))
-.catch(error => console.error("Couldn't do what you asked 😢", error));
+.catch(error => {
+  if (error === 'ManualAbort') {
+    console.log('We called abort ourselves, so no problem 😅');
+    return;
+  }
+  console.error("Couldn't do what you asked 😢", error);
+});
+
+document.getElementById('abort-button').addEventListener('click', () => {
+  irma.abort();
+});

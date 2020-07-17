@@ -14,16 +14,15 @@ module.exports = class DOMManipulations {
   }
 
   renderState(state) {
+    let newPartial = this._stateToPartialMapping()[state.newState];
+    if (!newPartial) throw new Error(`I don't know how to render '${state.newState}'`);
+    this._renderPartial(newPartial);
+
     if ( state.isFinal ) {
       // Make sure all restart buttons are hidden when being in a final state
       this._element.querySelectorAll('.irma-web-restart-button')
         .forEach(e => e.style.display = 'none');
     }
-    if (state.newState == 'Ended') return;
-
-    let newPartial = this._stateToPartialMapping()[state.newState];
-    if (!newPartial) throw new Error(`I don't know how to render '${state.newState}'`);
-    this._renderPartial(newPartial);
   }
 
   setQRCode(qr) {
@@ -75,6 +74,7 @@ module.exports = class DOMManipulations {
       ShowingQRCodeInstead: this._stateShowingQRCodeInstead,
       ContinueInIrmaApp:    this._stateContinueInIrmaApp,
       Cancelled:            this._stateCancelled,
+      Ended:                this._stateCancelled,
       TimedOut:             this._stateTimedOut,
       Error:                this._stateError,
       BrowserNotSupported:  this._stateBrowserNotSupported,
