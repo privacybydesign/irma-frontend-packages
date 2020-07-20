@@ -2,6 +2,8 @@ const IrmaCore = require('@privacybydesign/irma-core');
 const Console  = require('@privacybydesign/irma-console');
 const Client   = require('@privacybydesign/irma-client');
 
+const util = require('util');
+
 const irma = new IrmaCore({
   debugging: true,
 
@@ -27,5 +29,8 @@ irma.use(Console);
 irma.use(Client);
 
 irma.start()
-.then(result => console.log("Successful disclosure! 🎉", result))
+.then(result => console.log(
+  "Successful disclosure! 🎉",
+  util.inspect(result, {showHidden: false, depth: null, colors: true})
+))
 .catch(error => console.error("Couldn't do what you asked 😢", error));
