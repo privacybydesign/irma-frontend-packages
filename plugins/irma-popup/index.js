@@ -13,7 +13,6 @@ module.exports = class IrmaPopup {
         stateMachine.transition('abort');
       } else if (this._popupClosedEarly) {
         this._popupClosedEarly();
-        this._popupClosedEarly = null;
       }
     });
 
@@ -46,7 +45,8 @@ module.exports = class IrmaPopup {
     return new Promise(resolve => {
       this._popupClosedEarly = resolve;
       window.setTimeout(() => {
-        if (this._popupClosedEarly) {
+        // Popup might already be closed in the meantime.
+        if (this._dom.isPopupActive()) {
           this._dom.closePopup();
           resolve();
         }
