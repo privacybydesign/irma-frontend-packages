@@ -9,8 +9,12 @@ module.exports = class IrmaPopup {
     this._options = this._sanitizeOptions(options);
 
     this._dom = new DOMManipulations(options.element, () => {
-      if (!stateMachine.isEndState())
+      if (!stateMachine.isEndState()) {
         stateMachine.transition('abort');
+      } else if (this._popupClosedEarly) {
+        this._popupClosedEarly();
+        this._popupClosedEarly = null;
+      }
     });
 
     this._irmaWeb = new IrmaWeb({
@@ -35,11 +39,19 @@ module.exports = class IrmaPopup {
   }
 
   close() {
+    if (!this._dom.isPopupActive())
+      return Promise.resolve();
+
     // Delay closing pop-up so that the user can see the animation.
-    return new Promise(resolve => window.setTimeout(() => {
-      this._dom.closePopup();
-      resolve();
-    }, this._options.closePopupDelay));
+    return new Promise(resolve => {
+      this._popupClosedEarly = resolve;
+      window.setTimeout(() => {
+        if (this._popupClosedEarly) {
+          this._dom.closePopup();
+          resolve();
+        }
+      }, this._options.closePopupDelay)
+    });
   }
 
   _sanitizeOptions(options) {

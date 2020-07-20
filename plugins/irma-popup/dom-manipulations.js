@@ -20,15 +20,16 @@ module.exports = class DOMManipulations {
     }
   }
 
+  isPopupActive() {
+    return this._element.classList.contains('irma-web-popup-active');
+  }
+
   openPopup() {
     this._element.classList.add('irma-web-popup-active');
   }
 
   closePopup() {
     this._element.classList.remove('irma-web-popup-active');
-    if (this._elementCreated) {
-      document.body.removeChild(document.querySelector('section.irma-web-popup'));
-    }
   }
 
   _findElement(element) {
