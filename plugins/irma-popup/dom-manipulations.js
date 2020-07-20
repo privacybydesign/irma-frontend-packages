@@ -2,6 +2,7 @@ module.exports = class DOMManipulations {
 
   constructor(element, closeCallback) {
     this._closeCallback = closeCallback;
+    this._elementCreated = false;
     this._element = this._findElement(element);
 
     this._element.classList.add('irma-web-popup');
@@ -17,8 +18,6 @@ module.exports = class DOMManipulations {
       document.removeEventListener('keyup', keyEventListener);
       document.removeEventListener('keydown', keyEventListener);
     }
-
-    this.closePopup();
   }
 
   openPopup() {
@@ -27,6 +26,9 @@ module.exports = class DOMManipulations {
 
   closePopup() {
     this._element.classList.remove('irma-web-popup-active');
+    if (this._elementCreated) {
+      document.body.removeChild(document.querySelector('section.irma-web-popup'));
+    }
   }
 
   _findElement(element) {
@@ -36,6 +38,7 @@ module.exports = class DOMManipulations {
       return found;
     }
 
+    this._elementCreated = true;
     return document.querySelector('section.irma-web-popup') ||
            document.body.appendChild(document.createElement('section'));
   }

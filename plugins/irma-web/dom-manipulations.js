@@ -74,11 +74,11 @@ module.exports = class DOMManipulations {
       ShowingQRCodeInstead: this._stateShowingQRCodeInstead,
       ContinueInIrmaApp:    this._stateContinueInIrmaApp,
       Cancelled:            this._stateCancelled,
-      Ended:                this._stateCancelled,
       TimedOut:             this._stateTimedOut,
       Error:                this._stateError,
       BrowserNotSupported:  this._stateBrowserNotSupported,
-      Success:              this._stateSuccess
+      Success:              this._stateSuccess,
+      Ended:                () => '',
     };
   }
 

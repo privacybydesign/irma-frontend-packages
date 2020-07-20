@@ -1,10 +1,12 @@
 const IrmaWeb          = require('@privacybydesign/irma-web');
 const DOMManipulations = require('./dom-manipulations');
+const merge            = require('deepmerge');
 
 module.exports = class IrmaPopup {
 
   constructor({stateMachine, options}) {
     this._stateMachine = stateMachine;
+    this._options = this._sanitizeOptions(options);
 
     this._dom = new DOMManipulations(options.element, () => {
       if (!stateMachine.isEndState())
@@ -30,10 +32,22 @@ module.exports = class IrmaPopup {
       case 'Ended':
         return this._dom.closePopup();
     }
+  }
 
-    // When being in a end state, delay closing pop-up so that the user can see the animation
-    if (this._stateMachine.isEndState())
-      return window.setTimeout(() => this._dom.closePopup(), 2000);
+  close() {
+    // Delay closing pop-up so that the user can see the animation.
+    return new Promise(resolve => window.setTimeout(() => {
+      this._dom.closePopup();
+      resolve();
+    }, this._options.closePopupDelay));
+  }
+
+  _sanitizeOptions(options) {
+    const defaults = {
+      closePopupDelay: 2000,
+    };
+
+    return merge(defaults, options);
   }
 
 };
