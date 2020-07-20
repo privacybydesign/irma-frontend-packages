@@ -20,8 +20,8 @@ irma.use(Dummy);
 irma.start()
 .then(result => console.log("Successful disclosure! 🎉", result))
 .catch(error => {
-  if (error === 'ManualAbort') {
-    console.log('We called abort ourselves, so no problem 😅');
+  if (error === 'Aborted') {
+    console.log('We closed it ourselves, so no problem 😅');
     return;
   }
   console.error("Couldn't do what you asked 😢", error);

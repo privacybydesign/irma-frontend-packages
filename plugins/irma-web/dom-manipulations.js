@@ -78,7 +78,7 @@ module.exports = class DOMManipulations {
       Error:                this._stateError,
       BrowserNotSupported:  this._stateBrowserNotSupported,
       Success:              this._stateSuccess,
-      Ended:                () => '',
+      Aborted:              () => '',
     };
   }
 

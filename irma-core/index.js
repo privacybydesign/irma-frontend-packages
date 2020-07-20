@@ -33,7 +33,7 @@ module.exports = class IrmaCore {
   abort() {
     if (this._stateMachine.currentState() != 'Uninitialized' && !this._stateMachine.isEndState()) {
       if (this._options.debugging) console.log('🖥 Manually aborting session instance');
-      this._stateMachine.transition('abort', 'ManualAbort');
+      this._stateMachine.transition('abort');
     } else {
       if (this._options.debugging) console.log('🖥 Manual abort is not necessary');
     }
@@ -53,7 +53,7 @@ module.exports = class IrmaCore {
         });
         break;
       case 'BrowserNotSupported':
-      case 'Ended':
+      case 'Aborted':
         this._close().then(() => {
           if ( this._reject ) this._reject(newState);
         });

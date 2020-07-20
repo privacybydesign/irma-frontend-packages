@@ -9,7 +9,7 @@
 module.exports = {
 
   startState:       'Uninitialized',
-  endStates:        ['BrowserNotSupported', 'Success', 'Ended', 'Cancelled', 'TimedOut', 'Error'],
+  endStates:        ['BrowserNotSupported', 'Success', 'Aborted', 'Cancelled', 'TimedOut', 'Error'],
 
   Uninitialized: {
     initialize:     'Loading',
@@ -19,14 +19,14 @@ module.exports = {
 
   Loading: {
     loaded:         'MediumContemplation',
-    abort:          'Ended',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
   MediumContemplation: {
     showQRCode:     'ShowingQRCode',
     showIrmaButton: 'ShowingIrmaButton',
-    abort:          'Ended',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
@@ -34,7 +34,7 @@ module.exports = {
     appConnected:   'ContinueOn2ndDevice',
     timeout:        'TimedOut',
     switchFlow:     'ShowingIrmaButton',
-    abort:          'Ended',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
@@ -43,7 +43,7 @@ module.exports = {
     cancel:         'Cancelled',
     restart:        'Loading',
     timeout:        'TimedOut',
-    abort:          'Ended',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
@@ -51,7 +51,7 @@ module.exports = {
     chooseQR:       'ShowingQRCodeInstead',
     switchFlow:     'ShowingQRCode',
     appConnected:   'ContinueInIrmaApp',
-    abort:          'Ended',
+    abort:          'Aborted',
     fail:           'Error',
 
     succeed:        'Success',   // We sometimes miss the appConnected transition
@@ -64,7 +64,7 @@ module.exports = {
     switchFlow:     'ShowingQRCode',
     restart:        'Loading',
     timeout:        'TimedOut',
-    abort:          'Ended',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
@@ -73,28 +73,28 @@ module.exports = {
     cancel:         'Cancelled',
     restart:        'Loading',
     timeout:        'TimedOut',
-    abort:          'Ended',
+    abort:          'Aborted',
     fail:           'Error'
   },
 
   // Possible end states
   Cancelled: {
-    abort:          'Ended',
+    abort:          'Aborted',
     restart:        'Loading'
   },
 
   TimedOut: {
-    abort:          'Ended',
+    abort:          'Aborted',
     restart:        'Loading'
   },
 
   Error: {
-    abort:          'Ended',
+    abort:          'Aborted',
     restart:        'Loading'
   },
 
   BrowserNotSupported: {},
   Success: {},
-  Ended: {}
+  Aborted: {}
 
 }

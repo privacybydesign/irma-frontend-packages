@@ -23,7 +23,7 @@ module.exports = class IrmaClient {
         if (this._serverState)
           this._serverState.close();
         break;
-      case 'Ended':
+      case 'Aborted':
         this._serverCancelSession();
         break;
     }

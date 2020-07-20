@@ -17,8 +17,7 @@ irma.use(Console);
 irma.start();
 ```
 
-## Extensions
-
+## Extra behaviour
 The `irma-console` plugin makes it possible for users to abort the session without
-completing it. Therefore, when using this plugin, the `start` method of `irma-core` can
-also reject its promise using the callback message `ClosedByUser`.
+completing it. When using this plugin, the `start` method of `irma-core` will
+reject its promise in this scenario using the callback message `Aborted`.

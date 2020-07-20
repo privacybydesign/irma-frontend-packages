@@ -27,9 +27,7 @@ irma.start();
 This plugin can handle all the options that the [`irma-web` plugin](../irma-web)
 accepts.
 
-## Extensions
-
+## Extra behaviour
 The `irma-popup` plugin makes it possible for users to abort the session by closing
-the popup. Therefore, when using this plugin, the `start` method of `irma-core` can
-also reject its promise using the callback message `ClosedByUser`.
-
+the popup. When using this plugin, the `start` method of `irma-core` will
+reject its promise in this scenario using the callback message `Aborted`.

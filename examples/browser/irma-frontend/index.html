@@ -75,8 +75,8 @@
     irmaWeb.start()
     .then(result => console.log("Successful disclosure! 🎉", result))
     .catch(error => {
-      if (error === 'ManualAbort') {
-        console.log('We called abort ourselves, so no problem 😅');
+      if (error === 'Aborted') {
+        console.log('We closed it ourselves, so no problem 😅');
         return;
       }
       console.error("Couldn't do what you asked 😢", error);
@@ -88,7 +88,13 @@
     document.getElementById('start-popup').onclick = () => {
       irmaPopup.start()
       .then(result => console.log("Successful disclosure! 🎉", result))
-      .catch(error => console.error("Couldn't do what you asked 😢", error))
+      .catch(error => {
+        if (error === 'Aborted') {
+          console.log('We closed it ourselves, so no problem 😅');
+          return;
+        }
+        console.error("Couldn't do what you asked 😢", error);
+      })
       .finally(() => irmaPopup = irma.newPopup(options));
     };
   </script>

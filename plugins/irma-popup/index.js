@@ -10,7 +10,7 @@ module.exports = class IrmaPopup {
 
     this._dom = new DOMManipulations(options.element, () => {
       if (!stateMachine.isEndState())
-        stateMachine.transition('abort', 'ClosedByUser');
+        stateMachine.transition('abort');
     });
 
     this._irmaWeb = new IrmaWeb({
@@ -29,7 +29,7 @@ module.exports = class IrmaPopup {
     switch(newState) {
       case 'Loading':
         return this._dom.openPopup();
-      case 'Ended':
+      case 'Aborted':
         return this._dom.closePopup();
     }
   }

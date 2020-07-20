@@ -49,21 +49,20 @@ irma.start()
 
 The returned Promise only resolves when the state machine reaches the `Success` state
 and only rejects when the machine reaches a state with a final transaction.
-The end states `BrowserNotSupported` and `Ended` always lead to a reject.
+The end states `BrowserNotSupported` and `Aborted` always lead to a reject.
 The other possible end states are `Cancelled`, `Timeout` and `Error`.
-The reject message indicates what the reason for rejection was:
-`BrowserNotSupported`, `Cancelled`, `Timeout`, `Error` or `ManualAbort`.
-Plugins might add possible reject messages to this list.
+The reject message indicates in what state the state machine stopped, so:
+`BrowserNotSupported`, `Cancelled`, `Timeout`, `Error` or `Aborted`.
 
 ```javascript
 irma.start()
     .then(result => console.log("Successful disclosure! 🎉", result))
     .catch(error => {
-      if (error === 'ManualAbort') {
-        console.log('We called abort ourselves, so no problem 😅');
-        return;
-      }   
-      console.error("Couldn't do what you asked 😢", error);
+          if (error === 'Aborted') {
+            console.log('We closed it ourselves, so no problem 😅');
+            return;
+          }
+          console.error("Couldn't do what you asked 😢", error);
     });
 ```
 
@@ -74,15 +73,16 @@ redirecting the user.
 
 ### `abort` method
 The `abort` method forces an `irma-core` instance to abort the session and
-all associated plugins should clean their state. In this way you can stop
+all associated plugins should stop making changes. In this way you can stop
 the instance from being active when it is not relevant anymore. The promise
-returned by the `start` method will be rejected with a `ManualAbort` message
+returned by the `start` method will be rejected with a `Aborted` message
 when `abort` is called. When `start` has not been called yet or when the
 `start` promise has already finished, then calling `abort` has no effect.
 
 ```javascript
 irma.abort();
 ```
+
 ## Documentation
 More elaborate documentation on how to use this module can be found in the
 [IRMA documentation](https://irma.app/docs/irma-frontend/#irma-core).
