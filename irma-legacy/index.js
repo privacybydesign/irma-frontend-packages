@@ -1,4 +1,4 @@
-require('@privacybydesign/irma-css/dist/irma.css');
+require('@privacybydesign/irma-css');
 
 const IrmaCore      = require('@privacybydesign/irma-core');
 const Client        = require('@privacybydesign/irma-client');

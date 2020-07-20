@@ -9,6 +9,7 @@
     "dist/**/*",
     "README.md"
   ],
+  "main": "dist/irma.min.css",
   "style": "dist/irma.css",
   "sass": "src/index.scss",
   "repository": {
