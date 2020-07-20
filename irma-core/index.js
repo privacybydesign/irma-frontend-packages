@@ -72,7 +72,7 @@ module.exports = class IrmaCore {
   }
 
   _userAgentIsMobile() {
-    return this._userAgent.startsWith('Android') || this._userAgent == 'iOS';
+    return this._userAgent =='Android' || this._userAgent == 'iOS';
   }
 
   _getSessionUrls(sessionPtr) {
@@ -80,10 +80,10 @@ module.exports = class IrmaCore {
     let universalLink = `https://irma.app/-/session#${encodeURIComponent(json)}`;
     let mobileLink;
     switch (this._userAgent) {
-      case 'Android-Firefox':
-        // The firefox app on Android does not automatically follow universal links, so use intent links there.
+      case 'Android':
+        // Universal links are not stable in Android webviews and custom tabs, so always use intent links.
         let intent = `Intent;package=org.irmacard.cardemu;scheme=cardemu;l.timestamp=${Date.now()}`;
-        let fallback = 'S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.irmacard.cardemu';
+        let fallback = `S.browser_fallback_url=${universalLink}`;
         mobileLink =  `intent://qr/json/${encodeURIComponent(json)}#${intent};${fallback};end`;
         break;
       default:

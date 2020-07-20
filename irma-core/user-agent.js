@@ -8,9 +8,6 @@ module.exports = () => {
     return 'Desktop';
 
   if (/Android/i.test(window.navigator.userAgent)) {
-    if (/Firefox/i.test(window.navigator.userAgent)) {
-      return 'Android-Firefox';
-    }
     return 'Android';
   }
 
