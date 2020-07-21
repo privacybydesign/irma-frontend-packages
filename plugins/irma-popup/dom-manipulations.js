@@ -2,7 +2,6 @@ module.exports = class DOMManipulations {
 
   constructor(element, closeCallback) {
     this._closeCallback = closeCallback;
-    this._elementCreated = false;
     this._element = this._findElement(element);
 
     this._element.classList.add('irma-web-popup');

@@ -33,23 +33,19 @@
   overflow: auto;
 
   @include center;
-  @include transition('opacity 0.2s ease, visibility 0s ease 0.2s');
 
   // Direct descendant gets animation and auto margins to enable scrolling on small screens
   & > * {
     margin: auto !important;
     transform: scale(0.7);
-    @include transition('transform 0.2s ease-in');
   }
 
   &.irma-web-popup-active {
     opacity: 1;
     visibility: visible;
-    @include transition('opacity 0.2s ease, visibility 0s ease');
 
     & > * {
       transform: scale(1);
-      @include transition('transform 0.2s ease-out');
     }
   }
 
