@@ -145,6 +145,7 @@
     }
 
     .irma-web-close {
+      @include reset;
       $size: 26px;
       position: absolute;
       top: 1rem;
