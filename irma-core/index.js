@@ -92,7 +92,7 @@ module.exports = class IrmaCore {
       case 'Android':
         // Universal links are not stable in Android webviews and custom tabs, so always use intent links.
         let intent = `Intent;package=org.irmacard.cardemu;scheme=cardemu;l.timestamp=${Date.now()}`;
-        let fallback = `S.browser_fallback_url=${universalLink}`;
+        let fallback = `S.browser_fallback_url=${encodeURIComponent(universalLink)}`;
         mobileLink =  `intent://qr/json/${encodeURIComponent(json)}#${intent};${fallback};end`;
         break;
       default:
