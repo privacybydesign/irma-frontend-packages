@@ -28,29 +28,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  -webkit-transition: -webkit-opacity 0.2s ease, visibility 0s ease 0.2s;
-  -webkit-transition: "opacity 0.2s ease, visibility 0s ease 0.2s";
-  transition: "opacity 0.2s ease, visibility 0s ease 0.2s";
 }
 .irma-web-popup > * {
   margin: auto !important;
   transform: scale(0.7);
-  -webkit-transition: -webkit-transform 0.2s ease-in;
-  -webkit-transition: "transform 0.2s ease-in";
-  transition: "transform 0.2s ease-in";
 }
 .irma-web-popup.irma-web-popup-active {
   opacity: 1;
   visibility: visible;
-  -webkit-transition: -webkit-opacity 0.2s ease, visibility 0s ease;
-  -webkit-transition: "opacity 0.2s ease, visibility 0s ease";
-  transition: "opacity 0.2s ease, visibility 0s ease";
 }
 .irma-web-popup.irma-web-popup-active > * {
   transform: scale(1);
-  -webkit-transition: -webkit-transform 0.2s ease-out;
-  -webkit-transition: "transform 0.2s ease-out";
-  transition: "transform 0.2s ease-out";
 }
 
 .irma-web-form {
@@ -162,6 +150,10 @@
   transform: translateX(0%);
 }
 .irma-web-form .irma-web-header .irma-web-close {
+  background-color: inherit;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
   position: absolute;
   top: 1rem;
   right: 0;

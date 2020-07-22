@@ -1,6 +1,6 @@
 {
   "name": "@privacybydesign/irma-css",
-  "version": "0.3.1-rc.4",
+  "version": "0.3.1-rc.5",
   "description": "Styling to standardize the IRMA login flow and make it look pretty",
   "homepage": "https://github.com/privacybydesign/irma-frontend-packages",
   "license": "MIT",
@@ -37,7 +37,7 @@
     "kss": "^3.0.1",
     "michelangelo": "^0.8.0",
     "onchange": "^5.2.0",
-    "sass": "^1.26.9",
+    "sass": "^1.26.10",
     "svgo": "^1.3.2",
     "uglifycss": "0.0.29"
   }
