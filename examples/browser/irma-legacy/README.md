@@ -1,15 +1,13 @@
 # Browser IRMA legacy example
 
-This package is an example for how to use `irma-legacy` in the
+This package is an example for how to use `irma-legacy` (also known as `irmajs`) in the
 web browser. See the source of `index.js` and `public/index.html` for how we use it.
 
-This example uses the `irma-legacy` module from this repository. `irma-legacy` requires
-its own installation and building steps. These steps have to be executed first before 
-you can start this example. For an explanation how to do this you can check the README
-of `irma-legacy`.
+Note that the way we initialize the session on the IRMA server is **not** a
+recommended best practice for use in web browsers! Sessions can best be started
+in the backend or one can use signed JWTs.
 
-After having built `irma-legacy`, you can run this example by running
-these commands in this directory:
+You can run this example by running these commands in this directory:
 
 ```bash
 npm install
@@ -24,5 +22,9 @@ npm install serve
 `npm bin`/serve ./public
 ```
 
-The demo application will then run on the URL mentioned in the terminal output
-(usually http://localhost:8080/).
+If you want to build one of the included `irma-frontend-packages` modules from
+source, for example when testing, please make sure you run `./build.sh`
+in the root directory of `irma-frontend-packages`.
+You can link local versions of modules easily using `npm link`. There is
+an explanation about how to use `npm link` in the README of the
+`irma-frontend-packages` root directory.

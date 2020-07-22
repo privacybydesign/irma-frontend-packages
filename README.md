@@ -58,7 +58,7 @@ _Getting the session result through a proxy_
 <script type="text/javascript" src="[link to irma-frontend, see its readme]"></script>
 
 <script type="text/javascript">
-  irma.new({
+  const irmaWeb = irma.newWeb({
     debugging: false,            // Enable to get helpful output in the browser console
     element:   '#irma-web-form', // Which DOM element to render to
 
@@ -78,7 +78,7 @@ _Getting the session result through a proxy_
     }
   });
 
-  irma.start()
+  irmaWeb.start()
   .then(result => console.log("Successful disclosure! 🎉", result))
   .catch(error => console.error("Couldn't do what you asked 😢", error));
 </script>
@@ -91,7 +91,7 @@ $ npm install --save-dev irma-css irma-core irma-web irma-client
   ```
 
   ```javascript
-require('@privacybydesign/irma-css/dist/irma.css');
+require('@privacybydesign/irma-css');
 
 const IrmaCore = require('@privacybydesign/irma-core');
 const Web      = require('@privacybydesign/irma-web');
@@ -159,6 +159,9 @@ IRMA server can verify its authenticity.
 However, the web browser will be able to see the resulting disclosure or signed
 contract, because the web browser will be the one receiving the result token
 from the IRMA server. This may be an issue for some scenario's.
+In these scenarios you can get [signed JWTs as result](https://irma.app/docs/irma-server/#signed-jwt-session-results)
+from the IRMA server. This flow with receiving JWTs as result is not
+elaborated in this example.
 
 ![Getting the session result directly](docs/images/flows/flows.004.png)
 _Getting the session result directly_
@@ -179,7 +182,7 @@ _Getting the session result directly_
 <script type="text/javascript">
   const irmaRequest = 'signed request here';
 
-  irma.new({
+  const irmaWeb = irma.newWeb({
     debugging: false,            // Enable to get helpful output in the browser console
     element:   '#irma-web-form', // Which DOM element to render to
 
@@ -189,12 +192,13 @@ _Getting the session result directly_
       url: 'https://irma-server.my-server.domain/',
 
       start: {
-        body: irmaRequest
+        body: irmaRequest,
+        headers: { 'Content-Type': 'text/plain' },
       }
     }
   });
 
-  irma.start()
+  irmaWeb.start()
   .then(result => console.log("Successful disclosure! 🎉", result))
   .catch(error => console.error("Couldn't do what you asked 😢", error));
 </script>
@@ -207,7 +211,7 @@ $ npm install --save-dev irma-css irma-core irma-web irma-client
   ```
 
   ```javascript
-require('@privacybydesign/irma-css/dist/irma.css');
+require('@privacybydesign/irma-css');
 
 const IrmaCore = require('@privacybydesign/irma-core');
 const Web      = require('@privacybydesign/irma-web');
@@ -273,7 +277,7 @@ session there. The back-end does not need to be involved at all.
 <script type="text/javascript" src="[link to irma-frontend, see its readme]"></script>
 
 <script type="text/javascript">
-  irma.new({
+  const irmaWeb = irma.newWeb({
     debugging: false,            // Enable to get helpful output in the browser console
     element:   '#irma-web-form', // Which DOM element to render to
 
@@ -296,7 +300,7 @@ session there. The back-end does not need to be involved at all.
     }
   });
 
-  irma.start()
+  irmaWeb.start()
   .then(result => console.log("Successful disclosure! 🎉", result))
   .catch(error => console.error("Couldn't do what you asked 😢", error));
 </script>
@@ -309,7 +313,7 @@ $ npm install --save-dev irma-css irma-core irma-web irma-client
   ```
 
   ```javascript
-require('@privacybydesign/irma-css/dist/irma.css');
+require('@privacybydesign/irma-css');
 
 const IrmaCore = require('@privacybydesign/irma-core');
 const Web      = require('@privacybydesign/irma-web');
@@ -361,7 +365,7 @@ $ npm install --save-dev irma-css irma-core irma-web irma-dummy
   ```
 
   ```javascript
-require('@privacybydesign/irma-css/dist/irma.css');
+require('@privacybydesign/irma-css');
 
 const IrmaCore = require('@privacybydesign/irma-core');
 const Web      = require('@privacybydesign/irma-web');
@@ -453,3 +457,7 @@ Don't forget unlinking the repositories again when you are done. Unlinking repos
 repositories, but then in reverse order. You use `npm unlink --no-save` instead of `npm link`.
 
 **Depending on your setup it might be needed to run `npm link` using `sudo`.**
+
+## Documentation
+More documentation on how to use this package can be found in the
+[IRMA documentation](https://irma.app/docs/irma-frontend/).

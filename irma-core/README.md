@@ -1,7 +1,12 @@
 # IRMA core
 
-This package contains the state machine for implementing IRMA flows. You can
-register plugins with this state machine and then start the machine:
+This package contains the state machine for implementing IRMA flows. `irma-core`
+itself does not provide any real functionality. Plugins can be registered at
+the state machine and the plugins then provide the functionality depending on
+the state the state machine is in. The plugins can also request state modifications
+to the state machine.
+                                                                     
+IRMA core can be initialized in the following way:
 
 ```javascript
 const IrmaCore = require('@privacybydesign/irma-core');
@@ -23,6 +28,11 @@ const irma = new IrmaCore({
   element:   '#irma-web-form' // Used by `irma-web` plugin
 });
 ```
+
+## Documentation
+More elaborate documentation on how to use this module can be found in the
+[IRMA documentation](https://irma.app/docs/irma-frontend/#irma-core). You
+can also find here how to [design your own plugin](https://irma.app/docs/irma-frontend/#make-your-own-irma-core-plugin).
 
 ## API
 ### `use` method
@@ -82,7 +92,3 @@ when `abort` is called. When `start` has not been called yet or when the
 ```javascript
 irma.abort();
 ```
-
-## Documentation
-More elaborate documentation on how to use this module can be found in the
-[IRMA documentation](https://irma.app/docs/irma-frontend/#irma-core).

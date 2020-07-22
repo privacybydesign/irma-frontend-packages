@@ -12,8 +12,9 @@ Firefox, Safari, Opera, Edge and IE11.
 
 This package only contains CSS. So basically you just include the CSS file(s)
 and find the right HTML snippets [in the styleguide](https://privacybydesign.github.io/irma-frontend-packages/styleguide/section-examples.html).
+The modules based on `irma-web` (so also `irma-popup`) make use of these snippets.
 
-### The old fashioned way
+### Import: the old fashioned way
 
 There is a [normal version and a minified version](https://gitlab.science.ru.nl/irma/github-mirrors/irma-frontend-packages/-/jobs/artifacts/master/browse/irma-css/dist?job=irma-css)
 of the styles that you can include in your project. The CSS can be linked into
@@ -23,7 +24,7 @@ your website the regular way. You have to host the CSS file yourself.
 <link rel="stylesheet" href="assets/irma.css" />
 ```
 
-### The way the cool kids do it
+### Import: the way the cool kids do it
 
 Alternatively, you can install it as an npm package. This can be useful if you
 want to use (parts of) the SCSS behind it and override some variables, if you
@@ -48,7 +49,7 @@ SCSS/SASS files:
 Or require the CSS in your javascript if you use a tool like Webpack:
 
 ```javascript
-require('@privacybydesign/irma-css/dist/irma.css');
+require('@privacybydesign/irma-css');
 ```
 
 ## Contributing
@@ -105,3 +106,5 @@ $ npm run release # Build a clean new version in dist
 
 $ git commit -m "Releasing version xxx"
 ```
+
+Don't forget also updating the modules using `irma-css` as dependency.

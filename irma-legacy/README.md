@@ -1,4 +1,4 @@
-# IRMA legacy
+# IRMA legacy / irmajs
 
 `irma-legacy` is a wrapper around `irma-core` and several `irma-frontend-packages` plugins realizing backwards
 compatibility with the legacy [`irmajs` Javascript library](https://github.com/privacybydesign/irmajs).
@@ -28,8 +28,14 @@ All changes are related to the function call `handleSession`.
    a QR on mobile devices instead (useful for tablets).
  * The option `disableMobile` is not useful anymore and therefore deprecated. This module does not have
    automatic redirects to other apps anymore without explicit user interaction.
+ * Because the explicit methods for mobile devices are deprecated, the undocumented exported function
+   `detectUserAgent` and the undocumented exported struct `UserAgent` are also deprecated. An explicit
+   distinction based on user agent is not necessary anymore. This is all handled internally now.
  * The option `returnStatus` is deprecated. Instead you can use the functions `waitConnected` and `waitDone`
    to detect yourself whether the session reached a certain status.
+   
+If you experience problems concerning the backwards compatibility other than the ones mentioned above,
+please contact us. It might be something we were not aware of. Then we can maybe fix it.
 
 ## Documentation
 
@@ -44,7 +50,9 @@ Compile the library:
 
 This writes `irma.js` and `irma.node.js` to the `dist` folder. `irma.js` is the browser variant,
 which you can include in your website in a `<script>` tag. `irma.node.js` is the library variant
-for usage in node.js.
+for usage in node.js. To reduce the module size, the JWT support is split off in the separate files
+`jwt.js` and `vendors~jwt.js`. When you want to use the function `signSessionRequest`, these
+files must be available in the same directory as `irma.js` or `irma.node.js`.
 
 ## Browser example
 
@@ -71,3 +79,12 @@ requests listening at the URL indicated by `server`. More information about the 
 requests can be found in the [documentation](https://irma.app/docs/session-requests/).
 
 For complete examples, see the `irma-legacy` examples in the `examples` folder.
+
+## Development
+If you want to build one of the included `irma-frontend-packages` modules from
+source, for example when testing, please make sure you run `./build.sh`
+in the root directory of `irma-frontend-packages`.
+You can link local versions of modules easily using `npm link`. There is
+an explanation about how to use `npm link` in the README of the
+[`irma-frontend-packages` root directory](https://github.com/privacybydesign/irma-frontend-packages).
+

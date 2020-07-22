@@ -13,6 +13,11 @@ or as JavaScript import:
 const irma = require('@privacybydesign/irma-frontend');
 ```
 
+## Documentation
+More documentation on how to use this module can be found in the
+[IRMA documentation](https://irma.app/docs/irma-frontend/#irma-frontend).
+
+## Usage
 When you want to use an embedded web element,
 then you can instantiate `irma-frontend` like so:
 
@@ -35,7 +40,7 @@ your website, then you can instantiate `irma-frontend` like so:
 
 ```javascript
 const example = irma.newPopup({
-  debugging: false,            // Enable to get helpful output in the browser console
+  debugging: false, // Enable to get helpful output in the browser console
 
   // Back-end options
   session: {
@@ -60,3 +65,12 @@ When you want to call `start()` again, you have to create a new instance.
 ## Download
 A bundled JavaScript file can be found [here](https://gitlab.science.ru.nl/irma/github-mirrors/irma-frontend-packages/-/jobs/artifacts/master/browse/irma-frontend/dist?job=irma-frontend).
 Please download this file and host it yourself. Versions can change and we do not want to break your website.
+
+## Development
+If you want to build one of the included `irma-frontend-packages` modules from
+source, for example when testing, please make sure you run `./build.sh`
+in the root directory of `irma-frontend-packages`.
+You can link local versions of modules easily using `npm link`. There is
+an explanation about how to use `npm link` in the README of the
+[`irma-frontend-packages` root directory](https://github.com/privacybydesign/irma-frontend-packages).
+

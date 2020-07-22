@@ -2,14 +2,16 @@
 
 This plugin contains a front-end for IRMA flows in the web browser.
 
-It is designed to be used with [`irma-css`](https://github.com/privacybydesign/irma-frontend-packages/tree/master/irma-css),
-but can be used with different styling. `irma-css` is not a dependency of this
-package by design, so you are free to use other styling.
+It is designed to be used with
+[`irma-css`](https://github.com/privacybydesign/irma-frontend-packages/tree/master/plugins/irma-css). 
+`irma-css` is not a dependency of this package by design. This means that the CSS must be imported
+separately. How to do this, you can check in the README of `irma-css`. In this way you can also
+adapt `irma-css` to your own design and import this custom style instead.
 
-If you *do* want to use `irma-css` (which is recommended), you may want to use
+If you *do* want to use `irma-css` (which is recommended), you may also consider using
 [the `irma-frontend` package](https://github.com/privacybydesign/irma-frontend-packages/tree/master/irma-frontend)
 instead for ease of use, or take a look at
-[`irma-web`](https://github.com/privacybydesign/irma-frontend-packages/tree/master/examples/browser/irma-web)
+[the `irma-web` example](https://github.com/privacybydesign/irma-frontend-packages/tree/master/examples/browser/irma-web)
 for a more hands-on implementation example.
 
 ## Usage
@@ -17,6 +19,8 @@ for a more hands-on implementation example.
 ```javascript
 const IrmaCore = require('@privacybydesign/irma-core');
 const Web      = require('@privacybydesign/irma-web');
+
+require('@privacybydesign/irma-css');
 
 const irma = new IrmaCore({
   element: '#irma-web-form'
