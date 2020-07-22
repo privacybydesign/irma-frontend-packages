@@ -38,6 +38,15 @@ function parseError(e) {
   }
 }
 
+let logEnabled = false;
+
+/**
+ * Change whether or not the irmajs library logs to console.
+ */
+function setLoggingState(enabled) {
+  logEnabled = enabled;
+}
+
 /**
  * Handle an IRMA session after it has been created at an irma server, given the QR contents
  * to be sent to the IRMA app. This function can (1) draw an IRMA QR, (2) wait for the phone to
@@ -63,7 +72,7 @@ function handleSession(qr, options = {}) {
         },
         result: false,
       },
-      debugging: false,
+      debugging: logEnabled,
       language:  options.language || optionsDefaults.language,
     };
 
@@ -123,7 +132,7 @@ function handleSession(qr, options = {}) {
 function startSession(server, request, method, key, name) {
   let options = {
     url: server,
-    debugging: false,
+    debugging: logEnabled,
     mapping: {
       sessionPtr: r => r, // In this way also the sessionToken is included in the return value.
       sessionToken: () => undefined,
@@ -232,4 +241,5 @@ module.exports = {
   signSessionRequest,
   waitConnected,
   waitDone,
+  setLoggingState,
 };
