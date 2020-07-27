@@ -30,7 +30,7 @@
   justify-content: center;
 }
 .irma-web-popup > * {
-  margin: auto !important;
+  margin: auto 0 !important;
   transform: scale(0.7);
 }
 .irma-web-popup.irma-web-popup-active {
