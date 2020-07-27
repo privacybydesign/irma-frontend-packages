@@ -36,7 +36,7 @@
 
   // Direct descendant gets animation and auto margins to enable scrolling on small screens
   & > * {
-    margin: auto !important;
+    margin: auto 0 !important;
     transform: scale(0.7);
   }
 
