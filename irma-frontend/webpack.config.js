@@ -4,7 +4,12 @@ module.exports = {
   mode: 'development',
 
   entry: {
-    'irma': './index.js'
+    'irma': [
+      'core-js/modules/es.promise',
+      'core-js/modules/es.array.iterator',
+      'core-js/modules/es.array.includes',
+      './index.js'
+    ],
   },
 
   output: {
@@ -29,9 +34,23 @@ module.exports = {
         ]
       },
       {
-        test: /\.(ttf|woff2)$/,
-        loader: 'url-loader'
-      }
-    ]
-  }
+        test: /\.js$/i,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            'presets': [
+              [
+                '@babel/preset-env',
+                {
+                  'targets': '> 0.25%, not dead',
+                  'useBuiltIns': 'entry',
+                  'corejs': { 'version': 3, 'proposals': true },
+                },
+              ],
+            ],
+          },
+        },
+      },
+    ],
+  },
 };
