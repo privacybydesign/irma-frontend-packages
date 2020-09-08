@@ -94,7 +94,7 @@ function handleSession(qr, options = {}) {
 
     switch (options.method) {
       case 'canvas':
-        throw new Error('Method canvas is not supported anymore, please switch to popup mode or use irma-js-packages.');
+        throw new Error('Method canvas is not supported anymore, please switch to popup mode or use irma-frontend-packages.');
       case 'console':
         irmaCore.use(Console);
         break;
