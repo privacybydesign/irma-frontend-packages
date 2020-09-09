@@ -7,7 +7,7 @@ module.exports = {
   app:       'Follow the steps in the IRMA app',
   retry:     'Try again',
   back:      'Go back',
-  cancelled: 'Your data have not been received',
+  cancelled: 'The session is cancelled',
   timeout:   'Sorry! We haven\'t heard<br/>from you for too long',
   error:     'Sorry! Something went wrong',
   browser:   'We\'re sorry, but your browser does not meet the minimum requirements',
