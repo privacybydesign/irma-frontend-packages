@@ -10,7 +10,7 @@
   "dependencies": {
     "@privacybydesign/irma-client": "^0.1.1-rc.2",
     "@privacybydesign/irma-console": "^0.1.1-rc.2",
-    "@privacybydesign/irma-core": "^0.1.1-rc.5"
+    "@privacybydesign/irma-core": "^0.1.1-rc.6"
   },
   "repository": {
     "type": "git",

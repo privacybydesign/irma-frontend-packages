@@ -9,11 +9,11 @@
   "license": "MIT",
   "dependencies": {
     "@privacybydesign/irma-console": "^0.1.1-rc.2",
-    "@privacybydesign/irma-core": "^0.1.1-rc.5",
+    "@privacybydesign/irma-core": "^0.1.1-rc.6",
     "@privacybydesign/irma-dummy": "^0.1.1-rc.0"
   },
   "devDependencies": {
-    "webpack": "^4.44.0",
+    "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
   },
   "repository": {

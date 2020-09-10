@@ -1,6 +1,6 @@
 {
   "name": "@privacybydesign/irma-frontend",
-  "version": "0.1.1-rc.12",
+  "version": "0.1.1-rc.13",
   "description": "A simplified package of irma-frontend modules to get started easily",
   "main": "dist/irma.js",
   "scripts": {
@@ -9,10 +9,10 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
     "@privacybydesign/irma-client": "^0.1.1-rc.2",
-    "@privacybydesign/irma-core": "^0.1.1-rc.5",
+    "@privacybydesign/irma-core": "^0.1.1-rc.6",
     "@privacybydesign/irma-css": "^0.3.1-rc.6",
     "@privacybydesign/irma-popup": "^0.1.1-rc.5",
     "@privacybydesign/irma-web": "^0.1.1-rc.5",
@@ -20,7 +20,7 @@
     "core-js": "^3.6.5",
     "css-loader": "^3.5.3",
     "style-loader": "^1.2.1",
-    "webpack": "^4.44.0",
+    "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
   },
   "repository": {
