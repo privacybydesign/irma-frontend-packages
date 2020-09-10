@@ -33,7 +33,7 @@
     "release": "sass src/dist.scss dist/irma.css && uglifycss --output dist/irma.min.css dist/irma.css"
   },
   "devDependencies": {
-    "concurrently": "^4.1.2",
+    "concurrently": "^5.3.0",
     "kss": "^3.0.1",
     "michelangelo": "^0.8.0",
     "onchange": "^5.2.0",
