@@ -1,5 +1,3 @@
-require('@privacybydesign/irma-css');
-
 const IrmaCore      = require('@privacybydesign/irma-core');
 const Client        = require('@privacybydesign/irma-client');
 const ServerSession = require('@privacybydesign/irma-client/server-session');
@@ -9,6 +7,8 @@ const Popup         = require('@privacybydesign/irma-popup');
 const QRCode        = require('qrcode');
 
 const browser = typeof(window) !== 'undefined';
+
+if (browser) require('@privacybydesign/irma-css');
 
 const SessionStatus = {
   Initialized: 'INITIALIZED', // The session has been started and is waiting for the client to connect (scan the QR)
