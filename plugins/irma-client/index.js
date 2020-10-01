@@ -49,7 +49,7 @@ module.exports = class IrmaClient {
           if (this._options.debugging)
             console.error("Error starting a new session on the server:", error);
 
-          this._handleNoSuccess('fail');
+          this._handleNoSuccess('fail', error);
         })
     }
   }
@@ -63,7 +63,7 @@ module.exports = class IrmaClient {
       if ( this._options.debugging )
         console.error("Observing server state could not be started: ", error);
 
-      this._handleNoSuccess('fail');
+      this._handleNoSuccess('fail', error);
     }
   }
 
@@ -81,7 +81,7 @@ module.exports = class IrmaClient {
     if ( this._options.debugging )
       console.error("Error while observing server state: ", error);
 
-    this._handleNoSuccess('fail');
+    this._handleNoSuccess('fail', error);
   }
 
   _serverStateChange(newState) {
@@ -116,16 +116,16 @@ module.exports = class IrmaClient {
           if (this._options.debugging)
             console.error("Error fetching session result from the server:", error);
 
-          this._handleNoSuccess('fail');
+          this._handleNoSuccess('fail', error);
         });
     }
     this._stateMachine.transition('succeed');
   }
 
-  _handleNoSuccess(transition) {
+  _handleNoSuccess(transition, payload) {
     if (this._options.session.start)
-      return this._stateMachine.transition(transition);
-    this._stateMachine.finalTransition(transition);
+      return this._stateMachine.transition(transition, payload);
+    this._stateMachine.finalTransition(transition, payload);
   }
 
   _sanitizeOptions(options) {
