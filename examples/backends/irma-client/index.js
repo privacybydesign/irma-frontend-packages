@@ -13,11 +13,16 @@ const irma = new IrmaCore({
 
     // Define your disclosure request:
     start: {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         "@context": "https://irma.app/ld/request/disclosure/v2",
         "disclose": [
           [
-            [ "pbdf.pbdf.email.email" ]
+            [ "pbdf.pbdf.email.email" ],
+            [ "pbdf.sidn-pbdf.email.email" ],
           ]
         ]
       })

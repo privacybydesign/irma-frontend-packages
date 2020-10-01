@@ -18,8 +18,9 @@ under way.
 
 ## Supported IRMA flows
 
-We support two different IRMA flows, and "tolerate" a third for development and
-demo purposes.
+This library is designed to be flexible in usage. In this section we describe
+how some imaginable IRMA flows and how these flows map onto this library. We
+also mention points of attention for developers when implementing such a flow.
 
 As a general best practice, we don't want to allow the web browser to freely
 initialize the IRMA flow. Also, in many cases we don't want the result of the
@@ -29,7 +30,7 @@ injected code.
 
 ### Talking to IRMA server through a proxy
 
-The first (and most highly recommended) supported flow that combats these issues
+The most highly recommended flow that combats these issues
 is one where the Javascript client talks to the IRMA server through your own
 application back-end, that functions as a proxy.
 
@@ -72,7 +73,7 @@ _Getting the session result through a proxy_
         method: 'GET'
       },
       result: {
-        url: o => `${o.url}/result`,
+        url: (o, {sessionPtr, sessionToken}) => `${o.url}/result`,
         method: 'GET'
       }
     }
@@ -111,7 +112,7 @@ const irma = new IrmaCore({
       method: 'GET'
     },
     result: {
-      url: o => `${o.url}/result`,
+      url: (o, {sessionPtr, sessionToken}) => `${o.url}/result`,
       method: 'GET'
     }
   }
@@ -146,7 +147,7 @@ irma.start()
 
 ### Talking to IRMA server directly, with signed request
 
-The second supported flow is one where the Javascript client talks to the IRMA
+Another supported flow is one where the Javascript client talks to the IRMA
 server directly, and is itself responsible for starting the session there.
 
 ![Starting a session directly, with signed request](docs/images/flows/flows.002.png)
@@ -192,6 +193,7 @@ _Getting the session result directly_
       url: 'https://irma-server.my-server.domain/',
 
       start: {
+        method: 'POST',
         body: irmaRequest,
         headers: { 'Content-Type': 'text/plain' },
       }
@@ -229,6 +231,8 @@ const irma = new IrmaCore({
     url: 'https://irma-server.my-server.domain/',
 
     start: {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: irmaRequest
     }
   }
@@ -287,12 +291,14 @@ session there. The back-end does not need to be involved at all.
       url: 'https://irma-server.my-server.domain/',
 
       start: {
-        // Define your IRMA request:
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          "@context": "https://irma.app/ld/request/disclosure/v2",
-          "disclose": [
+          '@context': 'https://irma.app/ld/request/disclosure/v2',
+          'disclose': [
             [
-              [ "pbdf.pbdf.email.email" ]
+              [ 'pbdf.pbdf.email.email' ],
+              [ 'pbdf.sidn-pbdf.email.email' ],
             ]
           ]
         })
@@ -329,12 +335,14 @@ const irma = new IrmaCore({
     url: 'https://irma-server.my-server.domain/',
 
     start: {
-      // Define your IRMA request:
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        "@context": "https://irma.app/ld/request/disclosure/v2",
-        "disclose": [
+        '@context': 'https://irma.app/ld/request/disclosure/v2',
+        'disclose': [
           [
-            [ "pbdf.pbdf.email.email" ]
+            [ 'pbdf.pbdf.email.email' ],
+            [ 'pbdf.sidn-pbdf.email.email' ],
           ]
         ]
       })

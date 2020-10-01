@@ -82,9 +82,6 @@ function handleSession(qr, options = {}) {
       irmaCoreOptions.session.url = options.server;
       irmaCoreOptions.session.result = {
         url: (o, {sessionToken}) => `${o.url}/session/${sessionToken}/${endpoint}`,
-        body: null,
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'},
         parseResponse: endpoint === 'result' ? r => r.json() : r => r.text()
       };
     }

@@ -20,11 +20,16 @@ const irma = new IrmaCore({
 
     // Define your disclosure request:
     start: {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
-        "@context": "https://irma.app/ld/request/disclosure/v2",
-        "disclose": [
+        '@context': 'https://irma.app/ld/request/disclosure/v2',
+        'disclose': [
           [
-            [ "pbdf.pbdf.email.email" ]
+            [ 'pbdf.pbdf.email.email' ],
+            [ 'pbdf.sidn-pbdf.email.email' ],
           ]
         ]
       })
@@ -56,11 +61,37 @@ The only separate option the `session` option contains is the `url` option
 specifying the url of your remote server. This option is required when you
 use the `start` and/or the `result` option.
 
-All property structs have default values set matching the flow when directly using the
-[`irma server`](https://irma.app/docs/irma-server/) for handling sessions.
-If you need more fine grained control over how the session is started and how
-the result from the session is fetched on the server, you can override (parts
-of) `start` and/or `result`.
+All property structs have default values set for fetching the session pointer
+(on state `Loading`) and fetching the session result (on state `Success`)
+with a GET request on respectively the endpoints `${o.url}/session` and
+`${o.url}/session/${sessionToken}/result`. In this `o.url` is the value of
+the `url` option as described above. 
+
+For fetching we use the `fetch()`
+[default settings](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch).
+The `start` and `result` property structs are passed as custom options
+to `fetch()`. This means you can use [all options](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch)
+of `fetch()`to customize the request `irma-client` does for you. For example,
+in case you want a specific POST request to be done instead of the default
+GET request, you can do so.
+
+```javascript
+start: {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    '@context': 'https://irma.app/ld/request/disclosure/v2',
+    'disclose': [
+      [
+        [ 'pbdf.pbdf.email.email' ],
+        [ 'pbdf.sidn-pbdf.email.email' ],
+      ]
+    ]
+  })
+}
+```
 
 If you don't need your Javascript to fetch the session result, you can set
 `result` to `false`. The Promise will then just resolve when the session is done.
@@ -108,10 +139,9 @@ session: {
 
   start: {
     url:           o => `${o.url}/session`,
-    body:          null,
-    method:        'POST',
-    headers:       { 'Content-Type': 'application/json' },
     parseResponse: r => r.json()
+    // And the custom settings for fetch()'s init parameter
+    // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
   },
 
   mapping: {
@@ -121,19 +151,18 @@ session: {
 
   result: {
     url:           (o, {sessionPtr, sessionToken}) => `${o.url}/session/${sessionToken}/result`,
-    body:          null,
-    method:        'GET',
-    headers:       { 'Content-Type': 'application/json' },
     parseResponse: r => r.json()
+    // And the custom settings for fetch()'s init parameter
+    // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
   }
 }
 ```
 
 If you want to use another plugin for starting IRMA sessions, you can disable
 the session functionality of `irma-client` by saying `session: false`. In this
-case `irma-client` will not initiate the `this._stateMachine.transition('loaded', qr)`
-transition to the state machine while it is in the `Loading` state. This means you
-have to specify a custom plugin that performs this transition instead.
+case `irma-client` will not request the `this._stateMachine.transition('loaded', qr)`
+transition at the state machine while it is in the `Loading` state. This means you
+have to specify a custom plugin that requests this transition instead.
 
 ### state
 
@@ -168,5 +197,5 @@ state: {
 ```
 
 Note that in the `url` functions, `o.url` in this case isn't `session.url`, but
-rather the `u` property from the QR code object (or `sessionPtr.u`). So by
+rather the `u` property from the QR code object (so `sessionPtr.u`). By
 default these URLs **will** point to your IRMA server, which is okay.

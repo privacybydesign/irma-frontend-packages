@@ -134,10 +134,9 @@ module.exports = class IrmaClient {
         url: '',
         start: {
           url:          o => `${o.url}/session`,
-          body:          null,
-          method:        'POST',
-          headers:       { 'Content-Type': 'application/json' },
           parseResponse: r => r.json()
+          // And default custom settings for fetch()'s init parameter
+          // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
         },
         mapping: {
           sessionPtr:    r => r.sessionPtr,
@@ -145,10 +144,9 @@ module.exports = class IrmaClient {
         },
         result: {
           url:           (o, {sessionToken}) => `${o.url}/session/${sessionToken}/result`,
-          body:          null,
-          method:        'GET',
-          headers:       { 'Content-Type': 'application/json' },
           parseResponse: r => r.json()
+          // And default custom settings for fetch()'s init parameter
+          // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
         }
       },
       state: {
