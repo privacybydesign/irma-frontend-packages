@@ -1,11 +1,11 @@
 {
   "name": "@privacybydesign/irma-popup",
-  "version": "0.1.1-rc.5",
+  "version": "0.1.1-rc.6",
   "description": "A frond-end plugin to show the IRMA form in a popup",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@privacybydesign/irma-web": "^0.1.1-rc.5",
+    "@privacybydesign/irma-web": "^0.1.1-rc.6",
     "deepmerge": "^4.2.2"
   },
   "repository": {
