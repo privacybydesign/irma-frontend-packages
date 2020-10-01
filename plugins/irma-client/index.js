@@ -104,7 +104,7 @@ module.exports = class IrmaClient {
         if ( this._options.debugging )
           console.error(`Unknown state received from server: '${newState}'. Payload:`, payload);
 
-        return this._handleNoSuccess('fail');
+        return this._handleNoSuccess('fail', new Error('Unknown state received from server'));
     }
   }
 
