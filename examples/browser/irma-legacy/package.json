@@ -8,8 +8,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@privacybydesign/irmajs": "^0.2.0-rc.12",
-    "webpack": "^4.44.1",
+    "@privacybydesign/irmajs": "^0.2.0-rc.14",
+    "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
   }
 }
