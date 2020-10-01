@@ -45,8 +45,8 @@ information when debugging is enabled.
 
 ### session
 
-The `session` option is the only required one. The `session` options contains
-three property structs corresponding to the three phases session handling has:
+The `session` options contains three property structs corresponding to
+the three phases session handling has:
  - `start` dealing with fetching session information from a remote server;
  - `mapping` dealing with parsing the needed information out of the fetched
    session information;
@@ -128,6 +128,12 @@ session: {
   }
 }
 ```
+
+If you want to use another plugin for starting IRMA sessions, you can disable
+the session functionality of `irma-client` by saying `session: false`. In this
+case `irma-client` will not initiate the `this._stateMachine.transition('loaded', qr)`
+transition to the state machine while it is in the `Loading` state. This means you
+have to specify a custom plugin that performs this transition instead.
 
 ### state
 

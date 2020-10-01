@@ -7,7 +7,7 @@ module.exports = class IrmaClient {
   constructor({stateMachine, options}) {
     this._stateMachine = stateMachine;
     this._options      = this._sanitizeOptions(options);
-    this._session      = new ServerSession(this._options.session);
+    this._session      = this._options.session ? new ServerSession(this._options.session) : false;
   }
 
   stateChange({newState, payload}) {
@@ -34,22 +34,24 @@ module.exports = class IrmaClient {
   }
 
   _startNewSession() {
-    this._session.start()
-    .then(qr => {
-      if (this._stateMachine.currentState() == 'Loading') {
-        this._stateMachine.transition('loaded', qr);
-      } else {
-        // State was changed while loading, so cancel again.
-        this._serverState = new ServerState(qr.u, this._options.state);
-        this._serverCancelSession();
-      }
-    })
-    .catch(error => {
-      if ( this._options.debugging )
-        console.error("Error starting a new session on the server:", error);
+    if (this._session) {
+      this._session.start()
+        .then(qr => {
+          if (this._stateMachine.currentState() == 'Loading') {
+            this._stateMachine.transition('loaded', qr);
+          } else {
+            // State was changed while loading, so cancel again.
+            this._serverState = new ServerState(qr.u, this._options.state);
+            this._serverCancelSession();
+          }
+        })
+        .catch(error => {
+          if (this._options.debugging)
+            console.error("Error starting a new session on the server:", error);
 
-      this._handleNoSuccess('fail');
-    })
+          this._handleNoSuccess('fail');
+        })
+    }
   }
 
   _startWatchingServerState(payload) {
@@ -107,14 +109,17 @@ module.exports = class IrmaClient {
   }
 
   _successStateReached() {
-    this._session.result()
-    .then(result => this._stateMachine.transition('succeed', result))
-    .catch(error => {
-      if ( this._options.debugging )
-        console.error("Error fetching session result from the server:", error);
+    if (this._session) {
+      return this._session.result()
+        .then(result => this._stateMachine.transition('succeed', result))
+        .catch(error => {
+          if (this._options.debugging)
+            console.error("Error fetching session result from the server:", error);
 
-      this._handleNoSuccess('fail');
-    });
+          this._handleNoSuccess('fail');
+        });
+    }
+    this._stateMachine.transition('succeed');
   }
 
   _handleNoSuccess(transition) {
