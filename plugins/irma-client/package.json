@@ -7,7 +7,7 @@
   "dependencies": {
     "deepmerge": "^4.2.2",
     "eventsource": "^1.0.7",
-    "isomorphic-fetch": "^2.2.1"
+    "isomorphic-fetch": "^3.0.0"
   },
   "repository": {
     "type": "git",
