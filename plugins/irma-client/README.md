@@ -1,7 +1,8 @@
 # IRMA client
 
-This plugin allows your IRMA flow to communicate with a back-end. It is highly
-configurable for use in many different setups.
+This plugin for `irma-core` allows your IRMA flow to communicate with a back-end. 
+It is highly configurable for use in many different setups. This plugin takes
+care of initiating most of the transitions to the `irma-core` state machine.
 
 ## Usage
 
@@ -199,3 +200,50 @@ state: {
 Note that in the `url` functions, `o.url` in this case isn't `session.url`, but
 rather the `u` property from the QR code object (so `sessionPtr.u`). By
 default these URLs **will** point to your IRMA server, which is okay.
+
+## Behaviour
+This plugin initiates the following transitions to the `irma-core` state machine.
+
+**When being in state `Loading`:**
+
+If `session` option is set to `false`, the plugin does nothing in this state.
+
+Otherwise this plugin:
+ * Fetches the `start` endpoint (unless `start` is explicitly set to `false`).
+ * Extracts the session pointer (and the session token if specified) using the functions from the `mapping` option.
+
+| Possible transitions | With payload              | Next state          |
+|----------------------|---------------------------|---------------------|
+| `loaded`             | `sessionPtr`              | MediumContemplation |
+| `fail`               | Error that fetch returned | Error               |
+
+**When being in state `MediumContemplation`, `ShowingQRCode`, `ContinueOn2ndDevice`, `ShowingIrmaButton`
+or `ShowingQRCodeInstead`:**
+
+In these states the plugin polls the status at IRMA server using the `state` options.
+If status is `DONE` and the `result` endpoint is enabled (so if `result` is not explicitly set to `false`),
+then the `result` endpoint is fetched.
+
+| Possible transitions                        | With payload                                              | Next state        |
+|---------------------------------------------|-----------------------------------------------------------|-------------------|
+| `appConnected` if new status is `CONNECTED` |                                                           | ContinueInIrmaApp |
+| `succeed` if new status is `DONE`           | Result from `parseResponse` function of `result` endpoint | Success           |
+| `timeout` if new status is `TIMEOUT`        |                                                           | TimedOut          |
+| `cancel` if new status is `CANCELLED`       |                                                           | Cancelled         |
+| `fail` if sse/polling fails                 | Error that fetch returned                                 | Error             |
+| `fail` if fetching of result endpoint fails | Error that fetch returned                                 | Error             |
+
+**When being in state `ContinueInIrmaApp`:**
+
+In this state we continue polling the IRMA server using the `state` options. The only difference with the states
+above is that we already processed the status `CONNECTED`, so we do not act on this status anymore. Also in this state 
+holds, if status is `DONE` and the `result` endpoint is enabled (so if `result` is not explicitly set to `false`),
+then the `result` endpoint is fetched.
+
+| Possible transitions                        | With payload                                              | Next state        |
+|---------------------------------------------|-----------------------------------------------------------|-------------------|
+| `succeed` if new status is `DONE`           | Result from `parseResponse` function of `result` endpoint | Success           |
+| `timeout` if new status is `TIMEOUT`        |                                                           | TimedOut          |
+| `cancel` if new status is `CANCELLED`       |                                                           | Cancelled         |
+| `fail` if sse/polling fails                 | Error that fetch returned                                 | Error             |
+| `fail` if fetching of result endpoint fails | Error that fetch returned                                 | Error             |
