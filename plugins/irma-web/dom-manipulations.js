@@ -86,20 +86,20 @@ module.exports = class DOMManipulations {
 
   _irmaWebForm(content) {
     return `
-      <header class="irma-web-header ${this._showHelper ? 'irma-web-show-helper' : ''}">
+      <div class="irma-web-header ${this._showHelper ? 'irma-web-show-helper' : ''}">
         <p>${this._translations.header}</p>
-        <section class="irma-web-helper">
+        <div class="irma-web-helper">
           <p>${this._translations.helper}</p>
-        </section>
+        </div>
         ${this._showCloseButton ? `
           <button class="irma-web-close"></button>
         ` : ''}
-      </header>
-      <section class="irma-web-content">
-        <section class="irma-web-centered">
+      </div>
+      <div class="irma-web-content">
+        <div class="irma-web-centered">
           ${content}
-        </section>
-      </section>
+        </div>
+      </div>
     `;
   }
 

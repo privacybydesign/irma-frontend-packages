@@ -9,39 +9,39 @@
 //
 // Trigger helper:
 // <ul>
-//   <li><a href="javascript:eachDo(document.querySelectorAll('.header'), function(h) {h.classList.add('irma-web-show-helper')})">Show helpers</a></li>
-//   <li><a href="javascript:eachDo(document.querySelectorAll('.header'), function(h) {h.classList.remove('irma-web-show-helper')})">Hide helpers</a></li>
+//   <li><a href="javascript:eachDo(document.querySelectorAll('.irma-web-header'), function(h) {h.classList.add('irma-web-show-helper')})">Show helpers</a></li>
+//   <li><a href="javascript:eachDo(document.querySelectorAll('.irma-web-header'), function(h) {h.classList.remove('irma-web-show-helper')})">Hide helpers</a></li>
 // </ul>
 //
 // Markup:
 // <section class="irma-web-form">
-//   <header class="irma-web-header">
+//   <div class="irma-web-header">
 //     <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
-//     <section class="irma-web-helper">
+//     <div class="irma-web-helper">
 //       <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
-//     </section>
-//   </header>
-//   <section class="irma-web-content">
-//     <section class="irma-web-centered">
+//     </div>
+//   </div>
+//   <div class="irma-web-content">
+//     <div class="irma-web-centered">
 //       <button>Some action here</button>
 //       <p>With some text <a href="#">and stuff</a></p>
-//     </section>
-//   </section>
+//     </div>
+//   </div>
 // </section>
 // <section class="irma-web-form">
-//   <header class="irma-web-header">
+//   <div class="irma-web-header">
 //     <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
-//     <section class="irma-web-helper">
+//     <div class="irma-web-helper">
 //       <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
-//     </section>
+//     </div>
 //     <button class="irma-web-close"></button>
-//   </header>
-//   <section class="irma-web-content">
-//     <section class="irma-web-centered">
+//   </div>
+//   <div class="irma-web-content">
+//     <div class="irma-web-centered">
 //       <button>Some action here</button>
 //       <p>With some text <a href="#">and stuff</a></p>
-//     </section>
-//   </section>
+//     </div>
+//   </div>
 // </section>
 //
 // Styleguide Components.IRMA login
