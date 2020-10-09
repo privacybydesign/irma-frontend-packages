@@ -420,7 +420,7 @@ this in the root directory of this repository.
 ./build.sh
 ```
 
-Be aware that the packages are built using the dependencies from `npm`, If you make
+Be aware that the packages are built using the dependencies from `npm`. If you make
 local changes in one package, the changes are not automatically included into other
 packages that use the changed package as dependency. If you do want to fully build
 locally with local changes, check the [development guide](#development).
