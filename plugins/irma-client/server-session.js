@@ -28,9 +28,10 @@ module.exports = class ServerSession {
     })
     .then(r => this._options.start.parseResponse(r))
     .then(r => {
-      this._mappings = { sessionPtr: this._options.mapping.sessionPtr(r) };
-      if (this._options.result)
-        this._mappings.sessionToken = this._options.mapping.sessionToken(r);
+      // Execute all mapping functions using the received start response.
+      Object.keys(this._options.mapping).forEach(val =>
+        this._mappings[val] = this._options.mapping[val](r)
+      );
 
       return this._mappings.sessionPtr;
     });

@@ -1,5 +1,3 @@
-_Work in progress - See https://github.com/privacybydesign/irmajs for now_
-
 # IRMA frontend packages
 
 Welcome to this repository! IRMA frontend packages is a collection of related
@@ -13,8 +11,7 @@ The browser version, by default, will look like this:
 
 The client is designed in such a way that you can combine the plugins you need
 and configure them in many useful ways. So the above design can easily be
-removed (for your NodeJS application) or swapped out for a popup version that is
-under way.
+removed (for your NodeJS application) or swapped out for a popup version.
 
 ## Supported IRMA flows
 
@@ -404,7 +401,7 @@ file with features, options and purpose of the package:
 * [`irma-core`](irma-core)
 * [`irma-css`](irma-css)
 * [`irma-frontend`](irma-frontend)
-* [`irma-legacy`](irma-legacy)
+* [`irma-legacy` / `irmajs`](irma-legacy)
 * Front-end plugins
   * [`irma-console`](plugins/irma-console)
   * [`irma-popup`](plugins/irma-popup)
@@ -422,6 +419,11 @@ this in the root directory of this repository.
 ```
 ./build.sh
 ```
+
+Be aware that the packages are built using the dependencies from `npm`, If you make
+local changes in one package, the changes are not automatically included into other
+packages that use the changed package as dependency. If you do want to fully build
+locally with local changes, check the [development guide](#development).
 
 If you need to build one specific package and the general script is not suitable to you,
 then you can look at the README of the particular package for package specific instructions.
@@ -446,7 +448,8 @@ combinations of plugins to achieve different effects:
 ### Development
 When developing a certain module, you might want to test the module using one of the examples.
 By default the examples load their dependencies via npm, so if you want to run an example
-with your own code you have to use `npm link`.
+with your own code you have to use `npm link`. This also holds for the packages `irma-frontend`
+and `irma-legacy`, which use other `irma-frontend-packages` as dependencies.
 
 For example, when you are developing the `irma-client` plugin and you want to run the
 `backends/irma-client` example, the modules can be linked in the following way:
@@ -460,9 +463,6 @@ cd examples/backends/irma-client
 npm install
 npm link @privacybydesign/irma-client
 ```
-
-Don't forget unlinking the repositories again when you are done. Unlinking repositories works the same as linking
-repositories, but then in reverse order. You use `npm unlink --no-save` instead of `npm link`.
 
 **Depending on your setup it might be needed to run `npm link` using `sudo`.**
 

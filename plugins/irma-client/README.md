@@ -51,26 +51,69 @@ information when debugging is enabled.
 
 ### session
 
-The `session` options contains three property structs corresponding to
-the three phases session handling has:
- - `start` dealing with fetching session information from a remote server;
- - `mapping` dealing with parsing the needed information out of the fetched
-   session information;
- - `result` dealing with fetching the result from a remote server.
+The `session` options contains three property structs with options for 
+starting and finishing IRMA sessions:
+ - [`start`](#option-start) dealing with fetching the information needed for a new
+   IRMA session (like the session pointer) from a remote server;
+ - [`mapping`](#option-mapping) dealing with parsing the needed information out of
+   the information fetched during [`start`](#option-start);
+ - [`result`](#option-result) dealing with fetching the result from a remote server.
+ 
+More details about these property structs can be found below.
 
-The only separate option the `session` option contains is the `url` option
+The only separate option `session` contains is the `url` option,
 specifying the url of your remote server. This option is required when you
 use the `start` and/or the `result` option.
 
-All property structs have default values set for fetching the session pointer
-(on state `Loading`) and fetching the session result (on state `Success`)
-with a GET request on respectively the endpoints `${o.url}/session` and
-`${o.url}/session/${sessionToken}/result`. In this `o.url` is the value of
-the `url` option as described above. 
+If you want to use another plugin for starting IRMA sessions, you can disable
+the session functionality of `irma-client` by saying `session: false`. In this
+case `irma-client` will not request the `this._stateMachine.transition('loaded', qr)`
+transition at the `irma-core` state machine when it hits the `Loading` state. This means you
+have to specify a custom plugin that requests this transition instead.
 
-For fetching we use the `fetch()`
-[default settings](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch).
-The `start` and `result` property structs are passed as custom options
+General outline:
+```javascript
+session: {
+  url: 'http://example.com/irmaserver',
+  start: {
+    ...
+  },
+  mapping: {
+    ...
+  },
+  result: {
+    ...
+  }
+}
+```
+
+##### Option `start`
+These options define the HTTP request `irma-client` has to do in order
+to fetch the information of the IRMA session that has to be performed.
+The response of this endpoint must at least contain an IRMA `sessionPtr`.
+A session pointer can be retrieved at the IRMA server by using the [IRMA
+server library](https://godoc.org/github.com/privacybydesign/irmago/server/irmaserver#Server.StartSession),
+the [IRMA server REST API](https://irma.app/docs/api-irma-server/#post-session)
+or using one of the [IRMA backend packages](https://github.com/privacybydesign/irma-backend-packages).
+
+The default values are set for fetching the session pointer
+(on `irma-core` state `Loading`) with a GET request on the
+endpoints `${o.url}/session`. In here, `o` is the value of
+the `session` struct as described above. The response
+that is received is parsed using the specified `parseResponse`
+function. The default values for `start` can be found below.
+
+```javascript
+start: {
+    url:           o => `${o.url}/session`,
+    parseResponse: r => r.json()
+    // And the default settings for fetch()'s init parameter
+    // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
+}
+```
+
+We use the `fetch()` [default settings](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch).
+The properties from `start` are passed as custom options
 to `fetch()`. This means you can use [all options](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch)
 of `fetch()`to customize the request `irma-client` does for you. For example,
 in case you want a specific POST request to be done instead of the default
@@ -94,18 +137,36 @@ start: {
 }
 ```
 
-If you don't need your Javascript to fetch the session result, you can set
-`result` to `false`. The Promise will then just resolve when the session is done.
+If you don't need your Javascript to fetch the session pointer, you can set
+`start` to `false`. This is for example useful when you obtained the
+session pointer in another way. Please check the [mapping options](#option-mapping)
+how to insert your custom `sessionPtr` into `irma-client`.
 
-With the `mapping` properties you can specify
-how respectively the session pointer and the session token can be derived
-from the start session response. The response received using the options of
-`start` is first parsed `parseResponse`. The mapping function then specify
-how to map the `start` response on the particular variable.
+Be aware that when you set `start` to false, a user can only handle a session
+once. When the user cancels a session or runs into some error, no restart
+can be done by the user. **As a developer you are responsible yourself to take
+into account alternative flows for these cases. We therefore do not recommend
+disabling `start`.**
 
-In case you obtain a session pointer and/or a session token in a
-custom way, you can skip fetching a session by setting `start: false`.
-You can then override the mapping functions to manually
+**It is also recommended to not start sessions or fetch results on the IRMA server
+from a web browser directly**. Instead, you mostly have a service in between that starts
+the session and checks the result for you. So in the browser the `url` property of
+`session` should point to a server that you control, which isn't your IRMA server.
+
+##### Option `mapping`
+With the `mapping` properties you can specify how the
+session pointer, and possibly other values (like the session token),
+can be derived from the start session response. The response received using
+the options from [`start`](#option-start) is first parsed by its `parseResponse`. The mapping
+functions then specify how to map the parsed response on particular
+variables. The result from the `sessionPtr` mapping should be a valid IRMA
+`sessionPtr`. All other mappings are free to choose. The resulting variables
+can be accessed as second parameter in the `url` option of the [`result` property struct](#option-result).
+There it can be used to compose the result endpoint. The result of each
+`mapping` function is available there, named after its map key.
+
+In case you obtain a session pointer (and possibly the other values) in
+another way than via `start`, you can override the mapping functions to manually
 specify your session pointer and/or session token.
 For example, when you somewhere collected
 a session pointer in a variable, say `customQr`,
@@ -121,49 +182,45 @@ session: {
 }
 ```
 
-Be aware that when you set `start` to false, a user can only handle a session
-once. When the user cancels a session or runs into some error, no restart
-can be done by the user. **As a developer you are responsible yourself to take
-into account alternative flows for these cases. We therefore do not recommend
-disabling `start`.**
-
-**It is also recommended to not start sessions or fetch results on the IRMA server
-from a web browser**, but have a service in between that starts the session and
-checks the result for you. So in the browser the `url` property of `session`
-should point to a server that you control, which isn't your IRMA server.
-
-These are the accepted properties and their defaults on the `session` object:
+In case no mapping option is specified (i.e. the `mapping` option is not
+specified within [`session`](#session)), the default mapping is used. The default
+mapping can be found below.
 
 ```javascript
-session: {
-  url: '',
-
-  start: {
-    url:           o => `${o.url}/session`,
-    parseResponse: r => r.json()
-    // And the custom settings for fetch()'s init parameter
-    // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
-  },
-
-  mapping: {
+mapping: {
     sessionPtr:      r => r.sessionPtr,
     sessionToken:    r => r.token
-  },
-
-  result: {
-    url:           (o, {sessionPtr, sessionToken}) => `${o.url}/session/${sessionToken}/result`,
-    parseResponse: r => r.json()
-    // And the custom settings for fetch()'s init parameter
-    // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
-  }
 }
 ```
 
-If you want to use another plugin for starting IRMA sessions, you can disable
-the session functionality of `irma-client` by saying `session: false`. In this
-case `irma-client` will not request the `this._stateMachine.transition('loaded', qr)`
-transition at the state machine while it is in the `Loading` state. This means you
-have to specify a custom plugin that requests this transition instead.
+##### Option `result`
+These options define the HTTP request `irma-client` has to do when an IRMA
+session succeeds. In this way results of the IRMA session can be fetched.
+
+This option has the same outline as the `start` option.
+The default values are set for fetching the session result (on state `Success`)
+with a GET request on the endpoint `${o.url}/session/${sessionToken}/result`.
+In this, `o` (in `${o.url}`) points to the value of the `session` struct as described above. 
+
+We use the `fetch()` [default settings](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch).
+The `result` properties are passed as custom options
+to `fetch()`. This means you can use [all options](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch)
+of `fetch()`to customize the request `irma-client` does for you.
+
+If you don't need your Javascript to fetch a session result, you can set
+`result` to `false`. The `irma-core` Promise will then just resolve
+when the session is done.
+
+The default values for the `result` options can be found below.
+
+```javascript
+result: {
+    url:           (o, {sessionPtr, sessionToken}) => `${o.url}/session/${sessionToken}/result`,
+    parseResponse: r => r.json()
+    // And the default settings for fetch()'s init parameter
+    // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
+  }
+```
 
 ### state
 

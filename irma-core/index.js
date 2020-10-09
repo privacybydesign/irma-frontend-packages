@@ -22,6 +22,9 @@ module.exports = class IrmaCore {
   }
 
   start(...input) {
+    if (this._options.debugging)
+      console.log("Starting session with options:", this._options);
+
     return new Promise((resolve, reject) => {
       this._resolve = resolve;
       this._reject  = reject;

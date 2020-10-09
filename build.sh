@@ -5,9 +5,10 @@
 rootdir=$(pwd)
 
 cd "$rootdir" || exit
-echo "Running 'npm install' and 'npm run release' for irma-css"
+echo "Running 'npm install', 'npm run clean' and 'npm run release' for irma-css"
 cd irma-css || exit
 npm install
+npm run clean
 npm run release
 
 cd "$rootdir" || exit
