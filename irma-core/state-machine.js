@@ -63,7 +63,6 @@ module.exports = class StateMachine {
       this._disabledTransitions = payload.canRestart ? [] : ['restart'];
 
     if (transition === 'restart') {
-      this._disabledTransitions = ['restart'];
       payload = {...payload, canRestart: true};
     }
 
