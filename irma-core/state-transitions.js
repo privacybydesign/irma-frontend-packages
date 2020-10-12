@@ -12,85 +12,94 @@ module.exports = {
   endStates:        ['BrowserNotSupported', 'Success', 'Aborted', 'Cancelled', 'TimedOut', 'Error'],
 
   Uninitialized: {
-    initialize:     'Loading',
-    browserError:   'BrowserNotSupported',
-    fail:           'Error'
+    initialize:     'Loading',              // Expected payload: {canRestart: true/false}
+    browserError:   'BrowserNotSupported',  // Expected payload: undefined
+    fail:           'Error'                 // Expected payload: error object
   },
 
   Loading: {
-    loaded:         'MediumContemplation',
-    abort:          'Aborted',
-    fail:           'Error'
+    loaded:         'MediumContemplation',  // Expected payload: sessionPtr
+    abort:          'Aborted',              // Expected payload: undefined
+    fail:           'Error'                 // Expected payload: error object
   },
 
   MediumContemplation: {
-    showQRCode:     'ShowingQRCode',
-    showIrmaButton: 'ShowingIrmaButton',
-    abort:          'Aborted',
-    fail:           'Error'
+    showQRCode:     'ShowingQRCode',        // Expected payload: {qr: <payload for in QRs, mobile: <app link for launching the IRMA app>}
+    showIrmaButton: 'ShowingIrmaButton',    // Expected payload: {qr: <payload for in QRs, mobile: <app link for launching the IRMA app>}
+    abort:          'Aborted',              // Expected payload: undefined
+    fail:           'Error'                 // Expected payload: error object
   },
 
   ShowingQRCode: {
-    appConnected:   'ContinueOn2ndDevice',
-    timeout:        'TimedOut',
-    checkUserAgent: 'ShowingIrmaButton',   // State change is only performed if user agent actually changed.
-    abort:          'Aborted',
-    fail:           'Error'
+    appConnected:   'ContinueOn2ndDevice',  // Expected payload: undefined
+    timeout:        'TimedOut',             // Expected payload: undefined
+    abort:          'Aborted',              // Expected payload: undefined
+    fail:           'Error',                // Expected payload: error object
+
+    // State change below is only performed if user agent actually changed.
+    checkUserAgent: 'ShowingIrmaButton'     // Expected payload: {qr: <payload for in QRs, mobile: <app link for launching the IRMA app>}
   },
 
   ContinueOn2ndDevice: {
-    succeed:        'Success',
-    cancel:         'Cancelled',
-    restart:        'Loading',
-    timeout:        'TimedOut',
-    abort:          'Aborted',
-    fail:           'Error'
+    succeed:        'Success',              // Expected payload: result for irma-core's start() promise to resolve with
+    cancel:         'Cancelled',            // Expected payload: undefined
+    restart:        'Loading',              // Expected payload: undefined
+    timeout:        'TimedOut',             // Expected payload: undefined
+    abort:          'Aborted',              // Expected payload: undefined
+    fail:           'Error'                 // Expected payload: error object
   },
 
   ShowingIrmaButton: {
-    chooseQR:       'ShowingQRCodeInstead',
-    checkUserAgent: 'ShowingQRCode',        // State change is only performed if user agent actually changed.
-    appConnected:   'ContinueInIrmaApp',
-    abort:          'Aborted',
-    fail:           'Error',
+    chooseQR:       'ShowingQRCodeInstead', // Expected payload: undefined
+    appConnected:   'ContinueInIrmaApp',    // Expected payload: undefined
+    abort:          'Aborted',              // Expected payload: undefined
+    fail:           'Error',                // Expected payload: error object
 
-    succeed:        'Success',   // We sometimes miss the appConnected transition
-    cancel:         'Cancelled', // on iOS, that's why these transitions are here
-    timeout:        'TimedOut'   // too. So we don't 'fail' to the Error state.
+    // We sometimes miss the appConnected transition
+    // on iOS, that's why these transitions are here
+    // too. So we don't 'fail' to the Error state.
+    succeed:        'Success',              // Expected payload: result for irma-core's start() promise to resolve with
+    cancel:         'Cancelled',            // Expected payload: undefined
+    timeout:        'TimedOut',             // Expected payload: undefined
+
+    // State change below is only performed if user agent actually changed.
+    checkUserAgent: 'ShowingQRCode'         // Expected payload: {qr: <payload for in QRs, mobile: <app link for launching the IRMA app>}
   },
 
   ShowingQRCodeInstead: {
-    appConnected:   'ContinueOn2ndDevice',
-    checkUserAgent: 'ShowingQRCode',       // State change is only performed if user agent actually changed.
-    restart:        'Loading',
-    timeout:        'TimedOut',
-    abort:          'Aborted',
-    fail:           'Error'
+    appConnected:   'ContinueOn2ndDevice',  // Expected payload: undefined
+    restart:        'Loading',              // Expected payload: undefined
+    timeout:        'TimedOut',             // Expected payload: undefined
+    abort:          'Aborted',              // Expected payload: undefined
+    fail:           'Error',                // Expected payload: error object
+
+    // State change below is only performed if user agent actually changed.
+    checkUserAgent: 'ShowingQRCode'         // Expected payload: {qr: <payload for in QRs, mobile: <app link for launching the IRMA app>}
   },
 
   ContinueInIrmaApp: {
-    succeed:        'Success',
-    cancel:         'Cancelled',
-    restart:        'Loading',
-    timeout:        'TimedOut',
-    abort:          'Aborted',
-    fail:           'Error'
+    succeed:        'Success',              // Expected payload: result for irma-core's start() promise to resolve with
+    cancel:         'Cancelled',            // Expected payload: undefined
+    restart:        'Loading',              // Expected payload: undefined
+    timeout:        'TimedOut',             // Expected payload: undefined
+    abort:          'Aborted',              // Expected payload: undefined
+    fail:           'Error'                 // Expected payload: error object
   },
 
   // Possible end states
   Cancelled: {
-    abort:          'Aborted',
-    restart:        'Loading'
+    abort:          'Aborted',              // Expected payload: undefined
+    restart:        'Loading'               // Expected payload: undefined
   },
 
   TimedOut: {
-    abort:          'Aborted',
-    restart:        'Loading'
+    abort:          'Aborted',              // Expected payload: undefined
+    restart:        'Loading'               // Expected payload: undefined
   },
 
   Error: {
-    abort:          'Aborted',
-    restart:        'Loading'
+    abort:          'Aborted',              // Expected payload: undefined
+    restart:        'Loading'               // Expected payload: undefined
   },
 
   BrowserNotSupported: {},

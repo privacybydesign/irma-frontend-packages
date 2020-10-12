@@ -67,9 +67,11 @@ use the `start` and/or the `result` option.
 
 If you want to use another plugin for starting IRMA sessions, you can disable
 the session functionality of `irma-client` by saying `session: false`. In this
-case `irma-client` will not request the `this._stateMachine.transition('loaded', qr)`
-transition at the `irma-core` state machine when it hits the `Loading` state. This means you
-have to specify a custom plugin that requests this transition instead.
+case `irma-client` will not request the `this._stateMachine.transition('initialize', {canRestart: true/false})`
+at the `irma-core` state machine when `irma-core`'s `start()` method is called. It will
+also not request the `this._stateMachine.transition('loaded', qr)` transition when it
+hits the `Loading` state. This means you have to specify a custom plugin that requests
+these transitions instead.
 
 General outline:
 ```javascript
