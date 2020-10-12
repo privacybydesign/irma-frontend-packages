@@ -33,7 +33,7 @@ module.exports = {
   ShowingQRCode: {
     appConnected:   'ContinueOn2ndDevice',
     timeout:        'TimedOut',
-    switchFlow:     'ShowingIrmaButton',
+    checkUserAgent: 'ShowingIrmaButton',   // State change is only performed if user agent actually changed.
     abort:          'Aborted',
     fail:           'Error'
   },
@@ -49,7 +49,7 @@ module.exports = {
 
   ShowingIrmaButton: {
     chooseQR:       'ShowingQRCodeInstead',
-    switchFlow:     'ShowingQRCode',
+    checkUserAgent: 'ShowingQRCode',        // State change is only performed if user agent actually changed.
     appConnected:   'ContinueInIrmaApp',
     abort:          'Aborted',
     fail:           'Error',
@@ -61,7 +61,7 @@ module.exports = {
 
   ShowingQRCodeInstead: {
     appConnected:   'ContinueOn2ndDevice',
-    switchFlow:     'ShowingQRCode',
+    checkUserAgent: 'ShowingQRCode',       // State change is only performed if user agent actually changed.
     restart:        'Loading',
     timeout:        'TimedOut',
     abort:          'Aborted',

@@ -1,4 +1,5 @@
 const transitions = require('./state-transitions');
+const userAgent   = require('./user-agent');
 
 module.exports = class StateMachine {
 
@@ -37,7 +38,16 @@ module.exports = class StateMachine {
     const oldState = this._state;
     if (this._inEndState)
       throw new Error(`State machine is in an end state. No transitions are allowed from ${oldState}.`);
-    this._state    = this._getNewState(transition, isFinal);
+    let newState = this._getNewState(transition, isFinal);
+
+    if (transition === 'checkUserAgent') {
+      if ( this._debugging ) console.debug(`🎰 Re-checking user agent`);
+      let agent = userAgent();
+      if (newState === 'ShowingQRCode' && ['Android', 'iOS'].includes(agent)) return;
+      if (['ShowingIrmaButton', 'ShowingQRCodeInstead'].includes(newState) && agent === 'Desktop') return;
+    }
+
+    this._state = newState;
 
     if ( this._debugging )
       console.debug(`🎰 State change: '${oldState}' → '${this._state}' (because of '${transition}')`);

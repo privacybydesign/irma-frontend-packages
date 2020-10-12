@@ -10,8 +10,6 @@ module.exports = class IrmaCore {
 
     this._stateMachine = new StateMachine(this._options.debugging);
     this._stateMachine.addStateChangeListener((s) => this._stateChangeListener(s));
-
-    this._addVisibilityListener();
   }
 
   use(mod) {
@@ -47,7 +45,6 @@ module.exports = class IrmaCore {
                  .forEach(m => m.stateChange(state));
 
     const {newState, payload, isFinal} = state;
-    this._lastPayload = payload;
 
     switch(newState) {
       case 'Success':
@@ -78,7 +75,6 @@ module.exports = class IrmaCore {
   }
 
   _close() {
-    this._removeVisibilityListener();
     return this._modules.filter(m => m.close)
       .reduce((prev, m) => prev.then(() => m.close()), Promise.resolve());
   }
@@ -106,55 +102,6 @@ module.exports = class IrmaCore {
       // TODO: When old IRMA app is phased out, also return universal link for QRs.
       qr: json,
       mobile: mobileLink,
-    };
-  }
-
-  _addVisibilityListener() {
-    const onVisibilityChange = () => {
-      if (this._stateMachine.currentState() != 'TimedOut' || document.hidden) return;
-      if (this._options.debugging) console.log('🖥 Restarting because document became visible');
-      this._stateMachine.transition('restart');
-    };
-    const onFocusChange = () => {
-      if ( this._stateMachine.currentState() != 'TimedOut' ) return;
-      if ( this._options.debugging ) console.log('🖥 Restarting because window regained focus');
-      this._stateMachine.transition('restart');
-    };
-    const onResize = () => {
-      let newUserAgent = userAgent();
-      if (this._userAgent !== newUserAgent) {
-        if ( this._options.debugging ) console.log('🖥 Changing view because user agent changed on resize');
-        this._userAgent = newUserAgent;
-
-        switch (this._stateMachine.currentState()) {
-          case 'ShowingQRCode':
-            if (this._userAgentIsMobile())
-              this._stateMachine.transition('switchFlow', this._lastPayload);
-            break;
-          case 'ShowingIrmaButton':
-          case 'ShowingQRCodeInstead':
-            if (!this._userAgentIsMobile())
-              this._stateMachine.transition('switchFlow', this._lastPayload);
-            break;
-        }
-      }
-    };
-
-    if ( typeof document !== 'undefined' && document.addEventListener )
-      document.addEventListener('visibilitychange', onVisibilityChange);
-
-    if ( typeof window !== 'undefined' && window.addEventListener ) {
-      window.addEventListener('focus', onFocusChange);
-      window.addEventListener('resize', onResize);
-    }
-
-    this._removeVisibilityListener = () => {
-      if ( typeof document !== 'undefined' && document.removeEventListener )
-        document.removeEventListener('visibilitychange', onVisibilityChange);
-      if ( typeof window !== 'undefined' && window.removeEventListener ) {
-        window.removeEventListener('focus', onFocusChange);
-        window.removeEventListener('resize', onResize);
-      }
     };
   }
 
