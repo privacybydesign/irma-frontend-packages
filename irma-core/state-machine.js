@@ -8,6 +8,7 @@ module.exports = class StateMachine {
     this._debugging = debugging;
     this._listeners = [];
     this._inEndState = false;
+    this._disabledTransitions = [];
   }
 
   currentState() {
@@ -19,6 +20,8 @@ module.exports = class StateMachine {
   }
 
   isValidTransition(transition) {
+    if (this._inEndState || this._disabledTransitions.includes(transition))
+      return false;
     return transitions[this._state][transition] != undefined;
   }
 
@@ -53,7 +56,16 @@ module.exports = class StateMachine {
       console.debug(`🎰 State change: '${oldState}' → '${this._state}' (because of '${transition}')`);
 
     // State is also an end state when no transitions are available from that state
-    this._inEndState = isFinal || Object.keys(transitions[this._state]).length == 0;
+    let isEnabled = t => !this._disabledTransitions.includes(t);
+    this._inEndState = isFinal || Object.keys(transitions[this._state]).filter(isEnabled).length == 0;
+
+    if (transition === 'initialize')
+      this._disabledTransitions = payload.canRestart ? [] : ['restart'];
+
+    if (transition === 'restart') {
+      this._disabledTransitions = ['restart'];
+      payload = {...payload, canRestart: true};
+    }
 
     this._listeners.forEach(func => func({
       newState:   this._state,
@@ -66,8 +78,10 @@ module.exports = class StateMachine {
 
   _getNewState(transition, isFinal) {
     let newState = transitions[this._state][transition];
-    if (!newState) newState = transitions[this._state]['fail'];
+    let isDisabled = this._disabledTransitions.includes(transition);
+    if (!newState || isDisabled) newState = transitions[this._state]['fail'];
     if (!newState) throw new Error(`Invalid transition '${transition}' from state '${this._state}' and could not find a "fail" transition to fall back on.`);
+    if (isDisabled) throw new Error(`Transition '${transition}' was disabled in state '${this._state}'`)
     if (isFinal && !transitions.endStates.includes(newState))
       throw new Error(`Transition '${transition}' from state '${this._state}' is marked as final, but resulting state ${newState} cannot be an end state.`);
     return newState;

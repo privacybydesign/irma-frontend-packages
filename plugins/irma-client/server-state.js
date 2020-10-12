@@ -23,13 +23,14 @@ module.exports = class ServerState {
   }
 
   cancel() {
-    this.close();
     if (!this._options.cancel)
       return Promise.resolve();
     return fetch(this._options.cancel.url(this._options), {method: 'DELETE'});
   }
 
   close() {
+    if (!this._isRunning) return false;
+
     if ( this._source ) {
       this._source.close();
       if ( this._options.debugging )
@@ -37,6 +38,7 @@ module.exports = class ServerState {
     }
 
     this._isRunning = false;
+    return true;
   }
 
   _startSSE() {

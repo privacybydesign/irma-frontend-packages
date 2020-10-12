@@ -13,6 +13,7 @@ module.exports = class IrmaClient {
   stateChange({newState, payload}) {
     switch(newState) {
       case 'Loading':
+        this._canRestart = payload.canRestart;
         return this._startNewSession();
       case 'MediumContemplation':
         return this._startWatchingServerState(payload);
@@ -20,35 +21,39 @@ module.exports = class IrmaClient {
       case 'TimedOut':
       case 'Error':
       case 'Success':
-        if (this._serverState)
-          this._serverState.close();
-        break;
       case 'Aborted':
-        this._serverCancelSession();
+        this._serverCloseSession();
         break;
     }
   }
 
   start() {
-    this._stateMachine.transition('initialize');
+    if (this._options.session) {
+      this._stateMachine.transition('initialize', {
+        canRestart: ![undefined, null, false].includes(this._options.session.start),
+      });
+    }
   }
 
   _startNewSession() {
     if (this._session) {
       this._session.start()
-        .then(qr => {
+        .then(sessionPtr => {
           if (this._stateMachine.currentState() == 'Loading') {
-            this._stateMachine.transition('loaded', qr);
+            this._stateMachine.transition('loaded', sessionPtr);
           } else {
             // State was changed while loading, so cancel again.
-            this._serverState = new ServerState(qr.u, this._options.state);
-            this._serverCancelSession();
+            this._serverState = new ServerState(sessionPtr.u, this._options.state);
+            this._serverState.cancel()
+              .catch(error => {
+                if (this._options.debugging)
+                  console.error("Session could not be cancelled:", error);
+              });
           }
         })
         .catch(error => {
           if (this._options.debugging)
             console.error("Error starting a new session on the server:", error);
-
           this._handleNoSuccess('fail', error);
         })
     }
@@ -67,13 +72,16 @@ module.exports = class IrmaClient {
     }
   }
 
-  _serverCancelSession() {
+  _serverCloseSession() {
     if (this._serverState) {
-      this._serverState.cancel()
-        .catch(error => {
-          if (this._options.debugging)
-            console.error("Session could not be cancelled:", error);
-        });
+      if (this._serverState.close()) {
+        // If the server is still in an active state, we have to actively cancel.
+        this._serverState.cancel()
+          .catch(error => {
+            if (this._options.debugging)
+              console.error("Session could not be cancelled:", error);
+          });
+      }
     }
   }
 
@@ -87,6 +95,8 @@ module.exports = class IrmaClient {
   _serverStateChange(newState) {
     if ( newState == 'CONNECTED' )
       return this._stateMachine.transition('appConnected');
+
+    this._serverState.close();
 
     switch(newState) {
       case 'DONE':
@@ -123,7 +133,7 @@ module.exports = class IrmaClient {
   }
 
   _handleNoSuccess(transition, payload) {
-    if (this._options.session.start)
+    if (this._canRestart)
       return this._stateMachine.transition(transition, payload);
     this._stateMachine.finalTransition(transition, payload);
   }

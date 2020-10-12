@@ -11,10 +11,9 @@ module.exports = class ServerSession {
   start() {
     // Handle case where start is disabled and qr and token are supplied directly
     if (!this._options.start) {
-      this._mappings.sessionPtr = this._options.mapping.sessionPtr();
-
-      if (this._options.result)
-        this._mappings.sessionToken = this._options.mapping.sessionToken();
+      Object.keys(this._options.mapping).forEach(val =>
+        this._mappings[val] = this._options.mapping[val]()
+      );
 
       return Promise.resolve(this._mappings.sessionPtr);
     }

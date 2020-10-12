@@ -27,7 +27,7 @@ module.exports = class IrmaDummy {
       case 'browser unsupported':
         return this._stateMachine.transition('browserError', 'Browser not supported, need magic feature');
       default:
-        return this._stateMachine.transition('initialize');
+        return this._stateMachine.transition('initialize', {canRestart: true});
     }
   }
 
