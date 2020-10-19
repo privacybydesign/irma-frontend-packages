@@ -211,7 +211,7 @@ of `fetch()`to customize the request `irma-client` does for you.
 
 If you don't need your Javascript to fetch a session result, you can set
 `result` to `false`. The `irma-core` Promise will then just resolve
-when the session is done.
+with the `mapping` values as result when the session is done.
 
 The default values for the `result` options can be found below.
 

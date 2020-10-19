@@ -17,10 +17,12 @@ module.exports = class IrmaClient {
         return this._startNewSession();
       case 'MediumContemplation':
         return this._startWatchingServerState(payload);
+      case 'Success':
+        this._successPayload = payload;
+        // Fallthrough
       case 'Cancelled':
       case 'TimedOut':
       case 'Error':
-      case 'Success':
       case 'Aborted':
         this._serverCloseSession();
         break;
@@ -33,6 +35,12 @@ module.exports = class IrmaClient {
         canRestart: ![undefined, null, false].includes(this._options.session.start),
       });
     }
+  }
+
+  close() {
+    if (this._stateMachine.currentState() === 'Success')
+      return Promise.resolve(this._successPayload);
+    return Promise.resolve();
   }
 
   _startNewSession() {

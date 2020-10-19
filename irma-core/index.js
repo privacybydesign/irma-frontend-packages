@@ -48,14 +48,8 @@ module.exports = class IrmaCore {
 
     switch(newState) {
       case 'Success':
-        this._close().then(() => {
-          if ( this._resolve ) this._resolve(payload);
-        });
-        break;
-      case 'BrowserNotSupported':
-      case 'Aborted':
-        this._close().then(() => {
-          if ( this._reject ) this._reject(newState);
+        this._close().then(result => {
+          if ( this._resolve ) this._resolve(result);
         });
         break;
       case 'MediumContemplation':
@@ -66,8 +60,8 @@ module.exports = class IrmaCore {
         break;
       default:
         if ( isFinal ) {
-          this._close().then(() => {
-            if ( this._reject ) this._reject(newState);
+          this._close().then(result => {
+            if ( this._reject ) result ? this._reject(result) : this._reject(newState);
           });
         }
         break;
@@ -76,7 +70,14 @@ module.exports = class IrmaCore {
 
   _close() {
     return this._modules.filter(m => m.close)
-      .reduce((prev, m) => prev.then(() => m.close()), Promise.resolve());
+      .reduce(
+        (prev, m) => prev.then(returnValues => m.close().then(res => {
+          if (res) returnValues.push(res)
+          return returnValues;
+        })),
+        Promise.resolve([])
+      )
+      .then(returnValues => returnValues.length > 1 ? returnValues : returnValues[0]);
   }
 
   _userAgentIsMobile() {

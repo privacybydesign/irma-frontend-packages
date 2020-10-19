@@ -61,7 +61,9 @@ The returned Promise only resolves when the state machine reaches the `Success` 
 and only rejects when the machine reaches a state with a final transaction.
 The end states `BrowserNotSupported` and `Aborted` always lead to a reject.
 The other possible end states are `Cancelled`, `Timeout` and `Error`.
-The reject message indicates in what state the state machine stopped, so:
+In case none of the plugins supplied a return value for rejection via its
+`close()` method (which is the case for all our plugins in the `/plugin` directory),
+the reject message indicates in what state the state machine stopped, so:
 `BrowserNotSupported`, `Cancelled`, `Timeout`, `Error` or `Aborted`.
 
 ```javascript

@@ -41,7 +41,7 @@ module.exports = {
   },
 
   ContinueOn2ndDevice: {
-    succeed:        'Success',              // Expected payload: result for irma-core's start() promise to resolve with
+    succeed:        'Success',              // Expected payload: session result (if any)
     cancel:         'Cancelled',            // Expected payload: undefined
     restart:        'Loading',              // Expected payload: undefined
     timeout:        'TimedOut',             // Expected payload: undefined
@@ -58,7 +58,7 @@ module.exports = {
     // We sometimes miss the appConnected transition
     // on iOS, that's why these transitions are here
     // too. So we don't 'fail' to the Error state.
-    succeed:        'Success',              // Expected payload: result for irma-core's start() promise to resolve with
+    succeed:        'Success',              // Expected payload: session result (if any)
     cancel:         'Cancelled',            // Expected payload: undefined
     timeout:        'TimedOut',             // Expected payload: undefined
 
@@ -78,7 +78,7 @@ module.exports = {
   },
 
   ContinueInIrmaApp: {
-    succeed:        'Success',              // Expected payload: result for irma-core's start() promise to resolve with
+    succeed:        'Success',              // Expected payload: session result (if any)
     cancel:         'Cancelled',            // Expected payload: undefined
     restart:        'Loading',              // Expected payload: undefined
     timeout:        'TimedOut',             // Expected payload: undefined

@@ -38,7 +38,7 @@ module.exports = class ServerSession {
 
   result() {
     if ( !this._options.result )
-      return Promise.resolve();
+      return Promise.resolve(this._mappings);
 
     return fetch(this._options.result.url(this._options, this._mappings), this._options.result)
     .then(r => {
