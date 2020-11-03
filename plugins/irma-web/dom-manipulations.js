@@ -146,7 +146,7 @@ module.exports = class DOMManipulations {
     return `
       <!-- State: ShowingQRCode -->
       <canvas class="irma-web-qr-canvas"></canvas>
-      <p class="irma-web-restart-button"><a data-irma-glue-transition="restart">${this._translations.back}</a></p>
+      <p><a data-irma-glue-transition="showIrmaButton">${this._translations.back}</a></p>
     `;
   }
 
@@ -155,7 +155,7 @@ module.exports = class DOMManipulations {
       <!-- State: WaitingForUser -->
       <div class="irma-web-waiting-for-user-animation"></div>
       <p>${this._translations.app}</p>
-      <p class="irma-web-restart-button"><a data-irma-glue-transition="restart">${this._translations.retry}</a></p>
+      <p><a data-irma-glue-transition="cancel">${this._translations.cancel}</a></p>
     `;
   }
 

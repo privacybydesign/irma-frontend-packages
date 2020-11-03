@@ -4,12 +4,13 @@ module.exports = {
   loading:   'Eén moment alsjeblieft',
   button:    'Open IRMA app',
   qrCode:    'Toon QR code',
-  app:       'Volg de instructies in de IRMA app',
+  app:       'Volg de instructies in de IRMA-app',
   retry:     'Opnieuw proberen',
   back:      'Ga terug',
   cancelled: 'De handeling is afgebroken',
   timeout:   'Sorry! We hebben te lang<br/>niks van je gehoord',
   error:     'Sorry! Er is een fout opgetreden',
   browser:   'Het spijt ons, maar je browser voldoet niet aan de minimale eisen',
-  success:   'Gelukt!'
+  success:   'Gelukt!',
+  cancel:    'Annuleer'
 };

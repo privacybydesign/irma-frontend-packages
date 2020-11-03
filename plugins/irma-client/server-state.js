@@ -7,8 +7,10 @@ module.exports = class ServerState {
     this._eventSource = this._eventSource();
     this._isRunning = false;
     this._isPolling = false;
-    this._options = options;
-    this._options.url = url;
+    this._options = {
+      ...options,
+      url
+    };
   }
 
   observe(stateChangeCallback, errorCallback) {

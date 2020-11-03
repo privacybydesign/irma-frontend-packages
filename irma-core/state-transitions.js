@@ -68,7 +68,7 @@ module.exports = {
 
   ShowingQRCodeInstead: {
     appConnected:   'ContinueOn2ndDevice',  // Expected payload: undefined
-    restart:        'Loading',              // Expected payload: undefined
+    showIrmaButton: 'ShowingIrmaButton',    // Expected payload: undefined
     timeout:        'TimedOut',             // Expected payload: undefined
     abort:          'Aborted',              // Expected payload: undefined
     fail:           'Error',                // Expected payload: error object
@@ -80,7 +80,6 @@ module.exports = {
   ContinueInIrmaApp: {
     succeed:        'Success',              // Expected payload: session result (if any)
     cancel:         'Cancelled',            // Expected payload: undefined
-    restart:        'Loading',              // Expected payload: undefined
     timeout:        'TimedOut',             // Expected payload: undefined
     abort:          'Aborted',              // Expected payload: undefined
     fail:           'Error'                 // Expected payload: error object
