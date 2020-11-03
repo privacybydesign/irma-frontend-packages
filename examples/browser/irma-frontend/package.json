@@ -9,6 +9,6 @@
     "directory": "examples/browser/irma-frontend"
   },
   "devDependencies": {
-    "@privacybydesign/irma-frontend": "^0.1.2"
+    "@privacybydesign/irma-frontend": "^0.1.4"
   }
 }
