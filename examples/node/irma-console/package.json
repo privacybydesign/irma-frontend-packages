@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@privacybydesign/irma-console": "^0.1.1",
-    "@privacybydesign/irma-core": "^0.1.3",
+    "@privacybydesign/irma-core": "^0.1.4",
     "@privacybydesign/irma-dummy": "^0.1.1"
   },
   "repository": {
