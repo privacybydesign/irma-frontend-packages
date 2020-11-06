@@ -55,8 +55,9 @@ module.exports = class StateMachine {
     if ( this._debugging )
       console.debug(`🎰 State change: '${oldState}' → '${this._state}' (because of '${transition}')`);
 
-    // State is also an end state when no transitions are available from that state
-    let isEnabled = t => !this._disabledTransitions.includes(t);
+    // State is also an end state when no transitions are available from that state. We exclude the
+    // abort transition since abort is only intended to turn a non end state into an end state.
+    let isEnabled = t => !this._disabledTransitions.includes(t) && t != 'abort';
     this._inEndState = isFinal || Object.keys(transitions[this._state]).filter(isEnabled).length == 0;
 
     if (transition === 'initialize')

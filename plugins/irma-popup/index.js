@@ -26,10 +26,10 @@ module.exports = class IrmaPopup {
     });
   }
 
-  stateChange({newState, payload}) {
-    this._irmaWeb.stateChange({newState, payload});
+  stateChange(state) {
+    this._irmaWeb.stateChange(state);
 
-    switch(newState) {
+    switch(state.newState) {
       case 'Loading':
         return this._dom.openPopup();
       case 'Aborted':
