@@ -439,11 +439,11 @@ combinations of plugins to achieve different effects:
   * [`irma-popup`](examples/browser/irma-popup)
   * [`irma-web`](examples/browser/irma-web)
   * [`irma-legacy`](examples/browser/irma-legacy)
+  * For an `irma-client` browser example, you can check the [`irma-frontend` example](examples/browser/irma-frontend)
 * Nodejs
   * [`irma-console`](examples/node/irma-console)
   * [`irma-legacy`](examples/node/irma-legacy)
-* Back-ends
-  * [`irma-client`](examples/backends/irma-client)
+  * [`irma-client`](examples/node/irma-client)
 
 ### Development
 When developing a certain module, you might want to test the module using one of the examples.
