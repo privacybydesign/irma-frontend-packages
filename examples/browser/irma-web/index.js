@@ -5,6 +5,7 @@ const IrmaWeb  = require('@privacybydesign/irma-web');
 const Dummy    = require('@privacybydesign/irma-dummy');
 
 const irma = new IrmaCore({
+  dummy: 'pairing',
   debugging: true,
   element:   '#irma-web-form',
   language:  'en',

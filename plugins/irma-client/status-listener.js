@@ -1,16 +1,14 @@
 if ( typeof fetch === 'undefined' )
   require('isomorphic-fetch');
 
-module.exports = class ServerState {
+module.exports = class StatusListener {
 
-  constructor(url, options) {
+  constructor(mappings, options) {
     this._eventSource = this._eventSource();
     this._isRunning = false;
     this._isPolling = false;
-    this._options = {
-      ...options,
-      url
-    };
+    this._options = options;
+    this._mappings = mappings;
   }
 
   observe(stateChangeCallback, errorCallback) {
@@ -22,12 +20,6 @@ module.exports = class ServerState {
       return this._startSSE();
 
     this._startPolling();
-  }
-
-  cancel() {
-    if (!this._options.cancel)
-      return Promise.resolve();
-    return fetch(this._options.cancel.url(this._options), {method: 'DELETE'});
   }
 
   close() {
@@ -47,7 +39,7 @@ module.exports = class ServerState {
     if ( this._options.debugging )
       console.log("🌎 Using EventSource for server events");
 
-    this._source = new this._eventSource(this._options.serverSentEvents.url(this._options));
+    this._source = new this._eventSource(this._options.serverSentEvents.url(this._mappings));
 
     const canceller = setTimeout(() => {
       if ( this._options.debugging )
@@ -106,7 +98,7 @@ module.exports = class ServerState {
   }
 
   _pollOnce() {
-    return fetch(this._options.polling.url(this._options))
+    return fetch(this._options.polling.url(this._mappings))
       .then(r => {
         if ( r.status != 200 )
           throw(`Error in fetch: endpoint returned status other than 200 OK. Status: ${r.status} ${r.statusText}`);

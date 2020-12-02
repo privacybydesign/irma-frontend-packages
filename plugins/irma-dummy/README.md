@@ -29,6 +29,7 @@ irma.start();
 The dummy option can take one of these values:
 
  * `happy path`          ⸺ Fake everything just working™️
+ * `pairing`             ⸺ Fake everything just working with pairing enabled™️
  * `timeout`             ⸺ Fake a session time out on the server
  * `cancel`              ⸺ Fake cancellation in the IRMA app (don't have attributes or reject disclosure)
  * `connection error`    ⸺ Fake error connecting to the server on the initial session start

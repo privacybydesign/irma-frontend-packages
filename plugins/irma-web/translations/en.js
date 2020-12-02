@@ -12,5 +12,7 @@ module.exports = {
   error:     'Sorry! Something went wrong',
   browser:   'We\'re sorry, but your browser does not meet the minimum requirements',
   success:   'Success!',
-  cancel:    'Cancel'
+  cancel:    'Cancel',
+  pairing:   'Enter the pairing code that your IRMA app currently shows.',
+  pairingFailed: (code) => `The pairing code ${code} does not match the code in your IRMA app. Please try again.`
 };

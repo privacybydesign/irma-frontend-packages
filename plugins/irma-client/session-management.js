@@ -1,7 +1,7 @@
 if ( typeof fetch === 'undefined' )
   require('isomorphic-fetch');
 
-module.exports = class ServerSession {
+module.exports = class SessionManagement {
 
   constructor(options) {
     this._options = options;
@@ -15,7 +15,7 @@ module.exports = class ServerSession {
         this._mappings[val] = this._options.mapping[val]({})
       );
 
-      return Promise.resolve(this._mappings.sessionPtr);
+      return Promise.resolve(this._mappings);
     }
 
     // Start options are specified, so start a new session
@@ -32,7 +32,7 @@ module.exports = class ServerSession {
         this._mappings[val] = this._options.mapping[val](r)
       );
 
-      return this._mappings.sessionPtr;
+      return this._mappings;
     });
   }
 

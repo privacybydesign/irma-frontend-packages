@@ -12,5 +12,7 @@ module.exports = {
   error:     'Sorry! Er is een fout opgetreden',
   browser:   'Het spijt ons, maar je browser voldoet niet aan de minimale eisen',
   success:   'Gelukt!',
-  cancel:    'Annuleer'
+  cancel:    'Annuleer',
+  pairing:   'Vul de koppelcode in die in jouw IRMA-app verschijnt.',
+  pairingFailed: (code) => `De koppelcode ${code} komt niet overeen met de code in je IRMA-app. Probeer het opnieuw.`
 };

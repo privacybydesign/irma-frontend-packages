@@ -15,14 +15,26 @@ module.exports = class IrmaWeb {
         // Check for validity of function to prevent errors when multiple events are cached.
         if (this._stateMachine.isValidTransition(t))
           this._stateMachine.transition(t, this._lastPayload);
+      },
+      (pairingCode) => {
+        console.log(pairingCode, this._lastPayload);
+        if (pairingCode === this._lastPayload.pairingCode) {
+          this._stateMachine.transition('pairingCompleted');
+          return true;
+        }
+        return false;
       }
     );
 
     this._addVisibilityListener();
   }
 
+  prepareStateChange() {
+    this._dom.renderLoading();
+  }
+
   stateChange(state) {
-    const {newState, payload, isFinal} = state;
+    const {newState, payload} = state;
     this._lastPayload = payload;
 
     this._dom.renderState(state);
@@ -35,11 +47,12 @@ module.exports = class IrmaWeb {
       case 'ShowingIrmaButton':
         this._dom.setButtonLink(payload.mobile);
         break;
-
-      default:
-        if (isFinal) this._removeVisibilityListener();
-        break;
     }
+  }
+
+  close(isForced) {
+    this._removeVisibilityListener();
+    if (isForced) this._dom.close();
   }
 
   _sanitizeOptions(options) {
@@ -47,7 +60,8 @@ module.exports = class IrmaWeb {
       element:       '#irma-web-form',
       showHelper:    false,
       fallbackDelay: 1000,
-      translations:  require(`./translations/${options.language || 'nl'}`)
+      translations:  require(`./translations/${options.language || 'nl'}`),
+      pairingCodeCheckingDelay: 500
     };
 
     return merge(defaults, options);
@@ -55,22 +69,28 @@ module.exports = class IrmaWeb {
 
   _addVisibilityListener() {
     const onVisibilityChange = () => {
-      if (this._stateMachine.currentState() != 'TimedOut' || document.hidden) return;
-      if (this._stateMachine.isValidTransition('restart')) {
-        if (this._options.debugging) console.log('🖥 Restarting because document became visible');
-        this._stateMachine.transition('restart');
-      }
+      this._stateMachine.onReady(() => {
+        if (this._stateMachine.currentState() != 'TimedOut' || document.hidden) return;
+        if (this._stateMachine.isValidTransition('restart')) {
+          if (this._options.debugging) console.log('🖥 Restarting because document became visible');
+          this._stateMachine.transition('restart');
+        }
+      });
     };
     const onFocusChange = () => {
-      if ( this._stateMachine.currentState() != 'TimedOut' ) return;
-      if (this._stateMachine.isValidTransition('restart')) {
-        if ( this._options.debugging ) console.log('🖥 Restarting because window regained focus');
-        this._stateMachine.transition('restart');
-      }
+      this._stateMachine.onReady(() => {
+        if (this._stateMachine.currentState() != 'TimedOut') return;
+        if (this._stateMachine.isValidTransition('restart')) {
+          if (this._options.debugging) console.log('🖥 Restarting because window regained focus');
+          this._stateMachine.transition('restart');
+        }
+      });
     };
     const onResize = () => {
-      if (this._stateMachine.isValidTransition('checkUserAgent'))
-        this._stateMachine.transition('checkUserAgent', this._lastPayload);
+      this._stateMachine.onReady(() => {
+        if (this._stateMachine.isValidTransition('checkUserAgent'))
+          this._stateMachine.transition('checkUserAgent', this._lastPayload);
+      });
     };
 
     if ( typeof document !== 'undefined' && document.addEventListener )

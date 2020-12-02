@@ -15,7 +15,7 @@
 // <section class="irma-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="irma-web-form">
 //     <header class="irma-web-header">
-//       <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+//       <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
 //       <section class="irma-web-helper">
 //         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
 //       </section>
@@ -39,7 +39,7 @@
 // <section class="irma-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="irma-web-form">
 //     <header class="irma-web-header">
-//       <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+//       <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
 //       <section class="irma-web-helper">
 //         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
 //       </section>
@@ -63,7 +63,7 @@
 // <section class="irma-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="irma-web-form">
 //     <header class="irma-web-header">
-//       <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+//       <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
 //       <section class="irma-web-helper">
 //         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
 //       </section>
@@ -86,7 +86,7 @@
 // <section class="irma-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="irma-web-form">
 //     <header class="irma-web-header">
-//       <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+//       <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
 //       <section class="irma-web-helper">
 //         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
 //       </section>
@@ -102,7 +102,7 @@
 //
 // Styleguide Examples.States.Showing IRMA button
 
-// State 4: Code scanned, continue on phone
+// State 4: Pairing
 //
 // Weight: 4
 //
@@ -110,7 +110,68 @@
 // <section class="irma-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="irma-web-form">
 //     <header class="irma-web-header">
-//       <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+//       <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
+//       <section class="irma-web-helper">
+//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
+//       </section>
+//     </header>
+//     <section class="irma-web-content">
+//       <section class="irma-web-centered">
+//         <form
+//           id="pairing-form-states-example"
+//           class="irma-web-pairing-form"
+//           onsubmit="let code = Array.prototype.map.call(this.querySelector('.irma-web-pairing-code').children, c => c.value).join(''); alert(`We should send the code ${code} now.`); return false;"
+//         >
+//           <p>Vul de koppelcode in die in jouw IRMA-app verschijnt.</p>
+//           <div class="irma-web-pairing-code">
+//             <input inputmode="numeric" pattern="\d" maxlength="1" required />
+//             <input inputmode="numeric" pattern="\d" maxlength="1" required />
+//             <input inputmode="numeric" pattern="\d" maxlength="1" required />
+//             <input inputmode="numeric" pattern="\d" maxlength="1" required />
+//           </div>
+//           <button id="irma-web-pairing-submit" type="submit">
+//             Volgende
+//           </button>
+//           <p><a>Annuleer</a></p>
+//           <script type="application/javascript">
+//             let inputFields = document.querySelectorAll('#pairing-form-states-example input');
+//             inputFields.forEach(field => {
+//               field.onkeydown = (event) => {
+//                 field.prevValue = field.value;
+//                 if (event.key != 'Enter') field.value = '';
+//               };
+//               field.onkeyup = (event) => {
+//                 let prevField = field.previousElementSibling;
+//                 if (prevField && field.value === field.prevValue && event.key == 'Backspace') {
+//                   prevField.value = '';
+//                   prevField.focus();
+//                 }
+//                 let fn = field.form.querySelectorAll('input:invalid').length == 0 ? 'add' : 'remove';
+//                 field.form.querySelector('#irma-web-pairing-submit').classList[fn]('irma-web-pairing-submit-valid');
+//               };
+//               field.oninput = () => {
+//                 let nextField = field.nextElementSibling;
+//                 if (nextField && field.value) nextField.focus()
+//               };
+//             });
+//           </script>
+//         </form>
+//       </section>
+//     </section>
+//   </section>
+// </section>
+//
+// Styleguide Examples.States.Pairing
+
+// State 5: Code scanned, continue on phone
+//
+// Weight: 5
+//
+// Markup:
+// <section class="irma-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
+//   <section class="irma-web-form">
+//     <header class="irma-web-header">
+//       <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
 //       <section class="irma-web-helper">
 //         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
 //       </section>
@@ -126,15 +187,15 @@
 //
 // Styleguide Examples.States.Code scanned, continue on phone
 
-// State 5: Disclosure cancelled
+// State 6: Disclosure cancelled
 //
-// Weight: 5
+// Weight: 6
 //
 // Markup:
 // <section class="irma-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="irma-web-form">
 //     <header class="irma-web-header">
-//       <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+//       <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
 //       <section class="irma-web-helper">
 //         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
 //       </section>
@@ -151,15 +212,15 @@
 //
 // Styleguide Examples.States.Disclosure cancelled
 
-// State 6: Disclosure timed out
+// State 7: Disclosure timed out
 //
-// Weight: 6
+// Weight: 7
 //
 // Markup:
 // <section class="irma-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="irma-web-form">
 //     <header class="irma-web-header">
-//       <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+//       <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
 //       <section class="irma-web-helper">
 //         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
 //       </section>
@@ -176,15 +237,15 @@
 //
 // Styleguide Examples.States.Disclosure timed out
 
-// State 7: Disclosure errored
+// State 8: Disclosure errored
 //
-// Weight: 7
+// Weight: 8
 //
 // Markup:
 // <section class="irma-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="irma-web-form">
 //     <header class="irma-web-header">
-//       <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+//       <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
 //       <section class="irma-web-helper">
 //         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
 //       </section>
@@ -201,15 +262,15 @@
 //
 // Styleguide Examples.States.Disclosure errored
 
-// State 8: Browser is not supported
+// State 9: Browser is not supported
 //
-// Weight: 8
+// Weight: 9
 //
 // Markup:
 // <section class="irma-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="irma-web-form">
 //     <header class="irma-web-header">
-//       <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+//       <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
 //       <section class="irma-web-helper">
 //         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
 //       </section>
@@ -225,15 +286,15 @@
 //
 // Styleguide Examples.States.Browser is not supported
 
-// State 9: Success
+// State 10: Success
 //
-// Weight: 9
+// Weight: 10
 //
 // Markup:
 // <section class="irma-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="irma-web-form">
 //     <header class="irma-web-header">
-//       <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+//       <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
 //       <section class="irma-web-helper">
 //         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
 //       </section>
