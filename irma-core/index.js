@@ -85,7 +85,7 @@ module.exports = class IrmaCore {
       .then(returnValues => returnValues.map(p => p.value || p.reason))
       .then(returnValues => {
         const filtered = returnValues.filter(v => v !== undefined);
-        return filtered.length > 1 ? returnValues : filtered[0]
+        return filtered.length > 1 ? returnValues : filtered[0];
       });
   }
 
