@@ -14,17 +14,17 @@ module.exports = class StateMachine {
   }
 
   currentState() {
-    if (this._inTransition) throw new Error('A transition is being processed; wait until the transition is made.')
+    if (this._inTransition) throw new Error('The state machine is in transition; wait until the transition is made.')
     return this._state;
   }
 
   isEndState() {
-    if (this._inTransition) throw new Error('A transition is being processed; wait until the transition is made.')
+    if (this._inTransition) throw new Error('The state machine is in transition; wait until the transition is made.')
     return this._inEndState;
   }
 
   isValidTransition(transition) {
-    if (this._inTransition) throw new Error('A transition is being processed; wait until the transition is made.')
+    if (this._inTransition) throw new Error('The state machine is in transition; wait until the transition is made.')
 
     if (this._inEndState || this._disabledTransitions.includes(transition))
       return false;
