@@ -9,7 +9,7 @@ module.exports = class IrmaCore {
     this._userAgent = userAgent();
 
     this._stateMachine = new StateMachine(this._options.debugging);
-    this._stateMachine.addStateChangeListener((s) => this._stateChangeListener(s));
+    this._stateMachine.addEventListener((s) => this._stateMachineListener(s));
   }
 
   use(mod) {
@@ -32,52 +32,61 @@ module.exports = class IrmaCore {
   }
 
   abort() {
-    if (this._stateMachine.currentState() != 'Uninitialized' && !this._stateMachine.isEndState()) {
-      if (this._options.debugging) console.log('🖥 Manually aborting session instance');
-      this._stateMachine.transition('abort');
-    } else {
-      if (this._options.debugging) console.log('🖥 Manual abort is not necessary');
-    }
+    if (this._options.debugging) console.log('🖥 Aborting session instance');
+    this._stateMachine.abort();
   }
 
-  _stateChangeListener(state) {
-    this._modules.filter(m => m.stateChange)
-                 .forEach(m => m.stateChange(state));
+  _stateMachineListener({eventType, ...state}) {
+    switch(eventType) {
+      case 'prepare':
+        return Promise.allSettled(
+          this._modules.filter(m => m.prepareStateChange)
+            .map(m => Promise.resolve(m.prepareStateChange(state)))
+        );
+      case 'change':
+        this._modules.filter(m => m.stateChange)
+          .forEach(m => m.stateChange(state));
 
-    const {newState, payload, isFinal} = state;
+        const {newState, payload, isFinal} = state;
 
-    switch(newState) {
-      case 'Success':
-        this._close().then(result => {
-          if ( this._resolve ) this._resolve(result);
-        });
-        break;
-      case 'MediumContemplation':
-        if (this._userAgentIsMobile())
-          this._stateMachine.transition('showIrmaButton', this._getSessionUrls(payload));
-        else
-          this._stateMachine.transition('showQRCode', this._getSessionUrls(payload));
-        break;
-      default:
-        if ( isFinal ) {
-          this._close().then(result => {
-            if ( this._reject ) result ? this._reject(result) : this._reject(newState);
-          });
+        switch (newState) {
+          case 'Success':
+            this._close().then(result => {
+              if (this._resolve) this._resolve(result);
+            });
+            break;
+          case 'MediumContemplation':
+            if (this._userAgentIsMobile())
+              this._stateMachine.transition('showIrmaButton', this._getSessionUrls(payload.sessionPtr));
+            else
+              this._stateMachine.transition('showQRCode', this._getSessionUrls(payload.sessionPtr));
+            break;
+          default:
+            if (isFinal) {
+              this._close(false).then(result => {
+                if (this._reject) result ? this._reject(result) : this._reject(newState);
+              });
+            }
+            break;
         }
-        break;
+        return;
+      case 'abort':
+        return this._close(true).then(result => {
+          if (this._reject) result ? this._reject(result) : this._reject('Aborted');
+        });
     }
   }
 
-  _close() {
-    return this._modules.filter(m => m.close)
-      .reduce(
-        (prev, m) => prev.then(returnValues => m.close().then(res => {
-          if (res) returnValues.push(res)
-          return returnValues;
-        })),
-        Promise.resolve([])
-      )
-      .then(returnValues => returnValues.length > 1 ? returnValues : returnValues[0]);
+  _close(isForced) {
+    return Promise.allSettled(
+      this._modules.filter(m => m.close)
+        .map(m => Promise.resolve(m.close(isForced))),
+    )
+      .then(returnValues => returnValues.map(p => p.value || p.reason))
+      .then(returnValues => {
+        const filtered = returnValues.filter(v => v !== undefined);
+        return filtered.length > 1 ? returnValues : filtered[0]
+      });
   }
 
   _userAgentIsMobile() {

@@ -22,4 +22,8 @@
   font-weight: $weight;
   font-size: $size;
   color: $color;
+
+  &.irma-web-error {
+    color: $irma-red;
+  }
 }

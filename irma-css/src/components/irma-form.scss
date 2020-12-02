@@ -16,7 +16,7 @@
 // Markup:
 // <section class="irma-web-form">
 //   <div class="irma-web-header">
-//     <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+//     <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
 //     <div class="irma-web-helper">
 //       <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
 //     </div>
@@ -30,7 +30,7 @@
 // </section>
 // <section class="irma-web-form">
 //   <div class="irma-web-header">
-//     <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+//     <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
 //     <div class="irma-web-helper">
 //       <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
 //     </div>
@@ -184,10 +184,7 @@
     margin: 0 1rem 1rem 1rem;
 
     background-color: $content-bg-color;
-    border-bottom-right-radius: $border-radius * 0.6;
-    border-bottom-left-radius: $border-radius * 0.6;
-    border-top-left-radius: 1px;
-    border-top-right-radius: 1px;
+    border-radius: $border-radius * 0.6;
 
     .irma-web-centered {
       @include reset;
@@ -207,7 +204,9 @@
       @include on-small-screen {
         margin: 1em 2em;
       }
+    }
 
+    > p {
       &:first-child {
         margin-top: 0;
       }

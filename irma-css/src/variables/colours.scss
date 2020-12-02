@@ -19,6 +19,7 @@ $irma-green:       #2bc194;
 $irma-light-blue:  #00b1e6;
 $irma-red:         #d44454;
 $irma-yellow:      #ffbb58;
+$irma-grey:        #7f7f7f;
 
 // Colours for interface elements
 //
@@ -33,11 +34,12 @@ $irma-yellow:      #ffbb58;
 // Styleguide Variables.colours.app
 
 // From out to in:
-$border-color:     white;
-$background-color: $irma-blue;
-$helper-color:     #47679e;
-$content-bg-color: white;
-$button-color:     $irma-blue;
+$border-color:          white;
+$background-color:      $irma-blue;
+$helper-color:          #47679e;
+$content-bg-color:      white;
+$button-color:          $irma-blue;
+$button-disabled-color: $irma-grey;
 
 // Text colours
 //
@@ -54,7 +56,7 @@ $button-color:     $irma-blue;
 // Styleguide Variables.colours.text
 
 $header-text-color:        white;
-$content-text-color:       #7f7f7f;
+$content-text-color:       $irma-grey;
 $content-link-color:       $content-text-color;
 $content-link-color-hover: $irma-blue;
 $button-text-color:        white;

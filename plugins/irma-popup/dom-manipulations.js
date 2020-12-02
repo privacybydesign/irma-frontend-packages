@@ -6,17 +6,6 @@ module.exports = class DOMManipulations {
 
     this._element.classList.add('irma-web-popup');
     this._element.innerHTML = `<section class='irma-web-form' id='irma-popup-web-form'></section>`;
-
-    let clickEventListener = e => this._clickHandler(e);
-    let keyEventListener = e => this._keyHandler(e);
-    this._element.addEventListener('click', clickEventListener);
-    document.addEventListener('keyup', keyEventListener);
-    document.addEventListener('keydown', keyEventListener);
-    this._removeEventListeners = () => {
-      this._element.removeEventListener('click', clickEventListener);
-      document.removeEventListener('keyup', keyEventListener);
-      document.removeEventListener('keydown', keyEventListener);
-    }
   }
 
   isPopupActive() {
@@ -24,11 +13,26 @@ module.exports = class DOMManipulations {
   }
 
   openPopup() {
+    // Initialize event handlers
+    let clickEventListener = e => this._clickHandler(e);
+    let keyEventListener = e => this._keyHandler(e);
+    this._element.addEventListener('click', clickEventListener);
+    document.addEventListener('keyup', keyEventListener);
+    this._removeEventListeners = () => {
+      this._element.removeEventListener('click', clickEventListener);
+      document.removeEventListener('keyup', keyEventListener);
+    }
+
     this._element.classList.add('irma-web-popup-active');
+    // Explicitly focus popup to prevent that buttons in underlying website stay in focus.
+    this._element.focus();
   }
 
   closePopup() {
-    this._element.classList.remove('irma-web-popup-active');
+    if (this.isPopupActive()) {
+      this._removeEventListeners();
+      this._element.classList.remove('irma-web-popup-active');
+    }
   }
 
   _findElement(element) {
@@ -39,8 +43,12 @@ module.exports = class DOMManipulations {
     }
 
     this._elementCreated = true;
-    return document.querySelector('section.irma-web-popup') ||
-           document.body.appendChild(document.createElement('section'));
+    let createdElement = document.querySelector('div.irma-web-popup');
+    if (!createdElement) {
+      createdElement = document.body.appendChild(document.createElement('div'));
+    }
+    createdElement.setAttribute('tabindex', '-1'); // Make popup focusable
+    return createdElement;
   }
 
   _clickHandler(e) {
@@ -50,18 +58,12 @@ module.exports = class DOMManipulations {
   }
 
   _keyHandler(e) {
-    // Prevent Enter from restarting the popup by hitting some button
-    // below the popup.
-    if ( e.key == 'Enter' )
-      e.preventDefault();
-
     // Did we press the Escape key?
-    if (e.type == 'keyup' && e.key == 'Escape')
+    if (e.key == 'Escape')
       this._cancel();
   }
 
   _cancel() {
-    this._removeEventListeners();
     this.closePopup();
     this._closeCallback();
   }

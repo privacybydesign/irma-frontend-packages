@@ -87,15 +87,15 @@
           the "root" element comes first in this loop, and can be detected using
           the "#if @first" block as seen below.
         -->
-            <header class="kss-section kss-section--depth-3" id="kssref-examples-states-disclosure-cancelled">
+            <header class="kss-section kss-section--depth-3" id="kssref-examples-states-pairing">
 
             <article class="kss-section__content">
-                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>190</span></p>
+                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>105</span></p>
 
-              <a class="kss-section__permalink" href="#kssref-examples-states-disclosure-cancelled">
+              <a class="kss-section__permalink" href="#kssref-examples-states-pairing">
                 <h3 class="kss-section__item kss-section__item--depth-3">
-                  <span class="kss-section__ref">1.3.7</span>
-                  <span class="kss-section__name">State 6: Disclosure cancelled</span>
+                  <span class="kss-section__ref">1.3.5</span>
+                  <span class="kss-section__name">State 4: Pairing</span>
                 </h3>
               </a>
 
@@ -116,9 +116,45 @@
     </header>
     <section class="irma-web-content">
       <section class="irma-web-centered">
-        <div class="irma-web-forbidden-animation"></div>
-        <p>We hebben de attributen niet ontvangen. Het spijt ons, maar dan kunnen we je niet inloggen</p>
-        <p><a href="#">Opnieuw proberen</a></p>
+        <form
+          id="pairing-form-states-example"
+          class="irma-web-pairing-form"
+          onsubmit="let code = Array.prototype.map.call(this.querySelector('.irma-web-pairing-code').children, c => c.value).join(''); alert(`We should send the code ${code} now.`); return false;"
+        >
+          <p>Vul de koppelcode in die in jouw IRMA-app verschijnt.</p>
+          <div class="irma-web-pairing-code">
+            <input inputmode="numeric" pattern="\d" maxlength="1" required />
+            <input inputmode="numeric" pattern="\d" maxlength="1" required />
+            <input inputmode="numeric" pattern="\d" maxlength="1" required />
+            <input inputmode="numeric" pattern="\d" maxlength="1" required />
+          </div>
+          <button id="irma-web-pairing-submit" type="submit">
+            Volgende
+          </button>
+          <p><a>Annuleer</a></p>
+          <script type="application/javascript">
+            let inputFields = document.querySelectorAll('#pairing-form-states-example input');
+            inputFields.forEach(field => {
+              field.onkeydown = (event) => {
+                field.prevValue = field.value;
+                if (event.key != 'Enter') field.value = '';
+              };
+              field.onkeyup = (event) => {
+                let prevField = field.previousElementSibling;
+                if (prevField && field.value === field.prevValue && event.key == 'Backspace') {
+                  prevField.value = '';
+                  prevField.focus();
+                }
+                let fn = field.form.querySelectorAll('input:invalid').length == 0 ? 'add' : 'remove';
+                field.form.querySelector('#irma-web-pairing-submit').classList[fn]('irma-web-pairing-submit-valid');
+              };
+              field.oninput = () => {
+                let nextField = field.nextElementSibling;
+                if (nextField && field.value) nextField.focus()
+              };
+            });
+          </script>
+        </form>
       </section>
     </section>
   </section>
@@ -137,9 +173,45 @@
     &lt;/header&gt;
     &lt;section class&#x3D;&quot;irma-web-content&quot;&gt;
       &lt;section class&#x3D;&quot;irma-web-centered&quot;&gt;
-        &lt;div class&#x3D;&quot;irma-web-forbidden-animation&quot;&gt;&lt;/div&gt;
-        &lt;p&gt;We hebben de attributen niet ontvangen. Het spijt ons, maar dan kunnen we je niet inloggen&lt;/p&gt;
-        &lt;p&gt;&lt;a href&#x3D;&quot;#&quot;&gt;Opnieuw proberen&lt;/a&gt;&lt;/p&gt;
+        &lt;form
+          id&#x3D;&quot;pairing-form-states-example&quot;
+          class&#x3D;&quot;irma-web-pairing-form&quot;
+          onsubmit&#x3D;&quot;let code &#x3D; Array.prototype.map.call(this.querySelector(&#x27;.irma-web-pairing-code&#x27;).children, c &#x3D;&gt; c.value).join(&#x27;&#x27;); alert(&#x60;We should send the code ${code} now.&#x60;); return false;&quot;
+        &gt;
+          &lt;p&gt;Vul de koppelcode in die in jouw IRMA-app verschijnt.&lt;/p&gt;
+          &lt;div class&#x3D;&quot;irma-web-pairing-code&quot;&gt;
+            &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required /&gt;
+            &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required /&gt;
+            &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required /&gt;
+            &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required /&gt;
+          &lt;/div&gt;
+          &lt;button id&#x3D;&quot;irma-web-pairing-submit&quot; type&#x3D;&quot;submit&quot;&gt;
+            Volgende
+          &lt;/button&gt;
+          &lt;p&gt;&lt;a&gt;Annuleer&lt;/a&gt;&lt;/p&gt;
+          &lt;script type&#x3D;&quot;application/javascript&quot;&gt;
+            let inputFields &#x3D; document.querySelectorAll(&#x27;#pairing-form-states-example input&#x27;);
+            inputFields.forEach(field &#x3D;&gt; {
+              field.onkeydown &#x3D; (event) &#x3D;&gt; {
+                field.prevValue &#x3D; field.value;
+                if (event.key !&#x3D; &#x27;Enter&#x27;) field.value &#x3D; &#x27;&#x27;;
+              };
+              field.onkeyup &#x3D; (event) &#x3D;&gt; {
+                let prevField &#x3D; field.previousElementSibling;
+                if (prevField &amp;&amp; field.value &#x3D;&#x3D;&#x3D; field.prevValue &amp;&amp; event.key &#x3D;&#x3D; &#x27;Backspace&#x27;) {
+                  prevField.value &#x3D; &#x27;&#x27;;
+                  prevField.focus();
+                }
+                let fn &#x3D; field.form.querySelectorAll(&#x27;input:invalid&#x27;).length &#x3D;&#x3D; 0 ? &#x27;add&#x27; : &#x27;remove&#x27;;
+                field.form.querySelector(&#x27;#irma-web-pairing-submit&#x27;).classList[fn](&#x27;irma-web-pairing-submit-valid&#x27;);
+              };
+              field.oninput &#x3D; () &#x3D;&gt; {
+                let nextField &#x3D; field.nextElementSibling;
+                if (nextField &amp;&amp; field.value) nextField.focus()
+              };
+            });
+          &lt;/script&gt;
+        &lt;/form&gt;
       &lt;/section&gt;
     &lt;/section&gt;
   &lt;/section&gt;
