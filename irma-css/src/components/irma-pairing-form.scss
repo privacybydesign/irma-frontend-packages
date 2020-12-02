@@ -57,13 +57,13 @@
 //         f.disabled = true;
 //         return f.value;
 //       }).join('');
-//       e.target.querySelector('.irma-web-loading-animation').style.visibility = 'visible';
+//       e.target.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'visible';
 //       setTimeout(() => {
 //         e.target.reset();
 //         inputFields.forEach(f => f.disabled = false);
 //         inputFields[0].focus();
 //         e.target.querySelector('p').innerHTML = `De ingevoerde koppelcode ${code} komt niet overeen met de code in jouw IRMA-app. Probeer het opnieuw.`;
-//         e.target.querySelector('.irma-web-loading-animation').style.visibility = 'hidden';
+//         e.target.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'hidden';
 //       }, 500);
 //     };
 //   </script>
