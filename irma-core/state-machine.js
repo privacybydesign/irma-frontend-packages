@@ -9,7 +9,8 @@ module.exports = class StateMachine {
     this._listeners = [];
     this._inEndState = false;
     this._disabledTransitions = [];
-    this._transitionChain = Promise.resolve();
+    this._transitionQueue = Promise.resolve();
+    this._eventQueue = Promise.resolve();
     this._inTransition = false;
   }
 
@@ -32,7 +33,7 @@ module.exports = class StateMachine {
   }
 
   onReady(handlerFunc) {
-    this._transitionChain = this._transitionChain.then(handlerFunc);
+    this._transitionQueue = this._transitionQueue.then(handlerFunc);
   }
 
   addEventListener(func) {
@@ -42,10 +43,10 @@ module.exports = class StateMachine {
   abort() {
     if (!this._inEndState) {
       this._inEndState = true;
-      this._listeners.forEach(l => l({
+      this._dispatchEvent({
         eventType: 'abort',
         state:     this._state,
-      }));
+      });
     }
   }
 
@@ -58,7 +59,7 @@ module.exports = class StateMachine {
   }
 
   _performTransition(transition, isFinal, payload) {
-    this._transitionChain = this._transitionChain.then(() => new Promise(resolve => {
+    this._transitionQueue = this._transitionQueue.then(() => {
       const oldState = this._state;
       if (this._inEndState)
         throw new Error(`State machine is in an end state. No transitions are allowed from ${oldState}.`);
@@ -82,7 +83,7 @@ module.exports = class StateMachine {
         payload = {...payload, canRestart: true};
       }
 
-      let message = {
+      let event = {
         eventType: 'prepare',
         newState: newState,
         oldState: oldState,
@@ -92,14 +93,14 @@ module.exports = class StateMachine {
       };
 
       this._inTransition = true;
-      Promise.allSettled(this._listeners.map(l => Promise.resolve(l(message))))
+      return this._dispatchEvent(event)
         .catch(err => {
           if (this._debugging)
             console.debug('🎰 Preparing for state change failed');
 
           inEndState = isFinal || Object.keys(transitions['Error']).filter(isEnabled).length == 0;
-          message = {
-            ...message,
+          event = {
+            ...event,
             newState: 'Error',
             isFinal: inEndState,
             payload: err
@@ -107,10 +108,13 @@ module.exports = class StateMachine {
         })
         .then(() => {
           // Before applying change, check whether state machine is aborted in between
-          if (this._inEndState) return;
+          if (this._inEndState) {
+            this._inTransition = false;
+            return;
+          }
 
-          this._state = message.newState;
-          this._inEndState = message.isFinal;
+          this._state = event.newState;
+          this._inEndState = event.isFinal;
           if (transition === 'initialize')
             this._disabledTransitions = payload.canRestart ? [] : ['restart'];
 
@@ -118,10 +122,17 @@ module.exports = class StateMachine {
             console.debug(`🎰 State change: '${oldState}' → '${this._state}' (because of '${transition}')`);
 
           this._inTransition = false;
-          resolve();
-          this._listeners.forEach(l => l({...message, eventType: 'change'}));
+          return this._dispatchEvent({...event, eventType: 'change'});
         });
-    }));
+    });
+  }
+
+  _dispatchEvent(event) {
+    this._eventQueue = this._eventQueue
+      .then(() => Promise.allSettled(
+        this._listeners.map(l => Promise.resolve(l(event)))
+      ));
+    return this._eventQueue;
   }
 
   _getNewState(transition, isFinal) {
