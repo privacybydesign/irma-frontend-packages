@@ -851,43 +851,69 @@ through.</p>
     </header>
     <section class="irma-web-content">
       <section class="irma-web-centered">
-        <form
-          id="pairing-form-states-example"
-          class="irma-web-pairing-form"
-          onsubmit="let code = Array.prototype.map.call(this.querySelector('.irma-web-pairing-code').children, c => c.value).join(''); alert(`We should send the code ${code} now.`); return false;"
-        >
-          <p>Vul de koppelcode in die in jouw IRMA-app verschijnt.</p>
+        <form class="irma-web-pairing-form" id="states-pairing-form">
+          <p>Vul de koppelcode in die in je IRMA-app verschijnt.</>
           <div class="irma-web-pairing-code">
             <input inputmode="numeric" pattern="\d" maxlength="1" required />
             <input inputmode="numeric" pattern="\d" maxlength="1" required />
             <input inputmode="numeric" pattern="\d" maxlength="1" required />
             <input inputmode="numeric" pattern="\d" maxlength="1" required />
           </div>
-          <button id="irma-web-pairing-submit" type="submit">
-            Volgende
-          </button>
-          <p><a>Annuleer</a></p>
+          <div class="irma-web-pairing-loading-animation" style="visibility: hidden">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <input type="submit" style="display: none" />
           <script type="application/javascript">
-            let inputFields = document.querySelectorAll('#pairing-form-states-example input');
+            let form = document.querySelector('#states-pairing-form');
+            let inputFields = form.querySelectorAll('#states-pairing-form .irma-web-pairing-code input');
             inputFields.forEach(field => {
-              field.onkeydown = (event) => {
-                field.prevValue = field.value;
-                if (event.key != 'Enter') field.value = '';
+              field.onkeydown = (e) => {
+                e.target.prevValue = e.target.value;
+                if (e.key != 'Enter') e.target.value = '';
               };
-              field.onkeyup = (event) => {
-                let prevField = field.previousElementSibling;
-                if (prevField && field.value === field.prevValue && event.key == 'Backspace') {
+              field.onkeyup = (e) => {
+                let prevField = e.target.previousElementSibling;
+                if (prevField && e.key == 'Backspace' && e.target.value === e.target.prevValue) {
                   prevField.value = '';
                   prevField.focus();
                 }
-                let fn = field.form.querySelectorAll('input:invalid').length == 0 ? 'add' : 'remove';
-                field.form.querySelector('#irma-web-pairing-submit').classList[fn]('irma-web-pairing-submit-valid');
               };
-              field.oninput = () => {
-                let nextField = field.nextElementSibling;
-                if (nextField && field.value) nextField.focus()
+              field.oninput = (e) => {
+                let nextField = e.target.nextElementSibling;
+                if (!nextField || !e.target.checkValidity()) {
+                  e.target.form.querySelector('input[type=submit]').click();
+                } else {
+                  nextField.focus();
+                }
+              };
+              field.onfocus = (e) => {
+                if (!e.target.value) {
+                  e.preventDefault();
+                  e.target.form.querySelector('input:invalid').focus();
+                }
               };
             });
+            inputFields[0].parentElement.onclick = (e) => {
+              if (e.target.tagName !== 'INPUT') {
+                let firstInvalidField = form.querySelector('input:invalid');
+                if (firstInvalidField) firstInvalidField.focus();
+              }
+            };
+            form.onsubmit = (e) => {
+              e.preventDefault();
+              let code = Array.prototype.map.call(inputFields, f => {
+                f.disabled = true;
+                return f.value;
+              }).join('');
+              e.target.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'visible';
+              setTimeout(() => {
+                e.target.reset();
+                inputFields.forEach(f => f.disabled = false);
+                inputFields[0].focus();
+                e.target.querySelector('p').innerHTML = `De ingevoerde koppelcode ${code} komt niet overeen met de code in jouw IRMA-app. Probeer het opnieuw.`;
+                e.target.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'hidden';
+              }, 500);
+            };
           </script>
         </form>
       </section>
@@ -908,43 +934,69 @@ through.</p>
     &lt;/header&gt;
     &lt;section class&#x3D;&quot;irma-web-content&quot;&gt;
       &lt;section class&#x3D;&quot;irma-web-centered&quot;&gt;
-        &lt;form
-          id&#x3D;&quot;pairing-form-states-example&quot;
-          class&#x3D;&quot;irma-web-pairing-form&quot;
-          onsubmit&#x3D;&quot;let code &#x3D; Array.prototype.map.call(this.querySelector(&#x27;.irma-web-pairing-code&#x27;).children, c &#x3D;&gt; c.value).join(&#x27;&#x27;); alert(&#x60;We should send the code ${code} now.&#x60;); return false;&quot;
-        &gt;
-          &lt;p&gt;Vul de koppelcode in die in jouw IRMA-app verschijnt.&lt;/p&gt;
+        &lt;form class&#x3D;&quot;irma-web-pairing-form&quot; id&#x3D;&quot;states-pairing-form&quot;&gt;
+          &lt;p&gt;Vul de koppelcode in die in je IRMA-app verschijnt.&lt;/&gt;
           &lt;div class&#x3D;&quot;irma-web-pairing-code&quot;&gt;
             &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required /&gt;
             &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required /&gt;
             &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required /&gt;
             &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required /&gt;
           &lt;/div&gt;
-          &lt;button id&#x3D;&quot;irma-web-pairing-submit&quot; type&#x3D;&quot;submit&quot;&gt;
-            Volgende
-          &lt;/button&gt;
-          &lt;p&gt;&lt;a&gt;Annuleer&lt;/a&gt;&lt;/p&gt;
+          &lt;div class&#x3D;&quot;irma-web-pairing-loading-animation&quot; style&#x3D;&quot;visibility: hidden&quot;&gt;
+            &lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;input type&#x3D;&quot;submit&quot; style&#x3D;&quot;display: none&quot; /&gt;
           &lt;script type&#x3D;&quot;application/javascript&quot;&gt;
-            let inputFields &#x3D; document.querySelectorAll(&#x27;#pairing-form-states-example input&#x27;);
+            let form &#x3D; document.querySelector(&#x27;#states-pairing-form&#x27;);
+            let inputFields &#x3D; form.querySelectorAll(&#x27;#states-pairing-form .irma-web-pairing-code input&#x27;);
             inputFields.forEach(field &#x3D;&gt; {
-              field.onkeydown &#x3D; (event) &#x3D;&gt; {
-                field.prevValue &#x3D; field.value;
-                if (event.key !&#x3D; &#x27;Enter&#x27;) field.value &#x3D; &#x27;&#x27;;
+              field.onkeydown &#x3D; (e) &#x3D;&gt; {
+                e.target.prevValue &#x3D; e.target.value;
+                if (e.key !&#x3D; &#x27;Enter&#x27;) e.target.value &#x3D; &#x27;&#x27;;
               };
-              field.onkeyup &#x3D; (event) &#x3D;&gt; {
-                let prevField &#x3D; field.previousElementSibling;
-                if (prevField &amp;&amp; field.value &#x3D;&#x3D;&#x3D; field.prevValue &amp;&amp; event.key &#x3D;&#x3D; &#x27;Backspace&#x27;) {
+              field.onkeyup &#x3D; (e) &#x3D;&gt; {
+                let prevField &#x3D; e.target.previousElementSibling;
+                if (prevField &amp;&amp; e.key &#x3D;&#x3D; &#x27;Backspace&#x27; &amp;&amp; e.target.value &#x3D;&#x3D;&#x3D; e.target.prevValue) {
                   prevField.value &#x3D; &#x27;&#x27;;
                   prevField.focus();
                 }
-                let fn &#x3D; field.form.querySelectorAll(&#x27;input:invalid&#x27;).length &#x3D;&#x3D; 0 ? &#x27;add&#x27; : &#x27;remove&#x27;;
-                field.form.querySelector(&#x27;#irma-web-pairing-submit&#x27;).classList[fn](&#x27;irma-web-pairing-submit-valid&#x27;);
               };
-              field.oninput &#x3D; () &#x3D;&gt; {
-                let nextField &#x3D; field.nextElementSibling;
-                if (nextField &amp;&amp; field.value) nextField.focus()
+              field.oninput &#x3D; (e) &#x3D;&gt; {
+                let nextField &#x3D; e.target.nextElementSibling;
+                if (!nextField || !e.target.checkValidity()) {
+                  e.target.form.querySelector(&#x27;input[type&#x3D;submit]&#x27;).click();
+                } else {
+                  nextField.focus();
+                }
+              };
+              field.onfocus &#x3D; (e) &#x3D;&gt; {
+                if (!e.target.value) {
+                  e.preventDefault();
+                  e.target.form.querySelector(&#x27;input:invalid&#x27;).focus();
+                }
               };
             });
+            inputFields[0].parentElement.onclick &#x3D; (e) &#x3D;&gt; {
+              if (e.target.tagName !&#x3D;&#x3D; &#x27;INPUT&#x27;) {
+                let firstInvalidField &#x3D; form.querySelector(&#x27;input:invalid&#x27;);
+                if (firstInvalidField) firstInvalidField.focus();
+              }
+            };
+            form.onsubmit &#x3D; (e) &#x3D;&gt; {
+              e.preventDefault();
+              let code &#x3D; Array.prototype.map.call(inputFields, f &#x3D;&gt; {
+                f.disabled &#x3D; true;
+                return f.value;
+              }).join(&#x27;&#x27;);
+              e.target.querySelector(&#x27;.irma-web-pairing-loading-animation&#x27;).style.visibility &#x3D; &#x27;visible&#x27;;
+              setTimeout(() &#x3D;&gt; {
+                e.target.reset();
+                inputFields.forEach(f &#x3D;&gt; f.disabled &#x3D; false);
+                inputFields[0].focus();
+                e.target.querySelector(&#x27;p&#x27;).innerHTML &#x3D; &#x60;De ingevoerde koppelcode ${code} komt niet overeen met de code in jouw IRMA-app. Probeer het opnieuw.&#x60;;
+                e.target.querySelector(&#x27;.irma-web-pairing-loading-animation&#x27;).style.visibility &#x3D; &#x27;hidden&#x27;;
+              }, 500);
+            };
           &lt;/script&gt;
         &lt;/form&gt;
       &lt;/section&gt;
@@ -957,7 +1009,7 @@ through.</p>
             <section class="kss-section kss-section--depth-3" id="kssref-examples-states-code-scanned-continue-on-phone">
 
             <article class="kss-section__content">
-                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>166</span></p>
+                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>192</span></p>
 
               <a class="kss-section__permalink" href="#kssref-examples-states-code-scanned-continue-on-phone">
                 <h3 class="kss-section__item kss-section__item--depth-3">
@@ -1015,7 +1067,7 @@ through.</p>
             <section class="kss-section kss-section--depth-3" id="kssref-examples-states-disclosure-cancelled">
 
             <article class="kss-section__content">
-                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>190</span></p>
+                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>216</span></p>
 
               <a class="kss-section__permalink" href="#kssref-examples-states-disclosure-cancelled">
                 <h3 class="kss-section__item kss-section__item--depth-3">
@@ -1075,7 +1127,7 @@ through.</p>
             <section class="kss-section kss-section--depth-3" id="kssref-examples-states-disclosure-timed-out">
 
             <article class="kss-section__content">
-                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>215</span></p>
+                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>241</span></p>
 
               <a class="kss-section__permalink" href="#kssref-examples-states-disclosure-timed-out">
                 <h3 class="kss-section__item kss-section__item--depth-3">
@@ -1135,7 +1187,7 @@ through.</p>
             <section class="kss-section kss-section--depth-3" id="kssref-examples-states-disclosure-errored">
 
             <article class="kss-section__content">
-                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>240</span></p>
+                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>266</span></p>
 
               <a class="kss-section__permalink" href="#kssref-examples-states-disclosure-errored">
                 <h3 class="kss-section__item kss-section__item--depth-3">
@@ -1195,7 +1247,7 @@ through.</p>
             <section class="kss-section kss-section--depth-3" id="kssref-examples-states-browser-is-not-supported">
 
             <article class="kss-section__content">
-                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>265</span></p>
+                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>291</span></p>
 
               <a class="kss-section__permalink" href="#kssref-examples-states-browser-is-not-supported">
                 <h3 class="kss-section__item kss-section__item--depth-3">
@@ -1253,7 +1305,7 @@ through.</p>
             <section class="kss-section kss-section--depth-3" id="kssref-examples-states-success">
 
             <article class="kss-section__content">
-                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>289</span></p>
+                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>315</span></p>
 
               <a class="kss-section__permalink" href="#kssref-examples-states-success">
                 <h3 class="kss-section__item kss-section__item--depth-3">

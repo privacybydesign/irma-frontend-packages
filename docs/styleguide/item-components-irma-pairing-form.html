@@ -162,13 +162,13 @@
         f.disabled = true;
         return f.value;
       }).join('');
-      e.target.querySelector('.irma-web-loading-animation').style.visibility = 'visible';
+      e.target.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'visible';
       setTimeout(() => {
         e.target.reset();
         inputFields.forEach(f => f.disabled = false);
         inputFields[0].focus();
         e.target.querySelector('p').innerHTML = `De ingevoerde koppelcode ${code} komt niet overeen met de code in jouw IRMA-app. Probeer het opnieuw.`;
-        e.target.querySelector('.irma-web-loading-animation').style.visibility = 'hidden';
+        e.target.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'hidden';
       }, 500);
     };
   </script>
@@ -231,13 +231,13 @@
         f.disabled &#x3D; true;
         return f.value;
       }).join(&#x27;&#x27;);
-      e.target.querySelector(&#x27;.irma-web-loading-animation&#x27;).style.visibility &#x3D; &#x27;visible&#x27;;
+      e.target.querySelector(&#x27;.irma-web-pairing-loading-animation&#x27;).style.visibility &#x3D; &#x27;visible&#x27;;
       setTimeout(() &#x3D;&gt; {
         e.target.reset();
         inputFields.forEach(f &#x3D;&gt; f.disabled &#x3D; false);
         inputFields[0].focus();
         e.target.querySelector(&#x27;p&#x27;).innerHTML &#x3D; &#x60;De ingevoerde koppelcode ${code} komt niet overeen met de code in jouw IRMA-app. Probeer het opnieuw.&#x60;;
-        e.target.querySelector(&#x27;.irma-web-loading-animation&#x27;).style.visibility &#x3D; &#x27;hidden&#x27;;
+        e.target.querySelector(&#x27;.irma-web-pairing-loading-animation&#x27;).style.visibility &#x3D; &#x27;hidden&#x27;;
       }, 500);
     };
   &lt;/script&gt;
