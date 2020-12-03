@@ -128,11 +128,16 @@ module.exports = class StateMachine {
   }
 
   _dispatchEvent(event) {
+    let promise = Promise.all(
+      this._listeners.map(l => Promise.resolve(l(event)))
+    );
+
+    // Prevent queuing an error
     this._eventQueue = this._eventQueue
-      .then(() => Promise.allSettled(
-        this._listeners.map(l => Promise.resolve(l(event)))
-      ));
-    return this._eventQueue;
+      .then(() => promise)
+      .catch(() => {});
+
+    return promise;
   }
 
   _getNewState(transition, isFinal) {
