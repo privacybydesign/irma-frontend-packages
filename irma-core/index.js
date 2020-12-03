@@ -78,11 +78,12 @@ module.exports = class IrmaCore {
   }
 
   _close(isForced) {
-    return Promise.allSettled(
-      this._modules.filter(m => m.close)
-        .map(m => Promise.resolve(m.close(isForced))),
+    // If multiple plugins return a result, then return an array with results; the order in which
+    // plugins are added with 'use' determines the index in the result array. Plugins that
+    // do not return a result, have the result 'undefined' then.
+    return Promise.all(
+      this._modules.map(m => Promise.resolve(m.close ? m.close(isForced) : undefined)),
     )
-      .then(returnValues => returnValues.map(p => p.value || p.reason))
       .then(returnValues => {
         const filtered = returnValues.filter(v => v !== undefined);
         return filtered.length > 1 ? returnValues : filtered[0];
