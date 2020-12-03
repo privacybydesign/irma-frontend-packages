@@ -30,9 +30,11 @@ module.exports = class IrmaStateClient {
 
   stateChange({newState, payload}) {
     switch(newState) {
+      case 'Loading':
+        this._canRestart = payload.canRestart;
+        break;
       case 'MediumContemplation':
         this._pairingEnabled = false;
-        this._canRestart = payload.canRestart;
         return this._startWatchingServerState(payload);
       case 'Success':
       case 'Cancelled':
