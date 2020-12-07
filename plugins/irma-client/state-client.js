@@ -137,7 +137,7 @@ module.exports = class IrmaStateClient {
       return Promise.resolve();
 
     let shouldBeEnabled = continueOnSecondDevice && this._options.state.pairing.onlyEnableIf(this._mappings);
-    // Skip the request when the pairing method is already set correctly.
+    // Skip the request when the pairing method is correctly set already.
     if (shouldBeEnabled === this._pairingEnabled) return Promise.resolve();
 
     if (!this._mappings.frontendAuth) {
@@ -161,7 +161,7 @@ module.exports = class IrmaStateClient {
     return this._updateFrontendOptions(options)
       .catch(err => {
         if ( this._options.debugging )
-          console.error('Error received while changing pairing state:', err);
+          console.error('Error received while updating pairing state:', err);
         this._handleNoSuccess('fail', err);
       });
   }
