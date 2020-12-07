@@ -20,11 +20,11 @@ module.exports = class IrmaDummy {
         }
       case 'PreparingQRCode':
         return setTimeout(() => this._stateMachine.transition('showQRCode', {
-          qr: this._options.qrPayload
+          qr: JSON.stringify(this._options.qrPayload),
         }), this._options.timing.prepare);
       case 'PreparingIrmaButton':
         return setTimeout(() => this._stateMachine.transition('showIrmaButton', {
-          mobile: this._options.qrPayload
+          mobile: JSON.stringify(this._options.qrPayload),
         }), this._options.timing.prepare);
       case 'ShowingQRCode':
         return this._waitForScanning();

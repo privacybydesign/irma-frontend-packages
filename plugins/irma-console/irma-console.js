@@ -8,7 +8,7 @@ module.exports = (askRetry, askPairingCode) => {
       this._options = options;
     }
 
-    stateChange({newState, payload, isFinal}) {
+    stateChange({newState, transition, payload, isFinal}) {
       if (isFinal) return;
       switch(newState) {
         case 'Cancelled':
@@ -26,20 +26,19 @@ module.exports = (askRetry, askPairingCode) => {
         case 'ContinueOn2ndDevice':
         case 'ContinueInIrmaApp':
           return console.log('Please follow the instructions in the IRMA app.');
-        case 'Pairing':
-          return this._askPairingCode(payload);
+        case 'EnterPairingCode':
+          return this._askPairingCode(transition != 'appPairing');
       }
     }
 
-    _askPairingCode({pairingCode}) {
-        let code = askPairingCode();
-        if (code === pairingCode) {
-          this._stateMachine.transition('pairingCompleted');
-        } else if (askRetry("Wrong pairing code was entered.")) {
-          this._askPairingCode(pairingCode);
-        } else {
-          this._askRetry("Pairing cancelled.")
-        }
+    _askPairingCode(askedBefore) {
+      if (askedBefore && !askRetry("Wrong pairing code was entered.")) {
+        let t = this._stateMachine.isValidTransition('cancel') ? 'cancel' : 'abort';
+        this._stateMachine.transition(t);
+        return;
+      }
+      let enteredPairingCode = askPairingCode();
+      this._stateMachine.transition('codeEntered', {enteredPairingCode});
     }
 
     _askRetry(message) {
