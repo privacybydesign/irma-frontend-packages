@@ -248,8 +248,7 @@ module.exports = class IrmaStateClient {
 
         frontendOptions: {
           url:            m => `${m.sessionPtr['u']}/frontend/options`,
-          requestContext: 'https://irma.app/ld/request/options/v1',
-          // And all options that can be specified in an IRMA options request.
+          requestContext: 'https://irma.app/ld/request/options/v1'
         },
 
         pairing: {
