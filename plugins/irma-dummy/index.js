@@ -19,9 +19,13 @@ module.exports = class IrmaDummy {
             return this._stateMachine.transition('prepareQRCode');
         }
       case 'PreparingQRCode':
-        return setTimeout(() => this._stateMachine.transition('showQRCode'), this._options.timing.prepare);
+        return setTimeout(() => this._stateMachine.transition('showQRCode', {
+          qr: this._options.qrPayload
+        }), this._options.timing.prepare);
       case 'PreparingIrmaButton':
-        return setTimeout(() => this._stateMachine.transition('showIrmaButton'), this._options.timing.prepare);
+        return setTimeout(() => this._stateMachine.transition('showIrmaButton', {
+          mobile: this._options.qrPayload
+        }), this._options.timing.prepare);
       case 'ShowingQRCode':
         return this._waitForScanning();
       case 'ContinueOn2ndDevice':

@@ -3,8 +3,9 @@ const qrcode = require('qrcode-terminal');
 module.exports = (askRetry, askPairingCode) => {
   return class IrmaConsole {
 
-    constructor({stateMachine}) {
+    constructor({stateMachine, options}) {
       this._stateMachine = stateMachine;
+      this._options = options;
     }
 
     stateChange({newState, payload, isFinal}) {
@@ -18,6 +19,10 @@ module.exports = (askRetry, askPairingCode) => {
           return this._askRetry('An error occurred.');
         case 'ShowingQRCode':
           return this._renderQRcode(payload);
+        case 'ShowingIrmaButton':
+          const err = new Error('Mobile sessions cannot be performed in node');
+          if (this._options.debugging) console.error(err);
+          return this._stateMachine.transition('fail', err);
         case 'ContinueOn2ndDevice':
         case 'ContinueInIrmaApp':
           return console.log('Please follow the instructions in the IRMA app.');
