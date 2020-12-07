@@ -148,7 +148,7 @@ module.exports = class DOMManipulations {
     if (content) {
       this._element
         .querySelector('.irma-web-content .irma-web-centered')
-        .innerHTML = newPartial.call(this, state);
+        .innerHTML = content;
     }
 
     // Focus on first input field if any is present.
@@ -254,6 +254,7 @@ module.exports = class DOMManipulations {
           textElement.classList.add('irma-web-error');
           form.reset();
           inputFields.forEach(f => f.disabled = false);
+          inputFields[0].focus();
           form.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'hidden';
         });
         return;
