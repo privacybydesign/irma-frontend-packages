@@ -42,7 +42,6 @@ module.exports = class DOMManipulations {
       return found;
     }
 
-    this._elementCreated = true;
     let createdElement = document.querySelector('div.irma-web-popup');
     if (!createdElement) {
       createdElement = document.body.appendChild(document.createElement('div'));

@@ -16,21 +16,10 @@ module.exports = class IrmaWeb {
         if (this._stateMachine.isValidTransition(t))
           this._stateMachine.transition(t, this._lastPayload);
       },
-      (pairingCode) => {
-        console.log(pairingCode, this._lastPayload);
-        if (pairingCode === this._lastPayload.pairingCode) {
-          this._stateMachine.transition('pairingCompleted');
-          return true;
-        }
-        return false;
-      }
+      (enteredPairingCode) => this._stateMachine.transition('codeEntered', {enteredPairingCode})
     );
 
     this._addVisibilityListener();
-  }
-
-  prepareStateChange() {
-    this._dom.renderLoading();
   }
 
   stateChange(state) {
@@ -40,7 +29,6 @@ module.exports = class IrmaWeb {
     this._dom.renderState(state);
     switch(newState) {
       case 'ShowingQRCode':
-      case 'ShowingQRCodeInstead':
         this._dom.setQRCode(payload.qr);
         break;
 
@@ -50,9 +38,8 @@ module.exports = class IrmaWeb {
     }
   }
 
-  close(isForced) {
+  close() {
     this._removeVisibilityListener();
-    if (isForced) this._dom.close();
   }
 
   _sanitizeOptions(options) {
@@ -68,28 +55,22 @@ module.exports = class IrmaWeb {
 
   _addVisibilityListener() {
     const onVisibilityChange = () => {
-      this._stateMachine.onReady(() => {
-        if (this._stateMachine.currentState() != 'TimedOut' || document.hidden) return;
-        if (this._stateMachine.isValidTransition('restart')) {
-          if (this._options.debugging) console.log('🖥 Restarting because document became visible');
-          this._stateMachine.transition('restart');
-        }
-      });
+      if (this._stateMachine.currentState() != 'TimedOut' || document.hidden) return;
+      if (this._stateMachine.isValidTransition('restart')) {
+        if (this._options.debugging) console.log('🖥 Restarting because document became visible');
+        this._stateMachine.transition('restart');
+      }
     };
     const onFocusChange = () => {
-      this._stateMachine.onReady(() => {
-        if (this._stateMachine.currentState() != 'TimedOut') return;
-        if (this._stateMachine.isValidTransition('restart')) {
-          if (this._options.debugging) console.log('🖥 Restarting because window regained focus');
-          this._stateMachine.transition('restart');
-        }
-      });
+      if ( this._stateMachine.currentState() != 'TimedOut' ) return;
+      if (this._stateMachine.isValidTransition('restart')) {
+        if ( this._options.debugging ) console.log('🖥 Restarting because window regained focus');
+        this._stateMachine.transition('restart');
+      }
     };
     const onResize = () => {
-      this._stateMachine.onReady(() => {
-        if (this._stateMachine.isValidTransition('checkUserAgent'))
-          this._stateMachine.transition('checkUserAgent', this._lastPayload);
-      });
+      if (this._stateMachine.isValidTransition('checkUserAgent'))
+        this._stateMachine.transition('checkUserAgent', this._lastPayload);
     };
 
     if ( typeof document !== 'undefined' && document.addEventListener )

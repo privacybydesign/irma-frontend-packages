@@ -17,18 +17,10 @@ module.exports = class DOMManipulations {
     this._attachEventHandlers();
   }
 
-  renderLoading() {
-    this._renderPartial(this._stateLoading);
-  }
-
-  close() {
-    this._renderPartial(() => '');
-  }
-
   renderState(state) {
     let newPartial = this._stateToPartialMapping()[state.newState];
     if (!newPartial) throw new Error(`I don't know how to render '${state.newState}'`);
-    this._renderPartial(newPartial);
+    this._renderPartial(newPartial, state);
 
     if ( state.isFinal ) {
       // Make sure all restart buttons are hidden when being in a final state
@@ -112,32 +104,23 @@ module.exports = class DOMManipulations {
       if (e.target.className == 'irma-web-pairing-form') {
         e.preventDefault();
         let inputFields = e.target.querySelectorAll('.irma-web-pairing-code input');
-        let enteredCode = Array.prototype.map.call(inputFields, f => {
-          f.disabled = true;
-          return f.value;
-        }).join('');
-        e.target.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'visible';
-        setTimeout(() => {
-          if (document.body.contains(e.target)) {
-            e.target.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'hidden';
-            if (!this._pairingCodeCallback(enteredCode)) {
-              let textElement = e.target.firstElementChild;
-              textElement.innerHTML = this._translations.pairingFailed(enteredCode);
-              textElement.classList.add('irma-web-error');
-              e.target.reset();
-              inputFields.forEach(f => f.disabled = false);
-              inputFields[0].focus();
-            }
-          }
-        }, this._pairingCodeCheckingDelay);
+        let enteredCode = Array.prototype.map.call(inputFields, f => f.value).join('');
+        this._enteredPairingCodePromise = new Promise(resolve =>
+          setTimeout(() => resolve(enteredCode), this._pairingCodeCheckingDelay)
+        );
+        this._pairingCodeCallback(enteredCode);
       }
     });
   }
 
-  _renderPartial(newPartial) {
-    this._element
+  _renderPartial(newPartial, state) {
+    const content = newPartial.call(this, state);
+
+    if (content) {
+      this._element
         .querySelector('.irma-web-content .irma-web-centered')
-        .innerHTML = newPartial.call(this);
+        .innerHTML = newPartial.call(this, state);
+    }
 
     // Focus on first input field if any is present.
     let firstInputField = this._element.querySelector('input');
@@ -149,18 +132,21 @@ module.exports = class DOMManipulations {
     return {
       Uninitialized:        this._stateUninitialized,
       Loading:              this._stateLoading,
-      MediumContemplation:  this._stateLoading,
+      CheckingUserAgent:    this._stateLoading,
+      PreparingQRCode:      this._stateLoading,
+      PreparingIrmaButton:  this._stateLoading,
       ShowingQRCode:        this._stateShowingQRCode,
-      Pairing:              this._statePairing,
+      EnterPairingCode:     this._stateEnterPairingCode,
+      Pairing:              this._stateEnterPairingCode,
       ContinueOn2ndDevice:  this._stateContinueInIrmaApp,
       ShowingIrmaButton:    this._stateShowingIrmaButton,
-      ShowingQRCodeInstead: this._stateShowingQRCodeInstead,
       ContinueInIrmaApp:    this._stateContinueInIrmaApp,
       Cancelled:            this._stateCancelled,
       TimedOut:             this._stateTimedOut,
       Error:                this._stateError,
       BrowserNotSupported:  this._stateBrowserNotSupported,
       Success:              this._stateSuccess,
+      Aborted:              this._stateAborted,
     };
   }
 
@@ -207,10 +193,14 @@ module.exports = class DOMManipulations {
     `;
   }
 
-  _stateShowingQRCode() {
+  _stateShowingQRCode({payload}) {
     return `
       <!-- State: ShowingQRCode -->
       <canvas class="irma-web-qr-canvas"></canvas>
+      ${ payload.showBackButton
+        ? `<p><a data-irma-glue-transition="checkUserAgent">${this._translations.back}</a></p>`
+        : ''
+      }
     `;
   }
 
@@ -224,32 +214,43 @@ module.exports = class DOMManipulations {
     `;
   }
 
-  _stateShowingQRCodeInstead() {
-    return `
-      <!-- State: ShowingQRCode -->
-      <canvas class="irma-web-qr-canvas"></canvas>
-      <p><a data-irma-glue-transition="showIrmaButton">${this._translations.back}</a></p>
-    `;
-  }
-
-  _statePairing() {
-    return `
-      <!-- State: Pairing -->
-      <form class="irma-web-pairing-form">
-        <p>${this._translations.pairing}</p>
-        <div class="irma-web-pairing-code">
-          <input inputmode="numeric" pattern="\\d" maxlength="1" required />
-          <input inputmode="numeric" pattern="\\d" maxlength="1" required />
-          <input inputmode="numeric" pattern="\\d" maxlength="1" required />
-          <input inputmode="numeric" pattern="\\d" maxlength="1" required />
-        </div>
-        <input type="submit" style="display: none" />
-        <div class="irma-web-pairing-loading-animation" style="visibility: hidden">
-            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-        </div>
-        <p><a data-irma-glue-transition="cancel">${this._translations.cancel}</a></p>
-      </form>
-    `;
+  _stateEnterPairingCode({transition}) {
+    const form = this._element.querySelector('.irma-web-pairing-form');
+    const inputFields = this._element.querySelectorAll('.irma-web-pairing-code input');
+    switch (transition) {
+      case 'pairingRejected':
+        this._enteredPairingCodePromise.then(enteredCode => {
+          const textElement = form.firstElementChild;
+          textElement.innerHTML = this._translations.pairingFailed(enteredCode);
+          textElement.classList.add('irma-web-error');
+          form.reset();
+          inputFields.forEach(f => f.disabled = false);
+          form.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'hidden';
+        });
+        return;
+      case 'codeEntered':
+        inputFields.forEach(f => f.disabled = true);
+        form.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'visible';
+        return;
+      default:
+        return `
+          <!-- State: EnterPairingCode -->
+          <form class="irma-web-pairing-form">
+            <p>${this._translations.pairing}</p>
+            <div class="irma-web-pairing-code">
+              <input inputmode="numeric" pattern="\\d" maxlength="1" required />
+              <input inputmode="numeric" pattern="\\d" maxlength="1" required />
+              <input inputmode="numeric" pattern="\\d" maxlength="1" required />
+              <input inputmode="numeric" pattern="\\d" maxlength="1" required />
+            </div>
+            <input type="submit" style="display: none" />
+            <div class="irma-web-pairing-loading-animation" style="visibility: hidden">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <p><a data-irma-glue-transition="cancel">${this._translations.cancel}</a></p>
+          </form>
+        `;
+    }
   }
 
   _stateContinueInIrmaApp() {
@@ -301,6 +302,12 @@ module.exports = class DOMManipulations {
       <!-- State: Success -->
       <div class="irma-web-checkmark-animation"></div>
       <p>${this._translations.success}</p>
+    `;
+  }
+
+  _stateAborted() {
+    return `
+      <!-- State: Aborted -->
     `;
   }
 

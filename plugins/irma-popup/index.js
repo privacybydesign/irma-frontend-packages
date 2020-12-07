@@ -9,10 +9,11 @@ module.exports = class IrmaPopup {
     this._options = this._sanitizeOptions(options);
 
     this._dom = new DOMManipulations(options.element, () => {
-      if (this._popupClosedEarly) {
+      if (!stateMachine.isEndState()) {
+        stateMachine.transition('abort');
+      } else if (this._popupClosedEarly) {
         this._popupClosedEarly();
       }
-      stateMachine.abort();
     });
 
     this._irmaWeb = new IrmaWeb({
@@ -31,16 +32,14 @@ module.exports = class IrmaPopup {
     switch(state.newState) {
       case 'Loading':
         return this._dom.openPopup();
+      case 'Aborted':
+        return this._dom.closePopup();
     }
   }
 
-  close(isForced) {
-    this._irmaWeb.close(isForced);
+  close() {
     if (!this._dom.isPopupActive())
-      return;
-
-    if (isForced)
-      return this._dom.closePopup();
+      return Promise.resolve();
 
     // Delay closing pop-up so that the user can see the animation.
     return new Promise(resolve => {
