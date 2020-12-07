@@ -167,15 +167,17 @@ module.exports = class IrmaStateClient {
   }
 
   _pairingCompleted() {
-    if (!this._options.state.pairing)
-      return Promise.reject(new Error("Pairing was not enabled"));
-
     let url = this._options.state.pairing.completedUrl(this._mappings);
 
-    return fetch(url, {
+    fetch(url, {
       method: 'POST',
       headers: {'Authorization': this._mappings.frontendAuth}
-    });
+    })
+      .catch(err => {
+        if ( this._options.debugging )
+          console.error('Error received while completing pairing:', err);
+        this._handleNoSuccess('fail', err);
+      });
   }
 
   _updateFrontendOptions(options) {
