@@ -61,7 +61,6 @@ module.exports = class IrmaStateClient {
   }
 
   _startWatchingServerState(payload) {
-    if (this._statusListener && this._statusListener.isRunning()) return;
     this._statusListener = new StatusListener(payload, this._options.state);
 
     try {
@@ -75,7 +74,7 @@ module.exports = class IrmaStateClient {
   }
 
   _serverCloseSession() {
-    if (this._statusListener && this._statusListener.isRunning()) {
+    if (this._statusListener) {
       if (this._statusListener.close()) {
         // If the server is still in an active state, we have to actively cancel.
         this.cancelSession(this._mappings)
