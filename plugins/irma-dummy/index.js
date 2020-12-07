@@ -11,8 +11,18 @@ module.exports = class IrmaDummy {
     switch(newState) {
       case 'Loading':
         return this._startNewSession();
+      case 'CheckingUserAgent':
+        switch(this._options.dummy) {
+          case 'mobile':
+            return this._stateMachine.transition('prepareButton');
+          default:
+            return this._stateMachine.transition('prepareQRCode');
+        }
+      case 'PreparingQRCode':
+        return setTimeout(() => this._stateMachine.transition('showQRCode'), this._options.timing.prepare);
+      case 'PreparingIrmaButton':
+        return setTimeout(() => this._stateMachine.transition('showIrmaButton'), this._options.timing.prepare);
       case 'ShowingQRCode':
-      case 'ShowingQRCodeInstead':
         return this._waitForScanning();
       case 'ContinueOn2ndDevice':
         return this._waitForUserAction();
@@ -96,6 +106,7 @@ module.exports = class IrmaDummy {
       pairingCode: '1234',
       timing: {
         start: 1000,
+        prepare: 1000,
         scan: 2000,
         app: 2000
       }

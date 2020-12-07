@@ -1,5 +1,6 @@
 const StatusListener = require('./status-listener');
 const merge          = require('deepmerge');
+const userAgent      = require('./user-agent');
 
 module.exports = class IrmaStateClient {
 
@@ -9,33 +10,37 @@ module.exports = class IrmaStateClient {
     this._mappings     = {};
   }
 
-  prepareStateChange({newState, transition, payload}) {
-    switch(newState) {
-      case 'MediumContemplation':
-        this._mappings = payload;
-        this._frontendOptions = {};
-        return this._updateFrontendOptions(this._getDefaultFrontendOptions());
-      case 'ShowingQRCode':
-      case 'ShowingQRCodeInstead':
-        return this._updatePairingState(true);
-      case 'ShowingIrmaButton':
-        return this._updatePairingState(false);
-      case 'ContinueOn2ndDevice':
-        if (transition === 'pairingCompleted') {
-          return this._pairingCompleted();
-        }
-        break;
-    }
-  }
-
-  stateChange({newState, payload}) {
+  stateChange({newState, transition, payload}) {
     switch(newState) {
       case 'Loading':
         this._canRestart = payload.canRestart;
         break;
-      case 'MediumContemplation':
-        this._pairingEnabled = false;
-        return this._startWatchingServerState(payload);
+      case 'CheckingUserAgent':
+        if (transition == 'loaded') {
+          this._mappings = payload;
+          this._pairingEnabled = false;
+          this._startWatchingServerState(payload);
+        }
+        this._determineFlow();
+        break;
+      case 'PreparingQRCode':
+        return this._updatePairingState(true)
+          .then(() => this._stateMachine.transition('showQRCode', {
+            qr: JSON.stringify(this._mappings.sessionPtr),
+            showBackButton: transition == 'chooseQR',
+          }));
+      case 'PreparingIrmaButton':
+        return this._updatePairingState(false)
+          .then(() => this._stateMachine.transition('showIrmaButton', {
+            mobile: this._getMobileUrl(this._mappings.sessionPtr),
+          }));
+      case 'Pairing':
+        if (this._frontendOptions.pairingCode === payload.enteredPairingCode) {
+          this._pairingCompleted();
+        } else {
+          this._stateMachine.transition('pairingRejected');
+        }
+        break;
       case 'Success':
       case 'Cancelled':
       case 'TimedOut':
@@ -49,7 +54,14 @@ module.exports = class IrmaStateClient {
     this._serverCloseSession();
   }
 
+  cancelSession(mappings) {
+    if (!this._options.state.cancel)
+      return Promise.resolve();
+    return fetch(this._options.state.cancel.url(mappings), {method: 'DELETE'});
+  }
+
   _startWatchingServerState(payload) {
+    if (this._statusListener && this._statusListener.isRunning()) return;
     this._statusListener = new StatusListener(payload, this._options.state);
 
     try {
@@ -63,10 +75,10 @@ module.exports = class IrmaStateClient {
   }
 
   _serverCloseSession() {
-    if (this._statusListener) {
+    if (this._statusListener && this._statusListener.isRunning()) {
       if (this._statusListener.close()) {
         // If the server is still in an active state, we have to actively cancel.
-        this._cancel()
+        this.cancelSession(this._mappings)
           .catch(error => {
             if (this._options.debugging)
               console.error("Session could not be cancelled:", error);
@@ -83,38 +95,36 @@ module.exports = class IrmaStateClient {
   }
 
   _serverStateChange(newState) {
-    this._stateMachine.onReady(() => {
-      switch(newState) {
-        case 'PAIRING':
-          this._stateMachine.isValidTransition('appPairing')
-            this._stateMachine.transition('appPairing', this._frontendOptions);
-          return;
-        case 'CONNECTED':
-          if (this._stateMachine.isValidTransition('appConnected'))
-            this._stateMachine.transition('appConnected', this._frontendOptions);
-          return;
-        case 'DONE':
-          // What we hope will happen ;)
-          this._statusListener.close();
-          return this._stateMachine.transition('succeed');
-        case 'CANCELLED':
-          // This is a conscious choice by a user.
-          this._statusListener.close();
-          return this._handleNoSuccess('cancel');
-        case 'TIMEOUT':
-          // This is a known and understood error. We can be explicit to the user.
-          this._statusListener.close();
-          return this._handleNoSuccess('timeout');
-        default:
-          // Catch unknown errors and give generic error message. We never really
-          // want to get here.
-          if ( this._options.debugging )
-            console.error('Unknown state received from server:', newState);
+    switch(newState) {
+      case 'PAIRING':
+        if (this._stateMachine.isValidTransition('appPairing'))
+          this._stateMachine.transition('appPairing', this._frontendOptions);
+        return;
+      case 'CONNECTED':
+        if (this._stateMachine.isValidTransition('appConnected'))
+          this._stateMachine.transition('appConnected');
+        return;
+      case 'DONE':
+        // What we hope will happen ;)
+        this._statusListener.close();
+        return this._stateMachine.transition('succeed');
+      case 'CANCELLED':
+        // This is a conscious choice by a user.
+        this._statusListener.close();
+        return this._handleNoSuccess('cancel');
+      case 'TIMEOUT':
+        // This is a known and understood error. We can be explicit to the user.
+        this._statusListener.close();
+        return this._handleNoSuccess('timeout');
+      default:
+        // Catch unknown errors and give generic error message. We never really
+        // want to get here.
+        if ( this._options.debugging )
+          console.error('Unknown state received from server:', newState);
 
-          this._statusListener.close();
-          return this._handleNoSuccess('fail', new Error('Unknown state received from server'));
-      }
-    });
+        this._statusListener.close();
+        return this._handleNoSuccess('fail', new Error('Unknown state received from server'));
+    }
   }
 
   _handleNoSuccess(transition, payload) {
@@ -123,19 +133,22 @@ module.exports = class IrmaStateClient {
     this._stateMachine.finalTransition(transition, payload);
   }
 
-  _getDefaultFrontendOptions() {
-    let {url, requestContext, ...defaultOptions} = this._options.state.frontendOptions;
-    return defaultOptions;
-  }
-
   _updatePairingState(continueOnSecondDevice) {
     if (!this._options.state.pairing)
       return Promise.resolve();
 
     let shouldBeEnabled = continueOnSecondDevice && this._options.state.pairing.onlyEnableIf(this._mappings);
-    if (shouldBeEnabled === this._pairingEnabled)
-      return Promise.resolve();
+    // Skip the request when the pairing method is already set correctly.
+    if (shouldBeEnabled === this._pairingEnabled) return Promise.resolve();
 
+    if (!this._mappings.frontendAuth) {
+      if (this._options.debugging)
+        console.log('Pairing cannot be enabled, because no frontendAuth token is provided')
+      return Promise.resolve();
+    }
+    this._pairingEnabled = shouldBeEnabled;
+
+    // If pairing should be enabled, parse the pairing options struct.
     let options = shouldBeEnabled
       ? Object.keys(this._options.state.pairing).reduce(
           (acc, key) => {
@@ -145,8 +158,13 @@ module.exports = class IrmaStateClient {
           },
           {},
         )
-      : { ...this._getDefaultFrontendOptions(), pairingMethod: 'none' };
-    return this._updateFrontendOptions(options);
+      : { pairingMethod: 'none' };
+    return this._updateFrontendOptions(options)
+      .catch(err => {
+        if ( this._options.debugging )
+          console.error('Error received while changing pairing state:', err);
+        this._handleNoSuccess('fail', err);
+      });
   }
 
   _pairingCompleted() {
@@ -161,14 +179,7 @@ module.exports = class IrmaStateClient {
     });
   }
 
-  _cancel() {
-    if (!this._options.state.cancel)
-      return Promise.resolve();
-    return fetch(this._options.state.cancel.url(this._mappings), {method: 'DELETE'});
-  }
-
   _updateFrontendOptions(options) {
-    if (Object.keys(options).length === 0) return Promise.resolve();
     if (!this._mappings.frontendAuth) return Promise.reject(new Error('frontendAuth token was not supplied'));
 
     let req = {
@@ -185,6 +196,31 @@ module.exports = class IrmaStateClient {
     return fetch(this._options.state.frontendOptions.url(this._mappings), req)
       .then(r => r.json())
       .then(options => this._frontendOptions = options);
+  }
+
+  _getMobileUrl(sessionPtr) {
+    const json = JSON.stringify(sessionPtr);
+    switch (this._userAgent) {
+      case 'Android':
+        // Universal links are not stable in Android webviews and custom tabs, so always use intent links.
+        let intent = `Intent;package=org.irmacard.cardemu;scheme=irma;l.timestamp=${Date.now()}`;
+        return `intent://qr/json/${encodeURIComponent(json)}#${intent};end`;
+      case 'iOS':
+        return `https://irma.app/-/session#${encodeURIComponent(json)}`;
+      default:
+        throw new Error('Device type is not supported.');
+    }
+  }
+
+  _determineFlow() {
+    this._userAgent = userAgent();
+    switch (this._userAgent) {
+      case 'Android':
+      case 'iOS':
+        return this._stateMachine.transition('prepareButton');
+      default:
+        return this._stateMachine.transition('prepareQRCode');
+    }
   }
 
   _sanitizeOptions(options) {
@@ -215,7 +251,7 @@ module.exports = class IrmaStateClient {
 
         pairing: {
           pairingMethod:  'pin',
-          onlyEnableIf:   m => m.frontendAuth, // && m.sessionPtr.irmaqr === 'issuing', // TODO: Check strictness.
+          onlyEnableIf:   m => true,// m => m.sessionPtr['pairingRecommended'], TODO: Wait for irmago change
           completedUrl:   m => `${m.sessionPtr['u']}/frontend/pairingcompleted`
         },
       }

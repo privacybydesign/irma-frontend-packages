@@ -191,7 +191,8 @@ mapping can be found below.
 ```javascript
 mapping: {
     sessionPtr:      r => r.sessionPtr,
-    sessionToken:    r => r.token
+    sessionToken:    r => r.token,
+    frontendAuth:    r => r.frontendAuth
 }
 ```
 
@@ -200,7 +201,7 @@ These options define the HTTP request `irma-client` has to do when an IRMA
 session succeeds. In this way results of the IRMA session can be fetched.
 
 This option has the same outline as the `start` option.
-The default values are set for fetching the session result (on state `Success`)
+The default values are set for fetching the session result (when `close()` is called in a `Success` state)
 with a GET request on the endpoint `${o.url}/session/${sessionToken}/result`.
 In this, `o` (in `${o.url}`) points to the value of the `session` struct as described above. 
 
@@ -227,8 +228,9 @@ result: {
 ### state
 
 The `state` option tells the plugin how to subscribe to state changes on the
-server. By default the plugin tries to use Server Sent Events, and if that fails
-it will fall back to basic polling. You can disable either feature by setting
+server and how to communicate frontend state changes to the server. By default
+the plugin tries to use Server Sent Events for receiving state changes, and if
+that fails it will fall back to basic polling. You can disable either feature by setting
 them to `false` instead of an object.
 
 Finally we have the cancel endpoint that is being used to communicate a cancellation

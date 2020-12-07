@@ -3,17 +3,16 @@ const merge         = require('deepmerge');
 
 module.exports = class IrmaSessionClient {
 
-  constructor({stateMachine, options}) {
+  constructor({stateMachine, options, onCancel}) {
     this._stateMachine = stateMachine;
     this._options      = this._sanitizeOptions(options);
     this._session      = this._options.session ? new ServerSession(this._options.session) : false;
+    this._onCancel     = onCancel ? onCancel : () => {};
   }
 
-  stateChange({newState, payload}) {
-    if (newState == 'Loading') {
-      this._canRestart = payload.canRestart;
+  stateChange({newState}) {
+    if (newState == 'Loading')
       return this._startNewSession();
-    }
   }
 
   start() {
@@ -36,7 +35,7 @@ module.exports = class IrmaSessionClient {
           if (this._stateMachine.currentState() == 'Loading') {
             this._stateMachine.transition('loaded', mappings);
           } else {
-            return fetch(mappings.sessionPtr['u'], {method: 'DELETE'});
+            this._onCancel(mappings);
           }
         })
         .catch(error => {

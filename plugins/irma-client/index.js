@@ -4,12 +4,11 @@ const StateClient   = require('./state-client');
 module.exports = class IrmaClient {
 
   constructor(args) {
-    this._sessionClient = new SessionClient(args);
     this._stateClient = new StateClient(args);
-  }
-
-  prepareStateChange(args) {
-    return this._stateClient.prepareStateChange(args);
+    this._sessionClient = new SessionClient({
+      ...args,
+      onCancel: mappings => this._stateClient.cancelSession(mappings)
+    });
   }
 
   stateChange(args) {

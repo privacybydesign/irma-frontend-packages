@@ -40,7 +40,7 @@ module.exports = (askRetry, askPairingCode) => {
     _askRetry(message) {
       if ( askRetry(message) )
         return this._stateMachine.transition('restart');
-      this._stateMachine.abort();
+      this._stateMachine.transition('abort');
     }
 
     _renderQRcode(payload) {
