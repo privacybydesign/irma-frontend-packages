@@ -24,8 +24,8 @@ module.exports = class IrmaSessionClient {
   }
 
   close() {
-    if (this._stateMachine.currentState() == 'Success')
-      return this._closingSuccessState();
+    if (this._session && this._stateMachine.currentState() == 'Success')
+      return this._session.result();
   }
 
   _startNewSession() {
@@ -44,19 +44,6 @@ module.exports = class IrmaSessionClient {
           this._stateMachine.transition('fail', error);
         })
     }
-  }
-
-  _closingSuccessState() {
-    if (this._session) {
-      return this._session.result()
-        .catch(error => {
-          if (this._options.debugging)
-            console.error("Error fetching session result from the server:", error);
-
-          this._stateMachine.transition('fail', error);
-        });
-    }
-    return Promise.resolve();
   }
 
   _sanitizeOptions(options) {
