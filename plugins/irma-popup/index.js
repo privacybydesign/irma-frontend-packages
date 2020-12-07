@@ -38,6 +38,7 @@ module.exports = class IrmaPopup {
   }
 
   close() {
+    this._irmaWeb.close();
     if (!this._dom.isPopupActive())
       return Promise.resolve();
 
