@@ -38,7 +38,8 @@ module.exports = class IrmaStateClient {
         if (this._frontendOptions.pairingCode === payload.enteredPairingCode) {
           this._pairingCompleted();
         } else {
-          this._stateMachine.transition('pairingRejected');
+          setTimeout(() => this._stateMachine.transition('pairingRejected', payload),
+            this._options.state.pairing.minCheckingDelay);
         }
         break;
       case 'Success':
@@ -63,14 +64,15 @@ module.exports = class IrmaStateClient {
   _startWatchingServerState(payload) {
     this._statusListener = new StatusListener(payload, this._options.state);
 
-    try {
-      this._statusListener.observe(s => this._serverStateChange(s), e => this._serverHandleError(e));
-    } catch (error) {
+    // A new transition cannot be started within stateChange, so add call to javascript event loop.
+    Promise.resolve().then(() =>
+      this._statusListener.observe(s => this._serverStateChange(s), e => this._serverHandleError(e))
+    ).catch((error) => {
       if ( this._options.debugging )
         console.error("Observing server state could not be started: ", error);
 
       this._handleNoSuccess('fail', error);
-    }
+    });
   }
 
   _serverCloseSession() {
@@ -149,14 +151,7 @@ module.exports = class IrmaStateClient {
 
     // If pairing should be enabled, parse the pairing options struct.
     let options = shouldBeEnabled
-      ? Object.keys(this._options.state.pairing).reduce(
-          (acc, key) => {
-            if (typeof this._options.state.pairing[key] !== 'function')
-              acc[key] = this._options.state.pairing[key];
-            return acc;
-          },
-          {},
-        )
+      ? { pairingMethod: this._options.state.pairing.pairingMethod }
       : { pairingMethod: 'none' };
     return this._updateFrontendOptions(options)
       .catch(err => {
@@ -167,12 +162,14 @@ module.exports = class IrmaStateClient {
   }
 
   _pairingCompleted() {
+    let delay = new Promise(resolve => setTimeout(resolve, this._options.state.pairing.minCheckingDelay));
     let url = this._options.state.pairing.completedUrl(this._mappings);
 
     fetch(url, {
       method: 'POST',
       headers: {'Authorization': this._mappings.frontendAuth}
     })
+      .finally(() => delay)
       .catch(err => {
         if ( this._options.debugging )
           console.error('Error received while completing pairing:', err);
@@ -215,12 +212,15 @@ module.exports = class IrmaStateClient {
 
   _determineFlow() {
     this._userAgent = userAgent();
+    // A new transition cannot be started within stateChange, so add call to javascript event loop.
     switch (this._userAgent) {
       case 'Android':
       case 'iOS':
-        return this._stateMachine.transition('prepareButton');
+        Promise.resolve().then(() => this._stateMachine.transition('prepareButton'));
+        break;
       default:
-        return this._stateMachine.transition('prepareQRCode');
+        Promise.resolve().then(() => this._stateMachine.transition('prepareQRCode'));
+        break;
     }
   }
 
@@ -250,9 +250,10 @@ module.exports = class IrmaStateClient {
         },
 
         pairing: {
-          pairingMethod:  'pin',
-          onlyEnableIf:   m => true,// m => m.sessionPtr['pairingRecommended'], TODO: Wait for irmago change
-          completedUrl:   m => `${m.sessionPtr['u']}/frontend/pairingcompleted`
+          onlyEnableIf:     m => m.sessionPtr['pairingHint'],
+          completedUrl:     m => `${m.sessionPtr['u']}/frontend/pairingcompleted`,
+          minCheckingDelay: 500,
+          pairingMethod:    'pin'
         },
       }
     };

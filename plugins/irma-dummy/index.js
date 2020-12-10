@@ -7,16 +7,17 @@ module.exports = class IrmaDummy {
     this._options      = this._sanitizeOptions(options);
   }
 
-  stateChange({newState}) {
+  stateChange({newState, payload}) {
     switch(newState) {
       case 'Loading':
         return this._startNewSession();
       case 'CheckingUserAgent':
+        // A new transition cannot be started within stateChange, so add call to javascript event loop.
         switch(this._options.dummy) {
           case 'mobile':
-            return this._stateMachine.transition('prepareButton');
+            return Promise.resolve().then(() => this._stateMachine.transition('prepareButton'));
           default:
-            return this._stateMachine.transition('prepareQRCode');
+            return Promise.resolve().then(() => this._stateMachine.transition('prepareQRCode'));
         }
       case 'PreparingQRCode':
         return setTimeout(() => this._stateMachine.transition('showQRCode', {
@@ -28,6 +29,15 @@ module.exports = class IrmaDummy {
         }), this._options.timing.prepare);
       case 'ShowingQRCode':
         return this._waitForScanning();
+      case 'Pairing':
+        setTimeout(() => {
+          if (this._options.pairingCode === payload.enteredPairingCode) {
+            this._stateMachine.transition('appConnected');
+          } else {
+            this._stateMachine.transition('pairingRejected', payload);
+          }
+        }, this._options.timing.pairing);
+        break;
       case 'ContinueOn2ndDevice':
         return this._waitForUserAction();
     }
@@ -112,6 +122,7 @@ module.exports = class IrmaDummy {
         start: 1000,
         prepare: 1000,
         scan: 2000,
+        pairing: 500,
         app: 2000
       }
     };

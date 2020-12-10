@@ -7,6 +7,7 @@ module.exports = class StateMachine {
     this._debugging = debugging;
     this._listeners = [];
     this._inEndState = false;
+    this._inTransition = false;
     this._disabledTransitions = [];
   }
 
@@ -37,33 +38,43 @@ module.exports = class StateMachine {
   }
 
   _performTransition(transition, isFinal, payload) {
-    const oldState = this._state;
-    if (this._inEndState)
-      throw new Error(`State machine is in an end state. No transitions are allowed from ${oldState}.`);
-    this._state = this._getNewState(transition, isFinal);
-
-    if ( this._debugging )
-      console.debug(`🎰 State change: '${oldState}' → '${this._state}' (because of '${transition}')`);
-
-    // State is also an end state when no transitions are available from that state. We exclude the
-    // abort transition since abort is only intended to turn a non end state into an end state.
-    let isEnabled = t => !this._disabledTransitions.includes(t) && t != 'abort';
-    this._inEndState = isFinal || Object.keys(transitions[this._state]).filter(isEnabled).length == 0;
-
-    if (transition === 'initialize')
-      this._disabledTransitions = payload.canRestart ? [] : ['restart'];
-
-    if (transition === 'restart') {
-      payload = {...payload, canRestart: true};
+    if (this._inTransition) {
+      // This can only happen when a transition is initiated within the callback of a state change listener.
+      throw new Error('Cannot perform a new transition within a state change');
     }
+    this._inTransition = true;
 
-    this._listeners.forEach(func => func({
-      newState:   this._state,
-      oldState:   oldState,
-      transition: transition,
-      isFinal:    this._inEndState,
-      payload:    payload
-    }));
+    try {
+      const oldState = this._state;
+      if (this._inEndState)
+        throw new Error(`State machine is in an end state. No transitions are allowed from ${oldState}.`);
+      this._state = this._getNewState(transition, isFinal);
+
+      if (this._debugging)
+        console.debug(`🎰 State change: '${oldState}' → '${this._state}' (because of '${transition}')`);
+
+      // State is also an end state when no transitions are available from that state. We exclude the
+      // abort transition since abort is only intended to turn a non end state into an end state.
+      let isEnabled = t => !this._disabledTransitions.includes(t) && t != 'abort';
+      this._inEndState = isFinal || Object.keys(transitions[this._state]).filter(isEnabled).length == 0;
+
+      if (transition === 'initialize')
+        this._disabledTransitions = payload.canRestart ? [] : ['restart'];
+
+      if (transition === 'restart') {
+        payload = {...payload, canRestart: true};
+      }
+
+      this._listeners.forEach(func => func({
+        newState: this._state,
+        oldState: oldState,
+        transition: transition,
+        isFinal: this._inEndState,
+        payload: payload
+      }));
+    } finally {
+      this._inTransition = false;
+    }
   }
 
   _getNewState(transition, isFinal) {

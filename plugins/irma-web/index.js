@@ -47,8 +47,7 @@ module.exports = class IrmaWeb {
       element:       '#irma-web-form',
       showHelper:    false,
       fallbackDelay: 1000,
-      translations:  require(`./translations/${options.language || 'nl'}`),
-      pairingCodeCheckingDelay: 500
+      translations:  require(`./translations/${options.language || 'nl'}`)
     };
 
     return merge(defaults, options);

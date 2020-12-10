@@ -10,8 +10,6 @@ module.exports = class DOMManipulations {
     this._fallbackDelay   = options.fallbackDelay;
     this._eventHandlers   = {};
 
-    this._pairingCodeCheckingDelay = options.pairingCodeCheckingDelay;
-
     this._clickCallback       = clickCallback;
     this._pairingCodeCallback = pairingCodeCallback;
 
@@ -127,9 +125,6 @@ module.exports = class DOMManipulations {
         e.preventDefault();
         let inputFields = e.target.querySelectorAll('.irma-web-pairing-code input');
         let enteredCode = Array.prototype.map.call(inputFields, f => f.value).join('');
-        this._enteredPairingCodePromise = new Promise(resolve =>
-          setTimeout(() => resolve(enteredCode), this._pairingCodeCheckingDelay)
-        );
         this._pairingCodeCallback(enteredCode);
       }
     });
@@ -243,20 +238,17 @@ module.exports = class DOMManipulations {
     `;
   }
 
-  _stateEnterPairingCode({transition}) {
+  _stateEnterPairingCode({transition, payload}) {
     const form = this._element.querySelector('.irma-web-pairing-form');
     const inputFields = this._element.querySelectorAll('.irma-web-pairing-code input');
     switch (transition) {
       case 'pairingRejected':
-        this._enteredPairingCodePromise.then(enteredCode => {
-          const textElement = form.firstElementChild;
-          textElement.innerHTML = this._translations.pairingFailed(enteredCode);
-          textElement.classList.add('irma-web-error');
-          form.reset();
-          inputFields.forEach(f => f.disabled = false);
-          inputFields[0].focus();
-          form.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'hidden';
-        });
+        const textElement = form.firstElementChild;
+        textElement.innerHTML = this._translations.pairingFailed(payload.enteredPairingCode);
+        textElement.classList.add('irma-web-error');
+        form.reset();
+        inputFields.forEach(f => f.disabled = false);
+        form.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'hidden';
         return;
       case 'codeEntered':
         inputFields.forEach(f => f.disabled = true);
