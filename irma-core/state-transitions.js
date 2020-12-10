@@ -54,7 +54,7 @@ module.exports = {
   },
 
   Pairing: {
-    pairingRejected:  'EnterPairingCode',     // Expected payload: frontend options
+    pairingRejected:  'EnterPairingCode',     // Expected payload: rejected codeEntered payload
     appConnected:     'ContinueOn2ndDevice',  // Expected payload: undefined
     cancel:           'Cancelled',            // Expected payload: undefined
     timeout:          'TimedOut',             // Expected payload: undefined
