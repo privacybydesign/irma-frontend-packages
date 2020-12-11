@@ -88,11 +88,6 @@ module.exports = {
     abort:          'Aborted',              // Expected payload: undefined
     fail:           'Error',                // Expected payload: error object
     checkUserAgent: 'CheckingUserAgent',    // Expected payload: undefined
-
-    // We sometimes miss the appConnected transition
-    // on iOS, that's why the succeed transition can occur here too.
-    // We add this so we don't 'fail' to the Error state in this case.
-    succeed:        'Success'               // Expected payload: undefined
   },
 
   ContinueInIrmaApp: {

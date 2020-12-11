@@ -108,6 +108,10 @@ module.exports = class IrmaStateClient {
       case 'DONE':
         // What we hope will happen ;)
         this._statusListener.close();
+        // We sometimes miss the appConnected transition
+        // on iOS, that's why sometimes we have to do this one first.
+        if (this._stateMachine.isValidTransition('appConnected'))
+          this._stateMachine.transition('appConnected');
         return this._stateMachine.transition('succeed');
       case 'CANCELLED':
         // This is a conscious choice by a user.
@@ -143,8 +147,7 @@ module.exports = class IrmaStateClient {
     if (shouldBeEnabled === this._pairingEnabled) return Promise.resolve();
 
     if (!this._mappings.frontendAuth) {
-      if (this._options.debugging)
-        console.log('Pairing cannot be enabled, because no frontendAuth token is provided')
+      console.warn('Pairing cannot be enabled, because no frontendAuth token is provided. This might be a security risk.')
       return Promise.resolve();
     }
     this._pairingEnabled = shouldBeEnabled;
@@ -215,15 +218,19 @@ module.exports = class IrmaStateClient {
   _determineFlow() {
     this._userAgent = userAgent();
     // A new transition cannot be started within stateChange, so add call to javascript event loop.
-    switch (this._userAgent) {
-      case 'Android':
-      case 'iOS':
-        Promise.resolve().then(() => this._stateMachine.transition('prepareButton'));
-        break;
-      default:
-        Promise.resolve().then(() => this._stateMachine.transition('prepareQRCode'));
-        break;
-    }
+    Promise.resolve().then(() => {
+      switch (this._userAgent) {
+        case 'Android':
+        case 'iOS':
+          if (this._stateMachine.isValidTransition('prepareButton'))
+            this._stateMachine.transition('prepareButton');
+          break;
+        default:
+          if (this._stateMachine.isValidTransition('prepareQRCode'))
+            this._stateMachine.transition('prepareQRCode');
+          break;
+      }
+    });
   }
 
   _sanitizeOptions(options) {
@@ -256,7 +263,7 @@ module.exports = class IrmaStateClient {
           completedUrl:     m => `${m.sessionPtr['u']}/frontend/pairingcompleted`,
           minCheckingDelay: 500,
           pairingMethod:    'pin'
-        },
+        }
       }
     };
 

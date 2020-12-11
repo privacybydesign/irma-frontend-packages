@@ -401,11 +401,11 @@ file with features, options and purpose of the package:
 * [`irma-core`](irma-core)
 * [`irma-css`](irma-css)
 * [`irma-frontend`](irma-frontend)
-* Front-end plugins
+* User interaction plugins
   * [`irma-console`](plugins/irma-console)
   * [`irma-popup`](plugins/irma-popup)
   * [`irma-web`](plugins/irma-web)
-* Back-end plugins
+* State and session management plugins
   * [`irma-dummy`](plugins/irma-dummy)
   * [`irma-client`](plugins/irma-client)
 
