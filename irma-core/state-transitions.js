@@ -31,6 +31,7 @@ module.exports = {
 
   PreparingQRCode: {
     showQRCode:     'ShowingQRCode',        // Expected payload: {qr: <payload for in QRs>, showBackButton: true/false}
+    cancel:         'Cancelled',            // Expected payload: undefined
     timeout:        'TimedOut',             // Expected payload: undefined
     abort:          'Aborted',              // Expected payload: undefined
     fail:           'Error',                // Expected payload: error object
@@ -39,6 +40,7 @@ module.exports = {
   ShowingQRCode: {
     appConnected:   'ContinueOn2ndDevice',  // Expected payload: undefined
     appPairing:     'EnterPairingCode',     // Expected payload: frontend options
+    cancel:         'Cancelled',            // Expected payload: undefined
     timeout:        'TimedOut',             // Expected payload: undefined
     abort:          'Aborted',              // Expected payload: undefined
     fail:           'Error',                // Expected payload: error object
@@ -63,7 +65,7 @@ module.exports = {
   },
 
   ContinueOn2ndDevice: {
-    succeed:        'Success',              // Expected payload: session result (if any)
+    succeed:        'Success',              // Expected payload: undefined
     cancel:         'Cancelled',            // Expected payload: undefined
     timeout:        'TimedOut',             // Expected payload: undefined
     abort:          'Aborted',              // Expected payload: undefined
@@ -81,16 +83,16 @@ module.exports = {
   ShowingIrmaButton: {
     chooseQR:       'PreparingQRCode',      // Expected payload: frontend options
     appConnected:   'ContinueInIrmaApp',    // Expected payload: undefined
+    cancel:         'Cancelled',            // Expected payload: undefined
+    timeout:        'TimedOut',             // Expected payload: undefined
     abort:          'Aborted',              // Expected payload: undefined
     fail:           'Error',                // Expected payload: error object
     checkUserAgent: 'CheckingUserAgent',    // Expected payload: undefined
 
     // We sometimes miss the appConnected transition
-    // on iOS, that's why these transitions are here
-    // too. So we don't 'fail' to the Error state.
-    succeed:        'Success',              // Expected payload: session result (if any)
-    cancel:         'Cancelled',            // Expected payload: undefined
-    timeout:        'TimedOut'              // Expected payload: undefined
+    // on iOS, that's why the succeed transition can occur here too.
+    // We add this so we don't 'fail' to the Error state in this case.
+    succeed:        'Success'               // Expected payload: undefined
   },
 
   ContinueInIrmaApp: {
