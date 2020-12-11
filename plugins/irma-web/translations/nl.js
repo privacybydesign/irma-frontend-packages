@@ -2,7 +2,7 @@ module.exports = {
   header:        'Ga verder met <i class="irma-web-logo">IRMA</i>',
   helper:        'Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.',
   loading:       'Een moment alstublieft',
-  button:        'Open IRMA app',
+  button:        'Open IRMA-app',
   qrCode:        'Toon QR code',
   app:           'Volg de instructies in de IRMA-app',
   retry:         'Opnieuw proberen',
