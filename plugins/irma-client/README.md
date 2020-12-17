@@ -278,7 +278,8 @@ state: {
 }
 ```
 
-The URL from `m.sessionPtr['u']` will point directly to your IRMA server, which is okay.
+The URL from `m.sessionPtr['u']` will point directly to your IRMA server.
+This is intentional; the IRMA app should be able to access those endpoints too.
 
 #### Cancellation
 The `irma server` knows an endpoint to delete sessions. This endpoint is being
@@ -296,22 +297,25 @@ state: {
 }
 ```
 
-The URL from `m.sessionPtr['u']` will point directly to your IRMA server, which is okay.
+The URL from `m.sessionPtr['u']` will point directly to your IRMA server.
+This is intentional; the IRMA app should be able to access those endpoints too.
 
 #### Pairing
-The pairing state is an optional state that can be introduced for security reasons,
+The pairing state is an optional state that can be introduced to prevent QR theft,
 added between scanning a IRMA QR code and actually performing the session.
+In this state, a pairing code is visible in the IRMA app. The user should enter
+that pairing code in the frontend to continue.
 For the following session types it is important that the right user
 scans the QR, since the session might contain sensitive information.
+ - Issuing sessions
  - Disclosing sessions with fixed attribute values (e.g. show that your email address is example@example.com)
  - Signing sessions (the message that needs signing might contain sensitive information)
- - Issuing sessions
 
 For these session types, the `sessionPtr` will include an extra field `"pairingHint": true`.
 When this happens, pairing will be enabled by default when a QR is scanned. In case
 of a mobile session, a pairing state is never introduced.
 
-In case you do not want a pairing state to be introduced for the above session
+In case you do not want a pairing state to happen for the above session
 types, the pairing state can be disabled by setting the `pairing` option to `false`
 instead of an object. You can also change the condition in which pairing is enabled
 by modifying the `onlyEnableIf` option.
@@ -336,7 +340,8 @@ state: {
 }
 ```
 
-The URL from `m.sessionPtr['u']` will point directly to your IRMA server, which is okay.
+The URL from `m.sessionPtr['u']` will point directly to your IRMA server.
+This is intentional; the IRMA app should be able to access those endpoints too.
 
 As an example on how to use the pairing options, you can specify the following options
 if you want to disable pairing in all cases. Only do this if you are aware of the
