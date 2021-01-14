@@ -401,7 +401,6 @@ file with features, options and purpose of the package:
 * [`irma-core`](irma-core)
 * [`irma-css`](irma-css)
 * [`irma-frontend`](irma-frontend)
-* [`irma-legacy` / `irmajs`](irma-legacy)
 * Front-end plugins
   * [`irma-console`](plugins/irma-console)
   * [`irma-popup`](plugins/irma-popup)
@@ -438,18 +437,16 @@ combinations of plugins to achieve different effects:
   * [`irma-frontend`](examples/browser/irma-frontend)
   * [`irma-popup`](examples/browser/irma-popup)
   * [`irma-web`](examples/browser/irma-web)
-  * [`irma-legacy`](examples/browser/irma-legacy)
   * For an `irma-client` browser example, you can check the [`irma-frontend` example](examples/browser/irma-frontend)
 * Nodejs
   * [`irma-console`](examples/node/irma-console)
-  * [`irma-legacy`](examples/node/irma-legacy)
   * [`irma-client`](examples/node/irma-client)
 
 ### Development
 When developing a certain module, you might want to test the module using one of the examples.
 By default the examples load their dependencies via npm, so if you want to run an example
-with your own code you have to use `npm link`. This also holds for the packages `irma-frontend`
-and `irma-legacy`, which use other `irma-frontend-packages` as dependencies.
+with your own code you have to use `npm link`. This also holds for the `irma-frontend` package,
+which uses other `irma-frontend-packages` as dependencies.
 
 For example, when you are developing the `irma-client` plugin and you want to run the
 `backends/irma-client` example, the modules can be linked in the following way:

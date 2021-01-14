@@ -16,9 +16,3 @@ echo "Running 'npm install' and 'npm run release' for irma-frontend"
 cd irma-frontend || exit
 npm install
 npm run release
-
-cd "$rootdir" || exit
-echo "Running 'npm install' and 'npm run release' for irma-legacy"
-cd irma-legacy || exit
-npm install
-npm run release
