@@ -32,5 +32,5 @@ then
   echo ""
   echo "Preparing irma-frontend for release done."
   echo "Please check whether all output satisfies you."
-  echo "If you are happy, you can run 'cd ./irma-frontend && npm release --access public'"
+  echo "If you are happy, you can run 'cd ./irma-frontend && npm publish --access public'"
 fi
