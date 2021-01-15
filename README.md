@@ -401,7 +401,6 @@ file with features, options and purpose of the package:
 * [`irma-core`](irma-core)
 * [`irma-css`](irma-css)
 * [`irma-frontend`](irma-frontend)
-* [`irma-legacy` / `irmajs`](irma-legacy)
 * Front-end plugins
   * [`irma-console`](plugins/irma-console)
   * [`irma-popup`](plugins/irma-popup)
@@ -410,13 +409,13 @@ file with features, options and purpose of the package:
   * [`irma-dummy`](plugins/irma-dummy)
   * [`irma-client`](plugins/irma-client)
 
-### Building
+## Building
 Some of the modules needs building steps before you can use them. If you are building
 this library from source, you have to perform those steps yourself. We provide you
 the bash script `build.sh` that builds every library automatically. You have to run
 this in the root directory of this repository.
 
-```
+```bash
 ./build.sh
 ```
 
@@ -428,7 +427,7 @@ locally with local changes, check the [development guide](#development).
 If you need to build one specific package and the general script is not suitable to you,
 then you can look at the README of the particular package for package specific instructions.
 
-### Examples
+## Examples
 
 Also, we have several examples available that show how you can use specific
 combinations of plugins to achieve different effects:
@@ -438,23 +437,21 @@ combinations of plugins to achieve different effects:
   * [`irma-frontend`](examples/browser/irma-frontend)
   * [`irma-popup`](examples/browser/irma-popup)
   * [`irma-web`](examples/browser/irma-web)
-  * [`irma-legacy`](examples/browser/irma-legacy)
   * For an `irma-client` browser example, you can check the [`irma-frontend` example](examples/browser/irma-frontend)
 * Nodejs
   * [`irma-console`](examples/node/irma-console)
-  * [`irma-legacy`](examples/node/irma-legacy)
   * [`irma-client`](examples/node/irma-client)
 
-### Development
+## Development
 When developing a certain module, you might want to test the module using one of the examples.
 By default the examples load their dependencies via npm, so if you want to run an example
-with your own code you have to use `npm link`. This also holds for the packages `irma-frontend`
-and `irma-legacy`, which use other `irma-frontend-packages` as dependencies.
+with your own code you have to use `npm link`. This also holds for the `irma-frontend` package,
+which uses other `irma-frontend-packages` as dependencies.
 
 For example, when you are developing the `irma-client` plugin and you want to run the
 `backends/irma-client` example, the modules can be linked in the following way:
 
-```
+```bash
 cd plugins/irma-client
 npm link
 cd ../../
@@ -465,6 +462,28 @@ npm link @privacybydesign/irma-client
 ```
 
 **Depending on your setup it might be needed to run `npm link` using `sudo`.**
+
+## Releasing
+To release a new version of the `irma-frontend-packages` you have to run the scripts below.
+You need access to the NPM repository in order to release new versions. Otherwise,
+these scripts will fail.
+
+```bash
+./prepare-release.sh <command line parameters for npm version>
+# Check whether all steps succeeded properly, otherwise undo changes and fix issues first.
+./release.sh
+./prepare-irma-frontend.sh
+# Check whether all steps succeeded properly, otherwise fix issues in irma-frontend first.
+cd ./irma-frontend && npm publish --access public
+
+cd .. # Go back to root of the repository
+git add -u ./*package.json ./*package-lock.json
+git commit -m "Version bump"
+```
+
+After releasing, don't forget to update the dependencies of the examples by running `./update.sh`.
+This script assumes your current branch is `master`. If you are on another branch, you can change
+the base branch by updating the script.
 
 ## Documentation
 More documentation on how to use this package can be found in the
