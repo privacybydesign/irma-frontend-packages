@@ -10,6 +10,7 @@ git checkout -B update-dependencies-`date "+%Y-%m-%d"`
 
 # Find all package.json files in subdirectories, except node_modules
 packages=`find . -name "package.json" -not -path "*/node_modules/*"`
+version=`echo "console.log(require('./irma-core/package.json').version);" | node`
 
 # Loop over directories where package.json files are found and `npm update`
 root=`pwd`
@@ -18,6 +19,14 @@ for package in ${packages[@]}; do
   echo "Running 'npm update' for $package"
   rm -r ./node_modules
   npm install
+  dev_dependencies=`npm ls --parseable --dev | grep -o '@privacybydesign/.*'`
+  for package in ${dev_dependencies[@]}; do
+    eval "npm install $package@$version --save-dev"
+  done
+  prod_dependencies=`npm ls --parseable --prod | grep -o '@privacybydesign/.*'`
+  for package in ${prod_dependencies[@]}; do
+    eval "npm install $package@$version --save-prod"
+  done
   npm audit fix
   npm update
   cd $root
