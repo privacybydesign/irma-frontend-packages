@@ -28,5 +28,5 @@ then
 
   echo ""
   echo "Releasing done."
-  echo "Don't forget releasing irma-frontend separately by running ./release-irma-frontend.sh"
+  echo "Don't forget releasing the 'irma-frontend' package separately. Please check the README for more details."
 fi

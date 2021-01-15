@@ -472,7 +472,7 @@ these scripts will fail.
 ./prepare-release.sh <command line parameters for npm version>
 # Check whether all steps succeeded properly, otherwise undo changes and fix issues first.
 ./release.sh
-./release-irma-frontend.sh
+./prepare-irma-frontend.sh
 # Check whether all steps succeeded properly, otherwise fix issues in irma-frontend first.
 cd ./irma-frontend && npm publish --access public
 
