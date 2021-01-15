@@ -13,8 +13,8 @@ set +x
 echo "Preparing release '$npm_version'"
 set -x
 
-# Find all package.json files in subdirectories, except node_modules, examples and irma-frontend
-standalone_packages=`find . -name "package.json" -not -path "*/node_modules/*" -not -path "*/examples/*" -not -path "*/irma-frontend/*"`
+# Find all package.json files in subdirectories, except node_modules, examples, irma-popup and irma-frontend
+standalone_packages=`find . -name "package.json" -not -path "*/node_modules/*" -not -path "*/examples/*" -not -path "*/irma-popup/*" -not -path "*/irma-frontend/*"`
 
 # Loop over directories where package.json files are found and prepare for release
 root=`pwd`

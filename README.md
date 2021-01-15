@@ -472,6 +472,12 @@ these scripts will fail.
 ./prepare-release.sh <command line parameters for npm version>
 # Check whether all steps succeeded properly, otherwise undo changes and fix issues first.
 ./release.sh
+
+./prepare-irma-popup.sh
+# Check whether all steps succeeded properly, otherwise fix issues in irma-popup first.
+cd ./plugins/irma-popup && npm publish --access public
+
+cd .. # Go back to root of the repository
 ./prepare-irma-frontend.sh
 # Check whether all steps succeeded properly, otherwise fix issues in irma-frontend first.
 cd ./irma-frontend && npm publish --access public
