@@ -1,9 +1,10 @@
 #!/bin/bash
+set -euxo pipefail
 
 # Find all package.json files in subdirectories, except node_modules, examples and irma-frontend
-set -euxo pipefail
 standalone_packages=`find . -name "package.json" -not -path "*/node_modules/*" -not -path "*/examples/*" -not -path "*/irma-frontend/*"`
-set +euxo pipefail
+
+set +x
 
 echo ""
 echo "Are you sure you want to release a new version of the following packages?"
@@ -12,10 +13,10 @@ for package in ${standalone_packages[@]}; do
 done
 read -p "(Enter y/n) "
 
+set -x
+
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  set -euxo pipefail
-
   root=`pwd`
   for package in ${standalone_packages[@]}; do
     cd `dirname $package`
@@ -24,7 +25,7 @@ then
     cd $root
   done
 
-  set +euxo pipefail
+  set +x
 
   echo ""
   echo "Releasing done."

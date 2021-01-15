@@ -9,7 +9,9 @@ fi
 set -euxo pipefail
 
 npm_version="$*"
+set +x
 echo "Preparing release '$npm_version'"
+set -x
 
 # Find all package.json files in subdirectories, except node_modules, examples and irma-frontend
 standalone_packages=`find . -name "package.json" -not -path "*/node_modules/*" -not -path "*/examples/*" -not -path "*/irma-frontend/*"`
@@ -19,7 +21,9 @@ root=`pwd`
 for package in ${standalone_packages[@]}; do
   dirname=`dirname $package`
   cd $dirname
+  set +x
   echo "Preparing $dirname for release"
+  set -x
   rm -rf ./node_modules ./dist
   npm install
   npm audit fix
@@ -33,7 +37,7 @@ for package in ${standalone_packages[@]}; do
   cd $root
 done
 
-set +euxo pipefail
+set +x
 
 echo ""
 echo "Preparing for release done."

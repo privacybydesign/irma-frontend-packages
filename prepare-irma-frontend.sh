@@ -27,7 +27,7 @@ then
   rm -rf ./node_modules
   npm install --only=prod
 
-  set +euxo pipefail
+  set +x
 
   echo ""
   echo "Preparing irma-frontend for release done."
