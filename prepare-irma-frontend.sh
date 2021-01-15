@@ -10,6 +10,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
   set -euxo pipefail
 
+  root=`pwd`
   cd ./irma-frontend
   rm -rf ./node_modules ./dist
 
@@ -27,6 +28,7 @@ then
   rm -rf ./node_modules
   npm install --only=prod
 
+  cd $root
   set +x
 
   echo ""
