@@ -445,8 +445,8 @@ combinations of plugins to achieve different effects:
 ## Development
 When developing a certain module, you might want to test the module using one of the examples.
 By default the examples load their dependencies via npm, so if you want to run an example
-with your own code you have to use `npm link`. This also holds for the `irma-frontend` package,
-which uses other `irma-frontend-packages` as dependencies.
+with your own code you have to use `npm link`. This also holds for the `irma-frontend` and
+the `irma-popup` package, which use other `irma-frontend-packages` as dependencies.
 
 For example, when you are developing the `irma-client` plugin and you want to run the
 `backends/irma-client` example, the modules can be linked in the following way:
