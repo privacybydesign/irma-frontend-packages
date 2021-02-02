@@ -9,6 +9,7 @@ module.exports = class StatusListener {
     this._isPolling = false;
     this._options = options;
     this._mappings = mappings;
+    this._listeningMethod = this._eventSource && this._options.serverSentEvents ? 'sse' : 'polling';
   }
 
   observe(stateChangeCallback, errorCallback) {
@@ -16,19 +17,22 @@ module.exports = class StatusListener {
     this._errorCallback = errorCallback;
     this._isRunning = true;
 
-    if ( this._eventSource && this._options.serverSentEvents )
-      return this._startSSE();
-
-    this._startPolling();
+    switch (this._listeningMethod) {
+      case 'sse':
+        return this._startSSE();
+      default:
+        return this._startPolling();
+    }
   }
 
   close() {
     if (!this._isRunning) return false;
 
     if ( this._source ) {
-      this._source.close();
-      if ( this._options.debugging )
+      // If ready state is CLOSED (2), the close call will do nothing. Therefore we skip debug logging then.
+      if ( this._options.debugging && this._source.readyState < 2 )
         console.log("🌎 Closed EventSource");
+      this._source.close();
     }
 
     this._isRunning = false;
@@ -76,6 +80,7 @@ module.exports = class StatusListener {
   }
 
   _startPolling() {
+    this._listeningMethod = 'polling'; // In case polling is activated as fallback
     if ( !this._options.polling || this._isPolling )
       return;
 
