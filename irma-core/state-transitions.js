@@ -26,13 +26,12 @@ module.exports = {
   CheckingUserAgent: {
     prepareQRCode:  'PreparingQRCode',      // Expected payload: undefined
     prepareButton:  'PreparingIrmaButton',  // Expected payload: undefined
+    abort:          'Aborted',              // Expected payload: undefined
     fail:           'Error'                 // Expected payload: error object
   },
 
   PreparingQRCode: {
     showQRCode:     'ShowingQRCode',        // Expected payload: {qr: <payload for in QRs>, showBackButton: true/false}
-    cancel:         'Cancelled',            // Expected payload: undefined
-    timeout:        'TimedOut',             // Expected payload: undefined
     abort:          'Aborted',              // Expected payload: undefined
     fail:           'Error',                // Expected payload: error object
   },
@@ -74,8 +73,6 @@ module.exports = {
 
   PreparingIrmaButton: {
     showIrmaButton: 'ShowingIrmaButton',    // Expected payload: {mobile: <app link for launching the IRMA app>}
-    cancel:         'Cancelled',            // Expected payload: undefined
-    timeout:        'TimedOut',             // Expected payload: undefined
     abort:          'Aborted',              // Expected payload: undefined
     fail:           'Error',                // Expected payload: error object
   },

@@ -164,15 +164,15 @@ functions then specify how to map the parsed response on particular
 variables. By default, the following mappings are present:
  - `sessionPtr`: the result from the `sessionPtr` mapping should be a valid IRMA
    `sessionPtr`, [as being received from the `irma server`](https://irma.app/docs/api-irma-server/#post-session).
-   This mapping is mandatory. It defaults to using the `sessionPtr` field from the parsed response
-   of the [`start` endpoint](#option-start).
+   This mapping is mandatory. It defaults to using the `sessionPtr` field from the parsed JSON
+   response of the [`start` endpoint](#option-start).
  - `sessionToken`: the result from the `sessionToken` mapping should be a valid IRMA
    requestor token, [as being received from the `irma server`](https://irma.app/docs/api-irma-server/#post-session).
-   This mapping is only mandatory if the token is required by the specified [`result` endpoint](#option-result)
-   and it defaults to using the `token` field from the parsed response of the [`start` endpoint](#option-start) (if present).
+   This mapping is only mandatory if the token is required by the specified [`result` endpoint](#option-result).
+   It defaults to using the `token` field from the parsed JSON response of the [`start` endpoint](#option-start) (if present).
  - `frontendAuth`: the result from the `frontendAuth` mapping should be a valid IRMA
    frontend authentication token, [as being received from the `irma server`](https://irma.app/docs/api-irma-server/#post-session).
-   It defaults to using the `frontendAuth` field from the parsed response of the [`start` endpoint](#option-start) (if present).
+   It defaults to using the `frontendAuth` field from the parsed JSON response of the [`start` endpoint](#option-start) (if present).
    If not present, pairing functionality cannot be used. This might be a security risk. A warning in the (browser) console
    will be visible when there is a risk. This can be resolved by either include the `frontendAuth` anyway or by
    accepting the security risk by explicitly disabling the pairing state in the [pairing state options](#pairing).
@@ -283,8 +283,8 @@ This is intentional; the IRMA app should be able to access those endpoints too.
 
 #### Cancellation
 The `irma server` knows an endpoint to delete sessions. This endpoint is being
-used to communicate a cancellation initiated by the user via this library itself.
-Automatic communicating cancellation to the `irma server` can be disabled by
+used to communicate session cancellation initiated by the user via this library.
+Communicating cancellation to the `irma server` can be disabled by
 setting the `cancel` option to `false` instead of an object.
 
 These are the accepted properties and their defaults for cancellation:
@@ -318,7 +318,8 @@ of a mobile session, a pairing state is never introduced.
 In case you do not want a pairing state to happen for the above session
 types, the pairing state can be disabled by setting the `pairing` option to `false`
 instead of an object. You can also change the condition in which pairing is enabled
-by modifying the `onlyEnableIf` option.
+by modifying the `onlyEnableIf` option. For example, you can enable pairing
+unconditionally by doing `onlyEnableIf: () => true`.
 
 These are the accepted properties and their defaults for pairing. You can
 overrule options one by one. For the options you don't specify, the default
@@ -334,7 +335,7 @@ state: {
    pairing: {
      onlyEnableIf:     m => m.sessionPtr['pairingHint'],
      completedUrl:     m => `${m.sessionPtr['u']}/frontend/pairingcompleted`,
-     minCheckingDelay: 500, // Minimum delay before accepting or rejecting a pairing code for user experience
+     minCheckingDelay: 500, // Minimum delay before accepting or rejecting a pairing code, for better user experience.
      pairingMethod:    'pin'
    }
 }
@@ -372,7 +373,7 @@ Otherwise this plugin:
 
 **When being in state `CheckingUserAgent`:**
 
-Determines which flow should be started: the QR flow for desktops or the mobile flow.
+Determines which flow should be started: the QR flow or the mobile flow.
 
 | Possible transitions | With payload              | Next state          |
 |----------------------|---------------------------|---------------------|
@@ -391,9 +392,7 @@ might result in some transitions either.
 |----------------------------------------------------|----------------------------------------------------------|-------------------|
 | `showQRCode` if state is `PreparingQRCode`         | `{qr: <payload for in QRs>, showBackButton: true/false}` | ShowQRCode        |
 | `showIrmaButton` if state is `PreparingIrmaButton` | `{mobile: <app link for launching the IRMA app>}`        | ShowIrmaButton    |
-| `timeout` if new status is `TIMEOUT`               |                                                          | TimedOut          |
-| `cancel` if new status is `CANCELLED`              |                                                          | Cancelled         |
-| `fail` if sse/polling fails                        | Error that fetch returned                                | Error             |
+| `fail` if updating pairing state fails             | Error that fetch returned                                | Error             |
 
 **When being in state `ShowingQRCode` or `ShowingIrmaButton`:**
 

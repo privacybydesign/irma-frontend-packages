@@ -19,7 +19,9 @@ module.exports = class IrmaStateClient {
         if (transition == 'loaded') {
           this._mappings = payload;
           this._pairingEnabled = false;
-          this._startWatchingServerState(payload);
+          this._statusListener = new StatusListener(payload, this._options.state);
+        } else {
+          this._statusListener.close();
         }
         this._determineFlow();
         break;
@@ -34,12 +36,20 @@ module.exports = class IrmaStateClient {
           .then(() => this._stateMachine.transition('showIrmaButton', {
             mobile: this._getMobileUrl(this._mappings.sessionPtr),
           }));
+      case 'ShowingQRCode':
+      case 'ShowingIrmaButton':
+        this._startWatchingServerState(payload);
+        break;
       case 'Pairing':
         if (this._frontendOptions.pairingCode === payload.enteredPairingCode) {
           this._pairingCompleted();
         } else {
-          setTimeout(() => this._stateMachine.transition('pairingRejected', payload),
-            this._options.state.pairing.minCheckingDelay);
+          setTimeout(() => {
+            // The state might have changed in Cancelled, TimedOut or Error while
+            // waiting, so we have to check the validity of the transition.
+            if (this._stateMachine.isValidTransition('pairingRejected'))
+              this._stateMachine.transition('pairingRejected', payload);
+          }, this._options.state.pairing.minCheckingDelay);
         }
         break;
       case 'Success':
@@ -61,9 +71,7 @@ module.exports = class IrmaStateClient {
     return fetch(this._options.state.cancel.url(mappings), {method: 'DELETE'});
   }
 
-  _startWatchingServerState(payload) {
-    this._statusListener = new StatusListener(payload, this._options.state);
-
+  _startWatchingServerState() {
     // A new transition cannot be started within stateChange, so add call to javascript event loop.
     Promise.resolve().then(() =>
       this._statusListener.observe(s => this._serverStateChange(s), e => this._serverHandleError(e))
