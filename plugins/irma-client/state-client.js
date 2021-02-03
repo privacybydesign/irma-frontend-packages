@@ -52,7 +52,7 @@ module.exports = class IrmaStateClient {
           }, this._options.state.pairing.minCheckingDelay);
         }
         break;
-      case 'Success':
+      case 'PreparingResult':
       case 'Cancelled':
       case 'TimedOut':
       case 'Error':
@@ -120,7 +120,7 @@ module.exports = class IrmaStateClient {
         // on iOS, that's why sometimes we have to do this one first.
         if (this._stateMachine.isValidTransition('appConnected'))
           this._stateMachine.transition('appConnected');
-        return this._stateMachine.transition('succeed');
+        return this._stateMachine.transition('prepareResult');
       case 'CANCELLED':
         // This is a conscious choice by a user.
         this._statusListener.close();
@@ -150,7 +150,9 @@ module.exports = class IrmaStateClient {
     if (!this._options.state.pairing)
       return Promise.resolve();
 
-    let shouldBeEnabled = continueOnSecondDevice && this._options.state.pairing.onlyEnableIf(this._mappings);
+    // onlyEnableIf may return 'undefined', so we force conversion to boolean by doing a double negation (!!).
+    let shouldBeEnabled = continueOnSecondDevice && !!this._options.state.pairing.onlyEnableIf(this._mappings);
+
     // Skip the request when the pairing method is correctly set already.
     if (shouldBeEnabled === this._pairingEnabled) return Promise.resolve();
 

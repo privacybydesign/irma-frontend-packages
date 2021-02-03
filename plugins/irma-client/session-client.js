@@ -11,8 +11,16 @@ module.exports = class IrmaSessionClient {
   }
 
   stateChange({newState}) {
-    if (newState == 'Loading')
-      return this._startNewSession();
+    switch (newState) {
+      case 'Loading':
+        return this._startNewSession();
+      case 'PreparingResult':
+        return this._session.result()
+          .then(result => {
+            if (this._stateMachine.isValidTransition('succeed'))
+              this._stateMachine.transition('succeed', result);
+          });
+    }
   }
 
   start() {
@@ -21,11 +29,6 @@ module.exports = class IrmaSessionClient {
         canRestart: ![undefined, null, false].includes(this._options.session.start),
       });
     }
-  }
-
-  close() {
-    if (this._session && this._stateMachine.currentState() == 'Success')
-      return this._session.result();
   }
 
   _startNewSession() {

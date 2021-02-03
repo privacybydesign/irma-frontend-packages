@@ -64,7 +64,7 @@ module.exports = {
   },
 
   ContinueOn2ndDevice: {
-    succeed:        'Success',              // Expected payload: undefined
+    prepareResult:  'PreparingResult',      // Expected payload: undefined
     cancel:         'Cancelled',            // Expected payload: undefined
     timeout:        'TimedOut',             // Expected payload: undefined
     abort:          'Aborted',              // Expected payload: undefined
@@ -88,9 +88,15 @@ module.exports = {
   },
 
   ContinueInIrmaApp: {
-    succeed:        'Success',              // Expected payload: undefined
+    prepareResult:  'PreparingResult',      // Expected payload: undefined
     cancel:         'Cancelled',            // Expected payload: undefined
     timeout:        'TimedOut',             // Expected payload: undefined
+    abort:          'Aborted',              // Expected payload: undefined
+    fail:           'Error'                 // Expected payload: error object
+  },
+
+  PreparingResult: {
+    succeed:        'Success',              // Expected payload: result
     abort:          'Aborted',              // Expected payload: undefined
     fail:           'Error'                 // Expected payload: error object
   },
