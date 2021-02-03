@@ -61,10 +61,19 @@ The returned Promise only resolves when the state machine reaches the `Success` 
 and only rejects when the machine reaches a state with a final transaction.
 The end states `BrowserNotSupported` and `Aborted` always lead to a reject.
 The other possible end states are `Cancelled`, `Timeout` and `Error`.
-In case none of the plugins supplied a return value for rejection via its
+
+In case none of the plugins supplied a return value via its
 `close()` method (which is the case for all our plugins in the `/plugin` directory),
-the reject message indicates in what state the state machine stopped, so:
-`BrowserNotSupported`, `Cancelled`, `Timeout`, `Error` or `Aborted`.
+the return value on resolve will be the payload of the 'succeed' transition.
+In case of reject, the return value indicates in what state the state machine stopped,
+so: `BrowserNotSupported`, `Cancelled`, `Timeout`, `Error` or `Aborted`.
+
+In case one or more plugins do return a value, the return value will be
+an array containing the `irma-core` return value (as described above) as first item
+and the return values of the plugins as subsequent items. The order of the
+subsequent items is determined by the order in which the plugins were
+added with 'use'. Plugins that did not return a value, have the result
+`undefined` then.
 
 ```javascript
 irma.start()

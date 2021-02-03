@@ -42,26 +42,36 @@ module.exports = class IrmaCore {
     this._modules.filter(m => m.stateChange)
                  .forEach(m => m.stateChange(state));
 
-    const {newState, isFinal} = state;
+    const {newState, payload, isFinal} = state;
 
     if (isFinal) {
-      let func = newState == 'Success' ? this._resolve : this._reject;
-      this._close().then(result => {
-        if ( func ) result ? func(result) : func(newState);
-      });
+      const returnValue = newState == 'Success' ? payload : newState;
+      this._close(returnValue).then(newState == 'Success' ? this._resolve : this._reject).catch(this._reject);
     }
   }
 
-  _close() {
-    // If multiple plugins return a result, then return an array with results; the order in which
-    // plugins are added with 'use' determines the index in the result array. Plugins that
-    // do not return a result, have the result 'undefined' then.
+  /**
+   * Calls the close() method of all registered plugins and looks for the result
+   * where the Promise that was created by the start() method should resolve with.
+   *
+   * If non of the plugins returns a result, we return the irma-core result.
+   *
+   * If one or more of the plugins do return a result on close, we return an array
+   * containing the irma-core result as first item and the return values of the
+   * registered plugins as subsequent items. The order in which the plugins are
+   * added with 'use' determines the index in the array. Plugins that do not
+   * return a result, have the result 'undefined' then.
+   * @param coreReturnValue
+   * @returns Promise<*coreReturnValue* | *[coreReturnValue, ...]*>
+   * @private
+   */
+  _close(coreReturnValue) {
     return Promise.all(
       this._modules.map(m => Promise.resolve(m.close ? m.close() : undefined)),
     )
       .then(returnValues => {
-        const filtered = returnValues.filter(v => v !== undefined);
-        return filtered.length > 1 ? returnValues : filtered[0];
+        const hasValues = returnValues.some(v => v !== undefined);
+        return hasValues ? [coreReturnValue, ...returnValues] : coreReturnValue;
       });
   }
 

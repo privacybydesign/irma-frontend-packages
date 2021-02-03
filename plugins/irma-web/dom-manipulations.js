@@ -165,6 +165,7 @@ module.exports = class DOMManipulations {
       ContinueOn2ndDevice:  this._stateContinueInIrmaApp,
       ShowingIrmaButton:    this._stateShowingIrmaButton,
       ContinueInIrmaApp:    this._stateContinueInIrmaApp,
+      PreparingResult:      this._stateLoading,
       Cancelled:            this._stateCancelled,
       TimedOut:             this._stateTimedOut,
       Error:                this._stateError,

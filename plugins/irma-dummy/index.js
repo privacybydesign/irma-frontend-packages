@@ -15,16 +15,16 @@ module.exports = class IrmaDummy {
         // A new transition cannot be started within stateChange, so add call to javascript event loop.
         switch(this._options.dummy) {
           case 'mobile':
-            return Promise.resolve().then(() => this._stateMachine.transition('prepareButton'));
+            return Promise.resolve().then(() => this._doTransition('prepareButton'));
           default:
-            return Promise.resolve().then(() => this._stateMachine.transition('prepareQRCode'));
+            return Promise.resolve().then(() => this._doTransition('prepareQRCode'));
         }
       case 'PreparingQRCode':
-        return setTimeout(() => this._stateMachine.transition('showQRCode', {
+        return setTimeout(() => this._doTransition('showQRCode', {
           qr: JSON.stringify(this._options.qrPayload),
         }), this._options.timing.prepare);
       case 'PreparingIrmaButton':
-        return setTimeout(() => this._stateMachine.transition('showIrmaButton', {
+        return setTimeout(() => this._doTransition('showIrmaButton', {
           mobile: JSON.stringify(this._options.qrPayload),
         }), this._options.timing.prepare);
       case 'ShowingQRCode':
@@ -32,14 +32,17 @@ module.exports = class IrmaDummy {
       case 'Pairing':
         setTimeout(() => {
           if (this._options.pairingCode === payload.enteredPairingCode) {
-            this._stateMachine.transition('appConnected');
+            this._doTransition('appConnected');
           } else {
-            this._stateMachine.transition('pairingRejected', payload);
+            this._doTransition('pairingRejected', payload);
           }
         }, this._options.timing.pairing);
         break;
       case 'ContinueOn2ndDevice':
         return this._waitForUserAction();
+      case 'PreparingResult':
+        return setTimeout(() => this._doTransition('succeed', this._options.successPayload),
+            this._options.timing.prepare);
     }
   }
 
@@ -55,55 +58,42 @@ module.exports = class IrmaDummy {
     }
   }
 
-  close() {
-    if (this._stateMachine.currentState() == 'Success') {
-      return this._options.successPayload;
-    }
-  }
-
   _startNewSession() {
     setTimeout(() => {
-      // Stop when already being in end state
-      if (this._stateMachine.isEndState())
-        return;
-
       switch(this._options.dummy) {
         case 'connection error':
-          return this._stateMachine.transition('fail', new Error('Dummy connection error'));
+          return this._doTransition('fail', new Error('Dummy connection error'));
         default:
-          return this._stateMachine.transition('loaded', {sessionPtr: this._options.qrPayload});
+          return this._doTransition('loaded', {sessionPtr: this._options.qrPayload});
       }
     }, this._options.timing.start);
   }
 
+  _doTransition(transition, payload) {
+    if (this._stateMachine.isValidTransition(transition))
+      return this._stateMachine.transition(transition, payload);
+  }
+
   _waitForScanning() {
     setTimeout(() => {
-      // Stop when already being in end state
-      if (this._stateMachine.isEndState())
-        return;
-
       switch(this._options.dummy) {
         case 'pairing':
-          return this._stateMachine.transition('appPairing', {pairingCode: this._options.pairingCode});
+          return this._doTransition('appPairing', {pairingCode: this._options.pairingCode});
         case 'timeout':
-          return this._stateMachine.transition('timeout');
+          return this._doTransition('timeout');
         default:
-          return this._stateMachine.transition('appConnected');
+          return this._doTransition('appConnected');
       }
     }, this._options.timing.scan);
   }
 
   _waitForUserAction() {
     setTimeout(() => {
-      // Stop when already being in end state
-      if (this._stateMachine.isEndState())
-        return;
-
       switch(this._options.dummy) {
         case 'cancel':
-          return this._stateMachine.transition('cancel');
+          return this._doTransition('cancel');
         default:
-          return this._stateMachine.transition('succeed');
+          return this._doTransition('prepareResult');
       }
     }, this._options.timing.app);
   }

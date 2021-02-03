@@ -21,8 +21,7 @@ module.exports = class IrmaClient {
   }
 
   close() {
-    this._stateClient.close()
-    return this._sessionClient.close();
+    this._stateClient.close();
   }
 
 }
