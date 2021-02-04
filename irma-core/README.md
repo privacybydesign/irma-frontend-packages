@@ -68,7 +68,7 @@ the return value on resolve will be the payload of the 'succeed' transition.
 In case of reject, the return value indicates in what state the state machine stopped,
 so: `BrowserNotSupported`, `Cancelled`, `Timeout`, `Error` or `Aborted`.
 
-In case one or more plugins do return a value, the return value will be
+In case one or more plugins return a value on `close()`, the return value will be
 an array containing the `irma-core` return value (as described above) as first item
 and the return values of the plugins as subsequent items. The order of the
 subsequent items is determined by the order in which the plugins were
