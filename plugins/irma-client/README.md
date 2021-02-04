@@ -180,11 +180,11 @@ variables. By default, the following mappings are present:
 Additional mappings can also be added. Their names are free to choose (as long as there is no name collision).
 
 The resulting variables are given as payload to the `loaded` transition of the `irma-core`
-state machine. In this way the mappings can be accessed by all other plugins.
+state machine. The payload is an object and the result of each `mapping` function is recorded as a field
+within this object, being named after its map key. In this way the mappings can be accessed by all other plugins.
 Within `irma-client` the mappings can also be accessed as second parameter in the `url` option of
 the [`result` property struct](#option-result). There it can be used to compose
-the result endpoint. The result of each `mapping` function is available there,
-named after its map key. Furthermore, the mappings are used in several [state options](#state).
+the result endpoint. Furthermore, the mappings are used in several [state options](#state).
 
 In case you obtain a session pointer (and possibly the other values) in
 another way than via `start`, you can override the mapping functions to manually
@@ -220,7 +220,7 @@ These options define the HTTP request `irma-client` has to do when an IRMA
 session succeeds. In this way results of the IRMA session can be fetched.
 
 This option has the same outline as the `start` option.
-The default values are set for fetching the session result (when `close()` is called in a `Success` state)
+The default values are set for fetching the session result (in the `PreparingResult` state)
 with a GET request on the endpoint `${o.url}/session/${sessionToken}/result`.
 In this, `o` (in `${o.url}`) points to the value of the `session` struct as described above. 
 
@@ -322,8 +322,8 @@ by modifying the `onlyEnableIf` option. For example, you can enable pairing
 unconditionally by doing `onlyEnableIf: () => true`.
 
 These are the accepted properties and their defaults for pairing. You can
-overrule options one by one. For the options you don't specify, the default
-value is used.
+overrule options one by one. When you don't specify an option explicitly,
+the default value is used.
 
 ```javascript
 state: {
@@ -357,6 +357,17 @@ state: {
 ## Behaviour
 This plugin initiates the following transitions to the `irma-core` state machine.
 
+**When being in state `Uninitialized`:**
+If `session` option is set to `false`, the plugin does nothing in this state.
+
+Otherwise, this plugin will initiate the `initialize` transition when `start()`
+is called. The `canRestart` indicator is set to true when the [`start` option](#option-start)
+is enabled (so if `start` is not explicitly set to `false`).
+
+| Possible transitions | With payload               | Next state          |
+|----------------------|----------------------------|---------------------|
+| `initialize`         | { canRestart: true/false } | Loading             |
+
 **When being in state `Loading`:**
 
 If `session` option is set to `false`, the plugin does nothing in this state.
@@ -375,18 +386,15 @@ Otherwise this plugin:
 
 Determines which flow should be started: the QR flow or the mobile flow.
 
-| Possible transitions | With payload              | Next state          |
-|----------------------|---------------------------|---------------------|
-| `prepareQRCode`      |                           | PreparingQRCode     |
-| `prepareButton`      |                           | PreparingIrmaButton |
-| `fail`               | Error that fetch returned | Error               |
+| Possible transitions | With payload | Next state          |
+|----------------------|--------------|---------------------|
+| `prepareQRCode`      |              | PreparingQRCode     |
+| `prepareButton`      |              | PreparingIrmaButton |
 
 **When being in state `PreparingQRCode` or `PreparingIrmaButton`:**
 
 In these states the plugin prepares for showing a QR or a button to a mobile session.
 This includes enabling or disabling the pairing state if necessary.
-In these states the plugin also polls the status at IRMA server using the `state` options, which
-might result in some transitions either.
 
 | Possible transitions                               | With payload                                             | Next state        |
 |----------------------------------------------------|----------------------------------------------------------|-------------------|
@@ -434,13 +442,18 @@ In this state we continue polling the IRMA server using the `state` options.
 
 | Possible transitions                        | With payload              | Next state        |
 |---------------------------------------------|---------------------------|-------------------|
-| `succeed` if new status is `DONE`           |                           | Success           |
+| `prepareResult` if new status is `DONE`     |                           | PreparingResult   |
 | `timeout` if new status is `TIMEOUT`        |                           | TimedOut          |
 | `cancel` if new status is `CANCELLED`       |                           | Cancelled         |
 | `fail` if sse/polling fails                 | Error that fetch returned | Error             |
-| `fail` if fetching of result endpoint fails | Error that fetch returned | Error             |
 
-**When being in state `Success` and `close()` is called**
+**When being in state `PreparingResult`**
 
 When the `result` endpoint is enabled (so if `result` is not explicitly set to `false`),
-then the `result` endpoint is fetched and returned as return value.
+then the `result` endpoint is fetched.
+
+| Possible transitions                 | With payload              | Next state   |
+|--------------------------------------|---------------------------|--------------|
+| `succeed` if result can be fetched   | Fetched result            | Succeed      |
+| `succeed` if result is disabled      |                           | Succeed      |
+| `fail` if fetching the result failed | Error that fetch returned | Error        |

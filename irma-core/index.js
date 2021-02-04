@@ -56,7 +56,7 @@ module.exports = class IrmaCore {
    *
    * If non of the plugins returns a result, we return the irma-core result.
    *
-   * If one or more of the plugins do return a result on close, we return an array
+   * If one or more plugins return a result on close(), we return an array
    * containing the irma-core result as first item and the return values of the
    * registered plugins as subsequent items. The order in which the plugins are
    * added with 'use' determines the index in the array. Plugins that do not
