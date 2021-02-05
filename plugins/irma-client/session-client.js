@@ -15,11 +15,7 @@ module.exports = class IrmaSessionClient {
       case 'Loading':
         return this._startNewSession();
       case 'PreparingResult':
-        return this._session.result()
-          .then(result => {
-            if (this._stateMachine.isValidTransition('succeed'))
-              this._stateMachine.transition('succeed', result);
-          });
+        return this._prepareResult();
     }
   }
 
@@ -46,6 +42,16 @@ module.exports = class IrmaSessionClient {
             console.error("Error starting a new session on the server:", error);
           this._stateMachine.transition('fail', error);
         })
+    }
+  }
+
+  _prepareResult() {
+    if (this._session) {
+      this._session.result()
+        .then(result => {
+          if (this._stateMachine.isValidTransition('succeed'))
+            this._stateMachine.transition('succeed', result);
+        });
     }
   }
 
