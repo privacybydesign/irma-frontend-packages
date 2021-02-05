@@ -449,7 +449,9 @@ In this state we continue polling the IRMA server using the `state` options.
 
 **When being in state `PreparingResult`**
 
-When the `result` endpoint is enabled (so if `result` is not explicitly set to `false`),
+If the `session` option is set to `false`, the plugin does nothing in this state.
+
+Otherwise, when the `result` endpoint is enabled (so if `result` is not explicitly set to `false`),
 then the `result` endpoint is fetched.
 
 | Possible transitions                 | With payload              | Next state   |
