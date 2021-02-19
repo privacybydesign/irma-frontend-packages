@@ -449,14 +449,14 @@ with your own code you have to use `npm link`. This also holds for the `irma-fro
 which uses other `irma-frontend-packages` as dependencies.
 
 For example, when you are developing the `irma-client` plugin and you want to run the
-`backends/irma-client` example, the modules can be linked in the following way:
+`node/irma-client` example, the modules can be linked in the following way:
 
 ```bash
 cd plugins/irma-client
 npm link
 cd ../../
 
-cd examples/backends/irma-client
+cd examples/node/irma-client
 npm install
 npm link @privacybydesign/irma-client
 ```
