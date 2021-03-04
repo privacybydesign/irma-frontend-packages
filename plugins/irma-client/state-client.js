@@ -178,7 +178,7 @@ module.exports = class IrmaStateClient {
     let delay = new Promise(resolve => setTimeout(resolve, this._options.state.pairing.minCheckingDelay));
     let url = this._options.state.pairing.completedUrl(this._mappings);
 
-    fetch(url, {
+    return fetch(url, {
       method: 'POST',
       headers: {'Authorization': this._mappings.frontendAuth}
     })
