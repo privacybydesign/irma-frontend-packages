@@ -21,6 +21,7 @@ module.exports = class DOMManipulations {
     this._renderPartial(newPartial, state);
 
     if ( state.isFinal ) {
+      this._detachEventHandlers();
       // Make sure all restart buttons are hidden when being in a final state
       this._element.querySelectorAll('.irma-web-restart-button')
         .forEach(e => e.style.display = 'none');
@@ -45,6 +46,13 @@ module.exports = class DOMManipulations {
     this._element.innerHTML = this._irmaWebForm(this._stateUninitialized());
   }
 
+  _attachEventListener(event, listener) {
+    if (!this._attachedEventListeners) this._attachedEventListeners = {};
+
+    this._element.addEventListener(event, listener);
+    this._attachedEventListeners[event] = listener;
+  }
+
   _attachEventHandlers() {
     // Polyfill for Element.matches to fix IE11
     if (!Element.prototype.matches) {
@@ -52,7 +60,7 @@ module.exports = class DOMManipulations {
                                   Element.prototype.webkitMatchesSelector;
     }
 
-    this._element.addEventListener('click', (e) => {
+    this._attachEventListener('click', (e) => {
       if (e.target.matches('[data-irma-glue-transition]')) {
         this._clickCallback(e.target.getAttribute('data-irma-glue-transition'));
       } else if (e.target.matches('.irma-web-pairing-code')) {
@@ -61,14 +69,14 @@ module.exports = class DOMManipulations {
       }
     });
 
-    this._element.addEventListener('keydown', (e) => {
+    this._attachEventListener('keydown', (e) => {
       if (e.target.matches('.irma-web-pairing-code input')) {
         e.target.prevValue = e.target.value;
         if (e.key != 'Enter') e.target.value = '';
       }
     });
 
-    this._element.addEventListener('keyup', (e) => {
+    this._attachEventListener('keyup', (e) => {
       if (e.target.matches('.irma-web-pairing-code input')) {
         let prevField = e.target.previousElementSibling;
         if (prevField && e.key == 'Backspace' && e.target.value === e.target.prevValue) {
@@ -78,7 +86,7 @@ module.exports = class DOMManipulations {
       }
     });
 
-    this._element.addEventListener('input', (e) => {
+    this._attachEventListener('input', (e) => {
       if (e.target.matches('.irma-web-pairing-code input')) {
         let nextField = e.target.nextElementSibling;
         if (!nextField || !e.target.checkValidity()) {
@@ -89,7 +97,7 @@ module.exports = class DOMManipulations {
       }
     });
 
-    this._element.addEventListener('focusin', (e) => {
+    this._attachEventListener('focusin', (e) => {
       if (e.target.matches('.irma-web-pairing-code input')) {
         if (!e.target.value) {
           e.preventDefault();
@@ -98,7 +106,7 @@ module.exports = class DOMManipulations {
       }
     });
 
-    this._element.addEventListener('submit', (e) => {
+    this._attachEventListener('submit', (e) => {
       if (e.target.className == 'irma-web-pairing-form') {
         e.preventDefault();
         let inputFields = e.target.querySelectorAll('.irma-web-pairing-code input');
@@ -106,6 +114,15 @@ module.exports = class DOMManipulations {
         this._pairingCodeCallback(enteredCode);
       }
     });
+  }
+
+  _detachEventHandlers() {
+    if (!this._attachedEventListeners) return;
+
+    Object.keys(this._attachedEventListeners).map((event) => {
+      this._element.removeEventListener(event, this._attachedEventListeners[event]);
+    });
+    this._attachedEventListeners = {};
   }
 
   _renderPartial(newPartial, state) {
