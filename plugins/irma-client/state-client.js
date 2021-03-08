@@ -13,7 +13,7 @@ module.exports = class IrmaStateClient {
   stateChange({newState, transition, payload}) {
     switch(newState) {
       case 'Loading':
-        this._canRestart = payload.canRestart;
+        this._canRestart = transition == 'restart' || payload.canRestart;
         break;
       case 'CheckingUserAgent':
         if (transition == 'loaded') {
