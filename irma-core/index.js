@@ -30,12 +30,15 @@ module.exports = class IrmaCore {
   }
 
   abort() {
-    if (this._stateMachine.currentState() != 'Uninitialized' && !this._stateMachine.isEndState()) {
-      if (this._options.debugging) console.log('🖥 Manually aborting session instance');
-      this._stateMachine.transition('abort');
-    } else {
-      if (this._options.debugging) console.log('🖥 Manual abort is not necessary');
-    }
+    return this._stateMachine.selectTransition(({state, inEndState}) => {
+      if (state != 'Uninitialized' && !inEndState) {
+        if (this._options.debugging) console.log('🖥 Manually aborting session instance');
+        return {transition: 'abort'};
+      } else {
+        if (this._options.debugging) console.log('🖥 Manual abort is not necessary');
+        return false;
+      }
+    });
   }
 
   _stateChangeListener(state) {
