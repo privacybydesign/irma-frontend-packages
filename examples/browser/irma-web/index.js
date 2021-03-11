@@ -6,6 +6,7 @@ const Dummy    = require('@privacybydesign/irma-dummy');
 
 const irma = new IrmaCore({
   debugging: true,
+  dummy: 'happy path',
   element:   '#irma-web-form',
   language:  'en',
   translations: {
