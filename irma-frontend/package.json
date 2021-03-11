@@ -4,6 +4,7 @@
   "description": "A simplified package of irma-frontend modules to get started easily",
   "main": "dist/irma.js",
   "scripts": {
+    "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
     "release": "npm run build"
   },

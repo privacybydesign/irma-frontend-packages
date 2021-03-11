@@ -4,7 +4,7 @@
   "description": "An example on how to use the irma-popup package",
   "main": "index.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack --mode development"
   },
   "license": "MIT",
   "dependencies": {
