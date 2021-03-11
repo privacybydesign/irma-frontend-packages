@@ -23,7 +23,7 @@ module.exports = class StateMachine {
    */
   transition(transition, payload) {
     console.warn('The \'transition\' function of the irma-core state machine is deprecated. Please use \'selectTransition\'.');
-    return this._performTransition({transition, payload});
+    return this.selectTransition(() => ({transition, payload}));
   }
 
   /**
@@ -37,7 +37,7 @@ module.exports = class StateMachine {
    */
   finalTransition(transition, payload) {
     console.warn('The \'finalTransition\' function of the irma-core state machine is deprecated. Please use \'selectTransition\'.');
-    return this._performTransition({transition, payload, isFinal: true});
+    return this.selectTransition(() => ({transition, payload, isFinal: true}));
   }
 
   /**
