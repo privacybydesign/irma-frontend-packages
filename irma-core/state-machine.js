@@ -7,38 +7,36 @@ module.exports = class StateMachine {
     this._debugging = debugging;
     this._listeners = [];
     this._inEndState = false;
-    this._inTransition = false;
     this._disabledTransitions = [];
   }
-
-  /* Deprecated
-  currentState() {
-    return this._state;
-  } *
-
-  /* Deprecated
-  isEndState() {
-    return this._inEndState;
-  } */
-
-  /* Deprecated
-  isValidTransition(transition) {
-    if (this._inEndState || this._disabledTransitions.includes(transition))
-      return false;
-    return transitions[this._state][transition] != undefined;
-  } */
 
   addStateChangeListener(func) {
     this._listeners.push(func);
   }
 
-  // TODO: Add docs
+  /**
+   * @deprecated Please use the function 'selectTransition'.
+   * Starts the given transition unconditionally using the given payload.
+   * @param transition
+   * @param payload
+   * @returns Promise<performedTransition>, Promise is rejected when an invalid transition is chosen.
+   */
   transition(transition, payload) {
+    console.warn('The \'transition\' function of the irma-core state machine is deprecated. Please use \'selectTransition\'.');
     return this._performTransition({transition, payload});
   }
 
-  // TODO: Add docs
+  /**
+   * @deprecated Please use the function 'selectTransition'.
+   * Starts the given transition unconditionally using the given payload.
+   * The transition is being requested as final.
+   * @param transition
+   * @param payload
+   * @returns Promise<performedTransition>, Promise is rejected when an invalid transition is chosen
+   *          or when the chosen transition does not lead to an end state.
+   */
   finalTransition(transition, payload) {
+    console.warn('The \'finalTransition\' function of the irma-core state machine is deprecated. Please use \'selectTransition\'.');
     return this._performTransition({transition, payload, isFinal: true});
   }
 
@@ -54,22 +52,22 @@ module.exports = class StateMachine {
    *   payload: 'some'               // Optional; default value is undefined
    * }
    * @param selectCallback: ({state, validTransitions, inEndState}) => {...}
-   * @returns Promise<void>, Promise is rejected when an invalid transition is chosen.
+   * @returns Promise<performedTransition>, Promise is rejected when an invalid transition is chosen.
    */
   selectTransition(selectCallback) {
     // Don't use promise chaining to prevent race-conditions.
     return new Promise((resolve, reject) => {
-      let selected = selectCallback({
-        state: this._state,
-        validTransitions: this._getValidTransitions(),
-        inEndState: this._inEndState,
-      });
-      if (!selected) {
-        return resolve();
-      }
       try {
+        let selected = selectCallback({
+          state: this._state,
+          validTransitions: this._getValidTransitions(),
+          inEndState: this._inEndState,
+        });
+        if (!selected) {
+          return resolve(false);
+        }
         this._performTransition(selected);
-        resolve();
+        resolve(selected);
       } catch (e) {
         reject(e);
       }
@@ -110,9 +108,8 @@ module.exports = class StateMachine {
   _getNewState(transition, isFinal) {
     let newState = transitions[this._state][transition];
     let isDisabled = this._disabledTransitions.includes(transition);
-    if (!newState || isDisabled) newState = transitions[this._state]['fail'];
-    if (!newState) throw new Error(`Invalid transition '${transition}' from state '${this._state}' and could not find a "fail" transition to fall back on.`);
-    if (isDisabled) throw new Error(`Transition '${transition}' was disabled in state '${this._state}'`)
+    if (!newState) throw new Error(`Invalid transition '${transition}' from state '${this._state}'.`);
+    if (isDisabled) throw new Error(`Transition '${transition}' is currently disabled in state '${this._state}'.`)
     if (isFinal && !transitions.endStates.includes(newState))
       throw new Error(`Transition '${transition}' from state '${this._state}' is marked as final, but resulting state ${newState} cannot be an end state.`);
     return newState;

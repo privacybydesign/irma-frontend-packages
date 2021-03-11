@@ -14,7 +14,6 @@ module.exports = {
   Uninitialized: {
     initialize:     'Loading',              // Expected payload: {canRestart: true/false}
     browserError:   'BrowserNotSupported',  // Expected payload: undefined
-    fail:           'Error'                 // Expected payload: error object
   },
 
   Loading: {

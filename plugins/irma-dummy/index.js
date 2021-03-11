@@ -12,12 +12,11 @@ module.exports = class IrmaDummy {
       case 'Loading':
         return this._startNewSession();
       case 'CheckingUserAgent':
-        // A new transition cannot be started within stateChange, so add call to javascript event loop.
         switch(this._options.dummy) {
           case 'mobile':
-            return Promise.resolve().then(() => this._doTransition('prepareButton'));
+            return this._doTransition('prepareButton');
           default:
-            return Promise.resolve().then(() => this._doTransition('prepareQRCode'));
+            return this._doTransition('prepareQRCode');
         }
       case 'PreparingQRCode':
         return setTimeout(() => this._doTransition('showQRCode', {
@@ -50,12 +49,15 @@ module.exports = class IrmaDummy {
     if ( this._options.debugging )
       console.log(`🧙🏼‍♂️ Initializing fake IRMA flow`);
 
-    switch(this._options.dummy) {
-      case 'browser unsupported':
-        return this._stateMachine.transition('browserError', 'Browser not supported, need magic feature');
-      default:
-        return this._stateMachine.transition('initialize', {canRestart: true});
-    }
+    return this._stateMachine.selectTransition(({state}) => {
+      if (state != 'Uninitialized') throw new Error('State machine is already initialized by another plugin');
+      switch(this._options.dummy) {
+        case 'browser unsupported':
+          return { transition: 'browserError', payload: 'Browser not supported, need magic feature' };
+        default:
+          return { transition: 'initialize', payload: {canRestart: true} };
+      }
+    });
   }
 
   _startNewSession() {
@@ -70,8 +72,11 @@ module.exports = class IrmaDummy {
   }
 
   _doTransition(transition, payload) {
-    if (this._stateMachine.isValidTransition(transition))
-      return this._stateMachine.transition(transition, payload);
+    return this._stateMachine.selectTransition(({validTransitions}) => {
+      if (validTransitions.includes(transition))
+        return { transition, payload };
+      return false;
+    });
   }
 
   _waitForScanning() {

@@ -21,8 +21,13 @@ module.exports = class IrmaSessionClient {
 
   start() {
     if (this._options.session) {
-      this._stateMachine.transition('initialize', {
-        canRestart: ![undefined, null, false].includes(this._options.session.start),
+      return this._stateMachine.selectTransition(({state}) => {
+        if (state != 'Uninitialized') throw new Error('State machine is already initialized by another plugin');
+        return {
+          transition: 'initialize',
+          // The start option may contain an object, so we force conversion to boolean by doing a double negation (!!).
+          payload: { canRestart: !!this._options.session.start }
+        };
       });
     }
   }
@@ -30,28 +35,32 @@ module.exports = class IrmaSessionClient {
   _startNewSession() {
     if (this._session) {
       this._session.start()
-        .then(mappings => {
-          if (this._stateMachine.currentState() == 'Loading') {
-            this._stateMachine.transition('loaded', mappings);
+        .then(mappings => this._stateMachine.selectTransition(({state}) => {
+          if (state == 'Loading') {
+            return { transition: 'loaded', payload: mappings };
           } else {
             this._onCancel(mappings);
+            return false;
           }
-        })
-        .catch(error => {
+        }))
+        .catch(error => this._stateMachine.selectTransition(({validTransitions}) => {
           if (this._options.debugging)
             console.error("Error starting a new session on the server:", error);
-          this._stateMachine.transition('fail', error);
-        })
+          if (validTransitions.includes('fail'))
+            return { transition: 'fail', payload: error };
+          throw error;
+        }));
     }
   }
 
   _prepareResult() {
     if (this._session) {
       this._session.result()
-        .then(result => {
-          if (this._stateMachine.isValidTransition('succeed'))
-            this._stateMachine.transition('succeed', result);
-        });
+        .then(result => this._stateMachine.selectTransition(({validTransitions}) =>
+            validTransitions.includes('succeed')
+                ? { transition: 'succeed', payload: result }
+                : false
+        ));
     }
   }
 

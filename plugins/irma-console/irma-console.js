@@ -22,8 +22,11 @@ module.exports = (askRetry, askPairingCode) => {
         case 'ShowingIrmaButton':
           const err = new Error('Mobile sessions cannot be performed in node');
           if (this._options.debugging) console.error(err);
-          // A new transition cannot be started within stateChange, so add call to javascript event loop.
-          return Promise.resolve().then(() => this._stateMachine.transition('fail', err));
+          return this._stateMachine.selectTransition(({validTransitions}) => {
+            if (validTransitions.includes('fail'))
+              return { transition: 'fail', payload: err };
+            throw err;
+          });
         case 'ContinueOn2ndDevice':
         case 'ContinueInIrmaApp':
           return console.log('Please follow the instructions in the IRMA app.');
@@ -33,24 +36,26 @@ module.exports = (askRetry, askPairingCode) => {
     }
 
     _askPairingCode(askedBefore) {
-      // A new transition cannot be started within stateChange, so add call to javascript event loop.
-      Promise.resolve().then(() => {
+      return this._stateMachine.selectTransition(({validTransitions, isEndState}) => {
+        if (isEndState) return false;
         if (askedBefore && !askRetry("Wrong pairing code was entered.")) {
-          let t = this._stateMachine.isValidTransition('cancel') ? 'cancel' : 'abort';
-          this._stateMachine.transition(t);
-          return;
+          let transition = validTransitions.includes('cancel') ? 'cancel' : 'abort';
+          return { transition };
         }
         let enteredPairingCode = askPairingCode();
-        this._stateMachine.transition('codeEntered', {enteredPairingCode});
+        return validTransitions.includes('codeEntered')
+            ? { transition: 'codeEntered', payload: {enteredPairingCode} }
+            : false;
       });
     }
 
     _askRetry(message) {
-      // A new transition cannot be started within stateChange, so add call to javascript event loop.
-      Promise.resolve().then(() => {
-        if ( askRetry(message) )
-          return this._stateMachine.transition('restart');
-        this._stateMachine.transition('abort');
+      return this._stateMachine.selectTransition(({validTransitions, isEndState}) => {
+        if (isEndState) return false;
+        let transition = validTransitions.includes('restart') && askRetry(message)
+          ? 'restart'
+          : 'abort';
+        return { transition };
       });
     }
 
