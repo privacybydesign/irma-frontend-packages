@@ -97,11 +97,11 @@ module.exports = class StateMachine {
       this._disabledTransitions = payload.canRestart ? [] : ['restart'];
 
     this._listeners.forEach(func => func({
-      newState: this._state,
-      oldState: oldState,
+      newState:   this._state,
+      oldState:   oldState,
       transition: transition,
-      isFinal: this._inEndState,
-      payload: payload
+      isFinal:    this._inEndState,
+      payload:    payload
     }));
   }
 
