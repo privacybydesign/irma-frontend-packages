@@ -11,12 +11,17 @@ module.exports = class IrmaWeb {
     this._dom = new DOMManipulations(
       document.querySelector(this._options.element),
       this._options,
-      (t) => {
+      (t) => this._stateMachine.selectTransition(({validTransitions}) => {
         // Check for validity of function to prevent errors when multiple events are cached.
-        if (this._stateMachine.isValidTransition(t))
-          this._stateMachine.transition(t, this._lastPayload);
-      },
-      (enteredPairingCode) => this._stateMachine.transition('codeEntered', {enteredPairingCode})
+        if (validTransitions.includes(t))
+          return {transition: t, payload: this._lastPayload};
+        return false;
+      }),
+      (enteredPairingCode) => this._stateMachine.selectTransition(({validTransitions}) =>
+        validTransitions.includes('codeEntered')
+          ? { transition: 'codeEntered', payload: {enteredPairingCode} }
+          : false
+      )
     );
 
     this._addVisibilityListener();
@@ -54,24 +59,27 @@ module.exports = class IrmaWeb {
   }
 
   _addVisibilityListener() {
-    const onVisibilityChange = () => {
-      if (this._stateMachine.currentState() != 'TimedOut' || document.hidden) return;
-      if (this._stateMachine.isValidTransition('restart')) {
-        if (this._options.debugging) console.log('🖥 Restarting because document became visible');
-        this._stateMachine.transition('restart');
-      }
-    };
-    const onFocusChange = () => {
-      if ( this._stateMachine.currentState() != 'TimedOut' ) return;
-      if (this._stateMachine.isValidTransition('restart')) {
-        if ( this._options.debugging ) console.log('🖥 Restarting because window regained focus');
-        this._stateMachine.transition('restart');
-      }
-    };
-    const onResize = () => {
-      if (this._stateMachine.isValidTransition('checkUserAgent'))
-        this._stateMachine.transition('checkUserAgent', this._lastPayload);
-    };
+    const onVisibilityChange = () => this._stateMachine.selectTransition(({state, validTransitions}) => {
+      if (state != 'TimedOut' || document.hidden || !validTransitions.includes('restart'))
+        return false;
+
+      if (this._options.debugging) console.log('🖥 Restarting because document became visible');
+      return {transition: 'restart'};
+    });
+
+    const onFocusChange = () => this._stateMachine.selectTransition(({state, validTransitions}) => {
+      if (state != 'TimedOut' && !validTransitions.includes('restart'))
+        return false;
+
+      if ( this._options.debugging ) console.log('🖥 Restarting because window regained focus');
+      return {transition: 'restart'};
+    });
+
+    const onResize = () => this._stateMachine.selectTransition(({validTransitions}) => {
+      if (validTransitions.includes('checkUserAgent'))
+        return {transition: 'checkUserAgent', payload: this._lastPayload};
+      return false;
+    });
 
     if ( typeof document !== 'undefined' && document.addEventListener )
       document.addEventListener('visibilitychange', onVisibilityChange);

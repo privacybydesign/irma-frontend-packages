@@ -18,6 +18,8 @@ module.exports = class IrmaCore {
   }
 
   start(...input) {
+    if (this._resolve) throw new Error('The irma-core instance has already been started');
+
     if (this._options.debugging)
       console.log("Starting session with options:", this._options);
 
@@ -33,7 +35,7 @@ module.exports = class IrmaCore {
     return this._stateMachine.selectTransition(({state, inEndState}) => {
       if (state != 'Uninitialized' && !inEndState) {
         if (this._options.debugging) console.log('🖥 Manually aborting session instance');
-        return {transition: 'abort'};
+        return { transition: 'abort' };
       } else {
         if (this._options.debugging) console.log('🖥 Manual abort is not necessary');
         return false;

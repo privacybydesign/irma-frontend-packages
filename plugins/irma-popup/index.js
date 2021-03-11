@@ -8,13 +8,15 @@ module.exports = class IrmaPopup {
     this._stateMachine = stateMachine;
     this._options = this._sanitizeOptions(options);
 
-    this._dom = new DOMManipulations(options.element, () => {
-      if (!stateMachine.isEndState()) {
-        stateMachine.transition('abort');
-      } else if (this._popupClosedEarly) {
-        this._popupClosedEarly();
-      }
-    });
+    this._dom = new DOMManipulations(options.element, () =>
+      this._stateMachine.selectTransition(({isEndState}) => {
+        if (!isEndState) {
+          return { transition: 'abort' };
+        } else if (this._popupClosedEarly) {
+          this._popupClosedEarly();
+        }
+      })
+    );
 
     this._irmaWeb = new IrmaWeb({
       stateMachine,

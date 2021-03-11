@@ -26,16 +26,9 @@ module.exports = class IrmaStateClient {
         this._determineFlow();
         break;
       case 'PreparingQRCode':
-        return this._updatePairingState(true)
-          .then(() => this._stateMachine.transition('showQRCode', {
-            qr: JSON.stringify(this._mappings.sessionPtr),
-            showBackButton: transition == 'chooseQR',
-          }));
+        return this._updatePairingState(transition, true);
       case 'PreparingIrmaButton':
-        return this._updatePairingState(false)
-          .then(() => this._stateMachine.transition('showIrmaButton', {
-            mobile: this._getMobileUrl(this._mappings.sessionPtr),
-          }));
+        return this._updatePairingState(transition, false);
       case 'ShowingQRCode':
       case 'ShowingIrmaButton':
         this._startWatchingServerState(payload);
@@ -44,12 +37,11 @@ module.exports = class IrmaStateClient {
         if (this._frontendOptions.pairingCode === payload.enteredPairingCode) {
           this._pairingCompleted();
         } else {
-          setTimeout(() => {
-            // The state might have changed in Cancelled, TimedOut or Error while
-            // waiting, so we have to check the validity of the transition.
-            if (this._stateMachine.isValidTransition('pairingRejected'))
-              this._stateMachine.transition('pairingRejected', payload);
-          }, this._options.state.pairing.minCheckingDelay);
+          setTimeout(() => this._stateMachine.selectTransition(({validTransitions}) =>
+            validTransitions.includes('pairingRejected')
+              ? { transition: 'pairingRejected', payload: payload }
+              : false
+          ), this._options.state.pairing.minCheckingDelay);
         }
         break;
       case 'PreparingResult':
@@ -72,15 +64,14 @@ module.exports = class IrmaStateClient {
   }
 
   _startWatchingServerState() {
-    // A new transition cannot be started within stateChange, so add call to javascript event loop.
-    Promise.resolve().then(() =>
+    try {
       this._statusListener.observe(s => this._serverStateChange(s), e => this._serverHandleError(e))
-    ).catch((error) => {
+    } catch (error) {
       if ( this._options.debugging )
         console.error("Observing server state could not be started: ", error);
 
       this._handleNoSuccess('fail', error);
-    });
+    }
   }
 
   _serverCloseSession() {
@@ -104,69 +95,119 @@ module.exports = class IrmaStateClient {
   }
 
   _serverStateChange(newState) {
-    switch(newState) {
-      case 'PAIRING':
-        if (this._stateMachine.isValidTransition('appPairing'))
-          this._stateMachine.transition('appPairing', this._frontendOptions);
-        return;
-      case 'CONNECTED':
-        if (this._stateMachine.isValidTransition('appConnected'))
-          this._stateMachine.transition('appConnected');
-        return;
-      case 'DONE':
-        // What we hope will happen ;)
-        this._statusListener.close();
-        // We sometimes miss the appConnected transition
-        // on iOS, that's why sometimes we have to do this one first.
-        if (this._stateMachine.isValidTransition('appConnected'))
-          this._stateMachine.transition('appConnected');
-        return this._stateMachine.transition('prepareResult');
-      case 'CANCELLED':
-        // This is a conscious choice by a user.
-        this._statusListener.close();
-        return this._handleNoSuccess('cancel');
-      case 'TIMEOUT':
-        // This is a known and understood error. We can be explicit to the user.
-        this._statusListener.close();
-        return this._handleNoSuccess('timeout');
-      default:
-        // Catch unknown errors and give generic error message. We never really
-        // want to get here.
-        if ( this._options.debugging )
-          console.error('Unknown state received from server:', newState);
+    return this._stateMachine.selectTransition(({validTransitions}) => {
+      switch(newState) {
+        case 'PAIRING':
+          if (validTransitions.includes('appPairing'))
+            return { transition: 'appPairing', payload: this._frontendOptions };
+          break;
+        case 'CONNECTED':
+          if (validTransitions.includes('appConnected'))
+              return { transition: 'appConnected' };
+          break;
+        case 'DONE':
+          // What we hope will happen ;)
+          this._statusListener.close();
+          // We sometimes miss the appConnected transition
+          // on iOS, that's why sometimes we have to do this one first.
+          if (validTransitions.includes('appConnected')) {
+            return { transition: 'appConnected' };
+          } else if (validTransitions.includes('prepareResult')) {
+            return { transition: 'prepareResult' };
+          }
+          break;
+        case 'CANCELLED':
+          // This is a conscious choice by a user.
+          this._statusListener.close();
+          return this._noSuccessTransition(validTransitions, 'cancel');
+        case 'TIMEOUT':
+          // This is a known and understood error. We can be explicit to the user.
+          this._statusListener.close();
+          return this._noSuccessTransition(validTransitions, 'timeout');
+        default:
+          // Catch unknown errors and give generic error message. We never really
+          // want to get here.
+          if ( this._options.debugging )
+            console.error('Unknown state received from server:', newState);
 
-        this._statusListener.close();
-        return this._handleNoSuccess('fail', new Error('Unknown state received from server'));
-    }
+          this._statusListener.close();
+          return this._noSuccessTransition(validTransitions, 'fail', new Error('Unknown state received from server'));
+      }
+      return false;
+    }).then(r => {
+      // In case we postponed the prepareResult transition above, we have to schedule it here.
+      if (r.transition === 'appConnected' && newState == 'DONE') {
+        return this._stateMachine.selectTransition(
+            ({validTransitions}) => validTransitions.includes('prepareResult') ? { transition: 'prepareResult' } : false
+        );
+      }
+    });
   }
 
   _handleNoSuccess(transition, payload) {
-    if (this._canRestart)
-      return this._stateMachine.transition(transition, payload);
-    this._stateMachine.finalTransition(transition, payload);
+    return this._stateMachine.selectTransition(({validTransitions}) =>
+      this._noSuccessTransition(validTransitions, transition, payload)
+    );
   }
 
-  _updatePairingState(continueOnSecondDevice) {
-    if (!this._options.state.pairing)
-      return Promise.resolve();
-
-    // onlyEnableIf may return 'undefined', so we force conversion to boolean by doing a double negation (!!).
-    let shouldBeEnabled = continueOnSecondDevice && !!this._options.state.pairing.onlyEnableIf(this._mappings);
-
-    // Skip the request when the pairing method is correctly set already.
-    if (shouldBeEnabled === this._pairingEnabled) return Promise.resolve();
-
-    if (!this._mappings.frontendAuth) {
-      console.warn('Pairing cannot be enabled, because no frontendAuth token is provided. This might be a security risk.')
-      return Promise.resolve();
+  _noSuccessTransition(validTransitions, transition, payload) {
+    if (validTransitions.includes(transition)) {
+      return {
+        transition: transition,
+        payload: payload,
+        isFinal: !this._canRestart,
+      };
     }
-    this._pairingEnabled = shouldBeEnabled;
 
-    // If pairing should be enabled, parse the pairing options struct.
-    let options = shouldBeEnabled
-      ? { pairingMethod: this._options.state.pairing.pairingMethod }
-      : { pairingMethod: 'none' };
-    return this._updateFrontendOptions(options)
+    // If we cannot handle it in a nice way, we only print it for debug purposes.
+    if (this._options.debugging) {
+      let payloadError = payload ? `with payload ${payload}` : '';
+      console.error(`Unknown transition, tried transition ${transition}`, payloadError);
+    }
+    return false;
+  }
+
+  _updatePairingState(prevTransition, continueOnSecondDevice) {
+    return Promise.resolve()
+      .then(() => {
+        if (!this._options.state.pairing) return;
+
+        // onlyEnableIf may return 'undefined', so we force conversion to boolean by doing a double negation (!!).
+        let shouldBeEnabled = continueOnSecondDevice && !!this._options.state.pairing.onlyEnableIf(this._mappings);
+
+        // Skip the request when the pairing method is correctly set already.
+        if (shouldBeEnabled === this._pairingEnabled) return;
+
+        if (!this._mappings.frontendAuth) {
+          console.warn('Pairing cannot be enabled, because no frontendAuth token is provided. This might be a security risk.')
+          return;
+        }
+        this._pairingEnabled = shouldBeEnabled;
+
+        // If pairing should be enabled, parse the pairing options struct.
+        let options = shouldBeEnabled
+            ? {pairingMethod: this._options.state.pairing.pairingMethod}
+            : {pairingMethod: 'none'};
+        return this._updateFrontendOptions(options)
+      })
+      .then(() => this._stateMachine.selectTransition(({validTransitions}) => {
+        if (continueOnSecondDevice) {
+          return validTransitions.includes('showQRCode') ? {
+            transition: 'showQRCode',
+            payload: {
+              qr: JSON.stringify(this._mappings.sessionPtr),
+              showBackButton: prevTransition == 'chooseQR',
+            }
+          } : false;
+        } else {
+          return validTransitions.includes('showIrmaButton') ? {
+            transition: 'showIrmaButton',
+            payload: {
+              mobile: this._getMobileUrl(this._mappings.sessionPtr),
+            }
+          } : false;
+        }
+      }))
       .catch(err => {
         if ( this._options.debugging )
           console.error('Error received while updating pairing state:', err);
@@ -225,19 +266,19 @@ module.exports = class IrmaStateClient {
 
   _determineFlow() {
     this._userAgent = userAgent();
-    // A new transition cannot be started within stateChange, so add call to javascript event loop.
-    Promise.resolve().then(() => {
+    return this._stateMachine.selectTransition(({validTransitions}) => {
       switch (this._userAgent) {
         case 'Android':
         case 'iOS':
-          if (this._stateMachine.isValidTransition('prepareButton'))
-            this._stateMachine.transition('prepareButton');
+          if (validTransitions.includes('prepareButton'))
+            return { transition: 'prepareButton' };
           break;
         default:
-          if (this._stateMachine.isValidTransition('prepareQRCode'))
-            this._stateMachine.transition('prepareQRCode');
+          if (validTransitions.includes('prepareQRCode'))
+            return { transition: 'prepareQRCode' };
           break;
       }
+      return false;
     });
   }
 
