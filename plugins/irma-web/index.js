@@ -11,12 +11,11 @@ module.exports = class IrmaWeb {
     this._dom = new DOMManipulations(
       document.querySelector(this._options.element),
       this._options,
-      (t) => this._stateMachine.selectTransition(({validTransitions}) => {
-        // Check for validity of function to prevent errors when multiple events are cached.
-        if (validTransitions.includes(t))
-          return {transition: t, payload: this._lastPayload};
-        return false;
-      }),
+      (t) => this._stateMachine.selectTransition(({validTransitions}) =>
+        validTransitions.includes(t)
+          ? { transition: t, payload: this._lastPayload }
+          : false
+      ),
       (enteredPairingCode) => this._stateMachine.selectTransition(({validTransitions}) =>
         validTransitions.includes('codeEntered')
           ? { transition: 'codeEntered', payload: {enteredPairingCode} }
