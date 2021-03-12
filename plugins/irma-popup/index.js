@@ -9,8 +9,8 @@ module.exports = class IrmaPopup {
     this._options = this._sanitizeOptions(options);
 
     this._dom = new DOMManipulations(options.element, () =>
-      this._stateMachine.selectTransition(({isEndState}) => {
-        if (!isEndState) {
+      this._stateMachine.selectTransition(({inEndState}) => {
+        if (!inEndState) {
           return { transition: 'abort' };
         } else if (this._popupClosedEarly) {
           this._popupClosedEarly();
