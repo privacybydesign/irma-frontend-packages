@@ -36,8 +36,8 @@ module.exports = (askRetry, askPairingCode) => {
     }
 
     _askPairingCode(askedBefore) {
-      return this._stateMachine.selectTransition(({validTransitions, isEndState}) => {
-        if (isEndState) return false;
+      return this._stateMachine.selectTransition(({validTransitions, inEndState}) => {
+        if (inEndState) return false;
         if (askedBefore && !askRetry("Wrong pairing code was entered.")) {
           let transition = validTransitions.includes('cancel') ? 'cancel' : 'abort';
           return { transition };
@@ -50,8 +50,8 @@ module.exports = (askRetry, askPairingCode) => {
     }
 
     _askRetry(message) {
-      return this._stateMachine.selectTransition(({validTransitions, isEndState}) => {
-        if (isEndState) return false;
+      return this._stateMachine.selectTransition(({validTransitions, inEndState}) => {
+        if (inEndState) return false;
         let transition = validTransitions.includes('restart') && askRetry(message)
           ? 'restart'
           : 'abort';
