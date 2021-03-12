@@ -19,10 +19,3 @@ npm install serve
 ```
 
 The demo application will then run in the terminal output of your web browser.
-
-If you want to build one of the included `irma-frontend-packages` modules from
-source, for example when testing, please make sure you run `./build.sh`
-in the root directory of `irma-frontend-packages`.
-You can link local versions of modules easily using `npm link`. There is
-an explanation about how to use `npm link` in the README of the
-`irma-frontend-packages` root directory.

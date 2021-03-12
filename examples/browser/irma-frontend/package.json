@@ -9,6 +9,9 @@
     "directory": "examples/browser/irma-frontend"
   },
   "devDependencies": {
-    "@privacybydesign/irma-frontend": "^0.3.2"
+    "@privacybydesign/irma-frontend": "../../../irma-frontend"
+  },
+  "scripts": {
+    "build": "cd node_modules/@privacybydesign/irma-frontend/ && npm run build"
   }
 }

@@ -67,9 +67,6 @@ A bundled JavaScript file can be found [here](https://gitlab.science.ru.nl/irma/
 Please download this file and host it yourself. Versions can change and we do not want to break your website.
 
 ## Development
-If you want to build one of the included `irma-frontend-packages` modules from
-source, for example when testing, please make sure you run `./build.sh`
-in the root directory of `irma-frontend-packages`.
 You can link local versions of modules easily using `npm link`. There is
 an explanation about how to use `npm link` in the README of the
 [`irma-frontend-packages` root directory](https://github.com/privacybydesign/irma-frontend-packages).

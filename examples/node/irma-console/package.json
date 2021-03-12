@@ -8,9 +8,9 @@
     "start": "node ./index.js"
   },
   "dependencies": {
-    "@privacybydesign/irma-console": "^0.3.2",
-    "@privacybydesign/irma-core": "^0.3.2",
-    "@privacybydesign/irma-dummy": "^0.3.2"
+    "@privacybydesign/irma-console": "../../../plugins/irma-console",
+    "@privacybydesign/irma-core": "../../../irma-core",
+    "@privacybydesign/irma-dummy": "../../../plugins/irma-dummy"
   },
   "repository": {
     "type": "git",

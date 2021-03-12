@@ -89,22 +89,3 @@ files:
 $ git add irma-css/src/
 $ git commit -m "Update button shadows to reflect new design"
 ```
-
-### Releasing
-
-After merging one or more PRs, a new version can be released. First, update
-`package.json` to reflect the new version number. Then:
-
-```bash
-$ cd irma-css
-$ git add package.json
-
-$ npm run clean # Build a clean style guide
-$ git add ../docs/styleguide/
-
-$ npm run release # Build a clean new version in dist
-
-$ git commit -m "Releasing version xxx"
-```
-
-Don't forget also updating the modules using `irma-css` as dependency.

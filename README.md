@@ -409,24 +409,6 @@ file with features, options and purpose of the package:
   * [`irma-dummy`](plugins/irma-dummy)
   * [`irma-client`](plugins/irma-client)
 
-## Building
-Some of the modules needs building steps before you can use them. If you are building
-this library from source, you have to perform those steps yourself. We provide you
-the bash script `build.sh` that builds every library automatically. You have to run
-this in the root directory of this repository.
-
-```bash
-./build.sh
-```
-
-Be aware that the packages are built using the dependencies from `npm`. If you make
-local changes in one package, the changes are not automatically included into other
-packages that use the changed package as dependency. If you do want to fully build
-locally with local changes, check the [development guide](#development).
-
-If you need to build one specific package and the general script is not suitable to you,
-then you can look at the README of the particular package for package specific instructions.
-
 ## Examples
 
 Also, we have several examples available that show how you can use specific
@@ -443,22 +425,27 @@ combinations of plugins to achieve different effects:
   * [`irma-client`](examples/node/irma-client)
 
 ## Development
-When developing a certain module, you might want to test the module using one of the examples.
-By default the examples load their dependencies via npm, so if you want to run an example
-with your own code you have to use `npm link`. This also holds for the `irma-frontend` and
-the `irma-popup` package, which use other `irma-frontend-packages` as dependencies.
+When developing a certain package, you can test the package using one of the examples.
+
+The `irma-frontend` and `irma-popup` package load their dependencies via npm by default.
+If you want these modules to use the local version of a dependency, you'll have to use `npm link`.
 
 For example, when you are developing the `irma-client` plugin and you want to run the
-`node/irma-client` example, the modules can be linked in the following way:
+`browser/irma-frontend` example, the packages can be linked in the following way:
 
 ```bash
 cd plugins/irma-client
 npm link
 cd ../../
 
-cd examples/node/irma-client
+cd irma-frontend
 npm install
 npm link @privacybydesign/irma-client
+npm run build
+cd ..
+
+cd examples/node/irma-client
+npm install
 ```
 
 **Depending on your setup it might be needed to run `npm link` using `sudo`.**
@@ -486,10 +473,6 @@ cd .. # Go back to root of the repository
 git add -u ./*package.json ./*package-lock.json
 git commit -m "Version bump"
 ```
-
-After releasing, don't forget to update the dependencies of the examples by running `./update.sh`.
-This script assumes your current branch is `master`. If you are on another branch, you can change
-the base branch by updating the script.
 
 ## Documentation
 More documentation on how to use this package can be found in the
