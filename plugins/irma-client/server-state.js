@@ -105,6 +105,16 @@ module.exports = class ServerState {
     });
   }
 
+  _pollOnce() {
+    return fetch(this._options.polling.url(this._options))
+      .then(r => {
+        if ( r.status != 200 )
+          throw(`Error in fetch: endpoint returned status other than 200 OK. Status: ${r.status} ${r.statusText}`);
+        return r;
+      })
+      .then(r => r.json());
+  }
+
   _polling() {
     return new Promise((resolve, reject) => {
       if ( !this._isRunning ) {
@@ -113,13 +123,13 @@ module.exports = class ServerState {
         return;
       }
 
-      fetch(this._options.polling.url(this._options))
-      .then(r => {
-        if ( r.status != 200 )
-          throw(`Error in fetch: endpoint returned status other than 200 OK. Status: ${r.status} ${r.statusText}`);
-        return r;
+      // On Firefox for Android pending fetch request are actively aborted when navigating.
+      // So in case of an error, we do a second attempt to assure the error is permanent.
+      this._pollOnce()
+      .catch(() => {
+        if (this._options.debugging) console.log('Polling attempt failed; doing a second attempt to confirm error');
+        return this._pollOnce();
       })
-      .then(r => r.json())
       .then(newStatus => {
         // Re-check running because variable might have been changed during fetch.
         if ( !this._isRunning ) {
