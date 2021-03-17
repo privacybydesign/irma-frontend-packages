@@ -8,6 +8,7 @@ module.exports = class DOMManipulations {
     this._showHelper      = options.showHelper;
     this._showCloseButton = options.showCloseButton;
     this._clickCallback   = clickCallback;
+    this._eventHandlers   = {};
 
     this._renderInitialState();
     this._attachClickHandler();
@@ -18,7 +19,13 @@ module.exports = class DOMManipulations {
     if (!newPartial) throw new Error(`I don't know how to render '${state.newState}'`);
     this._renderPartial(newPartial);
 
+    if (state.oldState == 'ShowingIrmaButton') {
+      this._element.querySelector('.irma-web-header').classList.remove('irma-web-show-helper');
+      this._element.querySelector('.irma-web-helper').innerHTML = this._defaultHelperContent();
+    }
+
     if ( state.isFinal ) {
+      this._detachEventHandlers();
       // Make sure all restart buttons are hidden when being in a final state
       this._element.querySelectorAll('.irma-web-restart-button')
         .forEach(e => e.style.display = 'none');
@@ -43,6 +50,11 @@ module.exports = class DOMManipulations {
     this._element.innerHTML = this._irmaWebForm(this._stateUninitialized());
   }
 
+  _attachEventHandler(event, callback) {
+    this._element.addEventListener(event, callback);
+    this._eventHandlers[event] = callback;
+  }
+
   _attachClickHandler() {
     // Polyfill for Element.matches to fix IE11
     if (!Element.prototype.matches) {
@@ -50,11 +62,30 @@ module.exports = class DOMManipulations {
                                   Element.prototype.webkitMatchesSelector;
     }
 
-    this._element.addEventListener('click', (e) => {
+    this._attachEventHandler('click', (e) => {
+      let isAndroid = /Android/i.test(window.navigator.userAgent);
       if (e.target.matches('[data-irma-glue-transition]')) {
         this._clickCallback(e.target.getAttribute('data-irma-glue-transition'));
+      } else if (isAndroid && e.target.matches('.irma-web-button-link *')) {
+        e.target.disabled = true;
+        setTimeout(() => {
+          // Only activate helper if the button to open the IRMA app is still present after the timeout.
+          if (this._element.contains(e.target)) {
+            this._element.querySelector('.irma-web-helper')
+              .innerHTML = `<p>${this._translations.fallbackAndroid}</p>`;
+            this._element.querySelector('.irma-web-header').classList.add('irma-web-show-helper');
+            e.target.disabled = false;
+          }
+        }, 1000);
       }
     });
+  }
+
+  _detachEventHandlers() {
+    Object.keys(this._eventHandlers).map((event) => {
+      this._element.removeEventListener(event, this._eventHandlers[event]);
+    });
+    this._eventHandlers = {};
   }
 
   _renderPartial(newPartial) {
@@ -89,7 +120,7 @@ module.exports = class DOMManipulations {
       <div class="irma-web-header ${this._showHelper ? 'irma-web-show-helper' : ''}">
         <p>${this._translations.header}</p>
         <div class="irma-web-helper">
-          <p>${this._translations.helper}</p>
+          ${this._defaultHelperContent()}
         </div>
         ${this._showCloseButton ? `
           <button class="irma-web-close"></button>
@@ -101,6 +132,10 @@ module.exports = class DOMManipulations {
         </div>
       </div>
     `;
+  }
+
+  _defaultHelperContent() {
+    return `<p>${this._translations.helper}</p>`;
   }
 
   /** States markup **/

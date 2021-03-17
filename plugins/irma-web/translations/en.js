@@ -12,5 +12,8 @@ module.exports = {
   error:     'Sorry! Something went wrong',
   browser:   'We\'re sorry, but your browser does not meet the minimum requirements',
   success:   'Success!',
-  cancel:    'Cancel'
+  cancel:    'Cancel',
+
+  // Fallback text for new IRMA users on Android
+  fallbackAndroid: 'Don\'t have the IRMA app yet?<br><a href="https://play.google.com/store/apps/details?id=org.irmacard.cardemu">Download the app here</a>'
 };
