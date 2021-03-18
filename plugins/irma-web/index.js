@@ -44,9 +44,10 @@ module.exports = class IrmaWeb {
 
   _sanitizeOptions(options) {
     const defaults = {
-      element:      '#irma-web-form',
-      showHelper:   false,
-      translations: require(`./translations/${options.language || 'nl'}`)
+      element:       '#irma-web-form',
+      showHelper:    false,
+      fallbackDelay: 1000,
+      translations:  require(`./translations/${options.language || 'nl'}`)
     };
 
     return merge(defaults, options);

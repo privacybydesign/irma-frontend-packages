@@ -42,6 +42,14 @@ which to render the IRMA form. This is a required option.
 You can set the interface language by setting the `language` option. Currently
 supported values: `en` and `nl`. Default is `nl`.
 
+### fallbackDelay
+
+You can set the delay in milliseconds that should be waited before the helper
+message is shown as fallback. This only involves the mobile flow on Android.
+This delay is measured from the point that the user presses the button to open
+the IRMA app. A recommended value here is to double the polling interval.
+Default is `1000` ms.
+
 ### translations
 
 If you have more specific translation requirements, or if your use-case is not

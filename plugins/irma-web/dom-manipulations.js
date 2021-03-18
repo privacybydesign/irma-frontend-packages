@@ -7,6 +7,7 @@ module.exports = class DOMManipulations {
     this._translations    = options.translations;
     this._showHelper      = options.showHelper;
     this._showCloseButton = options.showCloseButton;
+    this._fallbackDelay   = options.fallbackDelay;
     this._clickCallback   = clickCallback;
     this._eventHandlers   = {};
 
@@ -73,7 +74,7 @@ module.exports = class DOMManipulations {
             this._element.querySelector('.irma-web-header').classList.add('irma-web-show-helper');
             e.target.disabled = false;
           }
-        }, 1000);
+        }, this._fallbackDelay);
       }
     });
   }
