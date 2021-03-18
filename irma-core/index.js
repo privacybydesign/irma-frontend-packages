@@ -86,17 +86,15 @@ module.exports = class IrmaCore {
 
   _getSessionUrls(sessionPtr) {
     let json = JSON.stringify(sessionPtr);
-    let universalLink = `https://irma.app/-/session#${encodeURIComponent(json)}`;
     let mobileLink;
     switch (this._userAgent) {
       case 'Android':
         // Universal links are not stable in Android webviews and custom tabs, so always use intent links.
         let intent = `Intent;package=org.irmacard.cardemu;scheme=irma;l.timestamp=${Date.now()}`;
-        let fallback = `S.browser_fallback_url=${encodeURIComponent(universalLink)}`;
-        mobileLink =  `intent://qr/json/${encodeURIComponent(json)}#${intent};${fallback};end`;
+        mobileLink =  `intent://qr/json/${encodeURIComponent(json)}#${intent};end`;
         break;
       default:
-        mobileLink = universalLink;
+        mobileLink = `https://irma.app/-/session#${encodeURIComponent(json)}`;
         break;
     }
     return {
