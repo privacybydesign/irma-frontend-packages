@@ -74,6 +74,8 @@ The option `showHelper` is a boolean that determines if the
 [`irma-css` helper](https://privacybydesign.github.io/irma-frontend-packages/styleguide/section-examples.html#kssref-examples-helpers)
 should be shown or not. Default is false.
 
-_Note: the helper is supposed to be able to get triggered during the IRMA flow.
-This is not possible yet. This makes it pretty useless right now. PRs and ideas
-welcome._
+_Note: the helper is also triggered during the mobile flow on Android. In that case, the helper
+becomes visible when the user presses the button to open the IRMA app, and the app fails to open.
+So, when `showHelper` is set to false, the helper is only visible as fallback and disappears
+again as soon as the happy flow continues. When `showHelper` is set to true, the helper will
+be visible unconditionally._
