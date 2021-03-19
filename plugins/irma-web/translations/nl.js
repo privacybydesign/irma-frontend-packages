@@ -1,6 +1,6 @@
 module.exports = {
   header:    'Ga verder met <i class="irma-web-logo">IRMA</i>',
-  helper:    'Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.',
+  helper:    'Kom je er niet uit?<br>Kijk dan eens op <a href="https://irma.app/?lang=nl">de website van IRMA</a>.',
   loading:   'Eén moment alsjeblieft',
   button:    'Open IRMA app',
   qrCode:    'Toon QR code',
@@ -12,8 +12,5 @@ module.exports = {
   error:     'Sorry! Er is een fout opgetreden',
   browser:   'Het spijt ons, maar je browser voldoet niet aan de minimale eisen',
   success:   'Gelukt!',
-  cancel:    'Annuleer',
-
-  // Fallback text for new IRMA users on Android
-  fallbackAndroid: 'Heb je nog geen IRMA-app?<br><a href="https://play.google.com/store/apps/details?id=org.irmacard.cardemu">Download de app hier</a>'
+  cancel:    'Annuleer'
 };

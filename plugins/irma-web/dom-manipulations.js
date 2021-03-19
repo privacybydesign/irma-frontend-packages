@@ -19,9 +19,8 @@ module.exports = class DOMManipulations {
     if (!newPartial) throw new Error(`I don't know how to render '${state.newState}'`);
     this._renderPartial(newPartial);
 
-    if (state.oldState == 'ShowingIrmaButton') {
+    if (state.oldState == 'ShowingIrmaButton' && !this._showHelper) {
       this._element.querySelector('.irma-web-header').classList.remove('irma-web-show-helper');
-      this._element.querySelector('.irma-web-helper').innerHTML = this._defaultHelperContent();
     }
 
     if ( state.isFinal ) {
@@ -71,8 +70,6 @@ module.exports = class DOMManipulations {
         setTimeout(() => {
           // Only activate helper if the button to open the IRMA app is still present after the timeout.
           if (this._element.contains(e.target)) {
-            this._element.querySelector('.irma-web-helper')
-              .innerHTML = `<p>${this._translations.fallbackAndroid}</p>`;
             this._element.querySelector('.irma-web-header').classList.add('irma-web-show-helper');
             e.target.disabled = false;
           }
@@ -120,7 +117,7 @@ module.exports = class DOMManipulations {
       <div class="irma-web-header ${this._showHelper ? 'irma-web-show-helper' : ''}">
         <p>${this._translations.header}</p>
         <div class="irma-web-helper">
-          ${this._defaultHelperContent()}
+          <p>${this._translations.helper}</p>
         </div>
         ${this._showCloseButton ? `
           <button class="irma-web-close"></button>
@@ -132,10 +129,6 @@ module.exports = class DOMManipulations {
         </div>
       </div>
     `;
-  }
-
-  _defaultHelperContent() {
-    return `<p>${this._translations.helper}</p>`;
   }
 
   /** States markup **/
