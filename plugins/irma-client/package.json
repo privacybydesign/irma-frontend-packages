@@ -1,6 +1,6 @@
 {
   "name": "@privacybydesign/irma-client",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "A plugin to allow your IRMA flows to communicate with a server",
   "main": "index.js",
   "license": "MIT",
