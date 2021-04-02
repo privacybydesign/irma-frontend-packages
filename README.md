@@ -450,6 +450,15 @@ npm install
 
 **Depending on your setup it might be needed to run `npm link` using `sudo`.**
 
+### Linter
+To make a valid PR, your code changes should pass the linter and code formatter. We use 
+ESLint for JavaScript and Stylelint for SCSS. You can run these in the following way:
+
+```bash
+npm install
+npm run lint
+```
+
 ## Releasing
 To release a new version of the `irma-frontend-packages` you have to run the scripts below.
 You need access to the NPM repository in order to release new versions. Otherwise,
