@@ -2,11 +2,21 @@
   "name": "irma-frontend-packages",
   "license": "MIT",
   "browsersList": "> 0.25%, not dead",
+  "scripts": {
+    "lint-js": "eslint . --ext .js",
+    "lint-css": "stylelint irma-css/src/",
+    "lint": "npm run lint-js && npm run lint-css"
+  },
   "devDependencies": {
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-compat": "^3.9.0",
-    "eslint-plugin-prettier": "^3.3.1"
+    "eslint-plugin-prettier": "^3.3.1",
+    "stylelint": "^13.12.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-recommended-scss": "^4.2.0",
+    "stylelint-prettier": "^1.2.0",
+    "stylelint-scss": "^3.19.0"
   },
   "repository": {
     "type": "git",
