@@ -71,7 +71,7 @@
     },
     "overrides": [
         {
-            "files": ["plugins/irma-web/*", "plugins/irma-popup/*"],
+            "files": ["plugins/irma-web/*", "plugins/irma-popup/*", "irma-frontend/*"],
             "env": {
                 "browser": true,
                 "commonjs": true,
