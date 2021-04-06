@@ -7,62 +7,23 @@
         "es2021": true
     },
     "extends": [
-        "eslint:recommended",
-        "plugin:prettier/recommended",
+        "prettier-standard",
         "plugin:compat/recommended"
     ],
-    "parserOptions": {
-        "ecmaVersion": 12
-    },
     "rules": {
-        "prettier/prettier": ["error", {"singleQuote": true}],
-
-        // Extra rules to detect erros on top of eslint:recommended
-        "no-promise-executor-return": "error",
-        "no-loss-of-precision": "error",
-        "no-template-curly-in-string": "error",
-        "no-unreachable-loop": "error",
-        "no-unsafe-optional-chaining": "error",
-        "no-useless-backreference": "error",
-
-        // Extra rules to enforce best practices on top of eslint:recommended
         "block-scoped-var": "error",
         "consistent-return": "error",
-        "eqeqeq": ["error", "smart"],
-        "no-bitwise": "error",
-        "no-caller": "error",
-        "no-eval": "error",
-        "no-extra-bind": "error",
         "no-implicit-globals": "error",
-        "no-implied-eval": "error",
-        "no-invalid-this": "error",
-        "no-labels": "error",
-        "no-new-func": "error",
-        "no-new-wrappers": "error",
-        "no-nonoctal-decimal-escape": "error",
-        "no-octal-escape": "error",
-        "no-param-reassign": "error",
-        "no-proto": "error",
-        "no-return-assign": "error",
+        "no-promise-executor-return": "error",
         "no-script-url": "error",
-        "no-self-compare": "error",
-        "no-shadow": "error",
-        "no-throw-literal": "error",
-        "no-sequences": "error",
-        "no-unused-expressions": "error",
-        "no-use-before-define": "error",
-        "no-useless-concat": "error",
-        "no-useless-return": "error",
+        "no-shadow": ["error", {"builtinGlobals":  true}],
+        "no-unsafe-optional-chaining": "error",
         "no-var": "error",
-        "no-void": "error",
         "prefer-arrow-callback": "error",
-        "prefer-const": "error",
-        "prefer-numeric-literals": "error",
-        "prefer-regex-literals": "error",
         "prefer-rest-params": "error",
         "prefer-spread": "error",
         "prefer-template": "error",
-        "radix": "error"
+        "prettier/prettier": ["error", {"singleQuote": true}]
     },
     "settings": {
         "polyfills": [
@@ -71,7 +32,7 @@
     },
     "overrides": [
         {
-            "files": ["plugins/irma-web/*", "plugins/irma-popup/*", "irma-frontend/*"],
+            "files": ["plugins/irma-web/**/*.js", "plugins/irma-popup/**/*.js", "irma-frontend/**/*.js"],
             "env": {
                 "browser": true,
                 "commonjs": true,
