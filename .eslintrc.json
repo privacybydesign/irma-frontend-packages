@@ -34,10 +34,13 @@
         {
             "files": ["plugins/irma-web/**/*.js", "plugins/irma-popup/**/*.js", "irma-frontend/**/*.js"],
             "env": {
-                "browser": true,
-                "commonjs": true,
-                "node": false,
-                "es2021": true
+                "node": false
+            }
+        },
+        {
+            "files": ["plugins/irma-console/node.js"],
+            "env": {
+                "browser": false
             }
         }
     ]
