@@ -71,12 +71,8 @@
 //
 // Styleguide Components.IRMA pairing form
 
-@import './irma-button',
-        '../animations/loading',
-        '../mixins/reset',
-        '../mixins/fonts',
-        '../mixins/center',
-        '../variables/colours';
+@import './irma-button', '../animations/loading', '../mixins/reset',
+  '../mixins/fonts', '../mixins/center', '../variables/colours';
 
 .irma-web-pairing-form {
   @include reset;

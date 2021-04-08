@@ -1,13 +1,13 @@
 require('@privacybydesign/irma-css');
 
-const IrmaCore   = require('@privacybydesign/irma-core');
-const IrmaWeb    = require('@privacybydesign/irma-web');
-const IrmaPopup  = require('@privacybydesign/irma-popup');
+const IrmaCore = require('@privacybydesign/irma-core');
+const IrmaWeb = require('@privacybydesign/irma-web');
+const IrmaPopup = require('@privacybydesign/irma-popup');
 const IrmaClient = require('@privacybydesign/irma-client');
 
 module.exports = {
-  newWeb: options => {
-    let core = new IrmaCore(options);
+  newWeb: (options) => {
+    const core = new IrmaCore(options);
     core.use(IrmaWeb);
     core.use(IrmaClient);
     return {
@@ -16,8 +16,8 @@ module.exports = {
     };
   },
 
-  newPopup: options => {
-    let core = new IrmaCore(options);
+  newPopup: (options) => {
+    const core = new IrmaCore(options);
     core.use(IrmaPopup);
     core.use(IrmaClient);
     return {
@@ -25,4 +25,4 @@ module.exports = {
       abort: core.abort.bind(core),
     };
   },
-}
+};

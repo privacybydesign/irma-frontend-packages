@@ -7,9 +7,7 @@
 //
 // Styleguide Animations.Checkmark
 
-@import '../mixins/reset',
-        '../mixins/animation',
-        '../variables/colours';
+@import '../mixins/reset', '../mixins/animation', '../variables/colours';
 
 .irma-web-checkmark-animation {
   $check-width: 27px;
@@ -52,5 +50,4 @@
       opacity: 1;
     }
   }
-
 }

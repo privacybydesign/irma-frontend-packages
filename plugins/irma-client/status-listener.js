@@ -1,15 +1,14 @@
-if ( typeof fetch === 'undefined' )
-  require('isomorphic-fetch');
+if (typeof fetch === 'undefined') require('isomorphic-fetch');
 
 module.exports = class StatusListener {
-
   constructor(mappings, options) {
     this._eventSource = this._eventSource();
     this._isRunning = false;
     this._isPolling = false;
     this._options = options;
     this._mappings = mappings;
-    this._listeningMethod = this._eventSource && this._options.serverSentEvents ? 'sse' : 'polling';
+    this._listeningMethod =
+      this._eventSource && this._options.serverSentEvents ? 'sse' : 'polling';
   }
 
   observe(stateChangeCallback, errorCallback) {
@@ -28,10 +27,10 @@ module.exports = class StatusListener {
   close() {
     if (!this._isRunning) return false;
 
-    if ( this._source ) {
+    if (this._source) {
       // If ready state is CLOSED (2), the close call will do nothing. Therefore we skip debug logging then.
-      if ( this._options.debugging && this._source.readyState < 2 )
-        console.log("🌎 Closed EventSource");
+      if (this._options.debugging && this._source.readyState < 2)
+        console.log('🌎 Closed EventSource');
       this._source.close();
     }
 
@@ -40,14 +39,18 @@ module.exports = class StatusListener {
   }
 
   _startSSE() {
-    if ( this._options.debugging )
-      console.log("🌎 Using EventSource for server events");
+    if (this._options.debugging)
+      console.log('🌎 Using EventSource for server events');
 
-    this._source = new this._eventSource(this._options.serverSentEvents.url(this._mappings));
+    this._source = new this._eventSource(
+      this._options.serverSentEvents.url(this._mappings)
+    );
 
     const canceller = setTimeout(() => {
-      if ( this._options.debugging )
-        console.error(`🌎 EventSource could not connect within ${this._options.serverSentEvents.timeout}ms`);
+      if (this._options.debugging)
+        console.error(
+          `🌎 EventSource could not connect within ${this._options.serverSentEvents.timeout}ms`
+        );
 
       // Fall back to polling instead
       setTimeout(() => this._source.close(), 0); // Never block on this
@@ -56,21 +59,21 @@ module.exports = class StatusListener {
 
     this._source.addEventListener('open', () => clearTimeout(canceller));
 
-    this._source.addEventListener('message', evnt => {
+    this._source.addEventListener('message', (evnt) => {
       clearTimeout(canceller);
       const state = JSON.parse(evnt.data);
 
-      if ( this._options.debugging )
+      if (this._options.debugging)
         console.log(`🌎 Server event: Remote state changed to '${state}'`);
 
       this._stateChangeCallback(state);
     });
 
-    this._source.addEventListener('error', error => {
+    this._source.addEventListener('error', (error) => {
       clearTimeout(canceller);
       this._source.close();
 
-      if ( this._options.debugging )
+      if (this._options.debugging)
         console.error('🌎 EventSource threw an error: ', error);
 
       // Fall back to polling instead
@@ -81,40 +84,41 @@ module.exports = class StatusListener {
 
   _startPolling() {
     this._listeningMethod = 'polling'; // In case polling is activated as fallback
-    if ( !this._options.polling || this._isPolling )
-      return;
+    if (!this._options.polling || this._isPolling) return;
 
-    if ( this._options.debugging )
-      console.log("🌎 Using polling for server events");
+    if (this._options.debugging)
+      console.log('🌎 Using polling for server events');
 
     this._currentStatus = this._options.polling.startState;
     this._isPolling = true;
 
     this._polling()
-    .then(() => {
-      if ( this._options.debugging )
-        console.log("🌎 Stopped polling");
-    })
-    .catch((error) => {
-      if ( this._options.debugging )
-        console.error("🌎 Error thrown while polling: ", error);
-      this._errorCallback(error);
-    });
+      .then(() => {
+        if (this._options.debugging) console.log('🌎 Stopped polling');
+      })
+      .catch((error) => {
+        if (this._options.debugging)
+          console.error('🌎 Error thrown while polling: ', error);
+        this._errorCallback(error);
+      });
   }
 
   _pollOnce() {
+    // eslint-disable-next-line compat/compat
     return fetch(this._options.polling.url(this._mappings))
-      .then(r => {
-        if ( r.status != 200 )
-          throw(`Error in fetch: endpoint returned status other than 200 OK. Status: ${r.status} ${r.statusText}`);
+      .then((r) => {
+        if (r.status !== 200)
+          throw new Error(
+            `Error in fetch: endpoint returned status other than 200 OK. Status: ${r.status} ${r.statusText}`
+          );
         return r;
       })
-      .then(r => r.json());
+      .then((r) => r.json());
   }
 
   _polling() {
     return new Promise((resolve, reject) => {
-      if ( !this._isRunning ) {
+      if (!this._isRunning) {
         this._isPolling = false;
         resolve();
         return;
@@ -123,41 +127,44 @@ module.exports = class StatusListener {
       // On Firefox for Android pending fetch request are actively aborted when navigating.
       // So in case of an error, we do a second attempt to assure the error is permanent.
       this._pollOnce()
-      .catch(() => {
-        if (this._options.debugging) console.log('Polling attempt failed; doing a second attempt to confirm error');
-        return this._pollOnce();
-      })
-      .then(newStatus => {
-        // Re-check running because variable might have been changed during fetch.
-        if ( !this._isRunning ) {
-          this._isPolling = false;
-          resolve();
-          return;
-        }
+        .catch(() => {
+          if (this._options.debugging)
+            console.log(
+              'Polling attempt failed; doing a second attempt to confirm error'
+            );
+          return this._pollOnce();
+        })
+        .then((newStatus) => {
+          // Re-check running because variable might have been changed during fetch.
+          if (!this._isRunning) {
+            this._isPolling = false;
+            resolve();
+            return;
+          }
 
-        if ( newStatus != this._currentStatus ) {
-          if ( this._options.debugging )
-            console.log(`🌎 Server event: Remote state changed to '${newStatus}'`);
+          if (newStatus !== this._currentStatus) {
+            if (this._options.debugging)
+              console.log(
+                `🌎 Server event: Remote state changed to '${newStatus}'`
+              );
 
-          this._currentStatus = newStatus;
-          this._stateChangeCallback(newStatus);
-        }
+            this._currentStatus = newStatus;
+            this._stateChangeCallback(newStatus);
+          }
 
-        setTimeout(() => {
-          this._polling()
-          .then(resolve)
-          .catch(reject);
-        }, this._options.polling.interval);
-      })
-      .catch(reject);
+          setTimeout(() => {
+            this._polling().then(resolve).catch(reject);
+          }, this._options.polling.interval);
+        })
+        .catch(reject);
     });
   }
 
   _eventSource() {
-    if ( typeof window == 'undefined' )
+    if (typeof window === 'undefined') {
       return require('eventsource');
-    else
+    } else {
       return window.EventSource;
+    }
   }
-
-}
+};

@@ -9,8 +9,7 @@
 //
 // Styleguide Layouts.Center
 
-@import '../mixins/reset',
-        '../mixins/center';
+@import '../mixins/reset', '../mixins/center';
 
 .irma-web-center-child {
   @include reset;

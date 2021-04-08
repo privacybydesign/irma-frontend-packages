@@ -46,13 +46,9 @@
 //
 // Styleguide Components.IRMA login
 
-@import '../mixins/reset',
-        '../mixins/fonts',
-        '../mixins/responsiveness',
-        '../mixins/center',
-        '../mixins/animation',
-        '../variables/colours',
-        '../variables/sizes';
+@import '../mixins/reset', '../mixins/fonts', '../mixins/responsiveness',
+  '../mixins/center', '../mixins/animation', '../variables/colours',
+  '../variables/sizes';
 
 .irma-web-form {
   @include reset;
@@ -61,8 +57,10 @@
   width: 80%;
   min-width: $qr-code-size + 6px;
   max-width: 400px;
-  height: $qr-code-size + 224px; // Acts as min-height, but IE11 needs a fixed
-                                 // parent height for the vertical centering...
+
+  // Acts as min-height, but IE11 needs a fixed
+  // parent height for the vertical centering.
+  height: $qr-code-size + 224px;
 
   @include on-small-screen {
     min-height: $qr-code-size + 184px;
@@ -71,6 +69,59 @@
   background-color: $background-color;
   border: 1px solid $border-color;
   border-radius: $border-radius;
+
+  .irma-web-content {
+    @include reset;
+    @include center;
+    flex: 1 1 auto;
+    margin: 0 1rem 1rem 1rem;
+
+    background-color: $content-bg-color;
+    border-radius: $border-radius * 0.6;
+
+    .irma-web-centered {
+      @include reset;
+      height: auto;
+      text-align: center;
+
+      img,
+      canvas {
+        cursor: none;
+      }
+    }
+
+    p {
+      @include reset;
+      @include font($size: 15px);
+      margin: 1em 4em;
+
+      @include on-small-screen {
+        margin: 1em 2em;
+      }
+    }
+
+    // Make sure margin-top of first child and margin-bottom of last child
+    // are equal to prevent issues while centering.
+    > * {
+      &:first-child {
+        margin-top: 0;
+      }
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    a {
+      @include reset;
+      @include font($color: $content-link-color, $size: 15px);
+      text-decoration: underline;
+      cursor: pointer;
+
+      &:hover {
+        color: $content-link-color-hover;
+      }
+    }
+  }
 
   .irma-web-header {
     @include reset;
@@ -117,7 +168,11 @@
       border-bottom-left-radius: 1px;
       border-bottom-right-radius: 1px;
 
-      p, a {
+      transform: translateX(120%);
+      @include transition(transform 0.4s ease);
+
+      p,
+      a {
         @include font($color: white, $size: 13px);
       }
       p {
@@ -129,10 +184,6 @@
     // Swap out the header content for the helper in a nice animation
     & > *:not(.irma-web-helper):not(.irma-web-close) {
       transform: translateX(0%);
-      @include transition(transform 0.4s ease);
-    }
-    .irma-web-helper {
-      transform: translateX(120%);
       @include transition(transform 0.4s ease);
     }
     &.irma-web-show-helper {
@@ -158,7 +209,8 @@
       border: 0;
       cursor: pointer;
 
-      &:before, &:after {
+      &:before,
+      &:after {
         content: ' ';
         display: block;
         position: absolute;
@@ -174,57 +226,5 @@
         transform: rotateZ(-45deg);
       }
     }
-
   }
-
-  .irma-web-content {
-    @include reset;
-    @include center;
-    flex: 1 1 auto;
-    margin: 0 1rem 1rem 1rem;
-
-    background-color: $content-bg-color;
-    border-radius: $border-radius * 0.6;
-
-    .irma-web-centered {
-      @include reset;
-      height: auto;
-      text-align: center;
-
-      img, canvas {
-        cursor: none;
-      }
-    }
-
-    p {
-      @include reset;
-      @include font($size: 15px);
-      margin: 1em 4em;
-
-      @include on-small-screen {
-        margin: 1em 2em;
-      }
-    }
-
-    > p {
-      &:first-child {
-        margin-top: 0;
-      }
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    a {
-      @include reset;
-      @include font($color: $content-link-color, $size: 15px);
-      text-decoration: underline;
-      cursor: pointer;
-
-      &:hover {
-        color: $content-link-color-hover;
-      }
-    }
-  }
-
 }

@@ -18,9 +18,9 @@
 // Styleguide Mixins.Animation.animation
 
 @mixin animation($animation) {
-      -ms-animation: $animation;
+  -ms-animation: $animation;
   -webkit-animation: $animation;
-          animation: $animation;
+  animation: $animation;
 }
 
 // animation-delay($delay)
@@ -36,9 +36,9 @@
 // Styleguide Mixins.Animation.animation-delay
 
 @mixin animation-delay($delay) {
-      -ms-animation-delay: $delay;
+  -ms-animation-delay: $delay;
   -webkit-animation-delay: $delay;
-          animation-delay: $delay;
+  animation-delay: $delay;
 }
 
 // keyframes($name) { ... }
@@ -80,5 +80,5 @@
 @mixin transition($props) {
   -webkit-transition: -webkit-#{$props};
   -webkit-transition: $props;
-          transition: $props;
+  transition: $props;
 }

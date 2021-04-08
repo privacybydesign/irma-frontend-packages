@@ -8,9 +8,7 @@
 //
 // Styleguide Animations.Waiting for user
 
-@import '../mixins/reset',
-        '../mixins/animation',
-        '../variables/colours';
+@import '../mixins/reset', '../mixins/animation', '../variables/colours';
 
 .irma-web-waiting-for-user-animation {
   @include reset;
@@ -22,7 +20,8 @@
   background-color: $irma-light-blue;
   border-radius: 2px;
 
-  &:before, &:after {
+  &:before,
+  &:after {
     content: '';
     display: block;
     position: absolute;
@@ -49,13 +48,14 @@
   @include animation(waiting-for-user-animation 2s infinite ease-in-out);
 
   @include keyframes(waiting-for-user-animation) {
-    0%, 100% {
+    0%,
+    100% {
       -webkit-transform: scale3D(1.1, 1.1, 1);
-              transform: scale3D(1.1, 1.1, 1);
-    } 50% {
+      transform: scale3D(1.1, 1.1, 1);
+    }
+    50% {
       -webkit-transform: scale3D(0.9, 0.9, 1);
-              transform: scale3D(0.9, 0.9, 1);
+      transform: scale3D(0.9, 0.9, 1);
     }
   }
-
 }

@@ -12,9 +12,7 @@
 //
 // Styleguide Layouts.Popup
 
-@import '../mixins/reset',
-        '../mixins/center',
-        '../mixins/animation';
+@import '../mixins/reset', '../mixins/center', '../mixins/animation';
 
 .irma-web-popup {
   @include reset;
@@ -26,7 +24,7 @@
   bottom: 0;
   z-index: 2000;
 
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
   visibility: hidden;
 
@@ -48,5 +46,4 @@
       transform: scale(1);
     }
   }
-
 }
