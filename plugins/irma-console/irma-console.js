@@ -2,66 +2,80 @@ const qrcode = require('qrcode-terminal');
 
 module.exports = (askRetry, askPairingCode) => {
   return class IrmaConsole {
-
-    constructor({stateMachine, options}) {
+    constructor({ stateMachine, options }) {
       this._stateMachine = stateMachine;
       this._options = options;
     }
 
-    stateChange({newState, transition, payload, isFinal}) {
+    stateChange({ newState, transition, payload, isFinal }) {
       if (isFinal) return;
-      switch(newState) {
+      switch (newState) {
         case 'Cancelled':
-          return this._askRetry('Transaction cancelled.');
+          this._askRetry('Transaction cancelled.');
+          break;
         case 'TimedOut':
-          return this._askRetry('Transaction timed out.');
+          this._askRetry('Transaction timed out.');
+          break;
         case 'Error':
-          return this._askRetry('An error occurred.');
+          this._askRetry('An error occurred.');
+          break;
         case 'ShowingQRCode':
-          return this._renderQRcode(payload);
-        case 'ShowingIrmaButton':
+          this._renderQRcode(payload);
+          break;
+        case 'ShowingIrmaButton': {
           const err = new Error('Mobile sessions cannot be performed in node');
           if (this._options.debugging) console.error(err);
-          return this._stateMachine.selectTransition(({validTransitions}) => {
+          this._stateMachine.selectTransition(({ validTransitions }) => {
             if (validTransitions.includes('fail'))
               return { transition: 'fail', payload: err };
             throw err;
           });
+          break;
+        }
         case 'ContinueOn2ndDevice':
+        // Falls through
         case 'ContinueInIrmaApp':
-          return console.log('Please follow the instructions in the IRMA app.');
+          console.log('Please follow the instructions in the IRMA app.');
+          break;
         case 'EnterPairingCode':
-          return this._askPairingCode(transition != 'appPairing');
+          this._askPairingCode(transition !== 'appPairing');
+          break;
       }
     }
 
     _askPairingCode(askedBefore) {
-      return this._stateMachine.selectTransition(({validTransitions, inEndState}) => {
-        if (inEndState) return false;
-        if (askedBefore && !askRetry("Wrong pairing code was entered.")) {
-          let transition = validTransitions.includes('cancel') ? 'cancel' : 'abort';
-          return { transition };
-        }
-        let enteredPairingCode = askPairingCode();
-        return validTransitions.includes('codeEntered')
-            ? { transition: 'codeEntered', payload: {enteredPairingCode} }
+      return this._stateMachine.selectTransition(
+        ({ validTransitions, inEndState }) => {
+          if (inEndState) return false;
+          if (askedBefore && !askRetry('Wrong pairing code was entered.')) {
+            const transition = validTransitions.includes('cancel')
+              ? 'cancel'
+              : 'abort';
+            return { transition };
+          }
+          const enteredPairingCode = askPairingCode();
+          return validTransitions.includes('codeEntered')
+            ? { transition: 'codeEntered', payload: { enteredPairingCode } }
             : false;
-      });
+        }
+      );
     }
 
     _askRetry(message) {
-      return this._stateMachine.selectTransition(({validTransitions, inEndState}) => {
-        if (inEndState) return false;
-        let transition = validTransitions.includes('restart') && askRetry(message)
-          ? 'restart'
-          : 'abort';
-        return { transition };
-      });
+      return this._stateMachine.selectTransition(
+        ({ validTransitions, inEndState }) => {
+          if (inEndState) return false;
+          const transition =
+            validTransitions.includes('restart') && askRetry(message)
+              ? 'restart'
+              : 'abort';
+          return { transition };
+        }
+      );
     }
 
     _renderQRcode(payload) {
       qrcode.generate(payload.qr);
     }
-
-  }
+  };
 };

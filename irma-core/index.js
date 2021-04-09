@@ -1,57 +1,66 @@
 const StateMachine = require('./state-machine');
 
 module.exports = class IrmaCore {
-
   constructor(options) {
     this._modules = [];
     this._options = options || {};
 
     this._stateMachine = new StateMachine(this._options.debugging);
-    this._stateMachine.addStateChangeListener((s) => this._stateChangeListener(s));
+    this._stateMachine.addStateChangeListener((s) =>
+      this._stateChangeListener(s)
+    );
   }
 
   use(mod) {
-    this._modules.push(new mod({
-      stateMachine: this._stateMachine,
-      options:      this._options
-    }));
+    this._modules.push(
+      // eslint-disable-next-line new-cap
+      new mod({
+        stateMachine: this._stateMachine,
+        options: this._options,
+      })
+    );
   }
 
   start(...input) {
-    if (this._resolve) throw new Error('The irma-core instance has already been started');
+    if (this._resolve)
+      throw new Error('The irma-core instance has already been started');
 
     if (this._options.debugging)
-      console.log("Starting session with options:", this._options);
+      console.log('Starting session with options:', this._options);
 
     return new Promise((resolve, reject) => {
       this._resolve = resolve;
-      this._reject  = reject;
-      this._modules.filter(m => m.start)
-                   .forEach(m => m.start(...input));
+      this._reject = reject;
+      this._modules.filter((m) => m.start).forEach((m) => m.start(...input));
     });
   }
 
   abort() {
-    return this._stateMachine.selectTransition(({state, inEndState}) => {
-      if (state != 'Uninitialized' && !inEndState) {
-        if (this._options.debugging) console.log('🖥 Manually aborting session instance');
+    return this._stateMachine.selectTransition(({ state, inEndState }) => {
+      if (state !== 'Uninitialized' && !inEndState) {
+        if (this._options.debugging)
+          console.log('🖥 Manually aborting session instance');
         return { transition: 'abort' };
       } else {
-        if (this._options.debugging) console.log('🖥 Manual abort is not necessary');
+        if (this._options.debugging)
+          console.log('🖥 Manual abort is not necessary');
         return false;
       }
     });
   }
 
   _stateChangeListener(state) {
-    this._modules.filter(m => m.stateChange)
-                 .forEach(m => m.stateChange(state));
+    this._modules
+      .filter((m) => m.stateChange)
+      .forEach((m) => m.stateChange(state));
 
-    const {newState, payload, isFinal} = state;
+    const { newState, payload, isFinal } = state;
 
     if (isFinal) {
-      const returnValue = newState == 'Success' ? payload : newState;
-      this._close(returnValue).then(newState == 'Success' ? this._resolve : this._reject).catch(this._reject);
+      const returnValue = newState === 'Success' ? payload : newState;
+      this._close(returnValue)
+        .then(newState === 'Success' ? this._resolve : this._reject)
+        .catch(this._reject);
     }
   }
 
@@ -72,12 +81,10 @@ module.exports = class IrmaCore {
    */
   _close(coreReturnValue) {
     return Promise.all(
-      this._modules.map(m => Promise.resolve(m.close ? m.close() : undefined)),
-    )
-      .then(returnValues => {
-        const hasValues = returnValues.some(v => v !== undefined);
-        return hasValues ? [coreReturnValue, ...returnValues] : coreReturnValue;
-      });
+      this._modules.map((m) => Promise.resolve(m.close ? m.close() : undefined))
+    ).then((returnValues) => {
+      const hasValues = returnValues.some((v) => v !== undefined);
+      return hasValues ? [coreReturnValue, ...returnValues] : coreReturnValue;
+    });
   }
-
-}
+};

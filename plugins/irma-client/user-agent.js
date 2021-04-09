@@ -1,6 +1,5 @@
 module.exports = () => {
-  if ( typeof window === 'undefined' )
-    return 'nodejs';
+  if (typeof window === 'undefined') return 'nodejs';
 
   // IE11 doesn't have window.navigator, test differently
   // https://stackoverflow.com/questions/21825157/internet-explorer-11-detection
@@ -16,9 +15,13 @@ module.exports = () => {
     return 'iOS';
 
   // https://stackoverflow.com/questions/57776001/how-to-detect-ipad-pro-as-ipad-using-javascript
-  if (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints && navigator.maxTouchPoints > 2)
+  if (
+    /Macintosh/.test(navigator.userAgent) &&
+    navigator.maxTouchPoints &&
+    navigator.maxTouchPoints > 2
+  )
     return 'iOS';
 
   // Neither Android nor iOS, assuming desktop
   return 'Desktop';
-}
+};
