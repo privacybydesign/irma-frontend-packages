@@ -1,9 +1,13 @@
+const ProtocolVersion = require('./protocol-version');
+
 if (typeof fetch === 'undefined') require('isomorphic-fetch');
 
 module.exports = class SessionManagement {
   constructor(options) {
     this._options = options;
     this._mappings = {};
+    this._minSupportedProtocolVersion = new ProtocolVersion('1.0');
+    this._maxSupportedProtocolVersion = new ProtocolVersion('1.1');
   }
 
   start() {
@@ -29,8 +33,29 @@ module.exports = class SessionManagement {
         // Execute all mapping functions using the received start response.
         Object.keys(this._options.mapping).forEach((val) => (this._mappings[val] = this._options.mapping[val](r)));
 
-        return this._mappings;
+        return this._parseMappings(this._mappings);
       });
+  }
+
+  _parseMappings(mappings) {
+    if (!mappings.sessionPtr) throw new Error('Missing sessionPtr in mappings');
+
+    // To keep frontendRequest in the original format for the other plugins, we don't convert to ProtocolVersion here.
+    let frontendRequest = mappings.frontendRequest;
+    if (!frontendRequest) {
+      frontendRequest = {
+        minProtocolVersion: '1.0',
+        maxProtocolVersion: '1.0',
+      };
+    }
+    // Check whether the IRMA server at least as minimum support for this irma-client version.
+    if (
+      this._minSupportedProtocolVersion.below(new ProtocolVersion(frontendRequest.maxProtocolVersion)) ||
+      this._maxSupportedProtocolVersion.below(new ProtocolVersion(frontendRequest.minProtocolVersion))
+    ) {
+      throw new Error('Frontend protocol version is not supported');
+    }
+    return { ...mappings, frontendRequest };
   }
 
   result() {
