@@ -1,13 +1,19 @@
+// Never use window.EventSource, because it doesn't support requests with additional HTTP headers. // TODO: check
+// eslint-disable-next-line no-shadow
+const EventSource = require('eventsource');
+
 if (typeof fetch === 'undefined') require('isomorphic-fetch');
 
 module.exports = class StatusListener {
   constructor(mappings, options) {
-    this._eventSource = this._eventSource();
     this._isRunning = false;
     this._isPolling = false;
     this._options = options;
     this._mappings = mappings;
-    this._listeningMethod = this._eventSource && this._options.serverSentEvents ? 'sse' : 'polling';
+    this._listeningMethod = this._options.serverSentEvents ? 'sse' : 'polling';
+    this._urlPrefix = this._mappings.frontendRequest.minProtocolVersion.below('1.1')
+      ? this._mappings.sessionPtr.u
+      : this._options.urlPrefix(this._mappings);
   }
 
   observe(stateChangeCallback, errorCallback) {
@@ -36,10 +42,19 @@ module.exports = class StatusListener {
     return true;
   }
 
+  _getFetchParams() {
+    if (this._mappings.frontendRequest.minProtocolVersion.below('1.1')) return {};
+
+    return { headers: { Authorization: this._mappings.frontendRequest.authorization } };
+  }
+
   _startSSE() {
     if (this._options.debugging) console.log('🌎 Using EventSource for server events');
 
-    this._source = new this._eventSource(this._options.serverSentEvents.url(this._mappings));
+    this._source = new EventSource(
+      this._options.serverSentEvents.url(this._mappings, this._urlPrefix),
+      this._getFetchParams()
+    );
 
     const canceller = setTimeout(() => {
       if (this._options.debugging)
@@ -94,7 +109,7 @@ module.exports = class StatusListener {
 
   _pollOnce() {
     // eslint-disable-next-line compat/compat
-    return fetch(this._options.polling.url(this._mappings))
+    return fetch(this._options.polling.url(this._mappings, this._urlPrefix), this._getFetchParams())
       .then((r) => {
         if (r.status !== 200)
           throw new Error(
@@ -141,13 +156,5 @@ module.exports = class StatusListener {
         })
         .catch(reject);
     });
-  }
-
-  _eventSource() {
-    if (typeof window === 'undefined') {
-      return require('eventsource');
-    } else {
-      return window.EventSource;
-    }
   }
 };

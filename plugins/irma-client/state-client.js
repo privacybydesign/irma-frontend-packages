@@ -1,3 +1,5 @@
+const ProtocolVersion = require('./protocol-version');
+
 if (typeof fetch === 'undefined') require('isomorphic-fetch');
 
 const StatusListener = require('./status-listener');
@@ -19,6 +21,7 @@ module.exports = class IrmaStateClient {
       case 'CheckingUserAgent':
         if (transition === 'loaded') {
           this._mappings = payload;
+          this._minProtocolVersion = new ProtocolVersion(this._mappings.frontendRequest.minProtocolVersion);
           this._pairingEnabled = false;
           this._statusListener = new StatusListener(payload, this._options.state);
         } else {
@@ -190,12 +193,6 @@ module.exports = class IrmaStateClient {
         // Skip the request when the pairing method is correctly set already.
         if (shouldBeEnabled === this._pairingEnabled) return Promise.resolve();
 
-        if (!this._mappings.frontendAuth) {
-          console.warn(
-            'Pairing cannot be enabled, because no frontendAuth token is provided. This might be a security risk.'
-          );
-          return Promise.resolve();
-        }
         this._pairingEnabled = shouldBeEnabled;
 
         // If pairing should be enabled, parse the pairing options struct.
@@ -238,12 +235,12 @@ module.exports = class IrmaStateClient {
     const delay = new Promise((resolve) => {
       setTimeout(resolve, this._options.state.pairing.minCheckingDelay);
     });
-    const url = this._options.state.pairing.completedUrl(this._mappings);
+    const url = this._options.state.pairing.completedUrl(this._mappings, this._options.state.urlPrefix(this._mappings));
 
     // eslint-disable-next-line compat/compat
     return fetch(url, {
       method: 'POST',
-      headers: { Authorization: this._mappings.frontendAuth },
+      headers: { Authorization: this._mappings.frontendRequest.authorization },
     })
       .finally(() => delay)
       .catch((err) => {
@@ -253,21 +250,24 @@ module.exports = class IrmaStateClient {
   }
 
   _updateFrontendOptions(options) {
-    if (!this._mappings.frontendAuth) return Promise.reject(new Error('frontendAuth token was not supplied'));
+    if (!this._minProtocolVersion.below('1.1')) {
+      return Promise.reject(new Error('Frontend options are not supported by the IRMA server'));
+    }
 
     const req = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: this._mappings.frontendAuth,
+        Authorization: this._mappings.frontendRequest.authorization,
       },
       body: JSON.stringify({
         '@context': this._options.state.frontendOptions.requestContext,
         ...options,
       }),
     };
+    const urlPrefix = this._options.state.urlPrefix(this._mappings);
     // eslint-disable-next-line compat/compat
-    return fetch(this._options.state.frontendOptions.url(this._mappings), req)
+    return fetch(this._options.state.frontendOptions.url(this._mappings, urlPrefix), req)
       .then((r) => r.json())
       .then((newOptions) => (this._frontendOptions = newOptions));
   }
@@ -310,13 +310,16 @@ module.exports = class IrmaStateClient {
       state: {
         debugging: options.debugging,
 
+        // TODO: Consider converting this to a template (such that at all other places the m variable can be removed)
+        urlPrefix: (m) => `${m.sessionPtr.u}/frontend`,
+
         serverSentEvents: {
-          url: (m) => `${m.sessionPtr.u}/statusevents`,
+          url: (m, prefix) => `${prefix}/statusevents`,
           timeout: 2000,
         },
 
         polling: {
-          url: (m) => `${m.sessionPtr.u}/status`,
+          url: (m, prefix) => `${prefix}/status`,
           interval: 500,
           startState: 'INITIALIZED',
         },
@@ -326,13 +329,13 @@ module.exports = class IrmaStateClient {
         },
 
         frontendOptions: {
-          url: (m) => `${m.sessionPtr.u}/frontend/options`,
+          url: (m, prefix) => `${prefix}/options`,
           requestContext: 'https://irma.app/ld/request/options/v1',
         },
 
         pairing: {
-          onlyEnableIf: (m) => m.sessionPtr.pairingHint,
-          completedUrl: (m) => `${m.sessionPtr.u}/frontend/pairingcompleted`,
+          onlyEnableIf: (m) => m.frontendRequest.pairingHint,
+          completedUrl: (m, prefix) => `${prefix}/pairingcompleted`,
           minCheckingDelay: 500,
           pairingMethod: 'pin',
         },
