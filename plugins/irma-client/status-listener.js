@@ -7,8 +7,7 @@ module.exports = class StatusListener {
     this._isPolling = false;
     this._options = options;
     this._mappings = mappings;
-    this._listeningMethod =
-      this._eventSource && this._options.serverSentEvents ? 'sse' : 'polling';
+    this._listeningMethod = this._eventSource && this._options.serverSentEvents ? 'sse' : 'polling';
   }
 
   observe(stateChangeCallback, errorCallback) {
@@ -29,8 +28,7 @@ module.exports = class StatusListener {
 
     if (this._source) {
       // If ready state is CLOSED (2), the close call will do nothing. Therefore we skip debug logging then.
-      if (this._options.debugging && this._source.readyState < 2)
-        console.log('🌎 Closed EventSource');
+      if (this._options.debugging && this._source.readyState < 2) console.log('🌎 Closed EventSource');
       this._source.close();
     }
 
@@ -39,18 +37,13 @@ module.exports = class StatusListener {
   }
 
   _startSSE() {
-    if (this._options.debugging)
-      console.log('🌎 Using EventSource for server events');
+    if (this._options.debugging) console.log('🌎 Using EventSource for server events');
 
-    this._source = new this._eventSource(
-      this._options.serverSentEvents.url(this._mappings)
-    );
+    this._source = new this._eventSource(this._options.serverSentEvents.url(this._mappings));
 
     const canceller = setTimeout(() => {
       if (this._options.debugging)
-        console.error(
-          `🌎 EventSource could not connect within ${this._options.serverSentEvents.timeout}ms`
-        );
+        console.error(`🌎 EventSource could not connect within ${this._options.serverSentEvents.timeout}ms`);
 
       // Fall back to polling instead
       setTimeout(() => this._source.close(), 0); // Never block on this
@@ -63,8 +56,7 @@ module.exports = class StatusListener {
       clearTimeout(canceller);
       const state = JSON.parse(evnt.data);
 
-      if (this._options.debugging)
-        console.log(`🌎 Server event: Remote state changed to '${state}'`);
+      if (this._options.debugging) console.log(`🌎 Server event: Remote state changed to '${state}'`);
 
       this._stateChangeCallback(state);
     });
@@ -73,8 +65,7 @@ module.exports = class StatusListener {
       clearTimeout(canceller);
       this._source.close();
 
-      if (this._options.debugging)
-        console.error('🌎 EventSource threw an error: ', error);
+      if (this._options.debugging) console.error('🌎 EventSource threw an error: ', error);
 
       // Fall back to polling instead
       setTimeout(() => this._source.close(), 0); // Never block on this
@@ -86,8 +77,7 @@ module.exports = class StatusListener {
     this._listeningMethod = 'polling'; // In case polling is activated as fallback
     if (!this._options.polling || this._isPolling) return;
 
-    if (this._options.debugging)
-      console.log('🌎 Using polling for server events');
+    if (this._options.debugging) console.log('🌎 Using polling for server events');
 
     this._currentStatus = this._options.polling.startState;
     this._isPolling = true;
@@ -97,8 +87,7 @@ module.exports = class StatusListener {
         if (this._options.debugging) console.log('🌎 Stopped polling');
       })
       .catch((error) => {
-        if (this._options.debugging)
-          console.error('🌎 Error thrown while polling: ', error);
+        if (this._options.debugging) console.error('🌎 Error thrown while polling: ', error);
         this._errorCallback(error);
       });
   }
@@ -128,10 +117,7 @@ module.exports = class StatusListener {
       // So in case of an error, we do a second attempt to assure the error is permanent.
       this._pollOnce()
         .catch(() => {
-          if (this._options.debugging)
-            console.log(
-              'Polling attempt failed; doing a second attempt to confirm error'
-            );
+          if (this._options.debugging) console.log('Polling attempt failed; doing a second attempt to confirm error');
           return this._pollOnce();
         })
         .then((newStatus) => {
@@ -143,10 +129,7 @@ module.exports = class StatusListener {
           }
 
           if (newStatus !== this._currentStatus) {
-            if (this._options.debugging)
-              console.log(
-                `🌎 Server event: Remote state changed to '${newStatus}'`
-              );
+            if (this._options.debugging) console.log(`🌎 Server event: Remote state changed to '${newStatus}'`);
 
             this._currentStatus = newStatus;
             this._stateChangeCallback(newStatus);

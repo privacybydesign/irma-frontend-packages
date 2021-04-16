@@ -26,8 +26,7 @@ module.exports = (askRetry, askPairingCode) => {
           const err = new Error('Mobile sessions cannot be performed in node');
           if (this._options.debugging) console.error(err);
           this._stateMachine.selectTransition(({ validTransitions }) => {
-            if (validTransitions.includes('fail'))
-              return { transition: 'fail', payload: err };
+            if (validTransitions.includes('fail')) return { transition: 'fail', payload: err };
             throw err;
           });
           break;
@@ -44,34 +43,25 @@ module.exports = (askRetry, askPairingCode) => {
     }
 
     _askPairingCode(askedBefore) {
-      return this._stateMachine.selectTransition(
-        ({ validTransitions, inEndState }) => {
-          if (inEndState) return false;
-          if (askedBefore && !askRetry('Wrong pairing code was entered.')) {
-            const transition = validTransitions.includes('cancel')
-              ? 'cancel'
-              : 'abort';
-            return { transition };
-          }
-          const enteredPairingCode = askPairingCode();
-          return validTransitions.includes('codeEntered')
-            ? { transition: 'codeEntered', payload: { enteredPairingCode } }
-            : false;
+      return this._stateMachine.selectTransition(({ validTransitions, inEndState }) => {
+        if (inEndState) return false;
+        if (askedBefore && !askRetry('Wrong pairing code was entered.')) {
+          const transition = validTransitions.includes('cancel') ? 'cancel' : 'abort';
+          return { transition };
         }
-      );
+        const enteredPairingCode = askPairingCode();
+        return validTransitions.includes('codeEntered')
+          ? { transition: 'codeEntered', payload: { enteredPairingCode } }
+          : false;
+      });
     }
 
     _askRetry(message) {
-      return this._stateMachine.selectTransition(
-        ({ validTransitions, inEndState }) => {
-          if (inEndState) return false;
-          const transition =
-            validTransitions.includes('restart') && askRetry(message)
-              ? 'restart'
-              : 'abort';
-          return { transition };
-        }
-      );
+      return this._stateMachine.selectTransition(({ validTransitions, inEndState }) => {
+        if (inEndState) return false;
+        const transition = validTransitions.includes('restart') && askRetry(message) ? 'restart' : 'abort';
+        return { transition };
+      });
     }
 
     _renderQRcode(payload) {

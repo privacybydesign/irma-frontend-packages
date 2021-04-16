@@ -8,14 +8,7 @@
 
 module.exports = {
   startState: 'Uninitialized',
-  endStates: [
-    'BrowserNotSupported',
-    'Success',
-    'Aborted',
-    'Cancelled',
-    'TimedOut',
-    'Error',
-  ],
+  endStates: ['BrowserNotSupported', 'Success', 'Aborted', 'Cancelled', 'TimedOut', 'Error'],
 
   Uninitialized: {
     initialize: 'Loading', // Expected payload: {canRestart: true/false}

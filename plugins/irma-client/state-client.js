@@ -20,10 +20,7 @@ module.exports = class IrmaStateClient {
         if (transition === 'loaded') {
           this._mappings = payload;
           this._pairingEnabled = false;
-          this._statusListener = new StatusListener(
-            payload,
-            this._options.state
-          );
+          this._statusListener = new StatusListener(payload, this._options.state);
         } else {
           this._statusListener.close();
         }
@@ -82,8 +79,7 @@ module.exports = class IrmaStateClient {
         (e) => this._serverHandleError(e)
       );
     } catch (error) {
-      if (this._options.debugging)
-        console.error('Observing server state could not be started: ', error);
+      if (this._options.debugging) console.error('Observing server state could not be started: ', error);
 
       this._handleNoSuccess('fail', error);
     }
@@ -94,16 +90,14 @@ module.exports = class IrmaStateClient {
       if (this._statusListener.close()) {
         // If the server is still in an active state, we have to actively cancel.
         this.cancelSession(this._mappings).catch((error) => {
-          if (this._options.debugging)
-            console.error('Session could not be cancelled:', error);
+          if (this._options.debugging) console.error('Session could not be cancelled:', error);
         });
       }
     }
   }
 
   _serverHandleError(error) {
-    if (this._options.debugging)
-      console.error('Error while observing server state: ', error);
+    if (this._options.debugging) console.error('Error while observing server state: ', error);
 
     this._handleNoSuccess('fail', error);
   }
@@ -120,8 +114,7 @@ module.exports = class IrmaStateClient {
               };
             break;
           case 'CONNECTED':
-            if (validTransitions.includes('appConnected'))
-              return { transition: 'appConnected' };
+            if (validTransitions.includes('appConnected')) return { transition: 'appConnected' };
             break;
           case 'DONE':
             // What we hope will happen ;)
@@ -145,15 +138,10 @@ module.exports = class IrmaStateClient {
           default:
             // Catch unknown errors and give generic error message. We never really
             // want to get here.
-            if (this._options.debugging)
-              console.error('Unknown state received from server:', newState);
+            if (this._options.debugging) console.error('Unknown state received from server:', newState);
 
             this._statusListener.close();
-            return this._noSuccessTransition(
-              validTransitions,
-              'fail',
-              new Error('Unknown state received from server')
-            );
+            return this._noSuccessTransition(validTransitions, 'fail', new Error('Unknown state received from server'));
         }
         return false;
       })
@@ -161,9 +149,7 @@ module.exports = class IrmaStateClient {
         // In case we postponed the prepareResult transition above, we have to schedule it here.
         if (r.transition === 'appConnected' && newState === 'DONE') {
           return this._stateMachine.selectTransition(({ validTransitions }) =>
-            validTransitions.includes('prepareResult')
-              ? { transition: 'prepareResult' }
-              : false
+            validTransitions.includes('prepareResult') ? { transition: 'prepareResult' } : false
           );
         }
         return Promise.resolve();
@@ -188,10 +174,7 @@ module.exports = class IrmaStateClient {
     // If we cannot handle it in a nice way, we only print it for debug purposes.
     if (this._options.debugging) {
       const payloadError = payload ? `with payload ${payload}` : '';
-      console.error(
-        `Unknown transition, tried transition ${transition}`,
-        payloadError
-      );
+      console.error(`Unknown transition, tried transition ${transition}`, payloadError);
     }
     return false;
   }
@@ -202,9 +185,7 @@ module.exports = class IrmaStateClient {
         if (!this._options.state.pairing) return Promise.resolve();
 
         // onlyEnableIf may return 'undefined', so we force conversion to boolean by doing a double negation (!!).
-        const shouldBeEnabled =
-          continueOnSecondDevice &&
-          !!this._options.state.pairing.onlyEnableIf(this._mappings);
+        const shouldBeEnabled = continueOnSecondDevice && !!this._options.state.pairing.onlyEnableIf(this._mappings);
 
         // Skip the request when the pairing method is correctly set already.
         if (shouldBeEnabled === this._pairingEnabled) return Promise.resolve();
@@ -248,8 +229,7 @@ module.exports = class IrmaStateClient {
         })
       )
       .catch((err) => {
-        if (this._options.debugging)
-          console.error('Error received while updating pairing state:', err);
+        if (this._options.debugging) console.error('Error received while updating pairing state:', err);
         this._handleNoSuccess('fail', err);
       });
   }
@@ -267,15 +247,13 @@ module.exports = class IrmaStateClient {
     })
       .finally(() => delay)
       .catch((err) => {
-        if (this._options.debugging)
-          console.error('Error received while completing pairing:', err);
+        if (this._options.debugging) console.error('Error received while completing pairing:', err);
         this._handleNoSuccess('fail', err);
       });
   }
 
   _updateFrontendOptions(options) {
-    if (!this._mappings.frontendAuth)
-      return Promise.reject(new Error('frontendAuth token was not supplied'));
+    if (!this._mappings.frontendAuth) return Promise.reject(new Error('frontendAuth token was not supplied'));
 
     const req = {
       method: 'POST',
@@ -317,12 +295,10 @@ module.exports = class IrmaStateClient {
       switch (this._userAgent) {
         case 'Android':
         case 'iOS':
-          if (validTransitions.includes('prepareButton'))
-            return { transition: 'prepareButton' };
+          if (validTransitions.includes('prepareButton')) return { transition: 'prepareButton' };
           break;
         default:
-          if (validTransitions.includes('prepareQRCode'))
-            return { transition: 'prepareQRCode' };
+          if (validTransitions.includes('prepareQRCode')) return { transition: 'prepareQRCode' };
           break;
       }
       return false;

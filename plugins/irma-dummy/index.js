@@ -55,10 +55,7 @@ module.exports = class IrmaDummy {
         this._waitForUserAction();
         break;
       case 'PreparingResult':
-        setTimeout(
-          () => this._doTransition('succeed', this._options.successPayload),
-          this._options.timing.prepare
-        );
+        setTimeout(() => this._doTransition('succeed', this._options.successPayload), this._options.timing.prepare);
         break;
     }
   }
@@ -67,10 +64,7 @@ module.exports = class IrmaDummy {
     if (this._options.debugging) console.log(`🧙🏼‍♂️ Initializing fake IRMA flow`);
 
     return this._stateMachine.selectTransition(({ state }) => {
-      if (state !== 'Uninitialized')
-        throw new Error(
-          'State machine is already initialized by another plugin'
-        );
+      if (state !== 'Uninitialized') throw new Error('State machine is already initialized by another plugin');
       switch (this._options.dummy) {
         case 'browser unsupported':
           return {
@@ -87,10 +81,7 @@ module.exports = class IrmaDummy {
     setTimeout(() => {
       switch (this._options.dummy) {
         case 'connection error':
-          return this._doTransition(
-            'fail',
-            new Error('Dummy connection error')
-          );
+          return this._doTransition('fail', new Error('Dummy connection error'));
         default:
           return this._doTransition('loaded', {
             sessionPtr: this._options.qrPayload,

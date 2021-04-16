@@ -6,9 +6,7 @@ module.exports = class IrmaCore {
     this._options = options || {};
 
     this._stateMachine = new StateMachine(this._options.debugging);
-    this._stateMachine.addStateChangeListener((s) =>
-      this._stateChangeListener(s)
-    );
+    this._stateMachine.addStateChangeListener((s) => this._stateChangeListener(s));
   }
 
   use(mod) {
@@ -22,11 +20,9 @@ module.exports = class IrmaCore {
   }
 
   start(...input) {
-    if (this._resolve)
-      throw new Error('The irma-core instance has already been started');
+    if (this._resolve) throw new Error('The irma-core instance has already been started');
 
-    if (this._options.debugging)
-      console.log('Starting session with options:', this._options);
+    if (this._options.debugging) console.log('Starting session with options:', this._options);
 
     return new Promise((resolve, reject) => {
       this._resolve = resolve;
@@ -38,21 +34,17 @@ module.exports = class IrmaCore {
   abort() {
     return this._stateMachine.selectTransition(({ state, inEndState }) => {
       if (state !== 'Uninitialized' && !inEndState) {
-        if (this._options.debugging)
-          console.log('🖥 Manually aborting session instance');
+        if (this._options.debugging) console.log('🖥 Manually aborting session instance');
         return { transition: 'abort' };
       } else {
-        if (this._options.debugging)
-          console.log('🖥 Manual abort is not necessary');
+        if (this._options.debugging) console.log('🖥 Manual abort is not necessary');
         return false;
       }
     });
   }
 
   _stateChangeListener(state) {
-    this._modules
-      .filter((m) => m.stateChange)
-      .forEach((m) => m.stateChange(state));
+    this._modules.filter((m) => m.stateChange).forEach((m) => m.stateChange(state));
 
     const { newState, payload, isFinal } = state;
 
@@ -80,11 +72,11 @@ module.exports = class IrmaCore {
    * @private
    */
   _close(coreReturnValue) {
-    return Promise.all(
-      this._modules.map((m) => Promise.resolve(m.close ? m.close() : undefined))
-    ).then((returnValues) => {
-      const hasValues = returnValues.some((v) => v !== undefined);
-      return hasValues ? [coreReturnValue, ...returnValues] : coreReturnValue;
-    });
+    return Promise.all(this._modules.map((m) => Promise.resolve(m.close ? m.close() : undefined))).then(
+      (returnValues) => {
+        const hasValues = returnValues.some((v) => v !== undefined);
+        return hasValues ? [coreReturnValue, ...returnValues] : coreReturnValue;
+      }
+    );
   }
 };

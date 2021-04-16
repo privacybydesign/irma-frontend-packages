@@ -18,22 +18,17 @@ module.exports = class DOMManipulations {
 
   renderState(state) {
     const newPartial = this._stateToPartialMapping()[state.newState];
-    if (!newPartial)
-      throw new Error(`I don't know how to render '${state.newState}'`);
+    if (!newPartial) throw new Error(`I don't know how to render '${state.newState}'`);
     this._renderPartial(newPartial, state);
 
     if (state.oldState === 'ShowingIrmaButton' && !this._showHelper) {
-      this._element
-        .querySelector('.irma-web-header')
-        .classList.remove('irma-web-show-helper');
+      this._element.querySelector('.irma-web-header').classList.remove('irma-web-show-helper');
     }
 
     if (state.isFinal) {
       this._detachEventHandlers();
       // Make sure all restart buttons are hidden when being in a final state
-      this._element
-        .querySelectorAll('.irma-web-restart-button')
-        .forEach((e) => (e.style.display = 'none'));
+      this._element.querySelectorAll('.irma-web-restart-button').forEach((e) => (e.style.display = 'none'));
     }
   }
 
@@ -45,9 +40,7 @@ module.exports = class DOMManipulations {
   }
 
   setButtonLink(link) {
-    this._element
-      .querySelector('.irma-web-button-link')
-      .setAttribute('href', link);
+    this._element.querySelector('.irma-web-button-link').setAttribute('href', link);
   }
 
   _renderInitialState() {
@@ -63,9 +56,7 @@ module.exports = class DOMManipulations {
   _attachEventHandlers() {
     // Polyfill for Element.matches to fix IE11
     if (!Element.prototype.matches) {
-      Element.prototype.matches =
-        Element.prototype.msMatchesSelector ||
-        Element.prototype.webkitMatchesSelector;
+      Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
     }
 
     this._attachEventHandler('click', (e) => {
@@ -77,9 +68,7 @@ module.exports = class DOMManipulations {
         setTimeout(() => {
           // Only activate helper if the button to open the IRMA app is still present after the timeout.
           if (this._element.contains(e.target)) {
-            this._element
-              .querySelector('.irma-web-header')
-              .classList.add('irma-web-show-helper');
+            this._element.querySelector('.irma-web-header').classList.add('irma-web-show-helper');
             e.target.disabled = false;
           }
         }, this._fallbackDelay);
@@ -99,11 +88,7 @@ module.exports = class DOMManipulations {
     this._attachEventHandler('keyup', (e) => {
       if (e.target.matches('.irma-web-pairing-code input')) {
         const prevField = e.target.previousElementSibling;
-        if (
-          prevField &&
-          e.key === 'Backspace' &&
-          e.target.value === e.target.prevValue
-        ) {
+        if (prevField && e.key === 'Backspace' && e.target.value === e.target.prevValue) {
           prevField.value = '';
           prevField.focus();
         }
@@ -133,12 +118,8 @@ module.exports = class DOMManipulations {
     this._attachEventHandler('submit', (e) => {
       if (e.target.className === 'irma-web-pairing-form') {
         e.preventDefault();
-        const inputFields = e.target.querySelectorAll(
-          '.irma-web-pairing-code input'
-        );
-        const enteredCode = Array.prototype.map
-          .call(inputFields, (f) => f.value)
-          .join('');
+        const inputFields = e.target.querySelectorAll('.irma-web-pairing-code input');
+        const enteredCode = Array.prototype.map.call(inputFields, (f) => f.value).join('');
         this._pairingCodeCallback(enteredCode);
       }
     });
@@ -155,9 +136,7 @@ module.exports = class DOMManipulations {
     const content = newPartial.call(this, state);
 
     if (content) {
-      this._element.querySelector(
-        '.irma-web-content .irma-web-centered'
-      ).innerHTML = content;
+      this._element.querySelector('.irma-web-content .irma-web-centered').innerHTML = content;
     }
 
     // Focus on first input field if any is present.
@@ -192,9 +171,7 @@ module.exports = class DOMManipulations {
 
   _irmaWebForm(content) {
     return `
-      <div class="irma-web-header ${
-        this._showHelper ? 'irma-web-show-helper' : ''
-      }">
+      <div class="irma-web-header ${this._showHelper ? 'irma-web-show-helper' : ''}">
         <p>${this._translations.header}</p>
         <div class="irma-web-helper">
           <p>${this._translations.helper}</p>
@@ -261,28 +238,20 @@ module.exports = class DOMManipulations {
 
   _stateEnterPairingCode({ transition, payload }) {
     const form = this._element.querySelector('.irma-web-pairing-form');
-    const inputFields = this._element.querySelectorAll(
-      '.irma-web-pairing-code input'
-    );
+    const inputFields = this._element.querySelectorAll('.irma-web-pairing-code input');
     switch (transition) {
       case 'pairingRejected': {
         const textElement = form.firstElementChild;
-        textElement.innerHTML = this._translations.pairingFailed(
-          payload.enteredPairingCode
-        );
+        textElement.innerHTML = this._translations.pairingFailed(payload.enteredPairingCode);
         textElement.classList.add('irma-web-error');
         form.reset();
         inputFields.forEach((f) => (f.disabled = false));
-        form.querySelector(
-          '.irma-web-pairing-loading-animation'
-        ).style.visibility = 'hidden';
+        form.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'hidden';
         return false;
       }
       case 'codeEntered':
         inputFields.forEach((f) => (f.disabled = true));
-        form.querySelector(
-          '.irma-web-pairing-loading-animation'
-        ).style.visibility = 'visible';
+        form.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'visible';
         return false;
       default:
         return `

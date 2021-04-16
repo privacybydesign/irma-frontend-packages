@@ -9,9 +9,7 @@ module.exports = class SessionManagement {
   start() {
     // Handle case where start is disabled and qr and token are supplied directly
     if (!this._options.start) {
-      Object.keys(this._options.mapping).forEach(
-        (val) => (this._mappings[val] = this._options.mapping[val]({}))
-      );
+      Object.keys(this._options.mapping).forEach((val) => (this._mappings[val] = this._options.mapping[val]({})));
 
       return Promise.resolve(this._mappings);
     }
@@ -29,9 +27,7 @@ module.exports = class SessionManagement {
       .then((r) => this._options.start.parseResponse(r))
       .then((r) => {
         // Execute all mapping functions using the received start response.
-        Object.keys(this._options.mapping).forEach(
-          (val) => (this._mappings[val] = this._options.mapping[val](r))
-        );
+        Object.keys(this._options.mapping).forEach((val) => (this._mappings[val] = this._options.mapping[val](r)));
 
         return this._mappings;
       });
@@ -41,10 +37,7 @@ module.exports = class SessionManagement {
     if (!this._options.result) return Promise.resolve(this._mappings);
 
     // eslint-disable-next-line compat/compat
-    return fetch(
-      this._options.result.url(this._options, this._mappings),
-      this._options.result
-    )
+    return fetch(this._options.result.url(this._options, this._mappings), this._options.result)
       .then((r) => {
         if (r.status !== 200)
           throw new Error(
