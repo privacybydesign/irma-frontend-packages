@@ -69,7 +69,11 @@ module.exports = class StatusListener {
 
     this._source.addEventListener('message', (evnt) => {
       clearTimeout(canceller);
-      const state = JSON.parse(evnt.data);
+      let state = JSON.parse(evnt.data);
+      // Do additional parsing in case we received the legacy status response.
+      if (typeof state === 'string') {
+        state = { status: state };
+      }
 
       if (this._options.debugging) console.log(`🌎 Server event: Remote state changed to '${state}'`);
 
@@ -108,16 +112,20 @@ module.exports = class StatusListener {
   }
 
   _pollOnce() {
-    // eslint-disable-next-line compat/compat
-    return fetch(this._options.polling.url(this._mappings, this._urlPrefix), this._getFetchParams())
-      .then((r) => {
-        if (r.status !== 200)
-          throw new Error(
-            `Error in fetch: endpoint returned status other than 200 OK. Status: ${r.status} ${r.statusText}`
-          );
-        return r;
-      })
-      .then((r) => r.json());
+    return (
+      // eslint-disable-next-line compat/compat
+      fetch(this._options.polling.url(this._mappings, this._urlPrefix), this._getFetchParams())
+        .then((r) => {
+          if (r.status !== 200)
+            throw new Error(
+              `Error in fetch: endpoint returned status other than 200 OK. Status: ${r.status} ${r.statusText}`
+            );
+          return r;
+        })
+        .then((r) => r.json())
+        // Do additional parsing in case we received the legacy status response.
+        .then((state) => (typeof state === 'string' ? { status: state } : state))
+    );
   }
 
   _polling() {
