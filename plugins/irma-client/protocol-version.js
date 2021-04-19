@@ -1,13 +1,5 @@
 module.exports = class {
-  constructor(str) {
-    const split = str.split('.').map((x) => parseInt(x));
-    if (split.length !== 2) throw new Error('Length does not match');
-    const version = this._parse(str);
-    this.major = version.major;
-    this.minor = version.minor;
-  }
-
-  _parse(str) {
+  static _parse(str) {
     const split = str.split('.').map((x) => parseInt(x));
     if (split.length !== 2) throw new Error('Length does not match');
     return {
@@ -16,17 +8,31 @@ module.exports = class {
     };
   }
 
-  above(other) {
-    if (typeof other === 'string') other = this._parse(other);
+  /**
+   * Checks whether version x is above version y
+   * @param {string} x
+   * @param {string} y
+   * @returns {boolean}
+   */
+  static above(x, y) {
+    const parsedX = this._parse(x);
+    const parsedY = this._parse(y);
 
-    if (this.major === other.major) return this.minor > other.minor;
-    return this.major > other.major;
+    if (parsedX.major === parsedY.major) return parsedX.minor > parsedY.minor;
+    return parsedX.major > parsedY.major;
   }
 
-  below(other) {
-    if (typeof other === 'string') other = this._parse(other);
+  /**
+   * Checks whether version x is below version y
+   * @param {string} x
+   * @param {string} y
+   * @returns {boolean}
+   */
+  static below(x, y) {
+    const parsedX = this._parse(x);
+    const parsedY = this._parse(y);
 
-    if (this.major === other.major) return this.minor < other.minor;
-    return this.major < other.major;
+    if (parsedX.major === parsedY.major) return parsedX.minor < parsedY.minor;
+    return parsedX.major < parsedY.major;
   }
 };

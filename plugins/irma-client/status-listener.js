@@ -1,3 +1,5 @@
+const ProtocolVersion = require('./protocol-version');
+
 // Never use window.EventSource, because it doesn't support requests with additional HTTP headers. // TODO: check
 // eslint-disable-next-line no-shadow
 const EventSource = require('eventsource');
@@ -11,7 +13,7 @@ module.exports = class StatusListener {
     this._options = options;
     this._mappings = mappings;
     this._listeningMethod = this._options.serverSentEvents ? 'sse' : 'polling';
-    this._urlPrefix = this._mappings.frontendRequest.minProtocolVersion.below('1.1')
+    this._urlPrefix = ProtocolVersion.below(this._mappings.frontendRequest.maxProtocolVersion, '1.1')
       ? this._mappings.sessionPtr.u
       : this._options.urlPrefix(this._mappings);
   }
@@ -43,7 +45,7 @@ module.exports = class StatusListener {
   }
 
   _getFetchParams() {
-    if (this._mappings.frontendRequest.minProtocolVersion.below('1.1')) return {};
+    if (ProtocolVersion.below(this._mappings.frontendRequest.maxProtocolVersion, '1.1')) return {};
 
     return { headers: { Authorization: this._mappings.frontendRequest.authorization } };
   }
@@ -75,7 +77,7 @@ module.exports = class StatusListener {
         state = { status: state };
       }
 
-      if (this._options.debugging) console.log(`🌎 Server event: Remote state changed to '${state}'`);
+      if (this._options.debugging) console.log(`🌎 Server event: Remote state changed to '${state.status}'`);
 
       this._stateChangeCallback(state);
     });
@@ -143,7 +145,7 @@ module.exports = class StatusListener {
           if (this._options.debugging) console.log('Polling attempt failed; doing a second attempt to confirm error');
           return this._pollOnce();
         })
-        .then((newStatus) => {
+        .then((state) => {
           // Re-check running because variable might have been changed during fetch.
           if (!this._isRunning) {
             this._isPolling = false;
@@ -151,11 +153,11 @@ module.exports = class StatusListener {
             return;
           }
 
-          if (newStatus !== this._currentStatus) {
-            if (this._options.debugging) console.log(`🌎 Server event: Remote state changed to '${newStatus}'`);
+          if (state.status !== this._currentStatus) {
+            if (this._options.debugging) console.log(`🌎 Server event: Remote state changed to '${state.status}'`);
 
-            this._currentStatus = newStatus;
-            this._stateChangeCallback(newStatus);
+            this._currentStatus = state.status;
+            this._stateChangeCallback(state);
           }
 
           setTimeout(() => {

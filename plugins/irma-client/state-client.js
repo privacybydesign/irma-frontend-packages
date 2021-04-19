@@ -21,7 +21,6 @@ module.exports = class IrmaStateClient {
       case 'CheckingUserAgent':
         if (transition === 'loaded') {
           this._mappings = payload;
-          this._minProtocolVersion = new ProtocolVersion(this._mappings.frontendRequest.minProtocolVersion);
           this._pairingEnabled = false;
           this._statusListener = new StatusListener(payload, this._options.state);
         } else {
@@ -105,10 +104,10 @@ module.exports = class IrmaStateClient {
     this._handleNoSuccess('fail', error);
   }
 
-  _serverStateChange({ state }) {
+  _serverStateChange(state) {
     return this._stateMachine
       .selectTransition(({ validTransitions }) => {
-        switch (state) {
+        switch (state.status) {
           case 'PAIRING':
             if (validTransitions.includes('appPairing'))
               return {
@@ -141,7 +140,7 @@ module.exports = class IrmaStateClient {
           default:
             // Catch unknown errors and give generic error message. We never really
             // want to get here.
-            if (this._options.debugging) console.error('Unknown state received from server:', state);
+            if (this._options.debugging) console.error('Unknown state received from server:', state.status);
 
             this._statusListener.close();
             return this._noSuccessTransition(validTransitions, 'fail', new Error('Unknown state received from server'));
@@ -150,7 +149,7 @@ module.exports = class IrmaStateClient {
       })
       .then((r) => {
         // In case we postponed the prepareResult transition above, we have to schedule it here.
-        if (r.transition === 'appConnected' && state === 'DONE') {
+        if (r.transition === 'appConnected' && state.status === 'DONE') {
           return this._stateMachine.selectTransition(({ validTransitions }) =>
             validTransitions.includes('prepareResult') ? { transition: 'prepareResult' } : false
           );
@@ -250,7 +249,7 @@ module.exports = class IrmaStateClient {
   }
 
   _updateFrontendOptions(options) {
-    if (!this._minProtocolVersion.below('1.1')) {
+    if (!ProtocolVersion.below(this._mappings.frontendRequest.minProtocolVersion, '1.1')) {
       return Promise.reject(new Error('Frontend options are not supported by the IRMA server'));
     }
 
@@ -330,7 +329,7 @@ module.exports = class IrmaStateClient {
 
         frontendOptions: {
           url: (m, prefix) => `${prefix}/options`,
-          requestContext: 'https://irma.app/ld/request/options/v1',
+          requestContext: 'https://irma.app/ld/request/frontendoptions/v1',
         },
 
         pairing: {
