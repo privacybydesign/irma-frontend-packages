@@ -107,55 +107,63 @@ module.exports = class IrmaStateClient {
   _serverStateChange(state) {
     return this._stateMachine
       .selectTransition(({ validTransitions }) => {
-        switch (state.status) {
-          case 'PAIRING':
-            if (validTransitions.includes('appPairing'))
-              return {
-                transition: 'appPairing',
-                payload: this._frontendOptions,
-              };
-            break;
-          case 'CONNECTED':
-            if (validTransitions.includes('appConnected')) return { transition: 'appConnected' };
-            break;
-          case 'DONE':
-            // What we hope will happen ;)
-            this._statusListener.close();
-            // We sometimes miss the appConnected transition
-            // on iOS, that's why sometimes we have to do this one first.
-            if (validTransitions.includes('appConnected')) {
-              return { transition: 'appConnected' };
-            } else if (validTransitions.includes('prepareResult')) {
-              return { transition: 'prepareResult' };
-            }
-            break;
-          case 'CANCELLED':
-            // This is a conscious choice by a user.
-            this._statusListener.close();
-            return this._noSuccessTransition(validTransitions, 'cancel');
-          case 'TIMEOUT':
-            // This is a known and understood error. We can be explicit to the user.
-            this._statusListener.close();
-            return this._noSuccessTransition(validTransitions, 'timeout');
-          default:
-            // Catch unknown errors and give generic error message. We never really
-            // want to get here.
-            if (this._options.debugging) console.error('Unknown state received from server:', state.status);
-
-            this._statusListener.close();
-            return this._noSuccessTransition(validTransitions, 'fail', new Error('Unknown state received from server'));
+        // We sometimes miss the appConnected transition
+        // on iOS, that's why sometimes we have to do this one first.
+        if (state.status === 'DONE' && validTransitions.includes('appConnected')) {
+          return { transition: 'appConnected' };
         }
         return false;
       })
-      .then((r) => {
-        // In case we postponed the prepareResult transition above, we have to schedule it here.
-        if (r.transition === 'appConnected' && state.status === 'DONE') {
-          return this._stateMachine.selectTransition(({ validTransitions }) =>
-            validTransitions.includes('prepareResult') ? { transition: 'prepareResult' } : false
-          );
-        }
-        return Promise.resolve();
-      });
+      .then(() =>
+        this._stateMachine.selectTransition(({ validTransitions }) => {
+          switch (state.status) {
+            case 'PAIRING':
+              if (validTransitions.includes('appPairing'))
+                return {
+                  transition: 'appPairing',
+                  payload: this._frontendOptions,
+                };
+              break;
+            case 'CONNECTED':
+              if (validTransitions.includes('appConnected')) return { transition: 'appConnected' };
+              break;
+            case 'DONE':
+              // What we hope will happen ;)
+              this._statusListener.close();
+              if (state.nextSession) {
+                const newMappings = {
+                  ...this._mappings,
+                  sessionPtr: state.nextSession,
+                };
+                this._statusListener = new StatusListener(newMappings, this._options.state);
+                this._startWatchingServerState();
+              } else if (validTransitions.includes('prepareResult')) {
+                return { transition: 'prepareResult' };
+              }
+              break;
+            case 'CANCELLED':
+              // This is a conscious choice by a user.
+              this._statusListener.close();
+              return this._noSuccessTransition(validTransitions, 'cancel');
+            case 'TIMEOUT':
+              // This is a known and understood error. We can be explicit to the user.
+              this._statusListener.close();
+              return this._noSuccessTransition(validTransitions, 'timeout');
+            default:
+              // Catch unknown errors and give generic error message. We never really
+              // want to get here.
+              if (this._options.debugging) console.error('Unknown state received from server:', state.status);
+
+              this._statusListener.close();
+              return this._noSuccessTransition(
+                validTransitions,
+                'fail',
+                new Error('Unknown state received from server')
+              );
+          }
+          return false;
+        })
+      );
   }
 
   _handleNoSuccess(transition, payload) {
