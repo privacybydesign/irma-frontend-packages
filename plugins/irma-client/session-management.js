@@ -40,7 +40,6 @@ module.exports = class SessionManagement {
   _parseMappings(mappings) {
     if (!mappings.sessionPtr) throw new Error('Missing sessionPtr in mappings');
 
-    // To keep frontendRequest in the original format for the other plugins, we don't convert to ProtocolVersion here.
     let frontendRequest = mappings.frontendRequest;
     if (!frontendRequest) {
       frontendRequest = {
@@ -48,7 +47,7 @@ module.exports = class SessionManagement {
         maxProtocolVersion: '1.0',
       };
     }
-    // Check whether the IRMA server at least as minimum support for this irma-client version.
+    // Check whether the IRMA server at least has minimum support for this irma-client version.
     if (
       ProtocolVersion.above(this._minSupportedProtocolVersion, frontendRequest.maxProtocolVersion) ||
       ProtocolVersion.below(this._maxSupportedProtocolVersion, frontendRequest.minProtocolVersion)
