@@ -170,12 +170,13 @@ variables. By default, the following mappings are present:
    requestor token, [as being received from the `irma server`](https://irma.app/docs/api-irma-server/#post-session).
    This mapping is only mandatory if the token is required by the specified [`result` endpoint](#option-result).
    It defaults to using the `token` field from the parsed JSON response of the [`start` endpoint](#option-start) (if present).
- - `frontendAuth`: the result from the `frontendAuth` mapping should be a valid IRMA
-   frontend authentication token, [as being received from the `irma server`](https://irma.app/docs/api-irma-server/#post-session).
-   It defaults to using the `frontendAuth` field from the parsed JSON response of the [`start` endpoint](#option-start) (if present).
-   If not present, pairing functionality cannot be used. This might be a security risk. A warning in the (browser) console
-   will be visible when there is a risk. This can be resolved by either include the `frontendAuth` anyway or by
-   accepting the security risk by explicitly disabling the pairing state in the [pairing state options](#pairing).
+ - `frontendRequest`: the result from the `frontendRequest` mapping should be a valid IRMA
+   frontend session request, [as being received from the `irma server`](https://irma.app/docs/api-irma-server/#post-session).
+   It defaults to using the `frontendRequest` field from the parsed JSON response of the [`start` endpoint](#option-start) (if present).
+   If not present, only frontend protocol version 1.0 is supported. This means that pairing functionality cannot be used.
+   This might be a security risk. Furthermore, frontend protocol version 1.0 lacks proper support for chained sessions
+   (i.e. a `nextSession` is being specified as [extra parameter](https://irma.app/docs/session-requests/#extra-parameters)
+   in the session request).
 
 Additional mappings can also be added. Their names are free to choose (as long as there is no name collision).
 
@@ -186,18 +187,17 @@ Within `irma-client` the mappings can also be accessed as second parameter in th
 the [`result` property struct](#option-result). There it can be used to compose
 the result endpoint. Furthermore, the mappings are used in several [state options](#state).
 
-In case you obtain a session pointer (and possibly the other values) in
-another way than via `start`, you can override the mapping functions to manually
-specify your session pointer and/or session token.
-For example, when you somewhere collected
-a session pointer in a variable, say `customQr`,
-you can start this session by doing:
+In case you obtain a session pointer (and possibly the other values) in another way than via `start`,
+you can override the mapping functions to manually specify your mappings. For example, when you
+somewhere collected the necessary information to start an IRMA session in JavaScript variables,
+say `customQr` and `customFrontendRequest`, you can start this session by doing:
 
 ```javascript
 session: {
   start: false,
   mapping: {
-    sessionPtr: () => customQr
+    sessionPtr: () => customQr,
+    frontendRequest: () => customFrontendRequest
   },
   result: false
 }
@@ -211,7 +211,7 @@ mapping can be found below.
 mapping: {
     sessionPtr:      r => r.sessionPtr,
     sessionToken:    r => r.token,
-    frontendAuth:    r => r.frontendAuth
+    frontendRequest: r => r.frontendRequest
 }
 ```
 
@@ -247,13 +247,26 @@ result: {
 ### state
 
 The `state` option tells the plugin what states it should use and how to subscribe for
-listeners that monitor state changes on the IRMA server.
+listeners that monitor state changes on the IRMA server. You can find an overview of
+the possible option sets in the subsections.
+
+There are two general options, `url` and `legacyUrl`, to determine the location of the
+frontend endpoints of the IRMA server. The `legacyUrl` is used for frontend protocol
+version 1.0 (for [IRMA server](https://irma.app/docs/irma-server/) v0.7.x and earlier)
+and the `url` is used for frontend protocol version 1.1 and above.
+
+These are the accepted general properties and their defaults:
 
 ```javascript
 state: {
+  url:       (m, endpoint) => `${m.sessionPtr.u}/frontend/${endpoint}`, 
+  legacyUrl: (m, endpoint) => `${m.sessionPtr.u}/${endpoint}`,
   ...
 }
 ```
+
+The URL from `m.sessionPtr.u` will point directly to your IRMA server.
+This is intentional; the IRMA app should be able to access those endpoints too.
 
 #### State monitoring
 For state monitoring, we offer the options `serverSentEvents` and `polling`.
@@ -266,20 +279,17 @@ These are the accepted properties and their defaults for state monitoring:
 ```javascript
 state: {
     serverSentEvents: {
-      url:      m => `${m.sessionPtr['u']}/statusevents`,
+      endpoint: 'statusevents',
       timeout:  2000
     },
 
     polling: {
-      url:        m => `${m.sessionPtr['u']}/status`,
+      endpoint:   'status',
       interval:   500,
       startState: 'INITIALIZED'
     }
 }
 ```
-
-The URL from `m.sessionPtr['u']` will point directly to your IRMA server.
-This is intentional; the IRMA app should be able to access those endpoints too.
 
 #### Cancellation
 The `irma server` knows an endpoint to delete sessions. This endpoint is being
@@ -300,6 +310,10 @@ state: {
 The URL from `m.sessionPtr['u']` will point directly to your IRMA server.
 This is intentional; the IRMA app should be able to access those endpoints too.
 
+Please remark that for cancellation there is no frontend specific endpoint at the IRMA
+server. Therefore, the URL of the cancellation endpoint deviates from the frontend
+endpoint format being specified by the [general `url` option](#state) above.
+
 #### Pairing
 The pairing state is an optional state that can be introduced to prevent QR theft,
 added between scanning a IRMA QR code and actually performing the session.
@@ -310,8 +324,10 @@ scans the QR, since the session might contain sensitive information.
  - Issuing sessions
  - Disclosing sessions with fixed attribute values (e.g. show that your email address is example@example.com)
  - Signing sessions (the message that needs signing might contain sensitive information)
+ - Chained sessions (i.e. a `nextSession` is being specified as [extra parameter](https://irma.app/docs/session-requests/#extra-parameters)
+   in the session request)
 
-For these session types, the `sessionPtr` will include an extra field `"pairingHint": true`.
+For these session types, the `frontendRequest` will include an extra field `"pairingHint": true`.
 When this happens, pairing will be enabled by default when a QR is scanned. In case
 of a mobile session, a pairing state is never introduced.
 
@@ -328,21 +344,18 @@ the default value is used.
 ```javascript
 state: {
   frontendOptions: {
-    url:               m => `${m.sessionPtr['u']}/frontend/options`,
-    requestContext:    'https://irma.app/ld/request/options/v1'
+    endpoint:           'options',
+    requestContext:     'https://irma.app/ld/request/options/v1'
    },
 
    pairing: {
-     onlyEnableIf:     m => m.sessionPtr['pairingHint'],
-     completedUrl:     m => `${m.sessionPtr['u']}/frontend/pairingcompleted`,
-     minCheckingDelay: 500, // Minimum delay before accepting or rejecting a pairing code, for better user experience.
-     pairingMethod:    'pin'
+     onlyEnableIf:      m => m.frontendRequest.pairingHint,
+     completedEndpoint: 'pairingcompleted',
+     minCheckingDelay:  500, // Minimum delay before accepting or rejecting a pairing code, for better user experience.
+     pairingMethod:     'pin'
    }
 }
 ```
-
-The URL from `m.sessionPtr['u']` will point directly to your IRMA server.
-This is intentional; the IRMA app should be able to access those endpoints too.
 
 As an example on how to use the pairing options, you can specify the following options
 if you want to disable pairing in all cases. Only do this if you are aware of the
