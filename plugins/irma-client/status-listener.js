@@ -1,6 +1,6 @@
 const ProtocolVersion = require('./protocol-version');
 
-// Never use window.EventSource, because it doesn't support requests with additional HTTP headers. // TODO: check
+// Never use window.EventSource, because it doesn't support requests with additional HTTP headers.
 // eslint-disable-next-line no-shadow
 const EventSource = require('eventsource');
 
@@ -13,9 +13,9 @@ module.exports = class StatusListener {
     this._options = options;
     this._mappings = mappings;
     this._listeningMethod = this._options.serverSentEvents ? 'sse' : 'polling';
-    this._urlPrefix = ProtocolVersion.below(this._mappings.frontendRequest.maxProtocolVersion, '1.1')
-      ? this._mappings.sessionPtr.u
-      : this._options.urlPrefix(this._mappings);
+    this._sseUrl = this._getFetchUrl(this._options.serverSentEvents.endpoint);
+    this._pollingUrl = this._getFetchUrl(this._options.polling.endpoint);
+    this._fetchParams = this._getFetchParams();
   }
 
   observe(stateChangeCallback, errorCallback) {
@@ -44,6 +44,12 @@ module.exports = class StatusListener {
     return true;
   }
 
+  _getFetchUrl(endpoint) {
+    return ProtocolVersion.below(this._mappings.frontendRequest.maxProtocolVersion, '1.1')
+      ? this._options.legacyUrl(this._mappings, endpoint)
+      : this._options.url(this._mappings, endpoint);
+  }
+
   _getFetchParams() {
     if (ProtocolVersion.below(this._mappings.frontendRequest.maxProtocolVersion, '1.1')) return {};
 
@@ -51,21 +57,19 @@ module.exports = class StatusListener {
   }
 
   _startSSE() {
-    if (this._options.debugging) console.log('🌎 Using EventSource for server events');
+    if (this._options.debugging) console.log(`🌎 Using EventSource for server events on ${this._sseUrl}`);
 
-    this._source = new EventSource(
-      this._options.serverSentEvents.url(this._mappings, this._urlPrefix),
-      this._getFetchParams()
-    );
+    this._source = new EventSource(this._sseUrl, this._fetchParams);
 
+    const timeout = this._options.serverSentEvents.timeout;
     const canceller = setTimeout(() => {
       if (this._options.debugging)
-        console.error(`🌎 EventSource could not connect within ${this._options.serverSentEvents.timeout}ms`);
+        console.error(`🌎 EventSource could not connect to ${this._sseUrl} within ${timeout}ms`);
 
       // Fall back to polling instead
       setTimeout(() => this._source.close(), 0); // Never block on this
       this._startPolling();
-    }, this._options.serverSentEvents.timeout);
+    }, timeout);
 
     this._source.addEventListener('open', () => clearTimeout(canceller));
 
@@ -98,17 +102,17 @@ module.exports = class StatusListener {
     this._listeningMethod = 'polling'; // In case polling is activated as fallback
     if (!this._options.polling || this._isPolling) return;
 
-    if (this._options.debugging) console.log('🌎 Using polling for server events');
+    if (this._options.debugging) console.log(`🌎 Using polling for server events on ${this._pollingUrl}`);
 
     this._currentStatus = this._options.polling.startState;
     this._isPolling = true;
 
     this._polling()
       .then(() => {
-        if (this._options.debugging) console.log('🌎 Stopped polling');
+        if (this._options.debugging) console.log(`🌎 Stopped polling on ${this._pollingUrl}`);
       })
       .catch((error) => {
-        if (this._options.debugging) console.error('🌎 Error thrown while polling: ', error);
+        if (this._options.debugging) console.error(`🌎 Error thrown while polling of ${this._pollingUrl}: `, error);
         this._errorCallback(error);
       });
   }
@@ -116,7 +120,7 @@ module.exports = class StatusListener {
   _pollOnce() {
     return (
       // eslint-disable-next-line compat/compat
-      fetch(this._options.polling.url(this._mappings, this._urlPrefix), this._getFetchParams())
+      fetch(this._pollingUrl, this._fetchParams)
         .then((r) => {
           if (r.status !== 200)
             throw new Error(

@@ -242,7 +242,7 @@ module.exports = class IrmaStateClient {
     const delay = new Promise((resolve) => {
       setTimeout(resolve, this._options.state.pairing.minCheckingDelay);
     });
-    const url = this._options.state.pairing.completedUrl(this._mappings, this._options.state.urlPrefix(this._mappings));
+    const url = this._options.state.url(this._mappings, this._options.state.pairing.completedEndpoint);
 
     // eslint-disable-next-line compat/compat
     return fetch(url, {
@@ -272,9 +272,9 @@ module.exports = class IrmaStateClient {
         ...options,
       }),
     };
-    const urlPrefix = this._options.state.urlPrefix(this._mappings);
+    const url = this._options.state.url(this._mappings, this._options.state.frontendOptions.endpoint);
     // eslint-disable-next-line compat/compat
-    return fetch(this._options.state.frontendOptions.url(this._mappings, urlPrefix), req)
+    return fetch(url, req)
       .then((r) => r.json())
       .then((newOptions) => (this._frontendOptions = newOptions));
   }
@@ -317,32 +317,32 @@ module.exports = class IrmaStateClient {
       state: {
         debugging: options.debugging,
 
-        // TODO: Consider converting this to a template (such that at all other places the m variable can be removed)
-        urlPrefix: (m) => `${m.sessionPtr.u}/frontend`,
-
-        serverSentEvents: {
-          url: (m, prefix) => `${prefix}/statusevents`,
-          timeout: 2000,
-        },
-
-        polling: {
-          url: (m, prefix) => `${prefix}/status`,
-          interval: 500,
-          startState: 'INITIALIZED',
-        },
-
         cancel: {
           url: (m) => m.sessionPtr.u,
         },
 
+        url: (m, endpoint) => `${m.sessionPtr.u}/frontend/${endpoint}`,
+        legacyUrl: (m, endpoint) => `${m.sessionPtr.u}/${endpoint}`,
+
+        serverSentEvents: {
+          endpoint: 'statusevents',
+          timeout: 2000,
+        },
+
+        polling: {
+          endpoint: 'status',
+          interval: 500,
+          startState: 'INITIALIZED',
+        },
+
         frontendOptions: {
-          url: (m, prefix) => `${prefix}/options`,
+          endpoint: 'options',
           requestContext: 'https://irma.app/ld/request/frontendoptions/v1',
         },
 
         pairing: {
           onlyEnableIf: (m) => m.frontendRequest.pairingHint,
-          completedUrl: (m, prefix) => `${prefix}/pairingcompleted`,
+          completedEndpoint: 'pairingcompleted',
           minCheckingDelay: 500,
           pairingMethod: 'pin',
         },
