@@ -13,8 +13,8 @@ module.exports = class StatusListener {
     this._options = options;
     this._mappings = mappings;
     this._listeningMethod = this._options.serverSentEvents ? 'sse' : 'polling';
-    this._sseUrl = this._getFetchUrl(this._options.serverSentEvents.endpoint);
-    this._pollingUrl = this._getFetchUrl(this._options.polling.endpoint);
+    this._sseUrl = this._options.serverSentEvents ? this._getFetchUrl(this._options.serverSentEvents.endpoint) : '';
+    this._pollingUrl = this._options.polling ? this._getFetchUrl(this._options.polling.endpoint) : '';
     this._fetchParams = this._getFetchParams();
   }
 
