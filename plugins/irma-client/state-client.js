@@ -257,7 +257,7 @@ module.exports = class IrmaStateClient {
   }
 
   _updateFrontendOptions(options) {
-    if (ProtocolVersion.below(this._mappings.frontendRequest.maxProtocolVersion, '1.1')) {
+    if (ProtocolVersion.below(this._mappings.frontendRequest.maxProtocolVersion, ProtocolVersion.get('pairing'))) {
       return Promise.reject(new Error('Frontend options are not supported by the IRMA server'));
     }
 

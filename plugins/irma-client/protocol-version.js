@@ -9,6 +9,37 @@ module.exports = class {
   }
 
   /**
+   * Returns the minimal supported frontend protocol version.
+   * @returns {string}
+   */
+  static minSupported() {
+    return '1.0';
+  }
+
+  /**
+   * Returns the maximal supported frontend protocol version.
+   * @returns {string}
+   */
+  static maxSupported() {
+    return '1.1';
+  }
+
+  /**
+   * Returns the minimal supported frontend protocol version necessary for the given feature.
+   * @param feature
+   * @returns {string}
+   */
+  static get(feature) {
+    switch (feature) {
+      case 'pairing':
+      case 'chained-sessions':
+        return '1.1';
+      default:
+        throw new Error('Protocol version requested of unknown feature');
+    }
+  }
+
+  /**
    * Checks whether version x is above version y
    * @param {string} x
    * @param {string} y

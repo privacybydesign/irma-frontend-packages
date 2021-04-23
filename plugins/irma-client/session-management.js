@@ -6,8 +6,6 @@ module.exports = class SessionManagement {
   constructor(options) {
     this._options = options;
     this._mappings = {};
-    this._minSupportedProtocolVersion = '1.0';
-    this._maxSupportedProtocolVersion = '1.1';
   }
 
   start() {
@@ -43,14 +41,14 @@ module.exports = class SessionManagement {
     let frontendRequest = mappings.frontendRequest;
     if (!frontendRequest) {
       frontendRequest = {
-        minProtocolVersion: '1.0',
-        maxProtocolVersion: '1.0',
+        minProtocolVersion: ProtocolVersion.minSupported(),
+        maxProtocolVersion: ProtocolVersion.minSupported(),
       };
     }
     // Check whether the IRMA server at least has minimum support for this irma-client version.
     if (
-      ProtocolVersion.above(this._minSupportedProtocolVersion, frontendRequest.maxProtocolVersion) ||
-      ProtocolVersion.below(this._maxSupportedProtocolVersion, frontendRequest.minProtocolVersion)
+      ProtocolVersion.above(ProtocolVersion.minSupported(), frontendRequest.maxProtocolVersion) ||
+      ProtocolVersion.below(ProtocolVersion.maxSupported(), frontendRequest.minProtocolVersion)
     ) {
       throw new Error('Frontend protocol version is not supported');
     }

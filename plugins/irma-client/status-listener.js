@@ -45,13 +45,19 @@ module.exports = class StatusListener {
   }
 
   _getFetchUrl(endpoint) {
-    return ProtocolVersion.below(this._mappings.frontendRequest.maxProtocolVersion, '1.1')
+    return ProtocolVersion.below(
+      this._mappings.frontendRequest.maxProtocolVersion,
+      ProtocolVersion.get('chained-sessions')
+    )
       ? this._options.legacyUrl(this._mappings, endpoint)
       : this._options.url(this._mappings, endpoint);
   }
 
   _getFetchParams() {
-    if (ProtocolVersion.below(this._mappings.frontendRequest.maxProtocolVersion, '1.1')) return {};
+    if (
+      ProtocolVersion.below(this._mappings.frontendRequest.maxProtocolVersion, ProtocolVersion.get('chained-sessions'))
+    )
+      return {};
 
     return { headers: { Authorization: this._mappings.frontendRequest.authorization } };
   }
