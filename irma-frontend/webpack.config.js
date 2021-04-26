@@ -8,6 +8,7 @@ module.exports = {
       'core-js/modules/es.promise',
       'core-js/modules/es.array.iterator',
       'core-js/modules/es.array.includes',
+      'core-js/modules/web.dom-collections.for-each',
       './index.js'
     ],
   },

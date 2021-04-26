@@ -12,9 +12,7 @@ module.exports = class IrmaWeb {
       this._options,
       (t) =>
         this._stateMachine.selectTransition(({ validTransitions }) =>
-          validTransitions.includes(t)
-            ? { transition: t, payload: this._lastPayload }
-            : false
+          validTransitions.includes(t) ? { transition: t, payload: this._lastPayload } : false
         ),
       (enteredPairingCode) =>
         this._stateMachine.selectTransition(({ validTransitions }) =>
@@ -61,25 +59,17 @@ module.exports = class IrmaWeb {
   _addVisibilityListener() {
     const onVisibilityChange = () =>
       this._stateMachine.selectTransition(({ state, validTransitions }) => {
-        if (
-          state !== 'TimedOut' ||
-          document.hidden ||
-          !validTransitions.includes('restart')
-        )
-          return false;
+        if (state !== 'TimedOut' || document.hidden || !validTransitions.includes('restart')) return false;
 
-        if (this._options.debugging)
-          console.log('🖥 Restarting because document became visible');
+        if (this._options.debugging) console.log('🖥 Restarting because document became visible');
         return { transition: 'restart' };
       });
 
     const onFocusChange = () =>
       this._stateMachine.selectTransition(({ state, validTransitions }) => {
-        if (state !== 'TimedOut' && !validTransitions.includes('restart'))
-          return false;
+        if (state !== 'TimedOut' && !validTransitions.includes('restart')) return false;
 
-        if (this._options.debugging)
-          console.log('🖥 Restarting because window regained focus');
+        if (this._options.debugging) console.log('🖥 Restarting because window regained focus');
         return { transition: 'restart' };
       });
 

@@ -15,9 +15,6 @@ irma.use(Dummy);
 irma
   .start()
   .then((result) =>
-    console.log(
-      'Successful disclosure! 🎉',
-      util.inspect(result, { showHidden: false, depth: null, colors: true })
-    )
+    console.log('Successful disclosure! 🎉', util.inspect(result, { showHidden: false, depth: null, colors: true }))
   )
   .catch((error) => console.error("Couldn't do what you asked 😢", error));

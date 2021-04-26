@@ -8,14 +8,7 @@
 
 module.exports = {
   startState: 'Uninitialized',
-  endStates: [
-    'BrowserNotSupported',
-    'Success',
-    'Aborted',
-    'Cancelled',
-    'TimedOut',
-    'Error',
-  ],
+  endStates: ['BrowserNotSupported', 'Success', 'Aborted', 'Cancelled', 'TimedOut', 'Error'],
 
   Uninitialized: {
     initialize: 'Loading', // Expected payload: {canRestart: true/false}
@@ -23,7 +16,7 @@ module.exports = {
   },
 
   Loading: {
-    loaded: 'CheckingUserAgent', // Expected payload: { sessionPtr, sessionToken (if present), frontendAuth (if present) }
+    loaded: 'CheckingUserAgent', // Expected payload: { sessionPtr, frontendRequest, sessionToken (if present) }
     abort: 'Aborted', // Expected payload: undefined
     fail: 'Error', // Expected payload: error object
   },
