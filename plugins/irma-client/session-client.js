@@ -83,7 +83,7 @@ module.exports = class IrmaSessionClient {
         mapping: {
           sessionPtr: (r) => r.sessionPtr,
           sessionToken: (r) => r.token,
-          frontendAuth: (r) => r.frontendAuth,
+          frontendRequest: (r) => r.frontendRequest,
         },
         result: {
           url: (o, { sessionToken }) => `${o.url}/session/${sessionToken}/result`,

@@ -16,7 +16,7 @@ module.exports = {
   },
 
   Loading: {
-    loaded: 'CheckingUserAgent', // Expected payload: { sessionPtr, sessionToken (if present), frontendAuth (if present) }
+    loaded: 'CheckingUserAgent', // Expected payload: { sessionPtr, frontendRequest, sessionToken (if present) }
     abort: 'Aborted', // Expected payload: undefined
     fail: 'Error', // Expected payload: error object
   },
