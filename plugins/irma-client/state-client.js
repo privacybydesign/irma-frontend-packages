@@ -104,19 +104,19 @@ module.exports = class IrmaStateClient {
     this._handleNoSuccess('fail', error);
   }
 
-  _serverStateChange(state) {
+  _serverStateChange(serverState) {
     return this._stateMachine
       .selectTransition(({ validTransitions }) => {
         // We sometimes miss the appConnected transition
         // on iOS, that's why sometimes we have to do this one first.
-        if (state.status === 'DONE' && validTransitions.includes('appConnected')) {
+        if (serverState.status === 'DONE' && validTransitions.includes('appConnected')) {
           return { transition: 'appConnected' };
         }
         return false;
       })
       .then(() =>
-        this._stateMachine.selectTransition(({ validTransitions }) => {
-          switch (state.status) {
+        this._stateMachine.selectTransition(({ state, validTransitions }) => {
+          switch (serverState.status) {
             case 'PAIRING':
               if (validTransitions.includes('appPairing'))
                 return {
@@ -125,15 +125,17 @@ module.exports = class IrmaStateClient {
                 };
               break;
             case 'CONNECTED':
-              if (validTransitions.includes('appConnected')) return { transition: 'appConnected' };
+              // In irma-core state 'Pairing', the _pairingCompleted method will initiate the appConnected transition.
+              if (state !== 'Pairing' && validTransitions.includes('appConnected'))
+                return { transition: 'appConnected' };
               break;
             case 'DONE':
               // What we hope will happen ;)
               this._statusListener.close();
-              if (state.nextSession) {
+              if (serverState.nextSession) {
                 const newMappings = {
                   ...this._mappings,
-                  sessionPtr: state.nextSession,
+                  sessionPtr: serverState.nextSession,
                 };
                 this._statusListener = new StatusListener(newMappings, this._options.state);
                 this._startWatchingServerState();
@@ -152,7 +154,7 @@ module.exports = class IrmaStateClient {
             default:
               // Catch unknown errors and give generic error message. We never really
               // want to get here.
-              if (this._options.debugging) console.error('Unknown state received from server:', state.status);
+              if (this._options.debugging) console.error('Unknown state received from server:', serverState.status);
 
               this._statusListener.close();
               return this._noSuccessTransition(
@@ -250,6 +252,11 @@ module.exports = class IrmaStateClient {
       headers: { Authorization: this._mappings.frontendRequest.authorization },
     })
       .finally(() => delay)
+      .then(() =>
+        this._stateMachine.selectTransition(({ validTransitions }) =>
+          validTransitions.includes('appConnected') ? { transition: 'appConnected' } : false
+        )
+      )
       .catch((err) => {
         if (this._options.debugging) console.error('Error received while completing pairing:', err);
         this._handleNoSuccess('fail', err);
