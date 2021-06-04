@@ -12,6 +12,7 @@
     "@privacybydesign/irma-frontend": "../../../irma-frontend"
   },
   "scripts": {
-    "build": "cd node_modules/@privacybydesign/irma-frontend/ && npm run build"
+    "preinstall": "npm --prefix=../../../ install",
+    "build": "npm run --prefix=../../../ build"
   }
 }

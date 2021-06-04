@@ -6,14 +6,11 @@
     "lint-js": "eslint . --ext .js",
     "lint-css": "stylelint irma-css/src/",
     "lint": "npm run lint-js; npm run lint-css",
-    "dev": "npm run install; npm run link; npm run build",
-    "install": "for name in irma-core irma-css irma-frontend plugins/irma-client plugins/irma-console plugins/irma-dummy plugins/irma-popup plugins/irma-web; do npm run install-dir --dir=$name; done",
-    "install-dir": "cd $npm_config_dir; npm install",
-    "link": "for name in irma-core irma-css plugins/irma-client plugins/irma-web plugins/irma-popup; do npm run link-src --dir=$name; done; npm run link-dest --dir=plugins/irma-popup; npm run link-dest --dir=irma-frontend",
-    "link-src": "cd $npm_config_dir; npm link",
-    "link-dest": "cd $npm_config_dir; npm link @privacybydesign/irma-core @privacybydesign/irma-css @privacybydesign/irma-client @privacybydesign/irma-web @privacybydesign/irma-popup",
-    "build": "for name in irma-css irma-frontend; do npm run build-dir --dir=$name; done",
-    "build-dir": "cd $npm_config_dir; npm run release"
+    "install": "for pkg in `find . -maxdepth 2 -type d -name 'irma-*'`; do npm --prefix=$pkg install; done",
+    "postinstall": "npm run link-irma-popup; npm run link-irma-frontend",
+    "link-irma-popup": "npm --prefix=./plugins/irma-popup install ./plugins/irma-web --no-save",
+    "link-irma-frontend": "npm --prefix=./irma-frontend install ./irma-core ./irma-css ./plugins/irma-client ./plugins/irma-web ./plugins/irma-popup --no-save",
+    "build": "for pkg in ./irma-css ./irma-frontend; do npm --prefix=$pkg run release; done"
   },
   "devDependencies": {
     "eslint": "^7.21.0",

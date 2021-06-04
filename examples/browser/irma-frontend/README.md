@@ -8,7 +8,7 @@ recommended best practice for use in web browsers! See the
 [irma-client documentation](../../../plugins/irma-client) for more information
 on how to safely initialize your session.
 
-You can run this example by installing this package:
+You can build this example by running the following commands in this directory:
 
 ```bash
 npm install
@@ -23,6 +23,3 @@ irma server --static-path=.
 ```
 
 It will be available in your browser at http://localhost:8088.
-
-Did you make changes to one of the packages and do you want to test these changes
-using this example? Please check the [development instructions](/README.md#development) first.

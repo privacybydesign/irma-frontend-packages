@@ -427,23 +427,12 @@ combinations of plugins to achieve different effects:
 ## Development
 When developing a certain package, you can test the package using one of the examples.
 
-The `irma-frontend` and `irma-popup` package load their dependencies via npm by default.
-If you want these modules to use the local version of a dependency, you'll have to use `npm link`.
-
-We provide a development script to configure all needed links. This script assumes you have `npm` installed.
+We provide development scripts to install all packages, configure all needed links between the packages and
+then build the packages. This script assumes you have `npm` installed. It is tested using `npm` version 7.15.1.
+These development scripts are automatically triggered when installing and building one of the examples.
 
 ```bash
 npm install
-npm run dev
-```
-
-Depending on your setup, it might be needed to run `npm link` using `sudo` on Linux or as administrator on Windows.
-These rights are needed because `npm link` depends on making symlinks. When this is the case, you can execute the linking step
-separately.
-```bash
-npm install
-npm run install
-sudo npm run link
 npm run build
 ```
 
