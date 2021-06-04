@@ -430,25 +430,22 @@ When developing a certain package, you can test the package using one of the exa
 The `irma-frontend` and `irma-popup` package load their dependencies via npm by default.
 If you want these modules to use the local version of a dependency, you'll have to use `npm link`.
 
-For example, when you are developing the `irma-client` plugin and you want to run the
-`browser/irma-frontend` example, the packages can be linked in the following way:
+We provide a development script to configure all needed links. This script assumes you have `npm` installed.
 
 ```bash
-cd plugins/irma-client
-npm link
-cd ../../
-
-cd irma-frontend
 npm install
-npm link @privacybydesign/irma-client
-npm run build
-cd ..
-
-cd examples/node/irma-client
-npm install
+npm run dev
 ```
 
-**Depending on your setup it might be needed to run `npm link` using `sudo`.**
+Depending on your setup, it might be needed to run `npm link` using `sudo` on Linux or as administrator on Windows.
+These rights are needed because `npm link` depends on making symlinks. When this is the case, you can execute the linking step
+separately.
+```bash
+npm install
+npm run install
+sudo npm run link
+npm run build
+```
 
 ### Linter
 To make a valid PR, your code changes should pass the linter and code formatter. We use 
