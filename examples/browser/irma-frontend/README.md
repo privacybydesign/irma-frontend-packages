@@ -15,9 +15,14 @@ npm install
 npm run build
 ```
 
-Then the root directory of this example can simply be hosted using an HTTP
-server to run the example. You can for example use `serve` for this:
+To run this example, you need the [`irma` CLI tool](https://github.com/privacybydesign/irmago/releases/latest).
+You can start the IRMA server to run this example in the following way:
+
 ```bash
-npm install serve
-`npm bin`/serve .
+irma server --static-path=.
 ```
+
+It will be available in your browser at http://localhost:8088.
+
+Did you make changes to one of the packages and do you want to test these changes
+using this example? Please check the [development instructions](/README.md#development) first.
