@@ -4,7 +4,7 @@
   "description": "An example on how to use the irma-console package",
   "main": "index.js",
   "scripts": {
-    "preinstall": "npm --prefix=../../../ install",
+    "preinstall": "cd ../../../; npm install",
     "build": "webpack --mode development"
   },
   "license": "MIT",

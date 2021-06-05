@@ -428,8 +428,10 @@ combinations of plugins to achieve different effects:
 When developing a certain package, you can test the package using one of the examples.
 
 We provide development scripts to install all packages, configure all needed links between the packages and
-then build the packages. This script assumes you have `npm` installed. It is tested using `npm` version 7.15.1.
-These development scripts are automatically triggered when installing and building one of the examples.
+then build the packages. These scripts assume you have `npm` (Node.js) installed.
+The setup is tested on Linux (debian), MacOS and Windows (in git bash).
+
+These development scripts are automatically triggered when installing and building the examples.
 
 ```bash
 npm install

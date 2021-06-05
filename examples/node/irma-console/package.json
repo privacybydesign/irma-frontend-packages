@@ -5,7 +5,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "preinstall": "npm --prefix=../../../ install",
+    "preinstall": "cd ../../../; npm install",
     "start": "node ./index.js"
   },
   "dependencies": {

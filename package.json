@@ -6,11 +6,11 @@
     "lint-js": "eslint . --ext .js",
     "lint-css": "stylelint irma-css/src/",
     "lint": "npm run lint-js; npm run lint-css",
-    "install": "for pkg in `find . -maxdepth 2 -type d -name 'irma-*'`; do npm --prefix=$pkg install; done",
+    "install": "for pkg in `find . -maxdepth 2 -type d -name 'irma-*'`; do (cd $pkg && npm install); done",
     "postinstall": "npm run link-irma-popup; npm run link-irma-frontend",
-    "link-irma-popup": "npm --prefix=./plugins/irma-popup install ./plugins/irma-web --no-save",
-    "link-irma-frontend": "npm --prefix=./irma-frontend install ./irma-core ./irma-css ./plugins/irma-client ./plugins/irma-web ./plugins/irma-popup --no-save",
-    "build": "for pkg in ./irma-css ./irma-frontend; do npm --prefix=$pkg run release; done"
+    "link-irma-popup": "cd ./plugins/irma-popup; npm install ../irma-web --no-save",
+    "link-irma-frontend": "cd ./irma-frontend; npm install ../irma-core ../irma-css ../plugins/irma-client ../plugins/irma-web ../plugins/irma-popup --no-save",
+    "build": "for pkg in ./irma-css ./irma-frontend; do (cd $pkg; npm run release); done"
   },
   "devDependencies": {
     "eslint": "^7.21.0",
