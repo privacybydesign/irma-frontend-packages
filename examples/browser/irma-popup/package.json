@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "preinstall": "cd ../../../; npm install",
+    "link": "cd ../../../; npm run link",
     "build": "cd ../../../; npm run build; webpack --mode development"
   },
   "license": "MIT",

@@ -13,6 +13,7 @@
   },
   "scripts": {
     "preinstall": "cd ../../../; npm install",
+    "link": "cd ../../../; npm run link",
     "build": "cd ../../../; npm run build"
   }
 }

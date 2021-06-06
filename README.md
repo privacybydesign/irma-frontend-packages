@@ -434,9 +434,14 @@ The setup is tested on Linux (debian), MacOS and Windows (in git bash).
 These development scripts are automatically triggered when installing and building the examples.
 
 ```bash
-npm install
-npm run build
+npm install   # To install the dependencies for all packages
+npm run link  # To make sure local changes in other irma-frontend-packages propagate
+npm run build # To trigger the building steps for irma-css and irma-frontend
 ```
+
+We recommend you to use **`npm` version 7 or above**.
+On `npm` version 6 (LTS) the `--no-save` option of `npm install` is not working correctly.
+This leads to unintended changes being made to the `package.json` files.
 
 ### Linter
 To make a valid PR, your code changes should pass the linter and code formatter. We use 
