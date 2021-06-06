@@ -428,8 +428,11 @@ combinations of plugins to achieve different effects:
 When developing a certain package, you can test the package using one of the examples.
 
 We provide development scripts to install all packages, configure all needed links between the packages and
-then build the packages. These scripts assume you have `npm` (Node.js) installed.
-The setup is tested on Linux (debian), MacOS and Windows (in git bash).
+then build the packages. The setup is tested on Linux (debian), MacOS and Windows (in git bash).
+
+These scripts require `npm` (Node.js) to be installed. We recommend you to use **`npm` version 7 or above**.
+On `npm` version 6 (LTS) the `--no-save` option of `npm install` is not working correctly.
+This leads to unintended changes being made to the `package.json` files.
 
 These development scripts are automatically triggered when installing and building the examples.
 
@@ -438,10 +441,6 @@ npm install   # To install the dependencies for all packages
 npm run link  # To make sure local changes in other irma-frontend-packages propagate
 npm run build # To trigger the building steps for irma-css and irma-frontend
 ```
-
-We recommend you to use **`npm` version 7 or above**.
-On `npm` version 6 (LTS) the `--no-save` option of `npm install` is not working correctly.
-This leads to unintended changes being made to the `package.json` files.
 
 ### Linter
 To make a valid PR, your code changes should pass the linter and code formatter. We use 
