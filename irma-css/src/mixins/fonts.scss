@@ -14,12 +14,20 @@
 //
 // Styleguide Mixins.fonts
 
-@import '../variables/fonts',
-        '../variables/colours';
+@import '../variables/fonts', '../variables/colours';
 
-@mixin font($family: $default-font, $size: $default-font-size, $color: $content-text-color, $weight: 300) {
+@mixin font(
+  $family: $default-font,
+  $size: $default-font-size,
+  $color: $content-text-color,
+  $weight: 300
+) {
   font-family: $family;
   font-weight: $weight;
   font-size: $size;
   color: $color;
+
+  &.irma-web-error {
+    color: $irma-red;
+  }
 }

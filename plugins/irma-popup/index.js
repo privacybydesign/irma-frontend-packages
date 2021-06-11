@@ -1,48 +1,52 @@
-const IrmaWeb          = require('@privacybydesign/irma-web');
+const IrmaWeb = require('@privacybydesign/irma-web');
 const DOMManipulations = require('./dom-manipulations');
-const merge            = require('deepmerge');
+const merge = require('deepmerge');
 
 module.exports = class IrmaPopup {
-
-  constructor({stateMachine, options}) {
+  constructor({ stateMachine, options }) {
     this._stateMachine = stateMachine;
     this._options = this._sanitizeOptions(options);
 
-    this._dom = new DOMManipulations(options.element, () => {
-      if (!stateMachine.isEndState()) {
-        stateMachine.transition('abort');
-      } else if (this._popupClosedEarly) {
-        this._popupClosedEarly();
-      }
-    });
+    this._dom = new DOMManipulations(options.element, () =>
+      this._stateMachine.selectTransition(({ inEndState }) => {
+        if (!inEndState) {
+          return { transition: 'abort' };
+        } else if (this._popupClosedEarly) {
+          this._popupClosedEarly();
+        }
+        return false;
+      })
+    );
 
     this._irmaWeb = new IrmaWeb({
       stateMachine,
       options: {
         ...options,
         element: `#irma-popup-web-form`,
-        showCloseButton: true
-      }
+        showCloseButton: true,
+      },
     });
   }
 
   stateChange(state) {
     this._irmaWeb.stateChange(state);
 
-    switch(state.newState) {
+    switch (state.newState) {
       case 'Loading':
-        return this._dom.openPopup();
+        this._dom.openPopup();
+        break;
       case 'Aborted':
-        return this._dom.closePopup();
+        this._dom.closePopup();
+        break;
     }
   }
 
   close() {
-    if (!this._dom.isPopupActive())
-      return Promise.resolve();
+    this._irmaWeb.close();
+    if (!this._dom.isPopupActive()) return Promise.resolve();
 
     // Delay closing pop-up so that the user can see the animation.
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this._popupClosedEarly = resolve;
       window.setTimeout(() => {
         // Popup might already be closed in the meantime.
@@ -50,7 +54,7 @@ module.exports = class IrmaPopup {
           this._dom.closePopup();
           resolve();
         }
-      }, this._options.closePopupDelay)
+      }, this._options.closePopupDelay);
     });
   }
 
@@ -61,5 +65,4 @@ module.exports = class IrmaPopup {
 
     return merge(defaults, options);
   }
-
 };

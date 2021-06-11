@@ -20,8 +20,10 @@
 }
 
 @mixin reset($children-too: false) {
+  @include _reset;
+  @if ($children-too) {
+    * {
       @include _reset;
-  @if ( $children-too ) {
-    * { @include _reset; }
+    }
   }
 }

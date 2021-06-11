@@ -1,38 +1,71 @@
 const qrcode = require('qrcode-terminal');
 
-module.exports = (askRetry) => {
+module.exports = (askRetry, askPairingCode) => {
   return class IrmaConsole {
-
-    constructor({stateMachine}) {
+    constructor({ stateMachine, options }) {
       this._stateMachine = stateMachine;
+      this._options = options;
     }
 
-    stateChange({newState, payload, isFinal}) {
+    stateChange({ newState, transition, payload, isFinal }) {
       if (isFinal) return;
-      switch(newState) {
+      switch (newState) {
         case 'Cancelled':
-          return this._askRetry('Transaction cancelled.');
+          this._askRetry('Transaction cancelled.');
+          break;
         case 'TimedOut':
-          return this._askRetry('Transaction timed out.');
+          this._askRetry('Transaction timed out.');
+          break;
         case 'Error':
-          return this._askRetry('An error occurred.');
+          this._askRetry('An error occurred.');
+          break;
         case 'ShowingQRCode':
-          return this._renderQRcode(payload);
+          this._renderQRcode(payload);
+          break;
+        case 'ShowingIrmaButton': {
+          const err = new Error('Mobile sessions cannot be performed in node');
+          if (this._options.debugging) console.error(err);
+          this._stateMachine.selectTransition(({ validTransitions }) => {
+            if (validTransitions.includes('fail')) return { transition: 'fail', payload: err };
+            throw err;
+          });
+          break;
+        }
         case 'ContinueOn2ndDevice':
+        // Falls through
         case 'ContinueInIrmaApp':
-          return console.log('Please follow the instructions in the IRMA app.');
+          console.log('Please follow the instructions in the IRMA app.');
+          break;
+        case 'EnterPairingCode':
+          this._askPairingCode(transition !== 'appPairing');
+          break;
       }
     }
 
+    _askPairingCode(askedBefore) {
+      return this._stateMachine.selectTransition(({ validTransitions, inEndState }) => {
+        if (inEndState) return false;
+        if (askedBefore && !askRetry('Wrong pairing code was entered.')) {
+          const transition = validTransitions.includes('cancel') ? 'cancel' : 'abort';
+          return { transition };
+        }
+        const enteredPairingCode = askPairingCode();
+        return validTransitions.includes('codeEntered')
+          ? { transition: 'codeEntered', payload: { enteredPairingCode } }
+          : false;
+      });
+    }
+
     _askRetry(message) {
-      if ( askRetry(message) )
-        return this._stateMachine.transition('restart');
-      this._stateMachine.transition('abort');
+      return this._stateMachine.selectTransition(({ validTransitions, inEndState }) => {
+        if (inEndState) return false;
+        const transition = validTransitions.includes('restart') && askRetry(message) ? 'restart' : 'abort';
+        return { transition };
+      });
     }
 
     _renderQRcode(payload) {
       qrcode.generate(payload.qr);
     }
-
-  }
+  };
 };

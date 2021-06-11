@@ -9,9 +9,7 @@
 //
 // Styleguide Components.IRMA logo
 
-@import '../mixins/reset',
-        '../mixins/svg-url',
-        '../variables/svg-images';
+@import '../mixins/reset', '../mixins/svg-url', '../variables/svg-images';
 
 .irma-web-logo {
   @include reset;

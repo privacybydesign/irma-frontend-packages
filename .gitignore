@@ -2,3 +2,5 @@ node_modules
 .DS_Store
 dist
 **/public/irma.js
+.idea/
+examples/*/*/package-lock.json

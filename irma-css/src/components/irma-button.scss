@@ -5,29 +5,27 @@
 //
 // Markup:
 // <button class="irma-web-button">
-//   Open IRMA app
+//   Open IRMA-app
 // </button>
 // <a href="#" class="irma-web-button">
-//   Open IRMA app
+//   Open IRMA-app
 // </a>
 //
 // Styleguide Components.IRMA button
 
-@import '../mixins/reset',
-        '../mixins/fonts',
-        '../variables/colours',
-        '../variables/sizes';
+@import '../mixins/reset', '../mixins/fonts', '../variables/colours',
+  '../variables/sizes';
 
 .irma-web-button {
   @include reset;
   @include font;
   display: inline-block;
-  padding: 1.5em 4em;
+  padding: 1em 4em;
 
   background-color: $button-color;
   border: 1px solid darken($button-color, 10%);
-  border-radius: $border-radius;
-  box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  border-radius: $button-border-radius;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   text-decoration: none;
   color: $button-text-color;
   font-weight: 500;
@@ -36,15 +34,15 @@
   // Keep your paws off our button, mobile browsers!
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 
   &:active {
-    transform: scale3d(0.99,0.99,1.0);
+    transform: scale3d(0.99, 0.99, 1);
     transform-origin: center;
   }
 

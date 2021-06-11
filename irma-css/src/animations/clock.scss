@@ -7,9 +7,7 @@
 //
 // Styleguide Animations.Clock
 
-@import '../mixins/reset',
-        '../mixins/animation',
-        '../variables/colours';
+@import '../mixins/reset', '../mixins/animation', '../variables/colours';
 
 .irma-web-clock-animation {
   $clock-size: 42px;
@@ -72,24 +70,30 @@
   @include animation(shake-animation 1s infinite linear 2s);
 
   @include keyframes(shake-animation) {
-    10%, 90% {
+    10%,
+    90% {
       transform: translate3d(-2px, 1px, 0);
     }
 
-    20%, 80% {
+    20%,
+    80% {
       transform: translate3d(2px, -1px, 0);
     }
 
-    30%, 50%, 70% {
+    30%,
+    50%,
+    70% {
       transform: translate3d(-2px, -1px, 0);
     }
 
-    40%, 60% {
+    40%,
+    60% {
       transform: translate3d(2px, 1px, 0);
     }
 
-    0%, 100% {
-      transform: translate3d(0,0,0);
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
     }
   }
 }

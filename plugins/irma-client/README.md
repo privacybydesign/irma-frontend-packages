@@ -161,24 +161,43 @@ session pointer, and possibly other values (like the session token),
 can be derived from the start session response. The response received using
 the options from [`start`](#option-start) is first parsed by its `parseResponse`. The mapping
 functions then specify how to map the parsed response on particular
-variables. The result from the `sessionPtr` mapping should be a valid IRMA
-`sessionPtr`. All other mappings are free to choose. The resulting variables
-can be accessed as second parameter in the `url` option of the [`result` property struct](#option-result).
-There it can be used to compose the result endpoint. The result of each
-`mapping` function is available there, named after its map key.
+variables. By default, the following mappings are present:
+ - `sessionPtr`: the result from the `sessionPtr` mapping should be a valid IRMA
+   `sessionPtr`, [as being received from the `irma server`](https://irma.app/docs/api-irma-server/#post-session).
+   This mapping is mandatory. It defaults to using the `sessionPtr` field from the parsed JSON
+   response of the [`start` endpoint](#option-start).
+ - `sessionToken`: the result from the `sessionToken` mapping should be a valid IRMA
+   requestor token, [as being received from the `irma server`](https://irma.app/docs/api-irma-server/#post-session).
+   This mapping is only mandatory if the token is required by the specified [`result` endpoint](#option-result).
+   It defaults to using the `token` field from the parsed JSON response of the [`start` endpoint](#option-start) (if present).
+ - `frontendRequest`: the result from the `frontendRequest` mapping should be a valid IRMA
+   frontend session request, [as being received from the `irma server`](https://irma.app/docs/api-irma-server/#post-session).
+   It defaults to using the `frontendRequest` field from the parsed JSON response of the [`start` endpoint](#option-start) (if present).
+   If not present, only frontend protocol version 1.0 is supported. This means that pairing functionality cannot be used.
+   This might be a security risk. Furthermore, frontend protocol version 1.0 lacks proper support for chained sessions
+   (i.e. a `nextSession` is being specified as [extra parameter](https://irma.app/docs/session-requests/#extra-parameters)
+   in the session request).
 
-In case you obtain a session pointer (and possibly the other values) in
-another way than via `start`, you can override the mapping functions to manually
-specify your session pointer and/or session token.
-For example, when you somewhere collected
-a session pointer in a variable, say `customQr`,
-you can start this session by doing:
+Additional mappings can also be added. Their names are free to choose (as long as there is no name collision).
+
+The resulting variables are given as payload to the `loaded` transition of the `irma-core`
+state machine. The payload is an object and the result of each `mapping` function is recorded as a field
+within this object, being named after its map key. In this way the mappings can be accessed by all other plugins.
+Within `irma-client` the mappings can also be accessed as second parameter in the `url` option of
+the [`result` property struct](#option-result). There it can be used to compose
+the result endpoint. Furthermore, the mappings are used in several [state options](#state).
+
+In case you obtain a session pointer (and possibly the other values) in another way than via `start`,
+you can override the mapping functions to manually specify your mappings. For example, when you
+somewhere collected the necessary information to start an IRMA session in JavaScript variables,
+say `customQr` and `customFrontendRequest`, you can start this session by doing:
 
 ```javascript
 session: {
   start: false,
   mapping: {
-    sessionPtr: () => customQr
+    sessionPtr: () => customQr,
+    frontendRequest: () => customFrontendRequest
   },
   result: false
 }
@@ -191,7 +210,8 @@ mapping can be found below.
 ```javascript
 mapping: {
     sessionPtr:      r => r.sessionPtr,
-    sessionToken:    r => r.token
+    sessionToken:    r => r.token,
+    frontendRequest: r => r.frontendRequest
 }
 ```
 
@@ -200,7 +220,7 @@ These options define the HTTP request `irma-client` has to do when an IRMA
 session succeeds. In this way results of the IRMA session can be fetched.
 
 This option has the same outline as the `start` option.
-The default values are set for fetching the session result (on state `Success`)
+The default values are set for fetching the session result (in the `PreparingResult` state)
 with a GET request on the endpoint `${o.url}/session/${sessionToken}/result`.
 In this, `o` (in `${o.url}`) points to the value of the `session` struct as described above. 
 
@@ -226,42 +246,140 @@ result: {
 
 ### state
 
-The `state` option tells the plugin how to subscribe to state changes on the
-server. By default the plugin tries to use Server Sent Events, and if that fails
-it will fall back to basic polling. You can disable either feature by setting
-them to `false` instead of an object.
+The `state` option tells the plugin what states it should use and how to subscribe for
+listeners that monitor state changes on the IRMA server. You can find an overview of
+the possible option sets in the subsections.
 
-Finally we have the cancel endpoint that is being used to communicate a cancellation
-initiated by the user via this library itself. Automatic cancellation can also be
-disabled by setting it to `false`.
+There are two general options, `url` and `legacyUrl`, to determine the location of the
+frontend endpoints of the IRMA server. The `legacyUrl` is used for frontend protocol
+version 1.0 (for [IRMA server](https://irma.app/docs/irma-server/) v0.7.x and earlier)
+and the `url` is used for frontend protocol version 1.1 and above.
 
-These are the accepted properties and their defaults on the `state` object:
+These are the accepted general properties and their defaults:
 
 ```javascript
 state: {
-  serverSentEvents: {
-    url:        o => `${o.url}/statusevents`,
-    timeout:    2000,
-  },
-
-  polling: {
-    url:        o => `${o.url}/status`,
-    interval:   500,
-    startState: 'INITIALIZED'
-  },
-  
-  cancel: {
-    url:        o => o.url
-  }
+  url:       (m, endpoint) => `${m.sessionPtr.u}/frontend/${endpoint}`, 
+  legacyUrl: (m, endpoint) => `${m.sessionPtr.u}/${endpoint}`,
+  ...
 }
 ```
 
-Note that in the `url` functions, `o.url` in this case isn't `session.url`, but
-rather the `u` property from the QR code object (so `sessionPtr.u`). By
-default these URLs **will** point to your IRMA server, which is okay.
+The URL from `m.sessionPtr.u` will point directly to your IRMA server.
+This is intentional; the IRMA app should be able to access those endpoints too.
+
+#### State monitoring
+For state monitoring, we offer the options `serverSentEvents` and `polling`.
+By default, the plugin tries to use Server Sent Events for receiving state changes, and if
+that fails it will fall back to basic polling. You can disable either feature by setting
+the option to `false` instead of an object.
+
+These are the accepted properties and their defaults for state monitoring:
+
+```javascript
+state: {
+    serverSentEvents: {
+      endpoint: 'statusevents',
+      timeout:  2000
+    },
+
+    polling: {
+      endpoint:   'status',
+      interval:   500,
+      startState: 'INITIALIZED'
+    }
+}
+```
+
+#### Cancellation
+The `irma server` knows an endpoint to delete sessions. This endpoint is being
+used to communicate session cancellation initiated by the user via this library.
+Communicating cancellation to the `irma server` can be disabled by
+setting the `cancel` option to `false` instead of an object.
+
+These are the accepted properties and their defaults for cancellation:
+
+```javascript
+state: {
+    cancel: {
+      url: m => m.sessionPtr['u']
+    },
+}
+```
+
+The URL from `m.sessionPtr['u']` will point directly to your IRMA server.
+This is intentional; the IRMA app should be able to access those endpoints too.
+
+Please remark that for cancellation there is no frontend specific endpoint at the IRMA
+server. Therefore, the URL of the cancellation endpoint deviates from the frontend
+endpoint format being specified by the [general `url` option](#state) above.
+
+#### Pairing
+The pairing state is an optional state that can be introduced to prevent QR theft,
+added between scanning a IRMA QR code and actually performing the session.
+In this state, a pairing code is visible in the IRMA app. The user should enter
+that pairing code in the frontend to continue.
+For the following session types it is important that the right user
+scans the QR, since the session might contain sensitive information.
+ - Issuing sessions
+ - Disclosing sessions with fixed attribute values (e.g. show that your email address is example@example.com)
+ - Signing sessions (the message that needs signing might contain sensitive information)
+ - Chained sessions (i.e. a `nextSession` is being specified as [extra parameter](https://irma.app/docs/session-requests/#extra-parameters)
+   in the session request)
+
+For these session types, the `frontendRequest` will include an extra field `"pairingHint": true`.
+When this happens, pairing will be enabled by default when a QR is scanned. In case
+of a mobile session, a pairing state is never introduced.
+
+In case you do not want a pairing state to happen for the above session
+types, the pairing state can be disabled by setting the `pairing` option to `false`
+instead of an object. You can also change the condition in which pairing is enabled
+by modifying the `onlyEnableIf` option. For example, you can enable pairing
+unconditionally by doing `onlyEnableIf: () => true`.
+
+These are the accepted properties and their defaults for pairing. You can
+overrule options one by one. When you don't specify an option explicitly,
+the default value is used.
+
+```javascript
+state: {
+  frontendOptions: {
+    endpoint:           'options',
+    requestContext:     'https://irma.app/ld/request/options/v1'
+   },
+
+   pairing: {
+     onlyEnableIf:      m => m.frontendRequest.pairingHint,
+     completedEndpoint: 'pairingcompleted',
+     minCheckingDelay:  500, // Minimum delay before accepting or rejecting a pairing code, for better user experience.
+     pairingMethod:     'pin'
+   }
+}
+```
+
+As an example on how to use the pairing options, you can specify the following options
+if you want to disable pairing in all cases. Only do this if you are aware of the
+security implications!
+
+```javascript
+state: {
+   pairing: false
+}
+```
 
 ## Behaviour
 This plugin initiates the following transitions to the `irma-core` state machine.
+
+**When being in state `Uninitialized`:**
+If `session` option is set to `false`, the plugin does nothing in this state.
+
+Otherwise, this plugin will initiate the `initialize` transition when `start()`
+is called. The `canRestart` indicator is set to true when the [`start` option](#option-start)
+is enabled (so if `start` is not explicitly set to `false`).
+
+| Possible transitions | With payload               | Next state          |
+|----------------------|----------------------------|---------------------|
+| `initialize`         | { canRestart: true/false } | Loading             |
 
 **When being in state `Loading`:**
 
@@ -269,40 +387,88 @@ If `session` option is set to `false`, the plugin does nothing in this state.
 
 Otherwise this plugin:
  * Fetches the `start` endpoint (unless `start` is explicitly set to `false`).
- * Extracts the session pointer (and the session token if specified) using the functions from the `mapping` option.
+ * Extracts the session pointer (and, if specified, the session token and frontend authentication token)
+   using the functions from the `mapping` option.
 
 | Possible transitions | With payload              | Next state          |
 |----------------------|---------------------------|---------------------|
-| `loaded`             | `sessionPtr`              | MediumContemplation |
+| `loaded`             | mappings                  | CheckingUserAgent   |
 | `fail`               | Error that fetch returned | Error               |
 
-**When being in state `MediumContemplation`, `ShowingQRCode`, `ContinueOn2ndDevice`, `ShowingIrmaButton`
-or `ShowingQRCodeInstead`:**
+**When being in state `CheckingUserAgent`:**
+
+Determines which flow should be started: the QR flow or the mobile flow.
+
+| Possible transitions | With payload | Next state          |
+|----------------------|--------------|---------------------|
+| `prepareQRCode`      |              | PreparingQRCode     |
+| `prepareButton`      |              | PreparingIrmaButton |
+
+**When being in state `PreparingQRCode` or `PreparingIrmaButton`:**
+
+In these states the plugin prepares for showing a QR or a button to a mobile session.
+This includes enabling or disabling the pairing state if necessary.
+
+| Possible transitions                               | With payload                                             | Next state        |
+|----------------------------------------------------|----------------------------------------------------------|-------------------|
+| `showQRCode` if state is `PreparingQRCode`         | `{qr: <payload for in QRs>, showBackButton: true/false}` | ShowQRCode        |
+| `showIrmaButton` if state is `PreparingIrmaButton` | `{mobile: <app link for launching the IRMA app>}`        | ShowIrmaButton    |
+| `fail` if updating pairing state fails             | Error that fetch returned                                | Error             |
+
+**When being in state `ShowingQRCode` or `ShowingIrmaButton`:**
 
 In these states the plugin polls the status at IRMA server using the `state` options.
-If status is `DONE` and the `result` endpoint is enabled (so if `result` is not explicitly set to `false`),
+
+| Possible transitions                        | With payload              | Next state                              |
+|---------------------------------------------|---------------------------|-----------------------------------------|
+| `appConnected` if new status is `CONNECTED` |                           | ContinueOn2ndDevice / ContinueInIrmaApp |
+| `appPairing` if new status is `PAIRING`     |                           | EnterPairingCode                        |
+| `timeout` if new status is `TIMEOUT`        |                           | TimedOut                                |
+| `cancel` if new status is `CANCELLED`       |                           | Cancelled                               |
+| `fail` if sse/polling fails                 | Error that fetch returned | Error                                   |
+
+**When being in state `EnterPairingCode`:**
+
+In these states the plugin polls the status at IRMA server using the `state` options.
+
+| Possible transitions                        | With payload              | Next state                              |
+|---------------------------------------------|---------------------------|-----------------------------------------|
+| `timeout` if new status is `TIMEOUT`        |                           | TimedOut                                |
+| `cancel` if new status is `CANCELLED`       |                           | Cancelled                               |
+| `fail` if sse/polling fails                 | Error that fetch returned | Error                                   |
+
+**When being in state `Pairing`:**
+
+In these states the plugin polls the status at IRMA server using the `state` options.
+
+| Possible transitions                                   | With payload              | Next state          |
+|--------------------------------------------------------|---------------------------|---------------------|
+| `pairingRejected` if entered pairing code is incorrect | Rejected pairing code     | EnterPairingCode    |
+| `appConnected` if new status is `CONNECTED`            |                           | ContinueOn2ndDevice |
+| `timeout` if new status is `TIMEOUT`                   |                           | TimedOut            |
+| `cancel` if new status is `CANCELLED`                  |                           | Cancelled           |
+| `fail` if sse/polling fails                            | Error that fetch returned | Error               |
+
+**When being in state `ContinueOn2ndDevice` or `ContinueInIrmaApp`:**
+
+In this state we continue polling the IRMA server using the `state` options.
+
+| Possible transitions                        | With payload              | Next state        |
+|---------------------------------------------|---------------------------|-------------------|
+| `prepareResult` if new status is `DONE`     |                           | PreparingResult   |
+| `timeout` if new status is `TIMEOUT`        |                           | TimedOut          |
+| `cancel` if new status is `CANCELLED`       |                           | Cancelled         |
+| `fail` if sse/polling fails                 | Error that fetch returned | Error             |
+
+**When being in state `PreparingResult`**
+
+If the `session` option is set to `false`, the plugin does nothing in this state.
+
+Otherwise, when the `result` endpoint is enabled (so if `result` is not explicitly set to `false`),
 then the `result` endpoint is fetched.
 
-| Possible transitions                        | With payload                                              | Next state        |
-|---------------------------------------------|-----------------------------------------------------------|-------------------|
-| `appConnected` if new status is `CONNECTED` |                                                           | ContinueInIrmaApp |
-| `succeed` if new status is `DONE`           | Result from `parseResponse` function of `result` endpoint | Success           |
-| `timeout` if new status is `TIMEOUT`        |                                                           | TimedOut          |
-| `cancel` if new status is `CANCELLED`       |                                                           | Cancelled         |
-| `fail` if sse/polling fails                 | Error that fetch returned                                 | Error             |
-| `fail` if fetching of result endpoint fails | Error that fetch returned                                 | Error             |
-
-**When being in state `ContinueInIrmaApp`:**
-
-In this state we continue polling the IRMA server using the `state` options. The only difference with the states
-above is that we already processed the status `CONNECTED`, so we do not act on this status anymore. Also in this state 
-holds, if status is `DONE` and the `result` endpoint is enabled (so if `result` is not explicitly set to `false`),
-then the `result` endpoint is fetched.
-
-| Possible transitions                        | With payload                                              | Next state        |
-|---------------------------------------------|-----------------------------------------------------------|-------------------|
-| `succeed` if new status is `DONE`           | Result from `parseResponse` function of `result` endpoint | Success           |
-| `timeout` if new status is `TIMEOUT`        |                                                           | TimedOut          |
-| `cancel` if new status is `CANCELLED`       |                                                           | Cancelled         |
-| `fail` if sse/polling fails                 | Error that fetch returned                                 | Error             |
-| `fail` if fetching of result endpoint fails | Error that fetch returned                                 | Error             |
+| Possible transitions                 | With payload              | Next state   |
+|--------------------------------------|---------------------------|--------------|
+| `succeed` if result can be fetched   | Fetched result            | Succeed      |
+| `succeed` if result is disabled      |                           | Succeed      |
+| `fail` if fetching the result failed | Error that fetch returned | Error        |

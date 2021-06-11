@@ -4,8 +4,8 @@
   "description": "An example on how to use the irma-web package",
   "main": "index.js",
   "scripts": {
-    "build": "npm run css && webpack",
-    "css": "cd node_modules/@privacybydesign/irma-css && (cd dist/ || npm run release)"
+    "preinstall": "cd ../../../; npm install",
+    "build": "(cd ../../../ && npm run build); webpack --mode development"
   },
   "license": "MIT",
   "dependencies": {
