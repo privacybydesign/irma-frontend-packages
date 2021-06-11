@@ -9,7 +9,14 @@ recommended best practice for use in web browsers! See the
 [irma-client documentation](../../../plugins/irma-client) for more information
 on how to safely initialize your session.
 
-You can run this example by running these commands in this directory:
+To run this example, you need the [`irma` CLI tool](https://github.com/privacybydesign/irmago/releases/latest).
+You first need to start an IRMA server locally.
+```bash
+irma server
+```
+
+You can run this example by running the following commands in a separate terminal window.
+The directory in which this README is located should be the working directory.
 
 ```bash
 npm install

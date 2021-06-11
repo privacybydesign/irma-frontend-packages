@@ -8,16 +8,19 @@ recommended best practice for use in web browsers! See the
 [irma-client documentation](../../../plugins/irma-client) for more information
 on how to safely initialize your session.
 
-You can run this example by installing this package:
+You can build this example by running the following commands in this directory:
 
 ```bash
 npm install
+npm run link # Only necessary for development builds
 npm run build
 ```
 
-Then the root directory of this example can simply be hosted using an HTTP
-server to run the example. You can for example use `serve` for this:
+To run this example, you need the [`irma` CLI tool](https://github.com/privacybydesign/irmago/releases/latest).
+You can start the IRMA server to run this example in the following way:
+
 ```bash
-npm install serve
-`npm bin`/serve .
+irma server --static-path=.
 ```
+
+It will be available in your browser at http://localhost:8088.

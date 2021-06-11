@@ -10,12 +10,12 @@ npm install
 npm run build
 ```
 
-Then the public directory of this example can simply be hosted using an HTTP
-server to run the example. You can for example use `serve` for this:
+To run the example, the `public` directory can simply be hosted using an HTTP
+server. You can use the [`irma` CLI tool](https://github.com/privacybydesign/irmago/releases/latest)
+to do this.
 
 ```bash
-npm install serve
-`npm bin`/serve ./public
+irma server --static-path=./public
 ```
 
-The demo application will then run in the terminal output of your web browser.
+It will be available in your browser at http://localhost:8088.
