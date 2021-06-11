@@ -70,12 +70,14 @@ $ npm run dev
 The style guide has been updated in the `docs/styleguide` directory in
 the root of this project. To show the styleguide, the docs
 directory can simply be hosted using an HTTP
-server to run the example. You can for example use `serve` for this:
+server. You can use the [`irma` CLI tool](https://github.com/privacybydesign/irmago/releases/latest)
+to do this.
 
 ```bash
-npm install serve
-`npm bin`/serve ../docs/styleguide
+irma server --static-path=../docs/styleguide
 ```
+
+It will be available in your browser at http://localhost:8088.
 
 Any change you make to the stylesheets will trigger a rebuild of the style guide
 and will be shown after a browser refresh.
