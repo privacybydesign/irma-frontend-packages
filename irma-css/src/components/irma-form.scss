@@ -50,6 +50,28 @@
   '../mixins/center', '../mixins/animation', '../variables/colours',
   '../variables/sizes';
 
+.irma-web-centered {
+  @include reset;
+  height: auto;
+  text-align: center;
+
+  img,
+  canvas {
+    cursor: none;
+  }
+
+  // Make sure margin-top of first child and margin-bottom of last child
+  // are equal to prevent issues while centering.
+  > p {
+    &:first-child {
+      margin-top: 0;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
 .irma-web-form {
   @include reset;
   display: flex;
@@ -78,28 +100,6 @@
 
     background-color: $content-bg-color;
     border-radius: $border-radius * 0.6;
-
-    .irma-web-centered {
-      @include reset;
-      height: auto;
-      text-align: center;
-
-      img,
-      canvas {
-        cursor: none;
-      }
-
-      // Make sure margin-top of first child and margin-bottom of last child
-      // are equal to prevent issues while centering.
-      > p {
-        &:first-child {
-          margin-top: 0;
-        }
-        &:last-child {
-          margin-bottom: 0;
-        }
-      }
-    }
 
     p {
       @include reset;
