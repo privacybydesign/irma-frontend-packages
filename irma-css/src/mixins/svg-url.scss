@@ -1,5 +1,7 @@
 // Adapted from https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
 
+@use "sass:math";
+
 @function svg-url($svg) {
   //
   //  Add missing namespace
@@ -14,7 +16,7 @@
   $encoded: '';
   $slice: 2000;
   $index: 0;
-  $loops: ceil(str-length($svg) / $slice);
+  $loops: ceil(math.div(str-length($svg), $slice));
   @for $i from 1 through $loops {
     $chunk: str-slice($svg, $index, $index + $slice - 1);
 

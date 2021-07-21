@@ -7,6 +7,8 @@
 //
 // Styleguide Animations.Clock
 
+@use "sass:math";
+
 @import '../mixins/reset', '../mixins/animation', '../variables/colours';
 
 .irma-web-clock-animation {
@@ -29,7 +31,7 @@
     width: $line-size;
     height: $line-size;
     top: -1.5 * $line-size;
-    left: $clock-size / 2 - $line-size - $line-size / 2;
+    left: $clock-size * 0.5 - $line-size - $line-size * 0.5;
 
     background-color: $irma-red;
   }
@@ -39,9 +41,9 @@
     position: absolute;
     display: block;
     width: $line-size;
-    height: $clock-size / 2.4;
+    height: math.div($clock-size, 2.4);
     top: 2px;
-    left: $clock-size / 2 - $line-size - $line-size / 2;
+    left: $clock-size * 0.5 - $line-size - $line-size * 0.5;
 
     background-color: $irma-red;
     transform: rotate(0deg);
