@@ -7,6 +7,8 @@
 //
 // Styleguide Animations.Forbidden
 
+@use "sass:math";
+
 @import '../mixins/reset', '../mixins/animation', '../variables/colours';
 
 .irma-web-forbidden-animation {
@@ -29,15 +31,15 @@
     display: block;
     position: absolute;
     box-sizing: border-box;
-    width: $sign-size / 2;
+    width: $sign-size * 0.5;
     height: $sign-size;
     top: 0;
-    left: $sign-size / 2;
+    left: $sign-size * 0.5;
 
     // Note: Safari has issues animating the border if it hasn't been set before
     border: $line-size solid $irma-red;
     // Note: IE11 has issues animating the border radius :/
-    border-radius: $sign-size / 2;
+    border-radius: $sign-size * 0.5;
   }
 
   &:before {
@@ -55,17 +57,17 @@
     65% {
       border-radius: 0px;
       border-left: 0px;
-      border-top-right-radius: $sign-size / 2;
-      border-bottom-right-radius: $sign-size / 2;
-      width: $sign-size / 2;
-      left: $sign-size / 2;
+      border-top-right-radius: $sign-size * 0.5;
+      border-bottom-right-radius: $sign-size * 0.5;
+      width: $sign-size * 0.5;
+      left: $sign-size * 0.5;
     }
 
     // Become a whole circle
     66%,
     100% {
       border: $line-size solid $irma-red;
-      border-radius: $sign-size / 2;
+      border-radius: $sign-size * 0.5;
       width: $sign-size;
       left: 0;
     }
@@ -82,7 +84,7 @@
       border-radius: 0;
       background-color: $content-bg-color;
       transform-origin: center left;
-      width: $sign-size / 2;
+      width: $sign-size * 0.5;
     }
     // Be a half circle
     33%,
@@ -90,13 +92,13 @@
       border: $line-size solid $irma-red;
       border-radius: 0px;
       border-left: 0px;
-      border-top-right-radius: $sign-size / 2;
-      border-bottom-right-radius: $sign-size / 2;
+      border-top-right-radius: $sign-size * 0.5;
+      border-bottom-right-radius: $sign-size * 0.5;
       background-color: $content-bg-color;
-      width: $sign-size / 2;
+      width: $sign-size * 0.5;
       height: $sign-size;
       transform-origin: center left;
-      left: $sign-size / 2;
+      left: $sign-size * 0.5;
     }
     // Be a diagonal line
     66%,
@@ -106,8 +108,8 @@
       height: $line-size;
       transform: rotate(-45deg)
         translate(
-          $sign-size / -2 + $line-size / 2,
-          $sign-size / 2 + $line-size / 2 + 2
+          math.div($sign-size, -2) + $line-size * 0.5,
+          $sign-size * 0.5 + $line-size * 0.5 + 2
         );
       transform-origin: top left;
       left: 0;
