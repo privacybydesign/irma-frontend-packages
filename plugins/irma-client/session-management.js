@@ -13,7 +13,7 @@ module.exports = class SessionManagement {
     if (!this._options.start) {
       Object.keys(this._options.mapping).forEach((val) => (this._mappings[val] = this._options.mapping[val]({})));
 
-      return Promise.resolve(this._mappings);
+      return Promise.resolve(this._parseMappings(this._mappings));
     }
 
     // Start options are specified, so start a new session
