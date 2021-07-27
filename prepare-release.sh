@@ -14,7 +14,7 @@ echo "Preparing release '$npm_version'"
 set -x
 
 # Find all package.json files in subdirectories, except node_modules, examples, irma-popup and irma-frontend
-standalone_packages=`find . -name "package.json" -not -path "*/node_modules/*" -not -path "*/examples/*" -not -path "*/irma-popup/*" -not -path "*/irma-frontend/*"`
+standalone_packages=`find . -mindepth 2 -name "package.json" -not -path "*/node_modules/*" -not -path "*/examples/*" -not -path "*/irma-popup/*" -not -path "*/irma-frontend/*"`
 
 # Loop over directories where package.json files are found and prepare for release
 root=`pwd`
@@ -30,7 +30,7 @@ for package in ${standalone_packages[@]}; do
   npm update
   npm run clean --if-present
   npm run release --if-present
-  eval "npm version $npm_version"
+  eval "npm version $npm_version --no-git-tag-version"
   # Make sure dev dependencies are not included to prevent artifact pollution
   rm -rf ./node_modules
   npm install --only=prod

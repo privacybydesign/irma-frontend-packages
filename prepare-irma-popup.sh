@@ -22,7 +22,7 @@ then
 
   npm audit fix
   npm update
-  eval "npm version $version"
+  eval "npm version $version --no-git-tag-version"
   # Make sure dev dependencies are not included to prevent artifact pollution
   rm -rf ./node_modules
   npm install --only=prod
