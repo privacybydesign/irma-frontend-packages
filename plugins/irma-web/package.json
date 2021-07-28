@@ -1,6 +1,6 @@
 {
   "name": "@privacybydesign/irma-web",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "A front-end to IRMA flows for in the web browser",
   "main": "index.js",
   "license": "MIT",
