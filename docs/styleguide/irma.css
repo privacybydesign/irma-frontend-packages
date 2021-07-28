@@ -41,6 +41,25 @@
   transform: scale(1);
 }
 
+.irma-web-centered {
+  background-color: inherit;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  height: auto;
+  text-align: center;
+}
+.irma-web-centered img,
+.irma-web-centered canvas {
+  cursor: none;
+}
+.irma-web-centered > p:first-child {
+  margin-top: 0;
+}
+.irma-web-centered > p:last-child {
+  margin-bottom: 0;
+}
+
 .irma-web-form {
   background-color: inherit;
   box-sizing: border-box;
@@ -52,7 +71,7 @@
   min-width: 262px;
   max-width: 400px;
   height: 480px;
-  background-color: #004C92;
+  background-color: #004c92;
   border: 1px solid white;
   border-radius: 10px;
 }
@@ -60,6 +79,56 @@
   .irma-web-form {
     min-height: 440px;
   }
+}
+.irma-web-form .irma-web-content {
+  background-color: inherit;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  margin: 0 1rem 1rem 1rem;
+  background-color: white;
+  border-radius: 6px;
+}
+.irma-web-form .irma-web-content p {
+  background-color: inherit;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  font-family: "Roboto", Tahoma, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  color: #7f7f7f;
+  margin: 1em 4em;
+}
+.irma-web-form .irma-web-content p.irma-web-error {
+  color: #d44454;
+}
+@media screen and (max-width: 768px) {
+  .irma-web-form .irma-web-content p {
+    margin: 1em 2em;
+  }
+}
+.irma-web-form .irma-web-content a {
+  background-color: inherit;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  font-family: "Roboto", Tahoma, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  color: #7f7f7f;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.irma-web-form .irma-web-content a.irma-web-error {
+  color: #d44454;
+}
+.irma-web-form .irma-web-content a:hover {
+  color: #004c92;
 }
 .irma-web-form .irma-web-header {
   background-color: inherit;
@@ -90,12 +159,18 @@
   font-size: 20px;
   color: white;
 }
+.irma-web-form .irma-web-header p.irma-web-error {
+  color: #d44454;
+}
 @media screen and (max-width: 768px) {
   .irma-web-form .irma-web-header p {
     font-family: "Roboto", Tahoma, Arial, sans-serif;
     font-weight: 500;
     font-size: 16px;
     color: white;
+  }
+  .irma-web-form .irma-web-header p.irma-web-error {
+    color: #d44454;
   }
 }
 .irma-web-form .irma-web-header p i.irma-web-logo {
@@ -120,12 +195,21 @@
   border-top-right-radius: 6px;
   border-bottom-left-radius: 1px;
   border-bottom-right-radius: 1px;
+  transform: translateX(120%);
+  -webkit-transition: -webkit-transform 0.4s ease;
+  -webkit-transition: transform 0.4s ease;
+  transition: transform 0.4s ease;
 }
-.irma-web-form .irma-web-header .irma-web-helper p, .irma-web-form .irma-web-header .irma-web-helper a {
+.irma-web-form .irma-web-header .irma-web-helper p,
+.irma-web-form .irma-web-header .irma-web-helper a {
   font-family: "Roboto", Tahoma, Arial, sans-serif;
   font-weight: 300;
   font-size: 13px;
   color: white;
+}
+.irma-web-form .irma-web-header .irma-web-helper p.irma-web-error,
+.irma-web-form .irma-web-header .irma-web-helper a.irma-web-error {
+  color: #d44454;
 }
 .irma-web-form .irma-web-header .irma-web-helper p {
   margin: 1em;
@@ -133,12 +217,6 @@
 }
 .irma-web-form .irma-web-header > *:not(.irma-web-helper):not(.irma-web-close) {
   transform: translateX(0%);
-  -webkit-transition: -webkit-transform 0.4s ease;
-  -webkit-transition: transform 0.4s ease;
-  transition: transform 0.4s ease;
-}
-.irma-web-form .irma-web-header .irma-web-helper {
-  transform: translateX(120%);
   -webkit-transition: -webkit-transform 0.4s ease;
   -webkit-transition: transform 0.4s ease;
   transition: transform 0.4s ease;
@@ -172,79 +250,15 @@
   left: 10.92px;
   width: 4.16px;
   height: 15.6px;
-  background-color: #004C92;
+  background-color: #004c92;
   transform: rotateZ(45deg);
   transform-origin: center;
 }
 .irma-web-form .irma-web-header .irma-web-close:after {
   transform: rotateZ(-45deg);
 }
-.irma-web-form .irma-web-content {
-  background-color: inherit;
-  box-sizing: border-box;
-  margin: 0px;
-  padding: 0px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1 1 auto;
-  margin: 0 1rem 1rem 1rem;
-  background-color: white;
-  border-bottom-right-radius: 6px;
-  border-bottom-left-radius: 6px;
-  border-top-left-radius: 1px;
-  border-top-right-radius: 1px;
-}
-.irma-web-form .irma-web-content .irma-web-centered {
-  background-color: inherit;
-  box-sizing: border-box;
-  margin: 0px;
-  padding: 0px;
-  height: auto;
-  text-align: center;
-}
-.irma-web-form .irma-web-content .irma-web-centered img, .irma-web-form .irma-web-content .irma-web-centered canvas {
-  cursor: none;
-}
-.irma-web-form .irma-web-content p {
-  background-color: inherit;
-  box-sizing: border-box;
-  margin: 0px;
-  padding: 0px;
-  font-family: "Roboto", Tahoma, Arial, sans-serif;
-  font-weight: 300;
-  font-size: 15px;
-  color: #7f7f7f;
-  margin: 1em 4em;
-}
-@media screen and (max-width: 768px) {
-  .irma-web-form .irma-web-content p {
-    margin: 1em 2em;
-  }
-}
-.irma-web-form .irma-web-content p:first-child {
-  margin-top: 0;
-}
-.irma-web-form .irma-web-content p:last-child {
-  margin-bottom: 0;
-}
-.irma-web-form .irma-web-content a {
-  background-color: inherit;
-  box-sizing: border-box;
-  margin: 0px;
-  padding: 0px;
-  font-family: "Roboto", Tahoma, Arial, sans-serif;
-  font-weight: 300;
-  font-size: 15px;
-  color: #7f7f7f;
-  text-decoration: underline;
-  cursor: pointer;
-}
-.irma-web-form .irma-web-content a:hover {
-  color: #004C92;
-}
 
-.irma-web-button {
+.irma-web-button, .irma-web-pairing-form button {
   background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
@@ -254,10 +268,10 @@
   font-size: 14px;
   color: #7f7f7f;
   display: inline-block;
-  padding: 1.5em 4em;
-  background-color: #004C92;
+  padding: 1em 4em;
+  background-color: #004c92;
   border: 1px solid #00315f;
-  border-radius: 10px;
+  border-radius: 40px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   text-decoration: none;
   color: white;
@@ -276,13 +290,16 @@
   /* Internet Explorer/Edge */
   user-select: none;
   /* Non-prefixed version, currently
-     supported by Chrome and Opera */
+               supported by Chrome and Opera */
 }
-.irma-web-button:active {
+.irma-web-button.irma-web-error, .irma-web-pairing-form button.irma-web-error {
+  color: #d44454;
+}
+.irma-web-button:active, .irma-web-pairing-form button:active {
   transform: scale3d(0.99, 0.99, 1);
   transform-origin: center;
 }
-.irma-web-button:focus {
+.irma-web-button:focus, .irma-web-pairing-form button:focus {
   outline: 0;
 }
 
@@ -301,6 +318,213 @@
   color: transparent;
 }
 
+.irma-web-button, .irma-web-pairing-form button {
+  background-color: inherit;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  font-family: "Roboto", Tahoma, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  color: #7f7f7f;
+  display: inline-block;
+  padding: 1em 4em;
+  background-color: #004c92;
+  border: 1px solid #00315f;
+  border-radius: 40px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+               supported by Chrome and Opera */
+}
+.irma-web-button.irma-web-error, .irma-web-pairing-form button.irma-web-error {
+  color: #d44454;
+}
+.irma-web-button:active, .irma-web-pairing-form button:active {
+  transform: scale3d(0.99, 0.99, 1);
+  transform-origin: center;
+}
+.irma-web-button:focus, .irma-web-pairing-form button:focus {
+  outline: 0;
+}
+
+.irma-web-loading-animation, .irma-web-pairing-form .irma-web-pairing-loading-animation {
+  background-color: inherit;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  display: inline-block;
+  width: 39px;
+  height: 39px;
+}
+.irma-web-loading-animation *, .irma-web-pairing-form .irma-web-pairing-loading-animation * {
+  background-color: inherit;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+.irma-web-loading-animation *, .irma-web-pairing-form .irma-web-pairing-loading-animation * {
+  background-color: inherit;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  display: block;
+  width: 33%;
+  height: 33%;
+  border-radius: 50%;
+  background-color: #00b1e6;
+  float: left;
+  -ms-animation: loading-animation 1.3s infinite ease-in-out;
+  -webkit-animation: loading-animation 1.3s infinite ease-in-out;
+  animation: loading-animation 1.3s infinite ease-in-out;
+}
+.irma-web-loading-animation *:nth-child(1), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(1) {
+  -ms-animation-delay: 0.2s;
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+.irma-web-loading-animation *:nth-child(2), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(2) {
+  -ms-animation-delay: 0.3s;
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
+}
+.irma-web-loading-animation *:nth-child(3), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(3) {
+  -ms-animation-delay: 0.4s;
+  -webkit-animation-delay: 0.4s;
+  animation-delay: 0.4s;
+}
+.irma-web-loading-animation *:nth-child(4), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(4) {
+  -ms-animation-delay: 0.1s;
+  -webkit-animation-delay: 0.1s;
+  animation-delay: 0.1s;
+}
+.irma-web-loading-animation *:nth-child(5), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(5) {
+  -ms-animation-delay: 0.2s;
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+.irma-web-loading-animation *:nth-child(6), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(6) {
+  -ms-animation-delay: 0.3s;
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
+}
+.irma-web-loading-animation *:nth-child(7), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(7) {
+  -ms-animation-delay: 0s;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
+.irma-web-loading-animation *:nth-child(8), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(8) {
+  -ms-animation-delay: 0.1s;
+  -webkit-animation-delay: 0.1s;
+  animation-delay: 0.1s;
+}
+.irma-web-loading-animation *:nth-child(9), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(9) {
+  -ms-animation-delay: 0.2s;
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+@-ms-keyframes loading-animation {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+    transform: scale3D(1, 1, 1);
+  }
+  35% {
+    -webkit-transform: scale3D(0, 0, 1);
+    transform: scale3D(0, 0, 1);
+  }
+}
+@-webkit-keyframes loading-animation {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+    transform: scale3D(1, 1, 1);
+  }
+  35% {
+    -webkit-transform: scale3D(0, 0, 1);
+    transform: scale3D(0, 0, 1);
+  }
+}
+@keyframes loading-animation {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+    transform: scale3D(1, 1, 1);
+  }
+  35% {
+    -webkit-transform: scale3D(0, 0, 1);
+    transform: scale3D(0, 0, 1);
+  }
+}
+
+.irma-web-pairing-form {
+  background-color: inherit;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto", Tahoma, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  color: #7f7f7f;
+  flex-direction: column;
+}
+.irma-web-pairing-form.irma-web-error {
+  color: #d44454;
+}
+.irma-web-pairing-form .irma-web-pairing-code {
+  background-color: inherit;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: row;
+  cursor: text;
+}
+.irma-web-pairing-form p {
+  text-align: center;
+  align-self: center;
+}
+.irma-web-pairing-form .irma-web-pairing-loading-animation {
+  margin: 10px 0;
+}
+.irma-web-pairing-form input {
+  background-color: inherit;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  margin: 8px;
+  height: 40px;
+  width: 30px;
+  text-align: center;
+  font-size: 1.5em;
+  border: 1px solid #000;
+  border-radius: 4px;
+}
+@media screen and (max-width: 310px) {
+  .irma-web-pairing-form input {
+    margin: 4px;
+    height: 32px;
+    width: 24px;
+    font-size: 1em;
+  }
+}
+
 .irma-web-qr-code {
   background-color: inherit;
   box-sizing: border-box;
@@ -313,7 +537,7 @@
   background-color: white;
 }
 
-.irma-web-loading-animation {
+.irma-web-loading-animation, .irma-web-pairing-form .irma-web-pairing-loading-animation {
   background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
@@ -322,13 +546,13 @@
   width: 39px;
   height: 39px;
 }
-.irma-web-loading-animation * {
+.irma-web-loading-animation *, .irma-web-pairing-form .irma-web-pairing-loading-animation * {
   background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
 }
-.irma-web-loading-animation * {
+.irma-web-loading-animation *, .irma-web-pairing-form .irma-web-pairing-loading-animation * {
   background-color: inherit;
   box-sizing: border-box;
   margin: 0px;
@@ -336,53 +560,54 @@
   display: block;
   width: 33%;
   height: 33%;
+  border-radius: 50%;
   background-color: #00b1e6;
   float: left;
   -ms-animation: loading-animation 1.3s infinite ease-in-out;
   -webkit-animation: loading-animation 1.3s infinite ease-in-out;
   animation: loading-animation 1.3s infinite ease-in-out;
 }
-.irma-web-loading-animation *:nth-child(1) {
+.irma-web-loading-animation *:nth-child(1), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(1) {
   -ms-animation-delay: 0.2s;
   -webkit-animation-delay: 0.2s;
   animation-delay: 0.2s;
 }
-.irma-web-loading-animation *:nth-child(2) {
+.irma-web-loading-animation *:nth-child(2), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(2) {
   -ms-animation-delay: 0.3s;
   -webkit-animation-delay: 0.3s;
   animation-delay: 0.3s;
 }
-.irma-web-loading-animation *:nth-child(3) {
+.irma-web-loading-animation *:nth-child(3), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(3) {
   -ms-animation-delay: 0.4s;
   -webkit-animation-delay: 0.4s;
   animation-delay: 0.4s;
 }
-.irma-web-loading-animation *:nth-child(4) {
+.irma-web-loading-animation *:nth-child(4), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(4) {
   -ms-animation-delay: 0.1s;
   -webkit-animation-delay: 0.1s;
   animation-delay: 0.1s;
 }
-.irma-web-loading-animation *:nth-child(5) {
+.irma-web-loading-animation *:nth-child(5), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(5) {
   -ms-animation-delay: 0.2s;
   -webkit-animation-delay: 0.2s;
   animation-delay: 0.2s;
 }
-.irma-web-loading-animation *:nth-child(6) {
+.irma-web-loading-animation *:nth-child(6), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(6) {
   -ms-animation-delay: 0.3s;
   -webkit-animation-delay: 0.3s;
   animation-delay: 0.3s;
 }
-.irma-web-loading-animation *:nth-child(7) {
+.irma-web-loading-animation *:nth-child(7), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(7) {
   -ms-animation-delay: 0s;
   -webkit-animation-delay: 0s;
   animation-delay: 0s;
 }
-.irma-web-loading-animation *:nth-child(8) {
+.irma-web-loading-animation *:nth-child(8), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(8) {
   -ms-animation-delay: 0.1s;
   -webkit-animation-delay: 0.1s;
   animation-delay: 0.1s;
 }
-.irma-web-loading-animation *:nth-child(9) {
+.irma-web-loading-animation *:nth-child(9), .irma-web-pairing-form .irma-web-pairing-loading-animation *:nth-child(9) {
   -ms-animation-delay: 0.2s;
   -webkit-animation-delay: 0.2s;
   animation-delay: 0.2s;

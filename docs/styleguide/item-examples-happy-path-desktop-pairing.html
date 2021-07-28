@@ -87,15 +87,15 @@
           the "root" element comes first in this loop, and can be detected using
           the "#if @first" block as seen below.
         -->
-            <header class="kss-section kss-section--depth-3" id="kssref-examples-states-showing-qr-code">
+            <header class="kss-section kss-section--depth-3" id="kssref-examples-happy-path-desktop-pairing">
 
             <article class="kss-section__content">
-                <p class="kss-section__source">Source: <span>src/examples/states.scss</span>, line <span>58</span></p>
+                <p class="kss-section__source">Source: <span>src/examples/happy-path.scss</span>, line <span>67</span></p>
 
-              <a class="kss-section__permalink" href="#kssref-examples-states-showing-qr-code">
+              <a class="kss-section__permalink" href="#kssref-examples-happy-path-desktop-pairing">
                 <h3 class="kss-section__item kss-section__item--depth-3">
-                  <span class="kss-section__ref">1.3.3</span>
-                  <span class="kss-section__name">State 3a: Showing QR code (desktop)</span>
+                  <span class="kss-section__ref">1.2.2</span>
+                  <span class="kss-section__name">Desktop pairing flow</span>
                 </h3>
               </a>
 
@@ -114,9 +114,36 @@
         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
       </section>
     </header>
-    <section class="irma-web-content">
-      <section class="irma-web-centered">
+    <section class="irma-web-content" data-animate>
+      <section class="irma-web-centered" data-duration="2000">
+        <div class="irma-web-loading-animation"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <p>Eén moment alsjeblieft</p>
+      </section>
+      <section class="irma-web-centered" data-duration="5000">
         <img class="irma-web-qr-code" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK8AAACvAQMAAACxXBw2AAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADOElEQVRIx+2XP2rlMBDGx6hQE+z2FQJdQ2miq+QINmmDZfPaYF/gQa6iNNE1BCpea5NGC8Kzo3WSYtlkkdtdFQb/DPoz8+mbMcA/PSRuGuTWOPSds5gqRF+MBdQgw4w2hIlbkKOFA9hMXAYctE/GQmKji4cwnFIzIojuBTF1f8Uc6l4RsTpcqkMYag6p77UXoFR6rD5PWYApsOoqukkF0b2qcOk+412AaWgM88S93BQEXD6zXIDlL4KTxtTqiM/r+waLMDwspJOhBwTaGw2noBjLMyUNl85KNmKEe3MEs6cKeZgAkjDoAGpl/Tf4bdLXVA0q4bqpgFmfxRjMwGnuWoFcrcZ8ZXw5bnvKzrpwmeAWkYKjy7FcWpJ9X2uUg8orqQOYvW36JJqFeza+kmxJv1COcSTP6FuObEXHLg2l6ACeI0/dpAUOt5H5fg/VF1jiijxVqwseKkeBhV0nRVg8kByzoIJoNTJcdDyAb1qIvq2BUrTxgOsuzUJMQeBh6DWjwIJg8xEs31a8irpzPqwxZ2aXfRmmufFEh1OI66sOz4gfSxZgeBhUxHVSnmRPjtpy5YuxaCZF8V4p3iaSWD9s/c+YFK1Pcly0l8sdh8eW63IszxRYpJtGRSDq9Ghwd80iLMwC1+xVIdDcLDVoD2AwpFgAzsKg6EHFzRdjlqpI1ltF6ev8bY7qAD5v+ur7XgFb7jRhi+VY3FBxTd2WHxiT6N7lU4Tl22xBVPnajK9K3LfwLabjXIUZHeD6w3k5wC77MvxUK0k6USGQNNl5jg7K8XnhMQw1WRi+WP9o3G5hRZhmc9QVjFb6KtICdOfLsXyC7Fzkv7jcAWlfYzlmQ614mEeLQHPTBuNeL4uwzB0JGxeQoiWdPKPb4/0Fnjd+ClPjIIyk0UtlYzlmS4VUhidgWd/h0jhdjuGmsVefLYj8H0NAjAcwmS3KzVifW258XriGYkwvZDxtY4McdBT3nYNy/KthpU5JeZGNh3zQHcBm0jG1VBQTNazyYj6crRArKtEzBjA/LPX+oL/HnLoCpL+U5oX0OX9YbxGGOu+kiYwNd9wL89nyF+CcE8nWkXRqqFF/P00h/j9+Hz8BKgnu5v9Z8jEAAAAASUVORK5CYII="/>
+      </section>
+      <section class="irma-web-centered" data-duration="5000">
+        <form class="irma-web-pairing-form" onsubmit="alert('Input logic is disabled for this example')">
+          <p>Vul de koppelcode in die in jouw IRMA-app verschijnt.</p>
+          <div class="irma-web-pairing-code">
+            <input inputmode="numeric" pattern="\d" maxlength="1" required oninput="alert('Input logic is disabled for this example')" />
+            <input inputmode="numeric" pattern="\d" maxlength="1" required oninput="alert('Input logic is disabled for this example')" />
+            <input inputmode="numeric" pattern="\d" maxlength="1" required oninput="alert('Input logic is disabled for this example')" />
+            <input inputmode="numeric" pattern="\d" maxlength="1" required oninput="alert('Input logic is disabled for this example')" />
+          </div>
+          <button type="submit">
+            Volgende
+          </button>
+          <p><a>Annuleer</a></p>
+        </form>
+      </section>
+      <section class="irma-web-centered" data-duration="5000">
+        <div class="irma-web-waiting-for-user-animation"></div>
+        <p>Volg de instructies in de IRMA app</p>
+      </section>
+      <section class="irma-web-centered" data-duration="2000">
+        <div class="irma-web-checkmark-animation"></div>
+        <p>Gelukt!</p>
       </section>
     </section>
   </section>
@@ -133,9 +160,36 @@
         &lt;p&gt;Kom je er niet uit? Kijk dan eerst eens op &lt;a href&#x3D;&quot;https://irma.app/&quot;&gt;de website van IRMA&lt;/a&gt;.&lt;/p&gt;
       &lt;/section&gt;
     &lt;/header&gt;
-    &lt;section class&#x3D;&quot;irma-web-content&quot;&gt;
-      &lt;section class&#x3D;&quot;irma-web-centered&quot;&gt;
+    &lt;section class&#x3D;&quot;irma-web-content&quot; data-animate&gt;
+      &lt;section class&#x3D;&quot;irma-web-centered&quot; data-duration&#x3D;&quot;2000&quot;&gt;
+        &lt;div class&#x3D;&quot;irma-web-loading-animation&quot;&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+        &lt;p&gt;Eén moment alsjeblieft&lt;/p&gt;
+      &lt;/section&gt;
+      &lt;section class&#x3D;&quot;irma-web-centered&quot; data-duration&#x3D;&quot;5000&quot;&gt;
         &lt;img class&#x3D;&quot;irma-web-qr-code&quot; src&#x3D;&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK8AAACvAQMAAACxXBw2AAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADOElEQVRIx+2XP2rlMBDGx6hQE+z2FQJdQ2miq+QINmmDZfPaYF/gQa6iNNE1BCpea5NGC8Kzo3WSYtlkkdtdFQb/DPoz8+mbMcA/PSRuGuTWOPSds5gqRF+MBdQgw4w2hIlbkKOFA9hMXAYctE/GQmKji4cwnFIzIojuBTF1f8Uc6l4RsTpcqkMYag6p77UXoFR6rD5PWYApsOoqukkF0b2qcOk+412AaWgM88S93BQEXD6zXIDlL4KTxtTqiM/r+waLMDwspJOhBwTaGw2noBjLMyUNl85KNmKEe3MEs6cKeZgAkjDoAGpl/Tf4bdLXVA0q4bqpgFmfxRjMwGnuWoFcrcZ8ZXw5bnvKzrpwmeAWkYKjy7FcWpJ9X2uUg8orqQOYvW36JJqFeza+kmxJv1COcSTP6FuObEXHLg2l6ACeI0/dpAUOt5H5fg/VF1jiijxVqwseKkeBhV0nRVg8kByzoIJoNTJcdDyAb1qIvq2BUrTxgOsuzUJMQeBh6DWjwIJg8xEs31a8irpzPqwxZ2aXfRmmufFEh1OI66sOz4gfSxZgeBhUxHVSnmRPjtpy5YuxaCZF8V4p3iaSWD9s/c+YFK1Pcly0l8sdh8eW63IszxRYpJtGRSDq9Ghwd80iLMwC1+xVIdDcLDVoD2AwpFgAzsKg6EHFzRdjlqpI1ltF6ev8bY7qAD5v+ur7XgFb7jRhi+VY3FBxTd2WHxiT6N7lU4Tl22xBVPnajK9K3LfwLabjXIUZHeD6w3k5wC77MvxUK0k6USGQNNl5jg7K8XnhMQw1WRi+WP9o3G5hRZhmc9QVjFb6KtICdOfLsXyC7Fzkv7jcAWlfYzlmQ614mEeLQHPTBuNeL4uwzB0JGxeQoiWdPKPb4/0Fnjd+ClPjIIyk0UtlYzlmS4VUhidgWd/h0jhdjuGmsVefLYj8H0NAjAcwmS3KzVifW258XriGYkwvZDxtY4McdBT3nYNy/KthpU5JeZGNh3zQHcBm0jG1VBQTNazyYj6crRArKtEzBjA/LPX+oL/HnLoCpL+U5oX0OX9YbxGGOu+kiYwNd9wL89nyF+CcE8nWkXRqqFF/P00h/j9+Hz8BKgnu5v9Z8jEAAAAASUVORK5CYII&#x3D;&quot;/&gt;
+      &lt;/section&gt;
+      &lt;section class&#x3D;&quot;irma-web-centered&quot; data-duration&#x3D;&quot;5000&quot;&gt;
+        &lt;form class&#x3D;&quot;irma-web-pairing-form&quot; onsubmit&#x3D;&quot;alert(&#x27;Input logic is disabled for this example&#x27;)&quot;&gt;
+          &lt;p&gt;Vul de koppelcode in die in jouw IRMA-app verschijnt.&lt;/p&gt;
+          &lt;div class&#x3D;&quot;irma-web-pairing-code&quot;&gt;
+            &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required oninput&#x3D;&quot;alert(&#x27;Input logic is disabled for this example&#x27;)&quot; /&gt;
+            &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required oninput&#x3D;&quot;alert(&#x27;Input logic is disabled for this example&#x27;)&quot; /&gt;
+            &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required oninput&#x3D;&quot;alert(&#x27;Input logic is disabled for this example&#x27;)&quot; /&gt;
+            &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required oninput&#x3D;&quot;alert(&#x27;Input logic is disabled for this example&#x27;)&quot; /&gt;
+          &lt;/div&gt;
+          &lt;button type&#x3D;&quot;submit&quot;&gt;
+            Volgende
+          &lt;/button&gt;
+          &lt;p&gt;&lt;a&gt;Annuleer&lt;/a&gt;&lt;/p&gt;
+        &lt;/form&gt;
+      &lt;/section&gt;
+      &lt;section class&#x3D;&quot;irma-web-centered&quot; data-duration&#x3D;&quot;5000&quot;&gt;
+        &lt;div class&#x3D;&quot;irma-web-waiting-for-user-animation&quot;&gt;&lt;/div&gt;
+        &lt;p&gt;Volg de instructies in de IRMA app&lt;/p&gt;
+      &lt;/section&gt;
+      &lt;section class&#x3D;&quot;irma-web-centered&quot; data-duration&#x3D;&quot;2000&quot;&gt;
+        &lt;div class&#x3D;&quot;irma-web-checkmark-animation&quot;&gt;&lt;/div&gt;
+        &lt;p&gt;Gelukt!&lt;/p&gt;
       &lt;/section&gt;
     &lt;/section&gt;
   &lt;/section&gt;

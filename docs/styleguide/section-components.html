@@ -87,8 +87,14 @@
                       </a>
                     </li>
                     <li class="kss-nav__item ">
-                      <a href="section-components.html#kssref-components-qr-code">
+                      <a href="section-components.html#kssref-components-irma-pairing-form">
                         <span class="kss-nav__ref">5.4</span>
+                        <span class="kss-nav__name">IRMA pairing form</span>
+                      </a>
+                    </li>
+                    <li class="kss-nav__item ">
+                      <a href="section-components.html#kssref-components-qr-code">
+                        <span class="kss-nav__ref">5.5</span>
                         <span class="kss-nav__name">QR code</span>
                       </a>
                     </li>
@@ -153,20 +159,20 @@ mobile device)</p>
 
 
                 <div class="kss-modifiers__example"><button class="irma-web-button">
-  Open IRMA app
+  Open IRMA-app
 </button>
 <a href="#" class="irma-web-button">
-  Open IRMA app
+  Open IRMA-app
 </a></div>
 
               </article>
 
                 <article class="kss-section__markup">
                   <pre><code class="language-markup">&lt;button class&#x3D;&quot;irma-web-button&quot;&gt;
-  Open IRMA app
+  Open IRMA-app
 &lt;/button&gt;
 &lt;a href&#x3D;&quot;#&quot; class&#x3D;&quot;irma-web-button&quot;&gt;
-  Open IRMA app
+  Open IRMA-app
 &lt;/a&gt;</code></pre>
                 </article>
 
@@ -202,7 +208,7 @@ mobile device)</p>
 
                 <div class="kss-modifiers__example"><section class="irma-web-form">
   <div class="irma-web-header">
-    <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+    <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
     <div class="irma-web-helper">
       <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
     </div>
@@ -216,7 +222,7 @@ mobile device)</p>
 </section>
 <section class="irma-web-form">
   <div class="irma-web-header">
-    <p>Inloggen met <i class="irma-web-logo">IRMA</i></p>
+    <p>Ga verder met <i class="irma-web-logo">IRMA</i></p>
     <div class="irma-web-helper">
       <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://irma.app/">de website van IRMA</a>.</p>
     </div>
@@ -235,7 +241,7 @@ mobile device)</p>
                 <article class="kss-section__markup">
                   <pre><code class="language-markup">&lt;section class&#x3D;&quot;irma-web-form&quot;&gt;
   &lt;div class&#x3D;&quot;irma-web-header&quot;&gt;
-    &lt;p&gt;Inloggen met &lt;i class&#x3D;&quot;irma-web-logo&quot;&gt;IRMA&lt;/i&gt;&lt;/p&gt;
+    &lt;p&gt;Ga verder met &lt;i class&#x3D;&quot;irma-web-logo&quot;&gt;IRMA&lt;/i&gt;&lt;/p&gt;
     &lt;div class&#x3D;&quot;irma-web-helper&quot;&gt;
       &lt;p&gt;Kom je er niet uit? Kijk dan eerst eens op &lt;a href&#x3D;&quot;https://irma.app/&quot;&gt;de website van IRMA&lt;/a&gt;.&lt;/p&gt;
     &lt;/div&gt;
@@ -249,7 +255,7 @@ mobile device)</p>
 &lt;/section&gt;
 &lt;section class&#x3D;&quot;irma-web-form&quot;&gt;
   &lt;div class&#x3D;&quot;irma-web-header&quot;&gt;
-    &lt;p&gt;Inloggen met &lt;i class&#x3D;&quot;irma-web-logo&quot;&gt;IRMA&lt;/i&gt;&lt;/p&gt;
+    &lt;p&gt;Ga verder met &lt;i class&#x3D;&quot;irma-web-logo&quot;&gt;IRMA&lt;/i&gt;&lt;/p&gt;
     &lt;div class&#x3D;&quot;irma-web-helper&quot;&gt;
       &lt;p&gt;Kom je er niet uit? Kijk dan eerst eens op &lt;a href&#x3D;&quot;https://irma.app/&quot;&gt;de website van IRMA&lt;/a&gt;.&lt;/p&gt;
     &lt;/div&gt;
@@ -299,6 +305,164 @@ mobile device)</p>
                 </article>
 
             </section>
+            <section class="kss-section kss-section--depth-2" id="kssref-components-irma-pairing-form">
+
+            <article class="kss-section__content">
+                <p class="kss-section__source">Source: <span>src/components/irma-pairing-form.scss</span>, line <span>1</span></p>
+
+              <a class="kss-section__permalink" href="#kssref-components-irma-pairing-form">
+                <h2 class="kss-section__item kss-section__item--depth-2">
+                  <span class="kss-section__ref">5.4</span>
+                  <span class="kss-section__name">IRMA pairing form</span>
+                </h2>
+              </a>
+
+                <div class="kss-section__description"><p>A form to enter the pairing code in order to pair your IRMA app with the session.</p>
+</div>
+
+            </article>
+
+              <article class="kss-section__modifiers">
+                <h1 class="kss-modifiers__heading">Example</h1>
+
+
+                <div class="kss-modifiers__example"><form class="irma-web-pairing-form">
+  <p>Vul de koppelcode in die in je IRMA-app verschijnt.</>
+  <div class="irma-web-pairing-code">
+    <input inputmode="numeric" pattern="\d" maxlength="1" required />
+    <input inputmode="numeric" pattern="\d" maxlength="1" required />
+    <input inputmode="numeric" pattern="\d" maxlength="1" required />
+    <input inputmode="numeric" pattern="\d" maxlength="1" required />
+  </div>
+  <div class="irma-web-pairing-loading-animation" style="visibility: hidden">
+    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+  <input type="submit" style="display: none" />
+  <script type="application/javascript">
+    let form = document.querySelector('.irma-web-pairing-form');
+    let inputFields = form.querySelectorAll('.irma-web-pairing-code input');
+    inputFields.forEach(field => {
+      field.onkeydown = (e) => {
+        e.target.prevValue = e.target.value;
+        if (e.key != 'Enter') e.target.value = '';
+      };
+      field.onkeyup = (e) => {
+        let prevField = e.target.previousElementSibling;
+        if (prevField && e.key == 'Backspace' && e.target.value === e.target.prevValue) {
+          prevField.value = '';
+          prevField.focus();
+        }
+      };
+      field.oninput = (e) => {
+        let nextField = e.target.nextElementSibling;
+        if (!nextField || !e.target.checkValidity()) {
+          e.target.form.querySelector('input[type=submit]').click();
+        } else {
+          nextField.focus();
+        }
+      };
+      field.onfocus = (e) => {
+        if (!e.target.value) {
+          e.preventDefault();
+          e.target.form.querySelector('input:invalid').focus();
+        }
+      };
+    });
+    inputFields[0].parentElement.onclick = (e) => {
+      if (e.target.tagName !== 'INPUT') {
+        let firstInvalidField = form.querySelector('input:invalid');
+        if (firstInvalidField) firstInvalidField.focus();
+      }
+    };
+    form.onsubmit = (e) => {
+      e.preventDefault();
+      let code = Array.prototype.map.call(inputFields, f => {
+        f.disabled = true;
+        return f.value;
+      }).join('');
+      e.target.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'visible';
+      setTimeout(() => {
+        e.target.reset();
+        inputFields.forEach(f => f.disabled = false);
+        inputFields[0].focus();
+        e.target.querySelector('p').innerHTML = `De ingevoerde koppelcode ${code} komt niet overeen met de code in jouw IRMA-app. Probeer het opnieuw.`;
+        e.target.querySelector('.irma-web-pairing-loading-animation').style.visibility = 'hidden';
+      }, 500);
+    };
+  </script>
+</form></div>
+
+              </article>
+
+                <article class="kss-section__markup">
+                  <pre><code class="language-markup">&lt;form class&#x3D;&quot;irma-web-pairing-form&quot;&gt;
+  &lt;p&gt;Vul de koppelcode in die in je IRMA-app verschijnt.&lt;/&gt;
+  &lt;div class&#x3D;&quot;irma-web-pairing-code&quot;&gt;
+    &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required /&gt;
+    &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required /&gt;
+    &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required /&gt;
+    &lt;input inputmode&#x3D;&quot;numeric&quot; pattern&#x3D;&quot;\d&quot; maxlength&#x3D;&quot;1&quot; required /&gt;
+  &lt;/div&gt;
+  &lt;div class&#x3D;&quot;irma-web-pairing-loading-animation&quot; style&#x3D;&quot;visibility: hidden&quot;&gt;
+    &lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;
+  &lt;/div&gt;
+  &lt;input type&#x3D;&quot;submit&quot; style&#x3D;&quot;display: none&quot; /&gt;
+  &lt;script type&#x3D;&quot;application/javascript&quot;&gt;
+    let form &#x3D; document.querySelector(&#x27;.irma-web-pairing-form&#x27;);
+    let inputFields &#x3D; form.querySelectorAll(&#x27;.irma-web-pairing-code input&#x27;);
+    inputFields.forEach(field &#x3D;&gt; {
+      field.onkeydown &#x3D; (e) &#x3D;&gt; {
+        e.target.prevValue &#x3D; e.target.value;
+        if (e.key !&#x3D; &#x27;Enter&#x27;) e.target.value &#x3D; &#x27;&#x27;;
+      };
+      field.onkeyup &#x3D; (e) &#x3D;&gt; {
+        let prevField &#x3D; e.target.previousElementSibling;
+        if (prevField &amp;&amp; e.key &#x3D;&#x3D; &#x27;Backspace&#x27; &amp;&amp; e.target.value &#x3D;&#x3D;&#x3D; e.target.prevValue) {
+          prevField.value &#x3D; &#x27;&#x27;;
+          prevField.focus();
+        }
+      };
+      field.oninput &#x3D; (e) &#x3D;&gt; {
+        let nextField &#x3D; e.target.nextElementSibling;
+        if (!nextField || !e.target.checkValidity()) {
+          e.target.form.querySelector(&#x27;input[type&#x3D;submit]&#x27;).click();
+        } else {
+          nextField.focus();
+        }
+      };
+      field.onfocus &#x3D; (e) &#x3D;&gt; {
+        if (!e.target.value) {
+          e.preventDefault();
+          e.target.form.querySelector(&#x27;input:invalid&#x27;).focus();
+        }
+      };
+    });
+    inputFields[0].parentElement.onclick &#x3D; (e) &#x3D;&gt; {
+      if (e.target.tagName !&#x3D;&#x3D; &#x27;INPUT&#x27;) {
+        let firstInvalidField &#x3D; form.querySelector(&#x27;input:invalid&#x27;);
+        if (firstInvalidField) firstInvalidField.focus();
+      }
+    };
+    form.onsubmit &#x3D; (e) &#x3D;&gt; {
+      e.preventDefault();
+      let code &#x3D; Array.prototype.map.call(inputFields, f &#x3D;&gt; {
+        f.disabled &#x3D; true;
+        return f.value;
+      }).join(&#x27;&#x27;);
+      e.target.querySelector(&#x27;.irma-web-pairing-loading-animation&#x27;).style.visibility &#x3D; &#x27;visible&#x27;;
+      setTimeout(() &#x3D;&gt; {
+        e.target.reset();
+        inputFields.forEach(f &#x3D;&gt; f.disabled &#x3D; false);
+        inputFields[0].focus();
+        e.target.querySelector(&#x27;p&#x27;).innerHTML &#x3D; &#x60;De ingevoerde koppelcode ${code} komt niet overeen met de code in jouw IRMA-app. Probeer het opnieuw.&#x60;;
+        e.target.querySelector(&#x27;.irma-web-pairing-loading-animation&#x27;).style.visibility &#x3D; &#x27;hidden&#x27;;
+      }, 500);
+    };
+  &lt;/script&gt;
+&lt;/form&gt;</code></pre>
+                </article>
+
+            </section>
             <section class="kss-section kss-section--depth-2" id="kssref-components-qr-code">
 
             <article class="kss-section__content">
@@ -306,7 +470,7 @@ mobile device)</p>
 
               <a class="kss-section__permalink" href="#kssref-components-qr-code">
                 <h2 class="kss-section__item kss-section__item--depth-2">
-                  <span class="kss-section__ref">5.4</span>
+                  <span class="kss-section__ref">5.5</span>
                   <span class="kss-section__name">QR code</span>
                 </h2>
               </a>
