@@ -66,12 +66,13 @@ specifying the url of your remote server. This option is required when you
 use the `start` and/or the `result` option.
 
 If you want to use another plugin for starting IRMA sessions, you can disable
-the session functionality of `irma-client` by saying `session: false`. In this
-case `irma-client` will not request the `this._stateMachine.transition('initialize', {canRestart: true/false})`
-at the `irma-core` state machine when `irma-core`'s `start()` method is called. It will
-also not request the `this._stateMachine.transition('loaded', qr)` transition when it
-hits the `Loading` state. This means you have to specify a custom plugin that requests
-these transitions instead.
+the session functionality of `irma-client` by saying `session: false`.
+This means you have to specify a custom plugin instead that requests
+the transitions related to starting and finishing a session.
+It concerns the transitions in the following states:
+ - The [`'Uninitialized'` state](#when-being-in-state-uninitialized)
+ - The [`'Loading'` state](#when-being-in-state-loading)
+ - The [`'PreparingResult'` state](#when-being-in-state-preparingresult)
 
 General outline:
 ```javascript
@@ -92,16 +93,16 @@ session: {
 ##### Option `start`
 These options define the HTTP request `irma-client` has to do in order
 to fetch the information of the IRMA session that has to be performed.
-The response of this endpoint must at least contain an IRMA `sessionPtr`.
-A session pointer can be retrieved at the IRMA server by using the [IRMA
-server library](https://godoc.org/github.com/privacybydesign/irmago/server/irmaserver#Server.StartSession),
+The response of this endpoint must at least contain an IRMA `sessionPtr`,
+and ideally also a `frontendRequest` to use the latest features.
+A session pointer and frontend request can be retrieved at the IRMA server
+by using the [IRMA server library](https://godoc.org/github.com/privacybydesign/irmago/server/irmaserver#Server.StartSession),
 the [IRMA server REST API](https://irma.app/docs/api-irma-server/#post-session)
 or using one of the [IRMA backend packages](https://github.com/privacybydesign/irma-backend-packages).
 
-The default values are set for fetching the session pointer
-(on `irma-core` state `Loading`) with a GET request on the
-endpoints `${o.url}/session`. In here, `o` is the value of
-the `session` struct as described above. The response
+The default values are set for doing an HTTP GET request on
+the endpoint `${o.url}/session` (when being in `irma-core` state `Loading`).
+In here, `o` is the value of the `session` struct as described above. The response
 that is received is parsed using the specified `parseResponse`
 function. The default values for `start` can be found below.
 
@@ -141,8 +142,8 @@ start: {
 
 If you don't need your Javascript to fetch the session pointer, you can set
 `start` to `false`. This is for example useful when you obtained the
-session pointer in another way. Please check the [mapping options](#option-mapping)
-how to insert your custom `sessionPtr` into `irma-client`.
+session pointer, frontend request, etc. in another way. Please check the [mapping options](#option-mapping)
+how to insert your custom parameters into `irma-client`.
 
 Be aware that when you set `start` to false, a user can only handle a session
 once. When the user cancels a session or runs into some error, no restart
@@ -156,8 +157,8 @@ the session and checks the result for you. So in the browser the `url` property 
 `session` should point to a server that you control, which isn't your IRMA server.
 
 ##### Option `mapping`
-With the `mapping` properties you can specify how the
-session pointer, and possibly other values (like the session token),
+With the `mapping` properties you can specify how the session pointer, the frontend
+request, the requestor token, and possibly other values
 can be derived from the start session response. The response received using
 the options from [`start`](#option-start) is first parsed by its `parseResponse`. The mapping
 functions then specify how to map the parsed response on particular
@@ -174,9 +175,7 @@ variables. By default, the following mappings are present:
    frontend session request, [as being received from the `irma server`](https://irma.app/docs/api-irma-server/#post-session).
    It defaults to using the `frontendRequest` field from the parsed JSON response of the [`start` endpoint](#option-start) (if present).
    If not present, only frontend protocol version 1.0 is supported. This means that pairing functionality cannot be used.
-   This might be a security risk. Furthermore, frontend protocol version 1.0 lacks proper support for chained sessions
-   (i.e. a `nextSession` is being specified as [extra parameter](https://irma.app/docs/session-requests/#extra-parameters)
-   in the session request).
+   This might be a security risk. Furthermore, frontend protocol version 1.0 lacks proper support for [chained sessions](https://irma.app/docs/chained-sessions/).
 
 Additional mappings can also be added. Their names are free to choose (as long as there is no name collision).
 
@@ -370,7 +369,7 @@ state: {
 ## Behaviour
 This plugin initiates the following transitions to the `irma-core` state machine.
 
-**When being in state `Uninitialized`:**
+### When being in state `Uninitialized`
 If `session` option is set to `false`, the plugin does nothing in this state.
 
 Otherwise, this plugin will initiate the `initialize` transition when `start()`
@@ -381,7 +380,7 @@ is enabled (so if `start` is not explicitly set to `false`).
 |----------------------|----------------------------|---------------------|
 | `initialize`         | { canRestart: true/false } | Loading             |
 
-**When being in state `Loading`:**
+### When being in state `Loading`
 
 If `session` option is set to `false`, the plugin does nothing in this state.
 
@@ -395,7 +394,7 @@ Otherwise this plugin:
 | `loaded`             | mappings                  | CheckingUserAgent   |
 | `fail`               | Error that fetch returned | Error               |
 
-**When being in state `CheckingUserAgent`:**
+### When being in state `CheckingUserAgent`
 
 Determines which flow should be started: the QR flow or the mobile flow.
 
@@ -404,7 +403,7 @@ Determines which flow should be started: the QR flow or the mobile flow.
 | `prepareQRCode`      |              | PreparingQRCode     |
 | `prepareButton`      |              | PreparingIrmaButton |
 
-**When being in state `PreparingQRCode` or `PreparingIrmaButton`:**
+### When being in state `PreparingQRCode` or `PreparingIrmaButton`
 
 In these states the plugin prepares for showing a QR or a button to a mobile session.
 This includes enabling or disabling the pairing state if necessary.
@@ -415,7 +414,7 @@ This includes enabling or disabling the pairing state if necessary.
 | `showIrmaButton` if state is `PreparingIrmaButton` | `{mobile: <app link for launching the IRMA app>}`        | ShowIrmaButton    |
 | `fail` if updating pairing state fails             | Error that fetch returned                                | Error             |
 
-**When being in state `ShowingQRCode` or `ShowingIrmaButton`:**
+### When being in state `ShowingQRCode` or `ShowingIrmaButton`
 
 In these states the plugin polls the status at IRMA server using the `state` options.
 
@@ -427,7 +426,7 @@ In these states the plugin polls the status at IRMA server using the `state` opt
 | `cancel` if new status is `CANCELLED`       |                           | Cancelled                               |
 | `fail` if sse/polling fails                 | Error that fetch returned | Error                                   |
 
-**When being in state `EnterPairingCode`:**
+### When being in state `EnterPairingCode`
 
 In these states the plugin polls the status at IRMA server using the `state` options.
 
@@ -437,7 +436,7 @@ In these states the plugin polls the status at IRMA server using the `state` opt
 | `cancel` if new status is `CANCELLED`       |                           | Cancelled                               |
 | `fail` if sse/polling fails                 | Error that fetch returned | Error                                   |
 
-**When being in state `Pairing`:**
+### When being in state `Pairing`
 
 In these states the plugin polls the status at IRMA server using the `state` options.
 
@@ -449,7 +448,7 @@ In these states the plugin polls the status at IRMA server using the `state` opt
 | `cancel` if new status is `CANCELLED`                  |                           | Cancelled           |
 | `fail` if sse/polling fails                            | Error that fetch returned | Error               |
 
-**When being in state `ContinueOn2ndDevice` or `ContinueInIrmaApp`:**
+### When being in state `ContinueOn2ndDevice` or `ContinueInIrmaApp`
 
 In this state we continue polling the IRMA server using the `state` options.
 
@@ -460,7 +459,7 @@ In this state we continue polling the IRMA server using the `state` options.
 | `cancel` if new status is `CANCELLED`       |                           | Cancelled         |
 | `fail` if sse/polling fails                 | Error that fetch returned | Error             |
 
-**When being in state `PreparingResult`**
+### When being in state `PreparingResult`
 
 If the `session` option is set to `false`, the plugin does nothing in this state.
 
