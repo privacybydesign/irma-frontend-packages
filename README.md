@@ -471,7 +471,8 @@ cd ../.. # Go back to root of the repository
 cd ./irma-frontend && npm publish --access public
 
 cd .. # Go back to root of the repository
-git add -u ./*package.json ./*package-lock.json
+git add -u ./\*package.json ./\*package-lock.json
+git add ./docs/styleguide/\*
 git commit -m "Version bump"
 ```
 
