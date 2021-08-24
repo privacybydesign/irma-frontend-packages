@@ -6,7 +6,8 @@ if [ "$1" == "" ]; then
     exit 1
 fi
 
-set -euxo pipefail
+set -Eux -o pipefail -o functrace
+trap 'echo "ATTENTION: the last command had a non-zero exit status"; if [ "$BASH_COMMAND" != "npm audit fix" ]; then exit 1; fi' ERR
 
 npm_version="$*"
 set +x

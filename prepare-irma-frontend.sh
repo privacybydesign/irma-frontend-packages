@@ -8,7 +8,8 @@ read -p "We are going to use $version as version number. Is this okay? (y/n) "
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  set -euxo pipefail
+  set -Eux -o pipefail -o functrace
+  trap 'echo "ATTENTION: the last command had a non-zero exit status"; if [ "$BASH_COMMAND" != "npm audit fix" ]; then exit 1; fi' ERR
 
   root=`pwd`
   cd ./irma-frontend
