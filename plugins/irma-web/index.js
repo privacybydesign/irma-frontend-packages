@@ -1,5 +1,9 @@
 const DOMManipulations = require('./dom-manipulations');
 const merge = require('deepmerge');
+const translations = {
+  nl: require('./translations/nl'),
+  en: require('./translations/en'),
+};
 
 module.exports = class IrmaWeb {
   constructor({ stateMachine, options }) {
@@ -50,7 +54,7 @@ module.exports = class IrmaWeb {
       element: '#irma-web-form',
       showHelper: false,
       fallbackDelay: 1000,
-      translations: require(`./translations/${options.language || 'nl'}`),
+      translations: translations[options.language || 'nl'],
     };
 
     return merge(defaults, options);
