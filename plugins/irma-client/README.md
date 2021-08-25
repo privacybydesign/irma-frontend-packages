@@ -100,8 +100,8 @@ by using the [IRMA server library](https://godoc.org/github.com/privacybydesign/
 the [IRMA server REST API](https://irma.app/docs/api-irma-server/#post-session)
 or using one of the [IRMA backend packages](https://github.com/privacybydesign/irma-backend-packages).
 
-The default values are set for doing an HTTP GET request on
-the endpoint `${o.url}/session` (when being in `irma-core` state `Loading`).
+The default values for `start` are such that an HTTP GET request is performed on
+the endpoint `${o.url}/session` (during `irma-core` state `Loading`).
 In here, `o` is the value of the `session` struct as described above. The response
 that is received is parsed using the specified `parseResponse`
 function. The default values for `start` can be found below.
