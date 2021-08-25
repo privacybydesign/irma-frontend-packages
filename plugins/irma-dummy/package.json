@@ -1,6 +1,6 @@
 {
   "name": "@privacybydesign/irma-dummy",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A dummy back-end for IRMA flows. Useful for testing without an actual server",
   "main": "index.js",
   "license": "MIT",
