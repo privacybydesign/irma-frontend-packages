@@ -1,10 +1,12 @@
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-  mode: 'development',
+  target: ['web', 'es5'],
 
   entry: {
     'irma': [
+      'core-js/features/url',
       'core-js/modules/es.promise',
       'core-js/modules/es.array.iterator',
       'core-js/modules/es.array.includes',
@@ -43,7 +45,6 @@ module.exports = {
               [
                 '@babel/preset-env',
                 {
-                  'targets': '> 0.25%, not dead',
                   'useBuiltIns': 'entry',
                   'corejs': { 'version': 3, 'proposals': true },
                 },
@@ -54,4 +55,8 @@ module.exports = {
       },
     ],
   },
+
+  plugins: [
+    new NodePolyfillPlugin(),
+  ],
 };
