@@ -14,8 +14,9 @@
     "@privacybydesign/irma-dummy": "../../../plugins/irma-dummy"
   },
   "devDependencies": {
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12"
+    "node-polyfill-webpack-plugin": "^1.1.4",
+    "webpack": "^5.54.0",
+    "webpack-cli": "^4.8.0"
   },
   "repository": {
     "type": "git",
