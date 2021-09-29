@@ -8,6 +8,7 @@ module.exports = {
     'irma': [
       'core-js/features/url',
       'core-js/modules/es.promise',
+      'core-js/modules/es.promise.finally',
       'core-js/modules/es.array.iterator',
       'core-js/modules/es.array.includes',
       'core-js/modules/web.dom-collections.for-each',
