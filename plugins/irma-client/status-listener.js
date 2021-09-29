@@ -126,7 +126,7 @@ module.exports = class StatusListener {
   _pollOnce() {
     return (
       // eslint-disable-next-line compat/compat
-      fetch(this._pollingUrl, this._fetchParams)
+      fetch(this._pollingUrl, { ...this._fetchParams, cache: 'no-store' })
         .then((r) => {
           if (r.status !== 200)
             throw new Error(
