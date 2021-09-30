@@ -1,7 +1,9 @@
 {
   "name": "irma-frontend-packages",
   "license": "MIT",
-  "browsersList": "> 0.25%, not dead",
+  "browserslist": [
+    "> 0.25%, not dead"
+  ],
   "scripts": {
     "lint-js": "eslint . --ext .js",
     "lint-css": "stylelint irma-css/src/",
