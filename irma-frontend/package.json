@@ -9,7 +9,9 @@
     "release": "npm run build"
   },
   "license": "MIT",
-  "browsersList": "> 0.25%, not dead",
+  "browserslist": [
+    "> 0.25%, not dead"
+  ],
   "devDependencies": {
     "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.15.6",
