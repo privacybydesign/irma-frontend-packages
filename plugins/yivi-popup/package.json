@@ -1,7 +1,7 @@
 {
   "name": "@privacybydesign/yivi-popup",
   "version": "0.4.3",
-  "description": "A frond-end plugin to show the YIVI form in a popup",
+  "description": "A frond-end plugin to show the Yivi form in a popup",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {

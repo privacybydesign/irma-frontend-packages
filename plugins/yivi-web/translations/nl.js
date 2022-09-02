@@ -1,11 +1,11 @@
 // prettier-ignore
 module.exports = {
-  header: 'Ga verder met <i class="yivi-web-logo">YIVI</i>',
-  helper: 'Kom je er niet uit? Kijk dan eens op <a href="https://yivi.app/">de website van YIVI</a>.',
+  header: 'Ga verder met <i class="yivi-web-logo">Yivi</i>',
+  helper: 'Kom je er niet uit? Kijk dan eens op <a href="https://yivi.app/">de website van Yivi</a>.',
   loading: 'Een moment alstublieft',
-  button: 'Open YIVI-app',
+  button: 'Open Yivi-app',
   qrCode: 'Toon QR-code',
-  app: 'Volg de instructies in de YIVI-app',
+  app: 'Volg de instructies in de Yivi-app',
   retry: 'Opnieuw proberen',
   back: 'Ga terug',
   cancelled: 'De handeling is afgebroken',
@@ -14,6 +14,6 @@ module.exports = {
   browser: 'Het spijt ons, maar je browser voldoet niet aan de minimale eisen',
   success: 'Gelukt!',
   cancel: 'Annuleer',
-  pairing: 'Vul de koppelcode in die in jouw YIVI-app verschijnt.',
-  pairingFailed: (code) => `De koppelcode ${code} komt niet overeen met de code in je YIVI-app. Probeer het opnieuw.`
+  pairing: 'Vul de koppelcode in die in jouw Yivi-app verschijnt.',
+  pairingFailed: (code) => `De koppelcode ${code} komt niet overeen met de code in je Yivi-app. Probeer het opnieuw.`
 };

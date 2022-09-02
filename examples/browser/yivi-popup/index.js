@@ -10,7 +10,7 @@ document.getElementById('start-button').addEventListener('click', () => {
     dummy: 'happy path',
     language: 'en',
     translations: {
-      header: 'Sign the agreement with <i class="yivi-web-logo">YIVI</i>',
+      header: 'Sign the agreement with <i class="yivi-web-logo">Yivi</i>',
       loading: 'Just one second please!',
     },
   });

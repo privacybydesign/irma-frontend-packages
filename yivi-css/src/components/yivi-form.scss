@@ -1,6 +1,6 @@
-// YIVI 'login form'
+// Yivi 'login form'
 //
-// A place to nicely show the different states of the YIVI disclosure flow.
+// A place to nicely show the different states of the Yivi disclosure flow.
 //
 // <script type="text/javascript">
 //   // Poor man's forEach that works in IE11 too ;)
@@ -16,9 +16,9 @@
 // Markup:
 // <section class="yivi-web-form">
 //   <div class="yivi-web-header">
-//     <p>Ga verder met <i class="yivi-web-logo">YIVI</i></p>
+//     <p>Ga verder met <i class="yivi-web-logo">Yivi</i></p>
 //     <div class="yivi-web-helper">
-//       <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van YIVI</a>.</p>
+//       <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van Yivi</a>.</p>
 //     </div>
 //   </div>
 //   <div class="yivi-web-content">
@@ -30,9 +30,9 @@
 // </section>
 // <section class="yivi-web-form">
 //   <div class="yivi-web-header">
-//     <p>Ga verder met <i class="yivi-web-logo">YIVI</i></p>
+//     <p>Ga verder met <i class="yivi-web-logo">Yivi</i></p>
 //     <div class="yivi-web-helper">
-//       <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van YIVI</a>.</p>
+//       <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van Yivi</a>.</p>
 //     </div>
 //     <button class="yivi-web-close"></button>
 //   </div>
@@ -44,7 +44,7 @@
 //   </div>
 // </section>
 //
-// Styleguide Components.YIVI login
+// Styleguide Components.Yivi login
 
 @import '../mixins/reset', '../mixins/fonts', '../mixins/responsiveness',
   '../mixins/center', '../mixins/animation', '../variables/colours',

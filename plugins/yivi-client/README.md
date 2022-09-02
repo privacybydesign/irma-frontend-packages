@@ -1,12 +1,12 @@
-# YIVI client
+# Yivi client
 
-This plugin for `yivi-core` allows your YIVI flow to communicate with a back-end. 
+This plugin for `yivi-core` allows your Yivi flow to communicate with a back-end. 
 It is highly configurable for use in many different setups. This plugin takes
 care of initiating most of the transitions to the `yivi-core` state machine.
 
 ## Usage
 
-For a simple demo where you directly start an YIVI session at an YIVI server
+For a simple demo where you directly start an Yivi session at an Yivi server
 (**not recommended in web browsers!**, see [below](#session)) you can use this
 snippet:
 
@@ -16,7 +16,7 @@ const Client   = require('@privacybydesign/yivi-client');
 
 const yivi = new YiviCore({
   session: {
-    // Point this to your YIVI server:
+    // Point this to your Yivi server:
     url: 'http://localhost:8088',
 
     // Define your disclosure request:
@@ -52,9 +52,9 @@ information when debugging is enabled.
 ### session
 
 The `session` options contains three property structs with options for 
-starting and finishing YIVI sessions:
+starting and finishing Yivi sessions:
  - [`start`](#option-start) dealing with fetching the information needed for a new
-   YIVI session (like the session pointer) from a remote server;
+   Yivi session (like the session pointer) from a remote server;
  - [`mapping`](#option-mapping) dealing with parsing the needed information out of
    the information fetched during [`start`](#option-start);
  - [`result`](#option-result) dealing with fetching the result from a remote server.
@@ -65,7 +65,7 @@ The only separate option `session` contains is the `url` option,
 specifying the url of your remote server. This option is required when you
 use the `start` and/or the `result` option.
 
-If you want to use another plugin for starting YIVI sessions, you can disable
+If you want to use another plugin for starting Yivi sessions, you can disable
 the session functionality of `yivi-client` by saying `session: false`.
 This means you have to specify a custom plugin instead that requests
 the transitions related to starting and finishing a session.
@@ -92,13 +92,13 @@ session: {
 
 ##### Option `start`
 These options define the HTTP request `yivi-client` has to do in order
-to fetch the information of the YIVI session that has to be performed.
-The response of this endpoint must at least contain an YIVI `sessionPtr`,
+to fetch the information of the Yivi session that has to be performed.
+The response of this endpoint must at least contain an Yivi `sessionPtr`,
 and ideally also a `frontendRequest` to use the latest features.
-A session pointer and frontend request can be retrieved at the YIVI server
-by using the [YIVI server library](https://godoc.org/github.com/privacybydesign/yivigo/server/yiviserver#Server.StartSession),
-the [YIVI server REST API](https://yivi.app/docs/api-yivi-server/#post-session)
-or using one of the [YIVI backend packages](https://github.com/privacybydesign/yivi-backend-packages).
+A session pointer and frontend request can be retrieved at the Yivi server
+by using the [Yivi server library](https://godoc.org/github.com/privacybydesign/yivigo/server/yiviserver#Server.StartSession),
+the [Yivi server REST API](https://yivi.app/docs/api-yivi-server/#post-session)
+or using one of the [Yivi backend packages](https://github.com/privacybydesign/yivi-backend-packages).
 
 The default values for `start` are such that an HTTP GET request is performed on
 the endpoint `${o.url}/session` (during `yivi-core` state `Loading`).
@@ -151,10 +151,10 @@ can be done by the user. **As a developer you are responsible yourself to take
 into account alternative flows for these cases. We therefore do not recommend
 disabling `start`.**
 
-**It is also recommended to not start sessions or fetch results on the YIVI server
+**It is also recommended to not start sessions or fetch results on the Yivi server
 from a web browser directly**. Instead, you mostly have a service in between that starts
 the session and checks the result for you. So in the browser the `url` property of
-`session` should point to a server that you control, which isn't your YIVI server.
+`session` should point to a server that you control, which isn't your Yivi server.
 
 ##### Option `mapping`
 With the `mapping` properties you can specify how the session pointer, the frontend
@@ -163,15 +163,15 @@ can be derived from the start session response. The response received using
 the options from [`start`](#option-start) is first parsed by its `parseResponse`. The mapping
 functions then specify how to map the parsed response on particular
 variables. By default, the following mappings are present:
- - `sessionPtr`: the result from the `sessionPtr` mapping should be a valid YIVI
+ - `sessionPtr`: the result from the `sessionPtr` mapping should be a valid Yivi
    `sessionPtr`, [as being received from the `yivi server`](https://yivi.app/docs/api-yivi-server/#post-session).
    This mapping is mandatory. It defaults to using the `sessionPtr` field from the parsed JSON
    response of the [`start` endpoint](#option-start).
- - `sessionToken`: the result from the `sessionToken` mapping should be a valid YIVI
+ - `sessionToken`: the result from the `sessionToken` mapping should be a valid Yivi
    requestor token, [as being received from the `yivi server`](https://yivi.app/docs/api-yivi-server/#post-session).
    This mapping is only mandatory if the token is required by the specified [`result` endpoint](#option-result).
    It defaults to using the `token` field from the parsed JSON response of the [`start` endpoint](#option-start) (if present).
- - `frontendRequest`: the result from the `frontendRequest` mapping should be a valid YIVI
+ - `frontendRequest`: the result from the `frontendRequest` mapping should be a valid Yivi
    frontend session request, [as being received from the `yivi server`](https://yivi.app/docs/api-yivi-server/#post-session).
    It defaults to using the `frontendRequest` field from the parsed JSON response of the [`start` endpoint](#option-start) (if present).
    If not present, only frontend protocol version 1.0 is supported. This means that pairing functionality cannot be used.
@@ -188,7 +188,7 @@ the result endpoint. Furthermore, the mappings are used in several [state option
 
 In case you obtain a session pointer (and possibly the other values) in another way than via `start`,
 you can override the mapping functions to manually specify your mappings. For example, when you
-somewhere collected the necessary information to start an YIVI session in JavaScript variables,
+somewhere collected the necessary information to start an Yivi session in JavaScript variables,
 say `customQr` and `customFrontendRequest`, you can start this session by doing:
 
 ```javascript
@@ -215,8 +215,8 @@ mapping: {
 ```
 
 ##### Option `result`
-These options define the HTTP request `yivi-client` has to do when an YIVI
-session succeeds. In this way results of the YIVI session can be fetched.
+These options define the HTTP request `yivi-client` has to do when an Yivi
+session succeeds. In this way results of the Yivi session can be fetched.
 
 This option has the same outline as the `start` option.
 The default values are set for fetching the session result (in the `PreparingResult` state)
@@ -246,12 +246,12 @@ result: {
 ### state
 
 The `state` option tells the plugin what states it should use and how to subscribe for
-listeners that monitor state changes on the YIVI server. You can find an overview of
+listeners that monitor state changes on the Yivi server. You can find an overview of
 the possible option sets in the subsections.
 
 There are two general options, `url` and `legacyUrl`, to determine the location of the
-frontend endpoints of the YIVI server. The `legacyUrl` is used for frontend protocol
-version 1.0 (for [YIVI server](https://yivi.app/docs/yivi-server/) v0.7.x and earlier)
+frontend endpoints of the Yivi server. The `legacyUrl` is used for frontend protocol
+version 1.0 (for [Yivi server](https://yivi.app/docs/yivi-server/) v0.7.x and earlier)
 and the `url` is used for frontend protocol version 1.1 and above.
 
 These are the accepted general properties and their defaults:
@@ -264,8 +264,8 @@ state: {
 }
 ```
 
-The URL from `m.sessionPtr.u` will point directly to your YIVI server.
-This is intentional; the YIVI app should be able to access those endpoints too.
+The URL from `m.sessionPtr.u` will point directly to your Yivi server.
+This is intentional; the Yivi app should be able to access those endpoints too.
 
 #### State monitoring
 For state monitoring, we offer the options `serverSentEvents` and `polling`.
@@ -306,17 +306,17 @@ state: {
 }
 ```
 
-The URL from `m.sessionPtr['u']` will point directly to your YIVI server.
-This is intentional; the YIVI app should be able to access those endpoints too.
+The URL from `m.sessionPtr['u']` will point directly to your Yivi server.
+This is intentional; the Yivi app should be able to access those endpoints too.
 
-Please remark that for cancellation there is no frontend specific endpoint at the YIVI
+Please remark that for cancellation there is no frontend specific endpoint at the Yivi
 server. Therefore, the URL of the cancellation endpoint deviates from the frontend
 endpoint format being specified by the [general `url` option](#state) above.
 
 #### Pairing
 The pairing state is an optional state that can be introduced to prevent QR theft,
-added between scanning a YIVI QR code and actually performing the session.
-In this state, a pairing code is visible in the YIVI app. The user should enter
+added between scanning a Yivi QR code and actually performing the session.
+In this state, a pairing code is visible in the Yivi app. The user should enter
 that pairing code in the frontend to continue.
 For the following session types it is important that the right user
 scans the QR, since the session might contain sensitive information.
@@ -411,12 +411,12 @@ This includes enabling or disabling the pairing state if necessary.
 | Possible transitions                               | With payload                                             | Next state        |
 |----------------------------------------------------|----------------------------------------------------------|-------------------|
 | `showQRCode` if state is `PreparingQRCode`         | `{qr: <payload for in QRs>, showBackButton: true/false}` | ShowQRCode        |
-| `showYiviButton` if state is `PreparingYiviButton` | `{mobile: <app link for launching the YIVI app>}`        | ShowYiviButton    |
+| `showYiviButton` if state is `PreparingYiviButton` | `{mobile: <app link for launching the Yivi app>}`        | ShowYiviButton    |
 | `fail` if updating pairing state fails             | Error that fetch returned                                | Error             |
 
 ### When being in state `ShowingQRCode` or `ShowingYiviButton`
 
-In these states the plugin polls the status at YIVI server using the `state` options.
+In these states the plugin polls the status at Yivi server using the `state` options.
 
 | Possible transitions                        | With payload              | Next state                              |
 |---------------------------------------------|---------------------------|-----------------------------------------|
@@ -428,7 +428,7 @@ In these states the plugin polls the status at YIVI server using the `state` opt
 
 ### When being in state `EnterPairingCode`
 
-In these states the plugin polls the status at YIVI server using the `state` options.
+In these states the plugin polls the status at Yivi server using the `state` options.
 
 | Possible transitions                        | With payload              | Next state                              |
 |---------------------------------------------|---------------------------|-----------------------------------------|
@@ -438,7 +438,7 @@ In these states the plugin polls the status at YIVI server using the `state` opt
 
 ### When being in state `Pairing`
 
-In these states the plugin polls the status at YIVI server using the `state` options.
+In these states the plugin polls the status at Yivi server using the `state` options.
 
 | Possible transitions                                   | With payload              | Next state          |
 |--------------------------------------------------------|---------------------------|---------------------|
@@ -450,7 +450,7 @@ In these states the plugin polls the status at YIVI server using the `state` opt
 
 ### When being in state `ContinueOn2ndDevice` or `ContinueInYiviApp`
 
-In this state we continue polling the YIVI server using the `state` options.
+In this state we continue polling the Yivi server using the `state` options.
 
 | Possible transitions                        | With payload              | Next state        |
 |---------------------------------------------|---------------------------|-------------------|

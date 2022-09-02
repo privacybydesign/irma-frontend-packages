@@ -1,6 +1,6 @@
-# YIVI console
+# Yivi console
 
-This plugin contains a console based front-end for YIVI flows. It's mostly
+This plugin contains a console based front-end for Yivi flows. It's mostly
 useful for testing purposes or for use in `nodejs` applications.
 
 This plugin takes no special options or parameters to the start method. It will

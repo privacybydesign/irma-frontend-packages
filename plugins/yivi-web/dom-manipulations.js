@@ -66,7 +66,7 @@ module.exports = class DOMManipulations {
       } else if (isAndroid && e.target.matches('.yivi-web-button-link *')) {
         e.target.disabled = true;
         setTimeout(() => {
-          // Only activate helper if the button to open the YIVI app is still present after the timeout.
+          // Only activate helper if the button to open the Yivi app is still present after the timeout.
           if (this._element.contains(e.target)) {
             this._element.querySelector('.yivi-web-header').classList.add('yivi-web-show-helper');
             e.target.disabled = false;

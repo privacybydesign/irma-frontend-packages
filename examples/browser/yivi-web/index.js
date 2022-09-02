@@ -10,7 +10,7 @@ const yivi = new YiviCore({
   element: '#yivi-web-form',
   language: 'en',
   translations: {
-    header: 'Continue with <i class="yivi-web-logo">YIVI</i>',
+    header: 'Continue with <i class="yivi-web-logo">Yivi</i>',
     loading: 'Just one second please!',
   },
 });

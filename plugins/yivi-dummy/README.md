@@ -1,8 +1,8 @@
-# YIVI dummy
+# Yivi dummy
 
-This plugin contains a test dummy back-end for YIVI flows. With the dummy you
+This plugin contains a test dummy back-end for Yivi flows. With the dummy you
 can simulate different issues that may be hard to test otherwise, which is
-especially useful for developing front-end YIVI flow plugins.
+especially useful for developing front-end Yivi flow plugins.
 
 This plugin takes no special parameters to the start method, but it can be
 configured through the options. See below.
@@ -32,7 +32,7 @@ The dummy option can take one of these values:
  * `pairing`             ⸺ Fake everything just working with pairing enabled™️
  * `mobile`              ⸺ Fake everything just working for scanning a QR on mobile™️
  * `timeout`             ⸺ Fake a session time out on the server
- * `cancel`              ⸺ Fake cancellation in the YIVI app (don't have attributes or reject disclosure)
+ * `cancel`              ⸺ Fake cancellation in the Yivi app (don't have attributes or reject disclosure)
  * `connection error`    ⸺ Fake error connecting to the server on the initial session start
  * `browser unsupported` ⸺ Fake an unsupported browser detected
 

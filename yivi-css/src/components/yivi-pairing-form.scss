@@ -1,10 +1,10 @@
-// YIVI pairing form
+// Yivi pairing form
 //
-// A form to enter the pairing code in order to pair your YIVI app with the session.
+// A form to enter the pairing code in order to pair your Yivi app with the session.
 //
 // Markup:
 // <form class="yivi-web-pairing-form">
-//   <p>Vul de koppelcode in die in je YIVI-app verschijnt.</>
+//   <p>Vul de koppelcode in die in je Yivi-app verschijnt.</>
 //   <div class="yivi-web-pairing-code">
 //     <input inputmode="numeric" pattern="\d" maxlength="1" required />
 //     <input inputmode="numeric" pattern="\d" maxlength="1" required />
@@ -62,14 +62,14 @@
 //         e.target.reset();
 //         inputFields.forEach(f => f.disabled = false);
 //         inputFields[0].focus();
-//         e.target.querySelector('p').innerHTML = `De ingevoerde koppelcode ${code} komt niet overeen met de code in jouw YIVI-app. Probeer het opnieuw.`;
+//         e.target.querySelector('p').innerHTML = `De ingevoerde koppelcode ${code} komt niet overeen met de code in jouw Yivi-app. Probeer het opnieuw.`;
 //         e.target.querySelector('.yivi-web-pairing-loading-animation').style.visibility = 'hidden';
 //       }, 500);
 //     };
 //   </script>
 // </form>
 //
-// Styleguide Components.YIVI pairing form
+// Styleguide Components.Yivi pairing form
 
 @import './yivi-button', '../animations/loading', '../mixins/reset',
   '../mixins/fonts', '../mixins/center', '../variables/colours';

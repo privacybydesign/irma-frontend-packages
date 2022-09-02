@@ -8,7 +8,7 @@ const yivi = new YiviCore({
   debugging: true,
 
   session: {
-    // Point this to your YIVI server:
+    // Point this to your Yivi server:
     url: 'http://localhost:8088',
 
     // Define your disclosure request:

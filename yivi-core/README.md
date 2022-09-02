@@ -1,12 +1,12 @@
-# YIVI core
+# Yivi core
 
-This package contains the state machine for implementing YIVI flows. `yivi-core`
+This package contains the state machine for implementing Yivi flows. `yivi-core`
 itself does not provide any real functionality. Plugins can be registered at
 the state machine and the plugins then provide the functionality depending on
 the state the state machine is in. The plugins can also request state modifications
 to the state machine.
                                                                      
-YIVI core can be initialized in the following way:
+Yivi core can be initialized in the following way:
 
 ```javascript
 const YiviCore = require('@privacybydesign/yivi-core');
@@ -31,12 +31,12 @@ const yivi = new YiviCore({
 
 ## Documentation
 More elaborate documentation on how to use this module can be found in the
-[YIVI documentation](https://yivi.app/docs/yivi-frontend/#yivi-core). You
+[Yivi documentation](https://yivi.app/docs/yivi-frontend/#yivi-core). You
 can also find here how to [design your own plugin](https://yivi.app/docs/yivi-frontend/#make-your-own-yivi-core-plugin).
 
 ## API
 ### `use` method
-With the `use` method, new plugins can be added to the YIVI core instance.
+With the `use` method, new plugins can be added to the Yivi core instance.
 This method takes care of instantiating the plugin. You simply pass the
 plugin class as an argument to this function; you must not instantiate
 the plugin yourself.

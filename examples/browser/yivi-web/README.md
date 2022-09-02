@@ -1,4 +1,4 @@
-# Browser YIVI web example
+# Browser Yivi web example
 
 This package is an example for how to use the `yivi-web` plugin in the
 web browser. See the source of `index.js` and `public/index.html` for how we use

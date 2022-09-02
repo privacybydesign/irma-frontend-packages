@@ -1,6 +1,6 @@
-# YIVI web
+# Yivi web
 
-This plugin contains a front-end for YIVI flows in the web browser.
+This plugin contains a front-end for Yivi flows in the web browser.
 
 It is designed to be used with
 [`yivi-css`](https://github.com/privacybydesign/yivi-frontend-packages/tree/master/plugins/yivi-css). 
@@ -35,7 +35,7 @@ yivi.start();
 ### element
 
 The `element` option should contain a selector that points to an element in
-which to render the YIVI form. This is a required option.
+which to render the Yivi form. This is a required option.
 
 ### language
 
@@ -47,7 +47,7 @@ supported values: `en` and `nl`. Default is `nl`.
 You can set the delay in milliseconds that should be waited before the helper
 message is shown as fallback. This only involves the mobile flow on Android.
 This delay is measured from the point that the user presses the button to open
-the YIVI app. A recommended value here is to double the polling interval.
+the Yivi app. A recommended value here is to double the polling interval.
 Default is `1000` ms.
 
 ### translations
@@ -60,7 +60,7 @@ avoid unnecessary confusion for your users.
 ```javascript
 const yivi = new YiviCore({
   translations: {
-    header:  'Sign the agreement with <i class="yivi-web-logo">YIVI</i>',
+    header:  'Sign the agreement with <i class="yivi-web-logo">Yivi</i>',
     loading: 'Finding your agreement...'
   }
 });
@@ -75,7 +75,7 @@ The option `showHelper` is a boolean that determines if the
 should be shown or not. Default is false.
 
 _Note: the helper is also triggered during the mobile flow on Android. In that case, the helper
-becomes visible when the user presses the button to open the YIVI app, and the app fails to open.
+becomes visible when the user presses the button to open the Yivi app, and the app fails to open.
 So, when `showHelper` is set to false, the helper is only visible as fallback and disappears
 again as soon as the happy flow continues. When `showHelper` is set to true, the helper will
 be visible unconditionally._

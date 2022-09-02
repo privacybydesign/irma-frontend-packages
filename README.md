@@ -1,40 +1,40 @@
-# YIVI frontend packages
+# Yivi frontend packages
 
-Welcome to this repository! YIVI frontend packages is a collection of related
-packages, that together form a Javascript "client" to the YIVI server. The
-primary purpose of these packages is to have a very flexible YIVI client in the
+Welcome to this repository! Yivi frontend packages is a collection of related
+packages, that together form a Javascript "client" to the Yivi server. The
+primary purpose of these packages is to have a very flexible Yivi client in the
 web browser, but you can also use them to build a NodeJS client.
 
 The browser version, by default, will look like this:
 
-![YIVI flow in the browser](docs/images/example.gif)
+![Yivi flow in the browser](docs/images/example.gif)
 
 The client is designed in such a way that you can combine the plugins you need
 and configure them in many useful ways. So the above design can easily be
 removed (for your NodeJS application) or swapped out for a popup version.
 
-## Supported YIVI flows
+## Supported Yivi flows
 
 This library is designed to be flexible in usage. In this section we describe
-how some imaginable YIVI flows and how these flows map onto this library. We
+how some imaginable Yivi flows and how these flows map onto this library. We
 also mention points of attention for developers when implementing such a flow.
 
 As a general best practice, we don't want to allow the web browser to freely
-initialize the YIVI flow. Also, in many cases we don't want the result of the
+initialize the Yivi flow. Also, in many cases we don't want the result of the
 disclosure or signing request to be revealed to the browser. The code that is
 running in the web browser could be compromized by the user or third party
 injected code.
 
-### Talking to YIVI server through a proxy
+### Talking to Yivi server through a proxy
 
 The most highly recommended flow that combats these issues
-is one where the Javascript client talks to the YIVI server through your own
+is one where the Javascript client talks to the Yivi server through your own
 application back-end, that functions as a proxy.
 
 ![Starting a session through a proxy](docs/images/flows/flows.001.png)
 _Starting a session through a proxy_
 
-In this flow the YIVI Javascript client requests the back-end for a new session
+In this flow the Yivi Javascript client requests the back-end for a new session
 to be started, and it is the back-end that actually starts the session. In this
 flow the web browser can't manipulate the session that gets started or see the
 contents of the resulting disclosure:
@@ -128,11 +128,11 @@ yivi.start()
   Then, on the server side, you have to implement the `start` and `result`
   actions on your `yivi-endpoint` controller.
 
-  `start` should make a call to the YIVI server and start the YIVI session
+  `start` should make a call to the Yivi server and start the Yivi session
   there. Then, strip the result token from the response JSON and send the rest
   back in the response to the client.
 
-  `results` can fetch the result from the YIVI server using the result token
+  `results` can fetch the result from the Yivi server using the result token
   that we stripped off the response earlier. Whatever you return to the client
   will be what the Promise on the last few lines resolves to.
 
@@ -142,23 +142,23 @@ yivi.start()
   [`yivi-client`](plugins/yivi-client) documentation for details.
 </details>
 
-### Talking to YIVI server directly, with signed request
+### Talking to Yivi server directly, with signed request
 
-Another supported flow is one where the Javascript client talks to the YIVI
+Another supported flow is one where the Javascript client talks to the Yivi
 server directly, and is itself responsible for starting the session there.
 
 ![Starting a session directly, with signed request](docs/images/flows/flows.002.png)
 _Starting a session directly, with signed request_
 
-The payload that gets sent to the YIVI server to start the session is signed by
+The payload that gets sent to the Yivi server to start the session is signed by
 your application back-end, so the web browser can't alter the request and the
-YIVI server can verify its authenticity.
+Yivi server can verify its authenticity.
 
 However, the web browser will be able to see the resulting disclosure or signed
 contract, because the web browser will be the one receiving the result token
-from the YIVI server. This may be an issue for some scenario's.
+from the Yivi server. This may be an issue for some scenario's.
 In these scenarios you can get [signed JWTs as result](https://yivi.app/docs/yivi-server/#signed-jwt-session-results)
-from the YIVI server. This flow with receiving JWTs as result is not
+from the Yivi server. This flow with receiving JWTs as result is not
 elaborated in this example.
 
 ![Getting the session result directly](docs/images/flows/flows.004.png)
@@ -186,7 +186,7 @@ _Getting the session result directly_
 
     // Back-end options
     session: {
-      // Point this to your YIVI server:
+      // Point this to your Yivi server:
       url: 'https://yivi-server.my-server.domain/',
 
       start: {
@@ -224,7 +224,7 @@ const yivi = new YiviCore({
 
   // Back-end options
   session: {
-    // Point this to your YIVI server:
+    // Point this to your Yivi server:
     url: 'https://yivi-server.my-server.domain/',
 
     start: {
@@ -253,17 +253,17 @@ yivi.start()
   The Promise in the last few lines of the code above will now resolve to the
   result of the disclosure or signing flow. Please note that it is now also up
   to you to transfer this information to your back-end **and also to check that
-  the result has been properly signed by your YIVI server** and the browser has
+  the result has been properly signed by your Yivi server** and the browser has
   not altered the results in any way.
 </details>
 
-### Talking to YIVI server directly, with plain request
+### Talking to Yivi server directly, with plain request
 
 This flow is "tolerated" but not recommended in the browser. It's useful for
 making quick demos and for local development, but is probably not a good idea
 for production. Unless you're writing a NodeJS client, maybe.
 
-The Javascript client talks directly to the YIVI server and starts an arbitrary
+The Javascript client talks directly to the Yivi server and starts an arbitrary
 session there. The back-end does not need to be involved at all.
 
 <details>
@@ -284,7 +284,7 @@ session there. The back-end does not need to be involved at all.
 
     // Back-end options
     session: {
-      // Point this to your YIVI server:
+      // Point this to your Yivi server:
       url: 'https://yivi-server.my-server.domain/',
 
       start: {
@@ -328,7 +328,7 @@ const yivi = new YiviCore({
 
   // Back-end options
   session: {
-    // Point this to your YIVI server:
+    // Point this to your Yivi server:
     url: 'https://yivi-server.my-server.domain/',
 
     start: {
@@ -359,7 +359,7 @@ yivi.start()
 ### Skipping the server altogether for development
 
 For development or testing purposes it is often easier to just skip having an
-YIVI server at all. You can use the [`yivi-dummy`](plugins/yivi-dummy) package
+Yivi server at all. You can use the [`yivi-dummy`](plugins/yivi-dummy) package
 to this end.
 
 <details>
@@ -478,4 +478,4 @@ git commit -m "Version bump"
 
 ## Documentation
 More documentation on how to use this package can be found in the
-[YIVI documentation](https://yivi.app/docs/yivi-frontend/).
+[Yivi documentation](https://yivi.app/docs/yivi-frontend/).

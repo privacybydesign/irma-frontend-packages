@@ -1,4 +1,4 @@
-# YIVI frontend
+# Yivi frontend
 
 This is a thin wrapper around `yivi-core`, `yivi-web`, `yivi-popup`,
 `yivi-client` and `yivi-css`. The intended use of this package is to provide
@@ -15,7 +15,7 @@ const yivi = require('@privacybydesign/yivi-frontend');
 
 ## Documentation
 More documentation on how to use this module can be found in the
-[YIVI documentation](https://yivi.app/docs/yivi-frontend/#yivi-frontend).
+[Yivi documentation](https://yivi.app/docs/yivi-frontend/#yivi-frontend).
 
 ## Usage
 When you want to use an embedded web element,
@@ -51,7 +51,7 @@ const example = yivi.newPopup({
 });
 ```
 
-Finally, you can start your YIVI flow:
+Finally, you can start your Yivi flow:
 
 ```javascript
 example.start()

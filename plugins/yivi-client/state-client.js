@@ -265,7 +265,7 @@ module.exports = class YiviStateClient {
 
   _updateFrontendOptions(options) {
     if (ProtocolVersion.below(this._mappings.frontendRequest.maxProtocolVersion, ProtocolVersion.get('pairing'))) {
-      return Promise.reject(new Error('Frontend options are not supported by the YIVI server'));
+      return Promise.reject(new Error('Frontend options are not supported by the Yivi server'));
     }
 
     const req = {

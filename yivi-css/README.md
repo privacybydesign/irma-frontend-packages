@@ -1,6 +1,6 @@
-# YIVI css
+# Yivi css
 
-This is a package that contains all the necessary CSS to make YIVI flows look
+This is a package that contains all the necessary CSS to make Yivi flows look
 pretty and have a standardized look and feel. See
 [the style guide](https://privacybydesign.github.io/yivi-frontend-packages/styleguide)
 for visual examples and code snippets.

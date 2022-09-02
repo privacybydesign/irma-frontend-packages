@@ -1,4 +1,4 @@
-# Browser YIVI console example
+# Browser Yivi console example
 
 This package is an example for how to use the `yivi-console` plugin in the
 web browser. See the source of `index.js` for how we use the plugin.

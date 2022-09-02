@@ -1,4 +1,4 @@
-# Browser YIVI popup example
+# Browser Yivi popup example
 
 This package is an example for how to use the `yivi-popup` plugin in the
 web browser. See the source of `index.js` and `public/index.html` for how we use

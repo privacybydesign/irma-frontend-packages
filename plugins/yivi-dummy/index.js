@@ -61,7 +61,7 @@ module.exports = class YiviDummy {
   }
 
   start() {
-    if (this._options.debugging) console.log(`🧙🏼‍♂️ Initializing fake YIVI flow`);
+    if (this._options.debugging) console.log(`🧙🏼‍♂️ Initializing fake Yivi flow`);
 
     return this._stateMachine.selectTransition(({ state }) => {
       if (state !== 'Uninitialized') throw new Error('State machine is already initialized by another plugin');

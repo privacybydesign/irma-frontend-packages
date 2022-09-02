@@ -1,5 +1,5 @@
 {
-  "title": "YIVI css",
+  "title": "Yivi css",
   "source": "src/",
   "destination": "../docs/styleguide/",
   "builder": "node_modules/michelangelo/kss_styleguide/custom-template/",

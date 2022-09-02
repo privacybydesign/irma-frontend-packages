@@ -15,9 +15,9 @@
 // <section class="yivi-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="yivi-web-form">
 //     <header class="yivi-web-header">
-//       <p>Ga verder met <i class="yivi-web-logo">YIVI</i></p>
+//       <p>Ga verder met <i class="yivi-web-logo">Yivi</i></p>
 //       <section class="yivi-web-helper">
-//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van YIVI</a>.</p>
+//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van Yivi</a>.</p>
 //       </section>
 //     </header>
 //     <section class="yivi-web-content">
@@ -39,9 +39,9 @@
 // <section class="yivi-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="yivi-web-form">
 //     <header class="yivi-web-header">
-//       <p>Ga verder met <i class="yivi-web-logo">YIVI</i></p>
+//       <p>Ga verder met <i class="yivi-web-logo">Yivi</i></p>
 //       <section class="yivi-web-helper">
-//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van YIVI</a>.</p>
+//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van Yivi</a>.</p>
 //       </section>
 //     </header>
 //     <section class="yivi-web-content">
@@ -63,9 +63,9 @@
 // <section class="yivi-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="yivi-web-form">
 //     <header class="yivi-web-header">
-//       <p>Ga verder met <i class="yivi-web-logo">YIVI</i></p>
+//       <p>Ga verder met <i class="yivi-web-logo">Yivi</i></p>
 //       <section class="yivi-web-helper">
-//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van YIVI</a>.</p>
+//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van Yivi</a>.</p>
 //       </section>
 //     </header>
 //     <section class="yivi-web-content">
@@ -78,7 +78,7 @@
 //
 // Styleguide Examples.States.Showing QR code
 
-// State 3b: Showing YIVI button (mobile)
+// State 3b: Showing Yivi button (mobile)
 //
 // Weight: 3
 //
@@ -86,21 +86,21 @@
 // <section class="yivi-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="yivi-web-form">
 //     <header class="yivi-web-header">
-//       <p>Ga verder met <i class="yivi-web-logo">YIVI</i></p>
+//       <p>Ga verder met <i class="yivi-web-logo">Yivi</i></p>
 //       <section class="yivi-web-helper">
-//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van YIVI</a>.</p>
+//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van Yivi</a>.</p>
 //       </section>
 //     </header>
 //     <section class="yivi-web-content">
 //       <section class="yivi-web-centered">
-//         <button class="yivi-web-button">Open YIVI-app</button>
+//         <button class="yivi-web-button">Open Yivi-app</button>
 //         <p><a href="#">Toon QR code</a></p>
 //       </section>
 //     </section>
 //   </section>
 // </section>
 //
-// Styleguide Examples.States.Showing YIVI button
+// Styleguide Examples.States.Showing Yivi button
 
 // State 4: Pairing
 //
@@ -110,15 +110,15 @@
 // <section class="yivi-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="yivi-web-form">
 //     <header class="yivi-web-header">
-//       <p>Ga verder met <i class="yivi-web-logo">YIVI</i></p>
+//       <p>Ga verder met <i class="yivi-web-logo">Yivi</i></p>
 //       <section class="yivi-web-helper">
-//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van YIVI</a>.</p>
+//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van Yivi</a>.</p>
 //       </section>
 //     </header>
 //     <section class="yivi-web-content">
 //       <section class="yivi-web-centered">
 //         <form class="yivi-web-pairing-form" id="states-pairing-form">
-//           <p>Vul de koppelcode in die in je YIVI-app verschijnt.</>
+//           <p>Vul de koppelcode in die in je Yivi-app verschijnt.</>
 //           <div class="yivi-web-pairing-code">
 //             <input inputmode="numeric" pattern="\d" maxlength="1" required />
 //             <input inputmode="numeric" pattern="\d" maxlength="1" required />
@@ -176,7 +176,7 @@
 //                 e.target.reset();
 //                 inputFields.forEach(f => f.disabled = false);
 //                 inputFields[0].focus();
-//                 e.target.querySelector('p').innerHTML = `De ingevoerde koppelcode ${code} komt niet overeen met de code in jouw YIVI-app. Probeer het opnieuw.`;
+//                 e.target.querySelector('p').innerHTML = `De ingevoerde koppelcode ${code} komt niet overeen met de code in jouw Yivi-app. Probeer het opnieuw.`;
 //                 e.target.querySelector('.yivi-web-pairing-loading-animation').style.visibility = 'hidden';
 //               }, 500);
 //             };
@@ -197,15 +197,15 @@
 // <section class="yivi-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="yivi-web-form">
 //     <header class="yivi-web-header">
-//       <p>Ga verder met <i class="yivi-web-logo">YIVI</i></p>
+//       <p>Ga verder met <i class="yivi-web-logo">Yivi</i></p>
 //       <section class="yivi-web-helper">
-//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van YIVI</a>.</p>
+//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van Yivi</a>.</p>
 //       </section>
 //     </header>
 //     <section class="yivi-web-content">
 //       <section class="yivi-web-centered">
 //         <div class="yivi-web-waiting-for-user-animation"></div>
-//         <p>Volg de instructies in de YIVI app</p>
+//         <p>Volg de instructies in de Yivi app</p>
 //       </section>
 //     </section>
 //   </section>
@@ -221,9 +221,9 @@
 // <section class="yivi-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="yivi-web-form">
 //     <header class="yivi-web-header">
-//       <p>Ga verder met <i class="yivi-web-logo">YIVI</i></p>
+//       <p>Ga verder met <i class="yivi-web-logo">Yivi</i></p>
 //       <section class="yivi-web-helper">
-//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van YIVI</a>.</p>
+//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van Yivi</a>.</p>
 //       </section>
 //     </header>
 //     <section class="yivi-web-content">
@@ -246,9 +246,9 @@
 // <section class="yivi-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="yivi-web-form">
 //     <header class="yivi-web-header">
-//       <p>Ga verder met <i class="yivi-web-logo">YIVI</i></p>
+//       <p>Ga verder met <i class="yivi-web-logo">Yivi</i></p>
 //       <section class="yivi-web-helper">
-//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van YIVI</a>.</p>
+//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van Yivi</a>.</p>
 //       </section>
 //     </header>
 //     <section class="yivi-web-content">
@@ -271,9 +271,9 @@
 // <section class="yivi-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="yivi-web-form">
 //     <header class="yivi-web-header">
-//       <p>Ga verder met <i class="yivi-web-logo">YIVI</i></p>
+//       <p>Ga verder met <i class="yivi-web-logo">Yivi</i></p>
 //       <section class="yivi-web-helper">
-//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van YIVI</a>.</p>
+//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van Yivi</a>.</p>
 //       </section>
 //     </header>
 //     <section class="yivi-web-content">
@@ -296,9 +296,9 @@
 // <section class="yivi-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="yivi-web-form">
 //     <header class="yivi-web-header">
-//       <p>Ga verder met <i class="yivi-web-logo">YIVI</i></p>
+//       <p>Ga verder met <i class="yivi-web-logo">Yivi</i></p>
 //       <section class="yivi-web-helper">
-//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van YIVI</a>.</p>
+//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van Yivi</a>.</p>
 //       </section>
 //     </header>
 //     <section class="yivi-web-content">
@@ -320,9 +320,9 @@
 // <section class="yivi-web-center-child" style="/** Parent styles **/ width: 100%; height: 700px; border: 2px solid red;">
 //   <section class="yivi-web-form">
 //     <header class="yivi-web-header">
-//       <p>Ga verder met <i class="yivi-web-logo">YIVI</i></p>
+//       <p>Ga verder met <i class="yivi-web-logo">Yivi</i></p>
 //       <section class="yivi-web-helper">
-//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van YIVI</a>.</p>
+//         <p>Kom je er niet uit? Kijk dan eerst eens op <a href="https://yivi.app/">de website van Yivi</a>.</p>
 //       </section>
 //     </header>
 //     <section class="yivi-web-content">

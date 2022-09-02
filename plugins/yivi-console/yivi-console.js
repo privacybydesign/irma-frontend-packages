@@ -34,7 +34,7 @@ module.exports = (askRetry, askPairingCode) => {
         case 'ContinueOn2ndDevice':
         // Falls through
         case 'ContinueInYiviApp':
-          console.log('Please follow the instructions in the YIVI app.');
+          console.log('Please follow the instructions in the Yivi app.');
           break;
         case 'EnterPairingCode':
           this._askPairingCode(transition !== 'appPairing');

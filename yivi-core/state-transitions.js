@@ -70,7 +70,7 @@ module.exports = {
   },
 
   PreparingYiviButton: {
-    showYiviButton: 'ShowingYiviButton', // Expected payload: {mobile: <app link for launching the YIVI app>}
+    showYiviButton: 'ShowingYiviButton', // Expected payload: {mobile: <app link for launching the Yivi app>}
     abort: 'Aborted', // Expected payload: undefined
     fail: 'Error', // Expected payload: error object
   },

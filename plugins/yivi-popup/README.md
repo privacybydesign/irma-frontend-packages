@@ -1,6 +1,6 @@
-# YIVI popup
+# Yivi popup
 
-This plugin contains a popup for YIVI flows in the web browser. It is a pop-up
+This plugin contains a popup for Yivi flows in the web browser. It is a pop-up
 variant of the [`yivi-web` plugin](https://github.com/privacybydesign/yivi-frontend-packages/tree/master/plugins/yivi-web).
 
 Because this plugin is based on `yivi-web`, it is also designed to be used with
