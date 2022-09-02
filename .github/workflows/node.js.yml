@@ -34,6 +34,6 @@ jobs:
         node-version: 16
         cache: 'npm'
     - run: npm ci
-    - run: cd ./irma-css && npm run clean
+    - run: cd ./yivi-css && npm run clean
     - run: npm run link
     - run: npm run build

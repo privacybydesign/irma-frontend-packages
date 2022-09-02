@@ -1,18 +1,18 @@
 {
-  "name": "irma-frontend-packages",
+  "name": "yivi-frontend-packages",
   "license": "MIT",
   "browserslist": [
     "> 0.25%, not dead"
   ],
   "scripts": {
     "lint-js": "eslint . --ext .js",
-    "lint-css": "stylelint irma-css/src/",
+    "lint-css": "stylelint yivi-css/src/",
     "lint": "npm run lint-js && npm run lint-css",
-    "install": "set -eux; for pkg in `find . -maxdepth 2 -type d -name 'irma-*'`; do (cd $pkg && npm install); done",
-    "link": "npm run link-irma-popup && npm run link-irma-frontend",
-    "link-irma-popup": "cd ./plugins/irma-popup && npm install ../irma-web --no-save",
-    "link-irma-frontend": "cd ./irma-frontend && npm install ../irma-core ../irma-css ../plugins/irma-client ../plugins/irma-web ../plugins/irma-popup --no-save",
-    "build": "set -eux; for pkg in ./irma-css ./irma-frontend; do (cd $pkg; npm run release); done"
+    "install": "set -eux; for pkg in `find . -maxdepth 2 -type d -name 'yivi-*'`; do (cd $pkg && npm install); done",
+    "link": "npm run link-yivi-popup && npm run link-yivi-frontend",
+    "link-yivi-popup": "cd ./plugins/yivi-popup && npm install ../yivi-web --no-save",
+    "link-yivi-frontend": "cd ./yivi-frontend && npm install ../yivi-core ../yivi-css ../plugins/yivi-client ../plugins/yivi-web ../plugins/yivi-popup --no-save",
+    "build": "set -eux; for pkg in ./yivi-css ./yivi-frontend; do (cd $pkg; npm run release); done"
   },
   "devDependencies": {
     "eslint": "^7.21.0",
@@ -34,6 +34,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/privacybydesign/irma-frontend-packages"
+    "url": "https://github.com/privacybydesign/yivi-frontend-packages"
   }
 }

@@ -1,0 +1,10 @@
+{
+  "title": "YIVI css",
+  "source": "src/",
+  "destination": "../docs/styleguide/",
+  "builder": "node_modules/michelangelo/kss_styleguide/custom-template/",
+  "homepage": "../../yivi-css/README.md",
+  "css": [
+    "yivi.css"
+  ]
+}

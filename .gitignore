@@ -1,6 +1,6 @@
 node_modules
 .DS_Store
 dist
-**/public/irma.js
+**/public/yivi.js
 .idea/
 examples/*/*/package-lock.json

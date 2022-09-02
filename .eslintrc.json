@@ -32,13 +32,13 @@
     },
     "overrides": [
         {
-            "files": ["plugins/irma-web/**/*.js", "plugins/irma-popup/**/*.js", "irma-frontend/**/*.js"],
+            "files": ["plugins/yivi-web/**/*.js", "plugins/yivi-popup/**/*.js", "yivi-frontend/**/*.js"],
             "env": {
                 "node": false
             }
         },
         {
-            "files": ["plugins/irma-console/node.js"],
+            "files": ["plugins/yivi-console/node.js"],
             "env": {
                 "browser": false
             }

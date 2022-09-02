@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euxo pipefail
 
-# Find all package.json files in subdirectories, except node_modules, examples, irma-popup and irma-frontend
-standalone_packages=`find . -mindepth 2 -name "package.json" -not -path "*/node_modules/*" -not -path "*/examples/*" -not -path "*/irma-popup/*" -not -path "*/irma-frontend/*"`
+# Find all package.json files in subdirectories, except node_modules, examples, yivi-popup and yivi-frontend
+standalone_packages=`find . -mindepth 2 -name "package.json" -not -path "*/node_modules/*" -not -path "*/examples/*" -not -path "*/yivi-popup/*" -not -path "*/yivi-frontend/*"`
 
 set +x
 
@@ -29,5 +29,5 @@ then
 
   echo ""
   echo "Releasing done."
-  echo "Don't forget releasing the 'irma-frontend' package separately. Please check the README for more details."
+  echo "Don't forget releasing the 'yivi-frontend' package separately. Please check the README for more details."
 fi

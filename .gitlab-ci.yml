@@ -6,94 +6,94 @@ stages:
 before_script:
   - set -euxo pipefail
 
-irma-core:
+yivi-core:
   stage: build
   artifacts:
     # Disabling artifact expiry is not supported yet, so make
     expire_in: 10 year
     paths:
-      - irma-core
+      - yivi-core
   script:
-    - cd irma-core
+    - cd yivi-core
     - npm install --only=prod
 
-irma-client:
+yivi-client:
   stage: build
   artifacts:
     # Disabling artifact expiry is not supported yet, so make
     expire_in: 10 year
     paths:
-      - plugins/irma-client
+      - plugins/yivi-client
   script:
-    - cd plugins/irma-client
+    - cd plugins/yivi-client
     - npm install --only=prod
 
-irma-console:
+yivi-console:
   stage: build
   artifacts:
     # Disabling artifact expiry is not supported yet, so make
     expire_in: 10 year
     paths:
-      - plugins/irma-console
+      - plugins/yivi-console
   script:
-    - cd plugins/irma-console
+    - cd plugins/yivi-console
     - npm install --only=prod
 
-irma-dummy:
+yivi-dummy:
   stage: build
   artifacts:
     # Disabling artifact expiry is not supported yet, so make
     expire_in: 10 year
     paths:
-      - plugins/irma-dummy
+      - plugins/yivi-dummy
   script:
-    - cd plugins/irma-dummy
+    - cd plugins/yivi-dummy
     - npm install --only=prod
 
-irma-web:
+yivi-web:
   stage: build
   artifacts:
     # Disabling artifact expiry is not supported yet, so make
     expire_in: 10 year
     paths:
-      - plugins/irma-web
+      - plugins/yivi-web
   script:
-    - cd plugins/irma-web
+    - cd plugins/yivi-web
     - npm install --only=prod
 
-irma-css:
+yivi-css:
   stage: build
   artifacts:
     # Disabling artifact expiry is not supported yet, so make
     expire_in: 10 year
     paths:
-      - irma-css
+      - yivi-css
   script:
-    - cd irma-css
+    - cd yivi-css
     - npm install
     - npm run release
     - rm -rf node_modules
 
-irma-popup:
+yivi-popup:
   stage: build
   artifacts:
     # Disabling artifact expiry is not supported yet, so make
     expire_in: 10 year
     paths:
-      - plugins/irma-popup
+      - plugins/yivi-popup
   script:
-    - cd plugins/irma-popup
+    - cd plugins/yivi-popup
     - npm install --only=prod
 
-irma-frontend:
+yivi-frontend:
   stage: build
   artifacts:
     # Disabling artifact expiry is not supported yet, so make
     expire_in: 10 year
     paths:
-      - irma-frontend
+      - yivi-frontend
   script:
-    - cd irma-frontend
+    - cd yivi-frontend
     - npm install
     - npm run release
     - rm -rf node_modules
