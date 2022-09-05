@@ -8,6 +8,9 @@
     "@privacybydesign/yivi-web": "^0.4.3",
     "deepmerge": "^4.2.2"
   },
+  "optionalDependencies": {
+      "@privacybydesign/yivi-web": "../yivi-web"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/privacybydesign/yivi-frontend-packages",
