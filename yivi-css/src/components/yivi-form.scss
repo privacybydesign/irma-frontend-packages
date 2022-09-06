@@ -47,8 +47,8 @@
 // Styleguide Components.Yivi login
 
 @import '../mixins/reset', '../mixins/fonts', '../mixins/responsiveness',
-'../mixins/center', '../mixins/animation', '../variables/colours',
-'../variables/sizes';
+  '../mixins/center', '../mixins/animation', '../variables/colours',
+  '../variables/sizes';
 
 .yivi-web-centered {
   @include reset;
@@ -62,7 +62,7 @@
 
   // Make sure margin-top of first child and margin-bottom of last child
   // are equal to prevent issues while centering.
-  >p {
+  > p {
     &:first-child {
       margin-top: 0;
     }
@@ -185,13 +185,13 @@
     }
 
     // Swap out the header content for the helper in a nice animation
-    &>*:not(.yivi-web-helper):not(.yivi-web-close) {
+    & > *:not(.yivi-web-helper):not(.yivi-web-close) {
       transform: translateX(0%);
       @include transition(transform 0.4s ease);
     }
 
     &.yivi-web-show-helper {
-      &>*:not(.yivi-web-helper):not(.yivi-web-close) {
+      & > *:not(.yivi-web-helper):not(.yivi-web-close) {
         transform: translateX(-120%);
       }
 

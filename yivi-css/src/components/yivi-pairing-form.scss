@@ -72,7 +72,7 @@
 // Styleguide Components.Yivi pairing form
 
 @import './yivi-button', '../animations/loading', '../mixins/reset',
-'../mixins/fonts', '../mixins/center', '../variables/colours';
+  '../mixins/fonts', '../mixins/center', '../variables/colours';
 
 .yivi-web-pairing-form {
   @include reset;

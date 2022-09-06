@@ -101,9 +101,9 @@
   font-family: "Roboto", Tahoma, Arial, sans-serif;
   font-weight: 300;
   font-size: 15px;
-  color: #363E6A;
+  color: #363e6a;
   margin: 1em 4em;
-  color: #363E6A;
+  color: #363e6a;
 }
 .yivi-web-form .yivi-web-content p.yivi-web-error {
   color: #d44454;
@@ -121,7 +121,7 @@
   font-family: "Roboto", Tahoma, Arial, sans-serif;
   font-weight: 300;
   font-size: 15px;
-  color: #0000EE;
+  color: #0000ee;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -129,7 +129,7 @@
   color: #d44454;
 }
 .yivi-web-form .yivi-web-content a:hover {
-  color: #363E6A;
+  color: #363e6a;
 }
 .yivi-web-form .yivi-web-header {
   background-color: inherit;
@@ -158,7 +158,7 @@
   font-family: "Roboto", Tahoma, Arial, sans-serif;
   font-weight: 500;
   font-size: 20px;
-  color: #363E6A;
+  color: #363e6a;
 }
 .yivi-web-form .yivi-web-header p.yivi-web-error {
   color: #d44454;
@@ -168,7 +168,7 @@
     font-family: "Roboto", Tahoma, Arial, sans-serif;
     font-weight: 500;
     font-size: 16px;
-    color: #363E6A;
+    color: #363e6a;
   }
   .yivi-web-form .yivi-web-header p.yivi-web-error {
     color: #d44454;
@@ -267,10 +267,10 @@
   font-family: "Roboto", Tahoma, Arial, sans-serif;
   font-weight: 300;
   font-size: 14px;
-  color: #363E6A;
+  color: #363e6a;
   display: inline-block;
   padding: 1em 4em;
-  background-color: #363E6A;
+  background-color: #363e6a;
   border: 1px solid #252a48;
   border-radius: 4px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
@@ -327,10 +327,10 @@
   font-family: "Roboto", Tahoma, Arial, sans-serif;
   font-weight: 300;
   font-size: 14px;
-  color: #363E6A;
+  color: #363e6a;
   display: inline-block;
   padding: 1em 4em;
-  background-color: #363E6A;
+  background-color: #363e6a;
   border: 1px solid #252a48;
   border-radius: 4px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
@@ -481,7 +481,7 @@
   font-family: "Roboto", Tahoma, Arial, sans-serif;
   font-weight: 300;
   font-size: 14px;
-  color: #363E6A;
+  color: #363e6a;
   flex-direction: column;
 }
 .yivi-web-pairing-form.yivi-web-error {
@@ -514,7 +514,7 @@
   width: 30px;
   text-align: center;
   font-size: 1.5em;
-  border: 1px solid #363E6A;
+  border: 1px solid #363e6a;
   border-radius: 4px;
 }
 @media screen and (max-width: 310px) {
