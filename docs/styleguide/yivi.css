@@ -71,7 +71,7 @@
   min-width: 262px;
   max-width: 400px;
   height: 480px;
-  background-color: #004c92;
+  background-color: #e8e8e8;
   border: 1px solid white;
   border-radius: 10px;
 }
@@ -101,8 +101,9 @@
   font-family: "Roboto", Tahoma, Arial, sans-serif;
   font-weight: 300;
   font-size: 15px;
-  color: #7f7f7f;
+  color: #363E6A;
   margin: 1em 4em;
+  color: #363E6A;
 }
 .yivi-web-form .yivi-web-content p.yivi-web-error {
   color: #d44454;
@@ -120,7 +121,7 @@
   font-family: "Roboto", Tahoma, Arial, sans-serif;
   font-weight: 300;
   font-size: 15px;
-  color: #7f7f7f;
+  color: #0000EE;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -128,7 +129,7 @@
   color: #d44454;
 }
 .yivi-web-form .yivi-web-content a:hover {
-  color: #004c92;
+  color: #363E6A;
 }
 .yivi-web-form .yivi-web-header {
   background-color: inherit;
@@ -157,7 +158,7 @@
   font-family: "Roboto", Tahoma, Arial, sans-serif;
   font-weight: 500;
   font-size: 20px;
-  color: white;
+  color: #363E6A;
 }
 .yivi-web-form .yivi-web-header p.yivi-web-error {
   color: #d44454;
@@ -167,15 +168,15 @@
     font-family: "Roboto", Tahoma, Arial, sans-serif;
     font-weight: 500;
     font-size: 16px;
-    color: white;
+    color: #363E6A;
   }
   .yivi-web-form .yivi-web-header p.yivi-web-error {
     color: #d44454;
   }
 }
 .yivi-web-form .yivi-web-header p i.yivi-web-logo {
-  width: 70px;
-  height: 55px;
+  width: 115px;
+  height: 64px;
 }
 .yivi-web-form .yivi-web-header .yivi-web-helper {
   background-color: inherit;
@@ -250,7 +251,7 @@
   left: 10.92px;
   width: 4.16px;
   height: 15.6px;
-  background-color: #004c92;
+  background-color: #e8e8e8;
   transform: rotateZ(45deg);
   transform-origin: center;
 }
@@ -266,12 +267,12 @@
   font-family: "Roboto", Tahoma, Arial, sans-serif;
   font-weight: 300;
   font-size: 14px;
-  color: #7f7f7f;
+  color: #363E6A;
   display: inline-block;
   padding: 1em 4em;
-  background-color: #004c92;
-  border: 1px solid #00315f;
-  border-radius: 40px;
+  background-color: #363E6A;
+  border: 1px solid #252a48;
+  border-radius: 4px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   text-decoration: none;
   color: white;
@@ -310,7 +311,7 @@
   padding: 0px;
   display: inline-block;
   vertical-align: middle;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1190.55' height='841.89'%3E%3Cpath fill='%233EA6DE' d='M552.844 309.725l85.039 228.449h85.039l-85.039-228.449z'/%3E%3Cpath fill='%23E02146' d='M802.842 245.254c0-24.512 19.426-45.326 47.639-45.326s47.639 20.814 47.639 45.326-19.426 45.789-47.639 45.789-47.639-21.277-47.639-45.789z'/%3E%3Cpath fill='%2397C6DD' d='M893 309.725v228.449h.002l85.039-228.449z'/%3E%3Cpath fill='%23E02146' d='M893 309.725h-85.039v228.449L893 309.727z'/%3E%3Cpath fill='%236A2E4A' d='M807.961 538.174H893V309.727z'/%3E%3Cpath fill='%2397C6DD' d='M552.844 309.725l-.002.002v228.447h.002l85.041-228.449z'/%3E%3Cpath fill='%23E02146' d='M552.842 309.725h-85.039v228.449h.002l85.037-228.447z'/%3E%3Cpath fill='%236A2E4A' d='M467.805 538.174h85.037V309.727z'/%3E%3Cpath fill='%23E02146' d='M297.725 538.174c-7.635 20.516-18.471 25.9-36.51 25.9-11.562 0-20.77-1.85-29.49-4.625l-1.441 61.051c11.947 3.238 27.178 4.625 40.59 4.625 59.201 0 87.168-20.521 105.021-68.488l6.871-18.463h-85.041zM552.844 309.725l85.039 228.449h85.039l-85.039-228.449zM462.686 245.254c0-24.512 19.424-45.326 47.637-45.326s47.639 20.814 47.639 45.326-19.426 45.789-47.639 45.789-47.637-21.277-47.637-45.789z'/%3E%3Cg%3E%3Cpath fill='%236A2E4A' d='M722.922 309.725l-42.52 114.238 42.52 114.211h.002l85.039-228.449z'/%3E%3C/g%3E%3Cg%3E%3Cpath fill='%236A2E4A' d='M382.764 309.725l-42.518 114.238 42.52 114.211 85.039-228.449z'/%3E%3C/g%3E%3Cpath fill='%23E02146' d='M212.686 309.725l85.039 228.449h85.041l-85.039-228.449z'/%3E%3Cg%3E%3Cpath fill='%2397C6DD' d='M297.727 309.725v.002z'/%3E%3Cpath fill='%23E02146' d='M212.686 309.725v.002-.002z'/%3E%3Cpath fill='%236A2E4A' d='M297.727 309.725h-85.041v.002l42.519 114.24 42.522-114.24z'/%3E%3Cpath fill='%23BA3353' d='M637.883 309.725h-85.039v.002l42.519 114.24 42.52-114.24zM637.883 538.178h85.041v-.002l-42.522-114.209-42.519 114.209zM297.725 538.178h85.041v-.002l-42.52-114.209-42.521 114.209z'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='765.355' height='425.197' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%233ea6de' d='M425.197 109.797h-85.039l85.039 228.449h85.039z'/%3E%3Cpath fill='%23e02146' d='M590.156 45.326C590.156 20.814 609.582 0 637.795 0c28.213 0 47.639 20.814 47.639 45.326s-19.426 45.789-47.639 45.789c-28.213 0-47.639-21.277-47.639-45.789z'/%3E%3Cpath fill='%2397c6dd' d='M680.314 109.799v228.447h.002l85.039-228.449h-85.041z'/%3E%3Cpath fill='%23e02146' d='M595.275 338.246l85.039-228.447v-.002h-85.039z'/%3E%3Cpath fill='%236a2e4a' d='M680.314 338.246V109.799l-85.039 228.447z'/%3E%3Cpath fill='%2397c6dd' d='M340.156 109.799v228.447h.002l85.041-228.449h-85.041z'/%3E%3Cpath fill='%23e02146' d='M255.117 109.797v228.449h.002l85.037-228.447v-.002z'/%3E%3Cpath fill='%236a2e4a' d='M340.156 338.246V109.799l-85.037 228.447z'/%3E%3Cpath fill='%23e02146' d='M85.039 338.246c-7.635 20.516-18.471 25.9-36.51 25.9-11.562 0-20.77-1.85-29.49-4.625l-1.441 61.051c11.947 3.238 27.178 4.625 40.59 4.625 59.201 0 87.168-20.521 105.021-68.488l6.871-18.463zM425.197 109.797h-85.039l85.039 228.449h85.039zM250 45.326C250 20.814 269.424 0 297.637 0s47.639 20.814 47.639 45.326-19.426 45.789-47.639 45.789C269.424 91.115 250 69.838 250 45.326z'/%3E%3Cg%3E%3Cpath fill='%236a2e4a' d='M467.716 224.035l42.52 114.211h.002l85.039-228.449h-85.041z'/%3E%3C/g%3E%3Cg%3E%3Cpath fill='%236a2e4a' d='M170.078 109.797L127.56 224.035l42.52 114.211 85.039-228.449z'/%3E%3C/g%3E%3Cpath fill='%23e02146' d='M85.039 338.246h85.041L85.041 109.797H0z'/%3E%3Cg%3E%3Cpath fill='%2397c6dd' d='M85.041 109.797v.002z'/%3E%3Cpath fill='%23e02146' d='M0 109.799v-.002z'/%3E%3Cpath fill='%236a2e4a' d='M42.519 224.039l42.522-114.24v-.002H0v.002z'/%3E%3Cpath fill='%23ba3353' d='M382.677 224.039l42.52-114.24v-.002h-85.039v.002zM467.716 224.039l-42.519 114.209v.002h85.041v-.002zM127.56 224.039L85.039 338.248v.002h85.041v-.002z'/%3E%3C/g%3E%3C/svg%3E");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -326,12 +327,12 @@
   font-family: "Roboto", Tahoma, Arial, sans-serif;
   font-weight: 300;
   font-size: 14px;
-  color: #7f7f7f;
+  color: #363E6A;
   display: inline-block;
   padding: 1em 4em;
-  background-color: #004c92;
-  border: 1px solid #00315f;
-  border-radius: 40px;
+  background-color: #363E6A;
+  border: 1px solid #252a48;
+  border-radius: 4px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   text-decoration: none;
   color: white;
@@ -480,7 +481,7 @@
   font-family: "Roboto", Tahoma, Arial, sans-serif;
   font-weight: 300;
   font-size: 14px;
-  color: #7f7f7f;
+  color: #363E6A;
   flex-direction: column;
 }
 .yivi-web-pairing-form.yivi-web-error {
@@ -513,7 +514,7 @@
   width: 30px;
   text-align: center;
   font-size: 1.5em;
-  border: 1px solid #000;
+  border: 1px solid #363E6A;
   border-radius: 4px;
 }
 @media screen and (max-width: 310px) {
