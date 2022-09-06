@@ -74,7 +74,7 @@ server. You can use the [`yivi` CLI tool](https://github.com/privacybydesign/yiv
 to do this.
 
 ```bash
-yivi server --static-path=../docs/styleguide
+irma server --static-path=../docs/styleguide
 ```
 
 It will be available in your browser at http://localhost:8088.

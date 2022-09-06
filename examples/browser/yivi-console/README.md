@@ -15,7 +15,7 @@ server. You can use the [`yivi` CLI tool](https://github.com/privacybydesign/yiv
 to do this.
 
 ```bash
-yivi server --static-path=./public
+irma server --static-path=./public
 ```
 
 It will be available in your browser at http://localhost:8088.

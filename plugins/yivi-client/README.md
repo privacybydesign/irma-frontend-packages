@@ -164,15 +164,15 @@ the options from [`start`](#option-start) is first parsed by its `parseResponse`
 functions then specify how to map the parsed response on particular
 variables. By default, the following mappings are present:
  - `sessionPtr`: the result from the `sessionPtr` mapping should be a valid Yivi
-   `sessionPtr`, [as being received from the `yivi server`](https://yivi.app/docs/api-yivi-server/#post-session).
+   `sessionPtr`, [as being received from the `irma server`](https://yivi.app/docs/api-yivi-server/#post-session).
    This mapping is mandatory. It defaults to using the `sessionPtr` field from the parsed JSON
    response of the [`start` endpoint](#option-start).
  - `sessionToken`: the result from the `sessionToken` mapping should be a valid Yivi
-   requestor token, [as being received from the `yivi server`](https://yivi.app/docs/api-yivi-server/#post-session).
+   requestor token, [as being received from the `irma server`](https://yivi.app/docs/api-yivi-server/#post-session).
    This mapping is only mandatory if the token is required by the specified [`result` endpoint](#option-result).
    It defaults to using the `token` field from the parsed JSON response of the [`start` endpoint](#option-start) (if present).
  - `frontendRequest`: the result from the `frontendRequest` mapping should be a valid Yivi
-   frontend session request, [as being received from the `yivi server`](https://yivi.app/docs/api-yivi-server/#post-session).
+   frontend session request, [as being received from the `irma server`](https://yivi.app/docs/api-yivi-server/#post-session).
    It defaults to using the `frontendRequest` field from the parsed JSON response of the [`start` endpoint](#option-start) (if present).
    If not present, only frontend protocol version 1.0 is supported. This means that pairing functionality cannot be used.
    This might be a security risk. Furthermore, frontend protocol version 1.0 lacks proper support for [chained sessions](https://yivi.app/docs/chained-sessions/).
@@ -291,9 +291,9 @@ state: {
 ```
 
 #### Cancellation
-The `yivi server` knows an endpoint to delete sessions. This endpoint is being
+The `irma server` knows an endpoint to delete sessions. This endpoint is being
 used to communicate session cancellation initiated by the user via this library.
-Communicating cancellation to the `yivi server` can be disabled by
+Communicating cancellation to the `irma server` can be disabled by
 setting the `cancel` option to `false` instead of an object.
 
 These are the accepted properties and their defaults for cancellation:

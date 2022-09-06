@@ -12,7 +12,7 @@ on how to safely initialize your session.
 To run this example, you need the [`yivi` CLI tool](https://github.com/privacybydesign/yivigo/releases/latest).
 You first need to start an Yivi server locally.
 ```bash
-yivi server
+irma server
 ```
 
 You can run this example by running the following commands in a separate terminal window.

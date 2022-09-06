@@ -20,7 +20,7 @@ To run this example, you need the [`yivi` CLI tool](https://github.com/privacyby
 You can start the Yivi server to run this example in the following way:
 
 ```bash
-yivi server --static-path=.
+irma server --static-path=.
 ```
 
 It will be available in your browser at http://localhost:8088.
