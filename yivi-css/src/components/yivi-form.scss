@@ -47,8 +47,8 @@
 // Styleguide Components.Yivi login
 
 @import '../mixins/reset', '../mixins/fonts', '../mixins/responsiveness',
-  '../mixins/center', '../mixins/animation', '../variables/colours',
-  '../variables/sizes';
+'../mixins/center', '../mixins/animation', '../variables/colours',
+'../variables/sizes';
 
 .yivi-web-centered {
   @include reset;
@@ -62,10 +62,11 @@
 
   // Make sure margin-top of first child and margin-bottom of last child
   // are equal to prevent issues while centering.
-  > p {
+  >p {
     &:first-child {
       margin-top: 0;
     }
+
     &:last-child {
       margin-bottom: 0;
     }
@@ -105,6 +106,7 @@
       @include reset;
       @include font($size: 15px);
       margin: 1em 4em;
+      color: $yivi-blue;
 
       @include on-small-screen {
         margin: 1em 2em;
@@ -175,6 +177,7 @@
       a {
         @include font($color: white, $size: 13px);
       }
+
       p {
         margin: 1em;
         text-align: center;
@@ -182,14 +185,16 @@
     }
 
     // Swap out the header content for the helper in a nice animation
-    & > *:not(.yivi-web-helper):not(.yivi-web-close) {
+    &>*:not(.yivi-web-helper):not(.yivi-web-close) {
       transform: translateX(0%);
       @include transition(transform 0.4s ease);
     }
+
     &.yivi-web-show-helper {
-      & > *:not(.yivi-web-helper):not(.yivi-web-close) {
+      &>*:not(.yivi-web-helper):not(.yivi-web-close) {
         transform: translateX(-120%);
       }
+
       .yivi-web-helper {
         transform: translateX(0%);
       }
@@ -222,6 +227,7 @@
         transform: rotateZ(45deg);
         transform-origin: center;
       }
+
       &:after {
         transform: rotateZ(-45deg);
       }

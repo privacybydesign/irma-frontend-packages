@@ -14,12 +14,13 @@
 //
 // Styleguide Variables.colours.app
 
-$yivi-blue: #004c92;
+$yivi-blue: #363E6A;
+$yivi-link-blue: #0000EE;
 $yivi-green: #2bc194;
 $yivi-light-blue: #00b1e6;
 $yivi-red: #d44454;
 $yivi-yellow: #ffbb58;
-$yivi-grey: #7f7f7f;
+$yivi-grey: #e8e8e8;
 
 // Colours for interface elements
 //
@@ -35,7 +36,7 @@ $yivi-grey: #7f7f7f;
 
 // From out to in:
 $border-color: white;
-$background-color: $yivi-blue;
+$background-color: $yivi-grey;
 $helper-color: #47679e;
 $content-bg-color: white;
 $button-color: $yivi-blue;
@@ -54,8 +55,8 @@ $button-color: $yivi-blue;
 //
 // Styleguide Variables.colours.text
 
-$header-text-color: white;
-$content-text-color: $yivi-grey;
-$content-link-color: $content-text-color;
+$header-text-color: $yivi-blue;
+$content-text-color: $yivi-blue;
+$content-link-color: $yivi-link-blue;
 $content-link-color-hover: $yivi-blue;
 $button-text-color: white;
