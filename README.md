@@ -7,7 +7,7 @@ web browser, but you can also use them to build a NodeJS client.
 
 The browser version, by default, will look like this:
 
-![Yivi flow in the browser](docs/images/example.gif)
+![Yivi flow in the browser](docs/images/example.png)
 
 The client is designed in such a way that you can combine the plugins you need
 and configure them in many useful ways. So the above design can easily be
