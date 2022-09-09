@@ -4,3 +4,4 @@ dist
 **/public/yivi.js
 .idea/
 examples/*/*/package-lock.json
+docs/styleguide
