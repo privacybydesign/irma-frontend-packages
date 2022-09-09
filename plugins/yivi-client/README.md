@@ -6,7 +6,7 @@ care of initiating most of the transitions to the `yivi-core` state machine.
 
 ## Usage
 
-For a simple demo where you directly start an Yivi session at an Yivi server
+For a simple demo where you directly start an Yivi session at an IRMA server
 (**not recommended in web browsers!**, see [below](#session)) you can use this
 snippet:
 
@@ -16,7 +16,7 @@ const Client   = require('@privacybydesign/yivi-client');
 
 const yivi = new YiviCore({
   session: {
-    // Point this to your Yivi server:
+    // Point this to your IRMA server:
     url: 'http://localhost:8088',
 
     // Define your disclosure request:
@@ -95,9 +95,9 @@ These options define the HTTP request `yivi-client` has to do in order
 to fetch the information of the Yivi session that has to be performed.
 The response of this endpoint must at least contain an Yivi `sessionPtr`,
 and ideally also a `frontendRequest` to use the latest features.
-A session pointer and frontend request can be retrieved at the Yivi server
-by using the [Yivi server library](https://godoc.org/github.com/privacybydesign/yivigo/server/yiviserver#Server.StartSession),
-the [Yivi server REST API](https://yivi.app/docs/api-yivi-server/#post-session)
+A session pointer and frontend request can be retrieved at the IRMA server
+by using the [IRMA server library](https://godoc.org/github.com/privacybydesign/yivigo/server/yiviserver#Server.StartSession),
+the [IRMA server REST API](https://yivi.app/docs/api-yivi-server/#post-session)
 or using one of the [Yivi backend packages](https://github.com/privacybydesign/yivi-backend-packages).
 
 The default values for `start` are such that an HTTP GET request is performed on
@@ -151,10 +151,10 @@ can be done by the user. **As a developer you are responsible yourself to take
 into account alternative flows for these cases. We therefore do not recommend
 disabling `start`.**
 
-**It is also recommended to not start sessions or fetch results on the Yivi server
+**It is also recommended to not start sessions or fetch results on the IRMA server
 from a web browser directly**. Instead, you mostly have a service in between that starts
 the session and checks the result for you. So in the browser the `url` property of
-`session` should point to a server that you control, which isn't your Yivi server.
+`session` should point to a server that you control, which isn't your IRMA server.
 
 ##### Option `mapping`
 With the `mapping` properties you can specify how the session pointer, the frontend
@@ -246,12 +246,12 @@ result: {
 ### state
 
 The `state` option tells the plugin what states it should use and how to subscribe for
-listeners that monitor state changes on the Yivi server. You can find an overview of
+listeners that monitor state changes on the IRMA server. You can find an overview of
 the possible option sets in the subsections.
 
 There are two general options, `url` and `legacyUrl`, to determine the location of the
-frontend endpoints of the Yivi server. The `legacyUrl` is used for frontend protocol
-version 1.0 (for [Yivi server](https://yivi.app/docs/yivi-server/) v0.7.x and earlier)
+frontend endpoints of the IRMA server. The `legacyUrl` is used for frontend protocol
+version 1.0 (for [IRMA server](https://yivi.app/docs/yivi-server/) v0.7.x and earlier)
 and the `url` is used for frontend protocol version 1.1 and above.
 
 These are the accepted general properties and their defaults:
@@ -264,7 +264,7 @@ state: {
 }
 ```
 
-The URL from `m.sessionPtr.u` will point directly to your Yivi server.
+The URL from `m.sessionPtr.u` will point directly to your IRMA server.
 This is intentional; the Yivi app should be able to access those endpoints too.
 
 #### State monitoring
@@ -306,7 +306,7 @@ state: {
 }
 ```
 
-The URL from `m.sessionPtr['u']` will point directly to your Yivi server.
+The URL from `m.sessionPtr['u']` will point directly to your IRMA server.
 This is intentional; the Yivi app should be able to access those endpoints too.
 
 Please remark that for cancellation there is no frontend specific endpoint at the Yivi
@@ -416,7 +416,7 @@ This includes enabling or disabling the pairing state if necessary.
 
 ### When being in state `ShowingQRCode` or `ShowingYiviButton`
 
-In these states the plugin polls the status at Yivi server using the `state` options.
+In these states the plugin polls the status at IRMA server using the `state` options.
 
 | Possible transitions                        | With payload              | Next state                              |
 |---------------------------------------------|---------------------------|-----------------------------------------|
@@ -428,7 +428,7 @@ In these states the plugin polls the status at Yivi server using the `state` opt
 
 ### When being in state `EnterPairingCode`
 
-In these states the plugin polls the status at Yivi server using the `state` options.
+In these states the plugin polls the status at IRMA server using the `state` options.
 
 | Possible transitions                        | With payload              | Next state                              |
 |---------------------------------------------|---------------------------|-----------------------------------------|
@@ -438,7 +438,7 @@ In these states the plugin polls the status at Yivi server using the `state` opt
 
 ### When being in state `Pairing`
 
-In these states the plugin polls the status at Yivi server using the `state` options.
+In these states the plugin polls the status at IRMA server using the `state` options.
 
 | Possible transitions                                   | With payload              | Next state          |
 |--------------------------------------------------------|---------------------------|---------------------|
@@ -450,7 +450,7 @@ In these states the plugin polls the status at Yivi server using the `state` opt
 
 ### When being in state `ContinueOn2ndDevice` or `ContinueInYiviApp`
 
-In this state we continue polling the Yivi server using the `state` options.
+In this state we continue polling the IRMA server using the `state` options.
 
 | Possible transitions                        | With payload              | Next state        |
 |---------------------------------------------|---------------------------|-------------------|
