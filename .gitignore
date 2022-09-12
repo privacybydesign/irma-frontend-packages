@@ -3,5 +3,5 @@ node_modules
 dist
 **/public/yivi.js
 .idea/
+examples/*/*/package-lock.json
 docs/styleguide
-**-lock.json
