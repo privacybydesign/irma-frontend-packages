@@ -16,7 +16,7 @@ npm run link # Only necessary for development builds
 npm run build
 ```
 
-To run this example, you need the [`yivi` CLI tool](https://github.com/privacybydesign/yivigo/releases/latest).
+To run this example, you need the [`irma` CLI tool](https://github.com/privacybydesign/irmago/releases/latest).
 You can start the IRMA server to run this example in the following way:
 
 ```bash

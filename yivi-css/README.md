@@ -70,7 +70,7 @@ $ npm run dev
 The style guide has been updated in the `docs/styleguide` directory in
 the root of this project. To show the styleguide, the docs
 directory can simply be hosted using an HTTP
-server. You can use the [`yivi` CLI tool](https://github.com/privacybydesign/yivigo/releases/latest)
+server. You can use the [`irma` CLI tool](https://github.com/privacybydesign/irmago/releases/latest)
 to do this.
 
 ```bash

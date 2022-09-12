@@ -15,7 +15,7 @@ const yivi = require('@privacybydesign/yivi-frontend');
 
 ## Documentation
 More documentation on how to use this module can be found in the
-[Yivi documentation](https://yivi.app/docs/yivi-frontend/#yivi-frontend).
+[Yivi documentation](https://irma.app/docs/irma-frontend/#irma-frontend).
 
 ## Usage
 When you want to use an embedded web element,
@@ -63,7 +63,7 @@ Be aware that you can start an instance of `yivi-core` only once.
 When you want to call `start()` again, you have to create a new instance.
 
 ## Download
-A bundled JavaScript file can be found [here](https://gitlab.science.ru.nl/yivi/github-mirrors/yivi-frontend-packages/-/jobs/artifacts/master/browse/yivi-frontend/dist?job=yivi-frontend).
+A bundled JavaScript file can be found [here](https://gitlab.science.ru.nl/irma/github-mirrors/irma-frontend-packages/-/jobs/artifacts/master/browse/irma-frontend/dist?job=irma-frontend).
 Please download this file and host it yourself. Versions can change and we do not want to break your website.
 
 ## Development

@@ -63,7 +63,7 @@ _Getting the session result through a proxy_
     // Back-end options
     session: {
       // Point this to your controller:
-      url: 'https://my-server.domain/yivi-endpoint',
+      url: 'https://my-server.domain/irma-endpoint',
 
       start: {
         url: o => `${o.url}/start`,
@@ -126,7 +126,7 @@ yivi.start()
   #### Server side
 
   Then, on the server side, you have to implement the `start` and `result`
-  actions on your `yivi-endpoint` controller.
+  actions on your `irma-endpoint` controller.
 
   `start` should make a call to the IRMA server and start the Yivi session
   there. Then, strip the result token from the response JSON and send the rest
@@ -187,7 +187,7 @@ _Getting the session result directly_
     // Back-end options
     session: {
       // Point this to your IRMA server:
-      url: 'https://yivi-server.my-server.domain/',
+      url: 'https://irma-server.my-server.domain/',
 
       start: {
         method: 'POST',
@@ -225,7 +225,7 @@ const yivi = new YiviCore({
   // Back-end options
   session: {
     // Point this to your IRMA server:
-    url: 'https://yivi-server.my-server.domain/',
+    url: 'https://irma-server.my-server.domain/',
 
     start: {
       method: 'POST',
@@ -285,13 +285,13 @@ session there. The back-end does not need to be involved at all.
     // Back-end options
     session: {
       // Point this to your IRMA server:
-      url: 'https://yivi-server.my-server.domain/',
+      url: 'https://irma-server.my-server.domain/',
 
       start: {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          '@context': 'https://yivi.app/ld/request/disclosure/v2',
+          '@context': 'https://irma.app/ld/request/disclosure/v2',
           'disclose': [
             [
               [ 'pbdf.pbdf.email.email' ],
@@ -329,13 +329,13 @@ const yivi = new YiviCore({
   // Back-end options
   session: {
     // Point this to your IRMA server:
-    url: 'https://yivi-server.my-server.domain/',
+    url: 'https://irma-server.my-server.domain/',
 
     start: {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        '@context': 'https://yivi.app/ld/request/disclosure/v2',
+        '@context': 'https://irma.app/ld/request/disclosure/v2',
         'disclose': [
           [
             [ 'pbdf.pbdf.email.email' ],

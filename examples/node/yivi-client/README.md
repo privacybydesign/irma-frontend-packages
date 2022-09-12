@@ -9,7 +9,7 @@ recommended best practice for use in web browsers! See the
 [yivi-client documentation](../../../plugins/yivi-client) for more information
 on how to safely initialize your session.
 
-To run this example, you need the [`yivi` CLI tool](https://github.com/privacybydesign/yivigo/releases/latest).
+To run this example, you need the [`irma` CLI tool](https://github.com/privacybydesign/irmago/releases/latest).
 You first need to start an IRMA server locally.
 ```bash
 irma server

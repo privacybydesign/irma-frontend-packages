@@ -26,7 +26,7 @@ const yivi = new YiviCore({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        '@context': 'https://yivi.app/ld/request/disclosure/v2',
+        '@context': 'https://irma.app/ld/request/disclosure/v2',
         'disclose': [
           [
             [ 'pbdf.pbdf.email.email' ],
@@ -77,7 +77,7 @@ It concerns the transitions in the following states:
 General outline:
 ```javascript
 session: {
-  url: 'http://example.com/yiviserver',
+  url: 'http://example.com/irmaserver',
   start: {
     ...
   },
@@ -96,9 +96,9 @@ to fetch the information of the Yivi session that has to be performed.
 The response of this endpoint must at least contain an Yivi `sessionPtr`,
 and ideally also a `frontendRequest` to use the latest features.
 A session pointer and frontend request can be retrieved at the IRMA server
-by using the [IRMA server library](https://godoc.org/github.com/privacybydesign/yivigo/server/yiviserver#Server.StartSession),
-the [IRMA server REST API](https://yivi.app/docs/api-yivi-server/#post-session)
-or using one of the [Yivi backend packages](https://github.com/privacybydesign/yivi-backend-packages).
+by using the [IRMA server library](https://godoc.org/github.com/privacybydesign/irmago/server/irmaserver#Server.StartSession),
+the [IRMA server REST API](https://irma.app/docs/api-irma-server/#post-session)
+or using one of the [Yivi backend packages](https://github.com/privacybydesign/irma-backend-packages).
 
 The default values for `start` are such that an HTTP GET request is performed on
 the endpoint `${o.url}/session` (during `yivi-core` state `Loading`).
@@ -129,7 +129,7 @@ start: {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    '@context': 'https://yivi.app/ld/request/disclosure/v2',
+    '@context': 'https://irma.app/ld/request/disclosure/v2',
     'disclose': [
       [
         [ 'pbdf.pbdf.email.email' ],
@@ -164,18 +164,18 @@ the options from [`start`](#option-start) is first parsed by its `parseResponse`
 functions then specify how to map the parsed response on particular
 variables. By default, the following mappings are present:
  - `sessionPtr`: the result from the `sessionPtr` mapping should be a valid Yivi
-   `sessionPtr`, [as being received from the `irma server`](https://yivi.app/docs/api-yivi-server/#post-session).
+   `sessionPtr`, [as being received from the `irma server`](https://irma.app/docs/api-irma-server/#post-session).
    This mapping is mandatory. It defaults to using the `sessionPtr` field from the parsed JSON
    response of the [`start` endpoint](#option-start).
  - `sessionToken`: the result from the `sessionToken` mapping should be a valid Yivi
-   requestor token, [as being received from the `irma server`](https://yivi.app/docs/api-yivi-server/#post-session).
+   requestor token, [as being received from the `irma server`](https://irma.app/docs/api-irma-server/#post-session).
    This mapping is only mandatory if the token is required by the specified [`result` endpoint](#option-result).
    It defaults to using the `token` field from the parsed JSON response of the [`start` endpoint](#option-start) (if present).
  - `frontendRequest`: the result from the `frontendRequest` mapping should be a valid Yivi
-   frontend session request, [as being received from the `irma server`](https://yivi.app/docs/api-yivi-server/#post-session).
+   frontend session request, [as being received from the `irma server`](https://irma.app/docs/api-irma-server/#post-session).
    It defaults to using the `frontendRequest` field from the parsed JSON response of the [`start` endpoint](#option-start) (if present).
    If not present, only frontend protocol version 1.0 is supported. This means that pairing functionality cannot be used.
-   This might be a security risk. Furthermore, frontend protocol version 1.0 lacks proper support for [chained sessions](https://yivi.app/docs/chained-sessions/).
+   This might be a security risk. Furthermore, frontend protocol version 1.0 lacks proper support for [chained sessions](https://irma.app/docs/chained-sessions/).
 
 Additional mappings can also be added. Their names are free to choose (as long as there is no name collision).
 
@@ -251,7 +251,7 @@ the possible option sets in the subsections.
 
 There are two general options, `url` and `legacyUrl`, to determine the location of the
 frontend endpoints of the IRMA server. The `legacyUrl` is used for frontend protocol
-version 1.0 (for [IRMA server](https://yivi.app/docs/yivi-server/) v0.7.x and earlier)
+version 1.0 (for [IRMA server](https://irma.app/docs/irma-server/) v0.7.x and earlier)
 and the `url` is used for frontend protocol version 1.1 and above.
 
 These are the accepted general properties and their defaults:
@@ -323,7 +323,7 @@ scans the QR, since the session might contain sensitive information.
  - Issuing sessions
  - Disclosing sessions with fixed attribute values (e.g. show that your email address is example@example.com)
  - Signing sessions (the message that needs signing might contain sensitive information)
- - Chained sessions (i.e. a `nextSession` is being specified as [extra parameter](https://yivi.app/docs/session-requests/#extra-parameters)
+ - Chained sessions (i.e. a `nextSession` is being specified as [extra parameter](https://irma.app/docs/session-requests/#extra-parameters)
    in the session request)
 
 For these session types, the `frontendRequest` will include an extra field `"pairingHint": true`.
@@ -344,7 +344,7 @@ the default value is used.
 state: {
   frontendOptions: {
     endpoint:           'options',
-    requestContext:     'https://yivi.app/ld/request/options/v1'
+    requestContext:     'https://irma.app/ld/request/options/v1'
    },
 
    pairing: {

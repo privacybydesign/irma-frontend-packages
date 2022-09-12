@@ -31,8 +31,8 @@ const yivi = new YiviCore({
 
 ## Documentation
 More elaborate documentation on how to use this module can be found in the
-[Yivi documentation](https://yivi.app/docs/yivi-frontend/#yivi-core). You
-can also find here how to [design your own plugin](https://yivi.app/docs/yivi-frontend/#make-your-own-yivi-core-plugin).
+[Yivi documentation](https://irma.app/docs/irma-frontend/#irma-core). You
+can also find here how to [design your own plugin](https://irma.app/docs/irma-frontend/#make-your-own-irma-core-plugin).
 
 ## API
 ### `use` method

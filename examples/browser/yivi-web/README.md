@@ -12,7 +12,7 @@ npm run build
 ```
 
 To run the example, the `public` directory can simply be hosted using an HTTP
-server. You can use the [`yivi` CLI tool](https://github.com/privacybydesign/yivigo/releases/latest)
+server. You can use the [`irma` CLI tool](https://github.com/privacybydesign/irmago/releases/latest)
 to do this.
 
 ```bash
