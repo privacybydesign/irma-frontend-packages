@@ -173,14 +173,15 @@
       transform: translateX(120%);
       @include transition(transform 0.4s ease);
 
-      p,
       a {
-        @include font($color: white, $size: 13px);
+        @include font($color: $yivi-blue, $size: 13px);
+        text-decoration-line: underline;
       }
 
       p {
         margin: 1em;
         text-align: center;
+        @include font($color: $yivi-blue, $size: 13px);
       }
     }
 
