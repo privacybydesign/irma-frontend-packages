@@ -100,11 +100,11 @@
     margin: 0 1rem 1rem 1rem;
 
     background-color: $content-bg-color;
-    border-radius: $border-radius * 0.6;
+    border-radius: $border-radius;
 
     p {
       @include reset;
-      @include font($size: 15px);
+      @include font($size: 16px, $weight: 18px);
       margin: 1em 4em;
       color: $yivi-blue;
 
@@ -134,8 +134,6 @@
     overflow: hidden;
 
     text-align: center;
-    border-top-left-radius: $border-radius - 1;
-    border-top-right-radius: $border-radius - 1;
 
     @include on-small-screen {
       padding: 1em;
@@ -143,10 +141,10 @@
 
     p {
       @include reset;
-      @include font($size: 20px, $weight: 500, $color: $header-text-color);
+      @include font($size: 18px, $weight: 700, $color: $header-text-color);
 
       @include on-small-screen {
-        @include font($size: 16px, $weight: 500, $color: $header-text-color);
+        @include font($size: 16px, $weight: 600, $color: $header-text-color);
       }
 
       i.yivi-web-logo {
@@ -165,23 +163,19 @@
       height: calc(100% - 2rem);
 
       background-color: $helper-color;
-      border-top-left-radius: $border-radius * 0.6;
-      border-top-right-radius: $border-radius * 0.6;
-      border-bottom-left-radius: 1px;
-      border-bottom-right-radius: 1px;
 
       transform: translateX(120%);
       @include transition(transform 0.4s ease);
 
       a {
-        @include font($color: $yivi-blue, $size: 13px);
+        @include font($color: $yivi-blue, $size: 16px, $weight: 400);
         text-decoration-line: underline;
       }
 
       p {
         margin: 1em;
         text-align: center;
-        @include font($color: $yivi-blue, $size: 13px);
+        @include font($color: $yivi-blue, $size: 16px, $weight: 700);
       }
     }
 
