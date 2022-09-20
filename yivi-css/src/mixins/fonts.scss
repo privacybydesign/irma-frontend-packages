@@ -15,7 +15,6 @@
 // Styleguide Mixins.fonts
 
 @import '../variables/fonts', '../variables/colours';
-@import '../../node_modules/npm-font-open-sans/open-sans';
 
 @mixin font(
   $family: $default-font,
