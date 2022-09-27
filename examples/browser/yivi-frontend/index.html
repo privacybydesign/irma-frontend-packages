@@ -48,7 +48,7 @@
 
       // Back-end options
       session: {
-        // Point this to your Yivi server:
+        // Point this to your IRMA server:
         url: 'http://localhost:8088',
 
         // Define your disclosure request:
@@ -58,7 +58,7 @@
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            "@context": "https://yivi.app/ld/request/disclosure/v2",
+            "@context": "https://irma.app/ld/request/disclosure/v2",
             "disclose": [
               [
                 [ "pbdf.pbdf.email.email" ],

@@ -144,7 +144,7 @@ yivi.start()
 
 ### Talking to IRMA server directly, with signed request
 
-Another supported flow is one where the Javascript client talks to the Yivi
+Another supported flow is one where the Javascript client talks to the IRMA
 server directly, and is itself responsible for starting the session there.
 
 ![Starting a session directly, with signed request](docs/images/flows/flows.002.png)
@@ -477,4 +477,4 @@ git commit -m "Version bump"
 
 ## Documentation
 More documentation on how to use this package can be found in the
-[Yivi documentation](https://yivi.app/docs/yivi-frontend/).
+[Yivi documentation](https://irma.app/docs/irma-frontend/).

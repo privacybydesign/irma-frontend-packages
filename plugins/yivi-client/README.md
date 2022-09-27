@@ -98,7 +98,7 @@ and ideally also a `frontendRequest` to use the latest features.
 A session pointer and frontend request can be retrieved at the IRMA server
 by using the [IRMA server library](https://godoc.org/github.com/privacybydesign/irmago/server/irmaserver#Server.StartSession),
 the [IRMA server REST API](https://irma.app/docs/api-irma-server/#post-session)
-or using one of the [Yivi backend packages](https://github.com/privacybydesign/irma-backend-packages).
+or using one of the [IRMA backend packages](https://github.com/privacybydesign/irma-backend-packages).
 
 The default values for `start` are such that an HTTP GET request is performed on
 the endpoint `${o.url}/session` (during `yivi-core` state `Loading`).

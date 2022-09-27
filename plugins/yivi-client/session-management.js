@@ -45,7 +45,7 @@ module.exports = class SessionManagement {
         maxProtocolVersion: ProtocolVersion.minSupported(),
       };
     }
-    // Check whether the Yivi server at least has minimum support for this yivi-client version.
+    // Check whether the IRMA server at least has minimum support for this yivi-client version.
     if (
       ProtocolVersion.above(ProtocolVersion.minSupported(), frontendRequest.maxProtocolVersion) ||
       ProtocolVersion.below(ProtocolVersion.maxSupported(), frontendRequest.minProtocolVersion)

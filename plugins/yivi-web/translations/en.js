@@ -1,7 +1,7 @@
 // prettier-ignore
 module.exports = {
   header: 'Continue with <i class="yivi-web-logo">Yivi</i>',
-  helper: 'Can\'t figure it out?<br>Take a look at the <a href="https://yivi.app/?lang=en">Yivi website</a>.',
+  helper: 'Can\'t figure it out?<br>Take a look at the <a href="https://yivi.app/">Yivi website</a>.',
   loading: 'Just a second please!',
   button: 'Open Yivi app',
   qrCode: 'Show QR code',

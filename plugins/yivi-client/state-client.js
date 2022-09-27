@@ -265,7 +265,7 @@ module.exports = class YiviStateClient {
 
   _updateFrontendOptions(options) {
     if (ProtocolVersion.below(this._mappings.frontendRequest.maxProtocolVersion, ProtocolVersion.get('pairing'))) {
-      return Promise.reject(new Error('Frontend options are not supported by the Yivi server'));
+      return Promise.reject(new Error('Frontend options are not supported by the IRMA server'));
     }
 
     const req = {
@@ -291,11 +291,11 @@ module.exports = class YiviStateClient {
     switch (this._userAgent) {
       case 'Android': {
         // Universal links are not stable in Android webviews and custom tabs, so always use intent links.
-        const intent = `Intent;package=org.yivicard.cardemu;scheme=yivi;l.timestamp=${Date.now()}`;
+        const intent = `Intent;package=org.irmacard.cardemu;scheme=irma;l.timestamp=${Date.now()}`;
         return `intent://qr/json/${encodeURIComponent(json)}#${intent};end`;
       }
       case 'iOS': {
-        return `https://yivi.app/-/session#${encodeURIComponent(json)}`;
+        return `https://irma.app/-/session#${encodeURIComponent(json)}`;
       }
       default: {
         throw new Error('Device type is not supported.');
@@ -344,7 +344,7 @@ module.exports = class YiviStateClient {
 
         frontendOptions: {
           endpoint: 'options',
-          requestContext: 'https://yivi.app/ld/request/frontendoptions/v1',
+          requestContext: 'https://irma.app/ld/request/frontendoptions/v1',
         },
 
         pairing: {
