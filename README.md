@@ -157,7 +157,7 @@ IRMA server can verify its authenticity.
 However, the web browser will be able to see the resulting disclosure or signed
 contract, because the web browser will be the one receiving the result token
 from the IRMA server. This may be an issue for some scenario's.
-In these scenarios you can get [signed JWTs as result](https://yivi.app/docs/yivi-server/#signed-jwt-session-results)
+In these scenarios you can get [signed JWTs as result](https://irma.app/docs/irma-server/#signed-jwt-session-results)
 from the IRMA server. This flow with receiving JWTs as result is not
 elaborated in this example.
 
