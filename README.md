@@ -1,3 +1,6 @@
+> :warning: **Only use this package for backwards compatibility reasons.** 
+> Please use [`yivi-frontend-packages`](https://github.com/privacybydesign/yivi-frontend-packages) instead.
+
 # IRMA frontend packages
 
 Welcome to this repository! IRMA frontend packages is a collection of related
